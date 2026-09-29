@@ -2,12 +2,16 @@
 
 Tools and notebooks for salt-dilution discharge measurements and fluvial seismology at Mount Rainier National Park.
 
-This repository currently contains the project layout and documentation only. Analysis scripts, notebooks, datasets, and completed runs have not been added.
+This repository brings two existing research codebases into one self-contained project. Scientific calculations are preserved; filenames, notebook titles, imports, input locations, and saved-result paths have been organized consistently. Some source workflows remain exploratory or incomplete.
 
-## Research methods
+## Start here
 
-- [Salt dilution](salt-dilution/README.md): conductivity-based stream-discharge analysis.
-- [Fluvial seismology](fluvial-seismology/README.md): seismic processing and models of river flow and sediment transport.
+- [Getting started](docs/getting_started.md): dependencies, launching notebooks, and saving runs.
+- [Salt dilution](salt_dilution/README.md): the July 24, 2025 discharge example, parsers, and exploratory alternatives.
+- [Fluvial seismology](fluvial_seismology/README.md): waveform preparation, calibration, spectra, and Python/R models.
+- [Naming conventions](docs/naming_conventions.md): rules for naming files.
+- [Provenance](docs/provenance.md) and [source manifest](docs/source_manifest.csv): source revisions and every original-to-new filename.
+- [Validation](docs/validation.md): what was checked and what remains unverified.
 
 ## Layout
 
@@ -16,12 +20,11 @@ mora-fluvial-analysis/
 ├── README.md
 ├── LICENSE
 ├── CITATION.cff
-├── docs/
-│   ├── getting-started.md
-│   ├── research-methods.md
-│   └── provenance.md
-├── salt-dilution/
-│   ├── README.md
+├── project_paths.py                  Shared input and run-output paths
+├── licenses/                         Preserved source license text
+├── docs/                             Setup, methods, naming, and provenance
+├── tests/                            Import and path checks
+├── salt_dilution/
 │   ├── notebooks/
 │   │   └── exploratory/
 │   ├── scripts/
@@ -30,47 +33,31 @@ mora-fluvial-analysis/
 │   │   └── experimental/
 │   ├── config/
 │   ├── data/
-│   │   ├── README.md
-│   │   ├── inventory.csv
 │   │   ├── examples/
 │   │   ├── raw/
 │   │   └── processed/
 │   └── results/
 │       └── _template/
-│           ├── figures/
-│           ├── tables/
-│           └── run-info.json
-└── fluvial-seismology/
-    ├── README.md
+└── fluvial_seismology/
     ├── notebooks/
     │   ├── preparation/
-    │   ├── instrument-calibration/
-    │   ├── spectral-analysis/
+    │   ├── instrument_calibration/
+    │   ├── spectral_analysis/
     │   ├── modelling/
     │   └── exploratory/
     ├── scripts/
     │   ├── processing/
     │   └── models/
     ├── config/
+    │   └── source_environments/
     ├── data/
-    │   ├── README.md
-    │   ├── inventory.csv
     │   ├── examples/
     │   ├── raw/
     │   └── processed/
     └── results/
         └── _template/
-            ├── figures/
-            ├── tables/
-            └── run-info.json
 ```
 
-The `_template` folders describe future runs; they contain no analysis results. Empty folders contain `.gitkeep` files so the layout survives a Git clone.
+Each run keeps its figures, tables, and `run_info.json` together. Raw field data, processed field data, and generated runs are ignored by Git. Small source examples and their inventory are tracked. Original instrument filenames are retained.
 
-## Working here
-
-Start with [getting started](docs/getting-started.md), [research methods](docs/research-methods.md), and [source provenance](docs/provenance.md). Each method's README explains where its materials belong.
-
-Code, documentation, configuration, and small documented examples belong in Git. Full field recordings, processed field datasets, and generated result runs are ignored by default. Preserve original measurements and record their source, units, and time zone when adding data.
-
-The license and citation files are initial placeholders for completion when research materials and contributor details are added.
+The archived source repositories remain independent and unchanged. See [LICENSE](LICENSE) for the scope of retained source notices; this import does not assign a new blanket license to the combined work.

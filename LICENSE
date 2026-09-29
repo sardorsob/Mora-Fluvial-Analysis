@@ -1,4 +1,9 @@
-License selection pending.
+This repository combines research materials with retained source provenance.
+No new blanket license is assigned to the combined repository.
 
-This is a repository-layout placeholder, not a license grant. Preserve the
-original licenses and attribution when source materials are added.
+The license text present in the taylor-kenyon source snapshot is retained at:
+    licenses/taylor_kenyon_apache_2_0.txt
+
+Original authorship and source notices remain in the imported files. The
+archived rjost1 dilution branch did not contain a standalone license file.
+See docs/provenance.md and docs/source_manifest.csv for per-source details.

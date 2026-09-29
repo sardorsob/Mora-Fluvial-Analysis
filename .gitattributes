@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Preserve archived instrument exports and historical source notes exactly.
+salt_dilution/data/examples/*.csv -text -whitespace
+docs/source_notes/*.txt -text -whitespace

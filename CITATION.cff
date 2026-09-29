@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: >-
-  This repository currently contains a project scaffold. Complete contributor
-  and release metadata before using this file to cite research results.
+  Cite the original methods and source authors described in docs/provenance.md.
+  Record the repository revision used; complete named contributor metadata for a research release.
 type: software
 title: Mount Rainier Fluvial Analysis
 authors:
@@ -9,4 +9,4 @@ authors:
 repository-code: https://github.com/sardorsob/mora-fluvial-analysis
 abstract: >-
   Tools and notebooks for salt-dilution discharge measurements and fluvial
-  seismology at Mount Rainier National Park. Currently a directory scaffold.
+  seismology at Mount Rainier National Park. Organized research code with preserved source provenance.

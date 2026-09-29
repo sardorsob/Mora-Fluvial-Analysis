@@ -1,0 +1,10 @@
+README - Updated:20250729
+
+This software can be utilized to estimate stream discharge using salt in solution slug injection method. The dilutionUtils.py script
+can be set up with a configuration file (.ini - extension).
+
+dilutionUtils.py: operational except load config function. This works but variables are not incorporated into anything else
+dilutionUtils_testing.ipynb: operational. Run by updating the variables near the top
+salt_in_solution.py: needs work
+analysis_script.py: needs work
+

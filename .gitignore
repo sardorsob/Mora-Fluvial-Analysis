@@ -13,19 +13,19 @@ __pycache__/
 *.key
 
 # Full field data remains local; preserve the directory layout in Git.
-/salt-dilution/data/raw/*
-!/salt-dilution/data/raw/.gitkeep
-/salt-dilution/data/processed/*
-!/salt-dilution/data/processed/.gitkeep
-/fluvial-seismology/data/raw/*
-!/fluvial-seismology/data/raw/.gitkeep
-/fluvial-seismology/data/processed/*
-!/fluvial-seismology/data/processed/.gitkeep
+/salt_dilution/data/raw/*
+!/salt_dilution/data/raw/.gitkeep
+/salt_dilution/data/processed/*
+!/salt_dilution/data/processed/.gitkeep
+/fluvial_seismology/data/raw/*
+!/fluvial_seismology/data/raw/.gitkeep
+/fluvial_seismology/data/processed/*
+!/fluvial_seismology/data/processed/.gitkeep
 
 # Keep the run instructions and template, not generated runs.
-/salt-dilution/results/*
-!/salt-dilution/results/README.md
-!/salt-dilution/results/_template/
-/fluvial-seismology/results/*
-!/fluvial-seismology/results/README.md
-!/fluvial-seismology/results/_template/
+/salt_dilution/results/*
+!/salt_dilution/results/README.md
+!/salt_dilution/results/_template/
+/fluvial_seismology/results/*
+!/fluvial_seismology/results/README.md
+!/fluvial_seismology/results/_template/

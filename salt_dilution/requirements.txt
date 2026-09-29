@@ -1,0 +1,9 @@
+# Imported dilution workflows and notebook checks; not an environment lockfile.
+numpy
+scipy
+matplotlib
+pandas
+jupyterlab
+ipykernel
+nbformat
+nbclient
