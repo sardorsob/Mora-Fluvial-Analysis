@@ -12,6 +12,7 @@ This repository brings two existing research codebases into one self-contained p
 - [Naming conventions](docs/naming_conventions.md): rules for naming files.
 - [Provenance](docs/provenance.md) and [source manifest](docs/source_manifest.csv): source revisions and every original-to-new filename.
 - [Validation](docs/validation.md): what was checked and what remains unverified.
+- [Methodology references](docs/references/README.md): primary salt-dilution references and project-specific implementation notes.
 
 ## Layout
 
@@ -22,7 +23,7 @@ mora-fluvial-analysis/
 ├── CITATION.cff
 ├── project_paths.py                  Shared input and run-output paths
 ├── licenses/                         Preserved source license text
-├── docs/                             Setup, methods, naming, and provenance
+├── docs/                             Setup, methods, naming, provenance, and references
 ├── tests/                            Import and path checks
 ├── salt_dilution/
 │   ├── notebooks/

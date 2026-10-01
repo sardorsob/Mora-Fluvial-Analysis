@@ -9,7 +9,7 @@ Background reading supplied for the project:
 - R. D. (Dan) Moore, 2004: *Introduction to Salt Dilution Gauging for Streamflow Measurement, Part 2: Constant-rate Injection*. Streamline Watershed Management Bulletin, 8(1), pp. 11–15.
 - R. D. (Dan) Moore, 2005: *Introduction to Salt Dilution Gauging for Streamflow Measurement, Part III: Slug Injection Using Salt in Solution*. Streamline Watershed Management Bulletin, 8(2), pp. 1–6.
 
-The original PDF attachments remain in the research archive; they are not included in this repository. The [salt-dilution README](../salt_dilution/README.md) records the current example, calibration choices, and source limitations.
+The maintained methodology index now lives in [docs/references](references/README.md). It includes the Moore references plus Richardson's 2015 tracer-dilution thesis notes and records the exact source-copy hashes supplied for this project. The [salt-dilution README](../salt_dilution/README.md) records the current example, calibration choices, and source limitations.
 
 ## Fluvial seismology
 
