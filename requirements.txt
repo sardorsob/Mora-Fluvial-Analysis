@@ -1,0 +1,56 @@
+# Current MORA Python stack
+#
+# Project-level requirements for the DOI-approved Python 3.12 workflow.
+# These are direct packages intentionally used or retained for current
+# salt-dilution, seismic, data-science, visualization, and geospatial work.
+#
+# Historical Conda environment exports under
+# fluvial_seismology/config/source_environments/ are preserved for provenance
+# and should not be treated as the current installation recipe.
+#
+# On managed DOI Windows systems where virtual environments/Conda are blocked:
+#   python -m pip install --user -r requirements.txt
+#
+# R/rpy2 dependencies are intentionally excluded here. The R modelling notebook
+# separately requires R, rpy2, eseis, fields, and optionally caTools.
+
+# Core numerical and tabular computing
+numpy
+scipy
+pandas
+
+# Plotting and visualization
+matplotlib
+seaborn
+plotly
+
+# Jupyter / notebook execution
+jupyterlab
+ipykernel
+nbformat
+nbclient
+
+# MORA domain-specific scientific tools
+obspy
+openpyxl
+
+# Statistics and machine learning
+scikit-learn
+statsmodels
+
+# Bayesian and probabilistic modelling
+pymc
+arviz
+numba
+
+# Scientific utilities and labelled/columnar data
+sympy
+xarray
+pyarrow
+tqdm
+
+# Geospatial analysis
+geopandas
+shapely
+pyproj
+cartopy
