@@ -2,14 +2,18 @@
 
 Run commands from the repository root. Python 3.10 or newer is the intended baseline for the imported Python source. The migration checks used Python 3.13; that is not a validation of the seismic dependency stack.
 
+For the current DOI-managed Python 3.12 workflow, install the organized project-level [requirements.txt](../requirements.txt). On systems where Conda or virtual-environment execution is blocked by policy, use the approved interpreter with `python -m pip install --user -r requirements.txt`. The historical Conda exports under `fluvial_seismology/config/source_environments/` remain provenance records, not the current setup recipe.
+
 ## Salt-dilution example
 
-Create a project environment and install [requirements.txt](../salt_dilution/requirements.txt):
+The salt-dilution-only minimum remains [salt_dilution/requirements.txt](../salt_dilution/requirements.txt). For the full current MORA Python stack, install the root [requirements.txt](../requirements.txt).
+
+A conventional project environment can use:
 
 ```sh
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install -r salt_dilution/requirements.txt
+python -m pip install -r requirements.txt
 python -m jupyterlab
 ```
 
