@@ -1,0 +1,536 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="ProgId" content="Excel.Sheet"/>
+<meta name="isi-csv-file-name" content="VuSitu_LiveReadings_2025-07-17_17-18-53_Device_Location.csv"/>
+<meta name="isi-report-id" content="ded9c076-b608-48db-8a91-15d213b5686b"/>
+<meta name="isi-report-version" content="1.1"/>
+<meta name="isi-report-type" content="LiveReadings"/>
+<meta name="isi-report-created" content="2025-07-23T06:58:52.1876770-07:00"/>
+<meta name="format-detection" content="telephone=no">
+<style type="text/css">
+<!--
+body {
+font-family: "Roboto", Arial, Helvetica, Geneva, sans-serif;
+margin: 0px;
+}
+#header {
+border-bottom: 5px solid #002378;
+margin-bottom: 10px;
+padding-right: 10px;
+display: flex;
+flex-wrap: wrap;
+}
+#logo {
+background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGJhc2VQcm9maWxlPSJiYXNpYyIgaWQ9IkxheWVyXzEiDQoJIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTUxLjkgMTAyLjMiDQoJIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6I0ZCQjczNTt9DQoJLnN0MXtmaWxsOiMyOTM2ODE7fQ0KPC9zdHlsZT4NCjxnPg0KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik02OS4zLDQxLjljMC45LTUuMSwxLjgtMTEuNCwxLjYtMTUuN2MtMC40LTguNi00LjQtOS44LTkuMi05LjhjLTQuOCwwLTcuOSwwLjctMTEuOCw0LjQNCgkJYy0yLjYsMi40LTMuNSw1LjctMy41LDUuN3MtNC4zLTAuNi03LjctMC4yYy00LjIsMC40LTguOSwzLjEtMTEsNi4yYy0yLjUsMy43LTAuOSw4LjcsNywxMi42YzYuMywzLjEsMTYuNyw0LjMsMjQuMSw0LjcNCgkJQzU5LjgsNDUuNCw2NC40LDQyLDY5LjMsNDEuOSIvPg0KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0xMDYuNCwyNi40Yy0zLjMtMC40LTcuMywwLjEtNy4zLDAuMXMwLjMtMy4zLTEuMy01LjdjLTIuNC0zLjctNS4zLTQuNC0xMC4xLTQuNGMtNC45LDAtOS40LDEuMi0xMy4xLDkuOA0KCQljLTEuOSw0LjMtMy41LDEwLjYtNC42LDE1LjdjNC41LDAuNCw3LjQsMy43LDYuNyw3LjljNy41LTAuNCwxNy42LTEuMiwyNS4zLTQuNGM5LjUtMy45LDEyLjYtNywxMi40LTExLjUNCgkJQzExNC40LDMwLjcsMTEwLjUsMjYuOCwxMDYuNCwyNi40Ii8+DQoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTY2LjEsNTguMmMtNC43LDAtNy45LTMuMi03LjUtNy4zYy03LjUsMC40LTE3LjUsMS4xLTI1LjYsNGMtOS43LDMuNS0xMy4xLDYuOC0xMi41LDEyLjYNCgkJYzAuNCwzLjIsNC42LDYuNCw4LjcsNi45YzMuMywwLjQsNy44LTAuMiw3LjgtMC4ycy0wLjMsMy4zLDEuMyw1LjdjMi40LDMuNyw1LjMsNC40LDEwLjEsNC40YzQuOSwwLDkuMy0xLjIsMTMuMS05LjgNCgkJQzYzLjMsNzAsNjUsNjMuNCw2Ni4xLDU4LjIiLz4NCgk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTAwLjksNTUuMWMtNi43LTIuOC0xNy0zLjgtMjQuNC00LjJjLTEuMiwzLjktNS4yLDctOS42LDcuM0M2Niw2My4zLDY1LDcwLDY1LjIsNzQuNA0KCQljMC40LDguNiw0LjQsOS44LDkuMiw5LjhjNC42LDAsNy45LTAuNywxMS44LTQuNGMyLjUtMi40LDMuNS01LjcsMy41LTUuN3M0LjMsMC42LDcuNywwLjJjNC4yLTAuNCwxMC4yLTMuMSwxMS42LTYuNQ0KCQlDMTExLjEsNjMuMSwxMDguOCw1OC40LDEwMC45LDU1LjEiLz4NCjwvZz4NCjxnPg0KCTxwb2x5Z29uIGNsYXNzPSJzdDEiIHBvaW50cz0iMjY5LjksNTQuMSAzMDIuMSw1NC4xIDI5Ni44LDcxLjEgMjY0LjYsNzEuMSAJIi8+DQoJPHBhdGggY2xhc3M9InN0MSIgZD0iTTMzMy44LDYzLjhjLTAuNSwxLjctMC42LDMuMi0wLjMsNC40YzAuOCw0LDYuNSw0LjgsMTEuNyw0LjhjNC41LDAsMTEuOC0xLjEsMTMuMy02YzEtMy41LTIuNi00LjQtMTctNy42DQoJCWMtMTMuMy0zLTI4LjYtNS45LTI0LjUtMTkuMmM0LjctMTUuMywyNC40LTIxLjksNDIuOC0yMS45YzE5LjQsMCwzNSw1LjUsMzAuOCwyMS43aC0yNi4xYzEuMy0yLjUsMC4zLTQuMi0xLjYtNS4zDQoJCWMtMS45LTEuMi00LjktMS43LTcuNi0xLjdjLTMuOCwwLTEwLjEsMC43LTExLjMsNC41Yy0xLDQuNywxMS41LDUuNywyMy40LDguNGMxMS45LDIuNiwyMy4xLDcsMTkuNCwxOS4xDQoJCWMtNS4zLDE3LjMtMjguNSwyMi45LTQ4LjQsMjIuOWMtMTAuMiwwLTM4LjMtMi43LTMyLjEtMjMuOUgzMzMuOHoiLz4NCgk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNNDI3LjUsMzIuMmgtMjQuOGw0LjEtMTMuNWgyNC44TDQyNy41LDMyLjJ6IE00MDAuOCwzNy45aDI0LjhsLTE0LjgsNDguMkgzODZMNDAwLjgsMzcuOXoiLz4NCgk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNNDY1LDM3LjlINDc3bC0zLjUsMTEuM2gtMTIuMUw0NTYuMyw2NmMtMS40LDQuNS0wLjYsNi40LDUuNyw2LjRjMS45LDAsMy44LTAuMSw1LjctMC4zbC00LjMsMTMuOQ0KCQljLTUsMC0xMC44LDAuNi0xNi4xLDAuNmMtMTAuNSwwLTIxLjgtMS4yLTE3LjgtMTQuNGw3LjEtMjMuMWgtOC45bDMuNS0xMS4zaDguOWw0LjUtMTQuN2gyNC44TDQ2NSwzNy45eiIvPg0KCTxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik01MzcuMiw4Ni4xaC0yNGwxLjktNi4xaC0wLjJjLTYuMSw0LjgtMTMuNSw3LjMtMjMuNSw3LjNjLTExLjcsMC0yMC43LTUuMy0xNy4zLTE2LjNsMTAuMS0zMy4xSDUwOWwtNy43LDI1LjMNCgkJYy0xLjcsNS42LTIsOS41LDUuMiw5LjVjNC4zLDAsMTAuNC0xLjYsMTIuOC05LjNsNy44LTI1LjVoMjQuOEw1MzcuMiw4Ni4xeiIvPg0KCTxwb2x5Z29uIGNsYXNzPSJzdDEiIHBvaW50cz0iMTY5LjMsMTkuOCAxOTYuOSwxOS44IDE3Ni42LDg2LjEgMTQ5LDg2LjEgCSIvPg0KCTxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xOTkuNywzNy45aDI0bC0xLjksNi4xaDAuM2M2LjEtNC44LDEzLjUtNy4zLDIzLjUtNy4zYzExLjcsMCwyMC43LDUuMywxNy4zLDE2LjNsLTEwLjEsMzMuMWgtMjQuOGw3LjctMjUuMw0KCQljMS43LTUuNiwyLTkuNS01LjMtOS41Yy00LjMsMC0xMC40LDEuNi0xMi44LDkuM2wtNy44LDI1LjVoLTI0LjhMMTk5LjcsMzcuOXoiLz4NCgk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNNzIuMSw1MC4xQzcxLjYsNTIuMiw2OS4zLDU0LDY3LDU0Yy0yLjQsMC00LTEuNy0zLjYtMy45YzAuNC0yLjIsMi43LTMuOSw1LjEtMy45DQoJCUM3MC45LDQ2LjIsNzIuNSw0Ny45LDcyLjEsNTAuMSIvPg0KCTxwYXRoIGNsYXNzPSJzdDEiIGQ9Ik0xMjMuOSwyMS40YzAuOS0xLjksMC40LTQuNy0xLjEtNi4yQzEwNC4yLTQuNSw2MS45LTUuMSwzMC42LDEzLjZjLTcuNCw0LjQtMTMuMyw5LjktMTguMSwxNS42DQoJCWM0LjEtNC40LDkuNC04LjQsMTUuNC0xMkM1NSwxLDkxLjMsMS4yLDEwOS44LDIxLjFjMCwwLDMsMy4zLDYuMSw0QzExOS43LDI1LjksMTIyLjMsMjQuNSwxMjMuOSwyMS40Ii8+DQoJPHBhdGggY2xhc3M9InN0MSIgZD0iTTEyLjUsMzMuM2MtMi41LDAuNi00LjYsMi4yLTUuOCw0Yy0xNi4xLDI1LjItMiw1My45LDMwLjcsNjIuN2M3LjcsMi4xLDE2LjEsMi41LDI0LjQsMg0KCQljLTYuNiwwLjEtMTMtMC44LTE5LjMtMi41QzE0LjEsOTEuOSwzLjgsNjQuOSwyMCw0MC43YzAsMCwxLjEtMS44LDAuNS0zLjlDMTkuNywzMy44LDE2LjcsMzIuMywxMi41LDMzLjMiLz4NCgk8cGF0aCBjbGFzcz0ic3QxIiBkPSJNNjcuMSwxMDAuOWMxLjYsMS4zLDMuNywxLjcsNi43LDEuM2MzNC43LTUuNSw2Mi44LTMzLjYsNjEuNS02MS4yYy0wLjMtNi41LTIuOC0xMi40LTYuMi0xNy42DQoJCWMyLjQsNC4zLDMuNiw5LjIsMy45LDE0LjVjMS4xLDIzLjktMjUuMyw0Ny41LTYwLjIsNTIuOWwwLDBjLTEuNiwwLjItMy4yLDAuOC00LjYsMS44QzY1LDk1LDY0LjQsOTguNyw2Ny4xLDEwMC45Ii8+DQoJPHBhdGggY2xhc3M9InN0MSIgZD0iTTEzMy41LDk2LjVjLTEsMS4xLTIuMywxLjYtMy44LDEuNmMtMS41LDAtMi44LTAuNS0zLjgtMS42Yy0xLTEuMS0xLjYtMi4zLTEuNi0zLjhjMC0xLjUsMC41LTIuNywxLjYtMy44DQoJCWMxLTEsMi4zLTEuNiwzLjgtMS42YzEuNSwwLDIuOCwwLjUsMy44LDEuNmMxLjEsMSwxLjYsMi4zLDEuNiwzLjhDMTM1LjEsOTQuMiwxMzQuNSw5NS40LDEzMy41LDk2LjUgTTEyNi40LDg5LjQNCgkJYy0wLjksMC45LTEuMywyLTEuMywzLjNjMCwxLjMsMC40LDIuNCwxLjMsMy4zYzAuOSwwLjksMiwxLjQsMy4zLDEuNGMxLjMsMCwyLjQtMC41LDMuMy0xLjRjMC45LTAuOSwxLjMtMiwxLjMtMy4zDQoJCWMwLTEuMy0wLjQtMi40LTEuMy0zLjNjLTAuOS0wLjktMi0xLjQtMy4zLTEuNEMxMjguNCw4OC4xLDEyNy4zLDg4LjUsMTI2LjQsODkuNCBNMTI5LjYsODkuN2MwLjcsMCwxLjMsMC4xLDEuNiwwLjINCgkJYzAuNiwwLjMsMC45LDAuOCwwLjksMS41YzAsMC41LTAuMiwwLjktMC42LDEuMmMtMC4yLDAuMS0wLjUsMC4yLTAuOSwwLjNjMC41LDAuMSwwLjgsMC4zLDEsMC42YzAuMiwwLjMsMC4zLDAuNiwwLjMsMC45djAuNA0KCQljMCwwLjEsMCwwLjMsMCwwLjRjMCwwLjIsMCwwLjMsMC4xLDAuM2wwLDAuMWgtMWMwLDAsMCwwLDAtMC4xYzAsMCwwLDAsMC0wLjFsMC0wLjJ2LTAuNWMwLTAuNy0wLjItMS4xLTAuNS0xLjMNCgkJYy0wLjItMC4xLTAuNi0wLjItMS4yLTAuMmgtMC44djIuM2gtMXYtNS45SDEyOS42eiBNMTMwLjcsOTAuNmMtMC4zLTAuMS0wLjctMC4yLTEuMy0wLjJoLTAuOXYyLjFoMC45YzAuNCwwLDAuOCwwLDEtMC4xDQoJCWMwLjQtMC4yLDAuNi0wLjUsMC42LTAuOUMxMzEuMSw5MS4xLDEzMSw5MC44LDEzMC43LDkwLjYiLz4NCjwvZz4NCjwvc3ZnPg==");
+background-size: 130px; 
+background-repeat: no-repeat;
+background-position: 10px;
+width: 140px;
+height: 40px;
+margin: auto 10px auto 0;
+}
+#message {
+margin: auto auto auto 10px;
+display: flex;
+}
+#excelMessage {
+font-size: 12px;
+font-weight: bold;
+margin: auto 0 auto 0;
+}
+.minor {
+font-style: italic;
+color: #777;
+font-size: 10px;
+margin: auto 0 auto 5px;
+font-weight: normal;
+}
+.minor a {
+color: #777;
+}
+#devLink {
+font-size: 9px;
+margin: 15px 0 15px auto;
+}
+table {
+margin-left: 15px;
+mso-displayed-decimal-separator:"\.";
+mso-displayed-thousand-separator:"\,";
+}
+td {
+border:none;
+white-space:nowrap;
+font-size: 13px;
+height: 14px;
+padding-right: 15px;
+}
+table tr.sectionMember td {
+max-width: 0px;
+}
+table tr.sectionHeader td {
+font-weight:bold;
+max-width: 0px;
+}
+table tr.dataHeader td {
+font-weight:bold;
+}
+td.dateTime {
+mso-number-format:"m\/d\/yy\\ h\:mm\:ss\.000";
+}
+.data, .date, data-marked {
+text-align: left;
+white-space: nowrap;
+}
+.data-marked {
+background: #FFF98B;
+}
+dl {
+overflow: hidden;
+}
+dt {
+float: left;
+}
+dd {
+float: left;
+}
+#processing {
+margin: auto 5px;
+width: 20px;
+height: 20px;
+visibility: hidden;
+}
+#processing.spinning {
+visibility: visible
+}
+.spinner {
+position: relative;
+left: 0px;
+}
+@keyframes spinner {
+to {transform: rotate(360deg);}
+}
+.spinner:before {
+content: '';
+background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9InNwaW5uZXIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+LnN0MHtmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiMwMDI3OEM7fTwvc3R5bGU+PGcgaWQ9InNuYWtlcyI+PGc+PHBhdGggY2xhc3M9InN0MCIgZD0iTTI5My45LDU0LjhjNzAuMywyOC43LDczLjMsNzcsMTAwLjYsMTE1LjVjMTMuMiwxOC42LDM4LDI1LjgsNjEuOCwxMy45YzIwLjctMTAuMywyNC44LTM5LjIsMTQuOS02MS44QzQ2OC45LDExNy41LDQwMy40LDAsMjU1LDFDMTEzLjYsMiw0OS44LDEwNC42LDQzLjgsMTE1LjVDMzcuNywxMjYuNywxNDEuNS03LjQsMjkzLjksNTQuOHogTTIxOCw0NTdjLTcwLjMtMjguNy03My4zLTc3LTEwMC42LTExNS41Yy0xMy4yLTE4LjYtMzgtMjUuOC02MS44LTEzLjljLTIwLjcsMTAuMy0yNC44LDM5LjItMTQuOSw2MS44YzIuMiw1LjEsNjcuNywxMjIuNiwyMTYuMiwxMjEuNWMxNDEuNC0xLDIwNS4yLTEwMy42LDIxMS4yLTExNC42QzQ3NC4yLDM4NS4xLDM3MC4zLDUxOS4yLDIxOCw0NTd6Ii8+PC9nPjwvZz48L3N2Zz4=');
+background-repeat: no-repeat;
+background-size: 100%;
+box-sizing: border-box;
+position: absolute;
+width: 20px;
+height: 20px;
+animation: spinner 1.2s linear infinite;
+}
+@media screen {
+    .body-loading:before {
+        content: ' ';
+        background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9InNwaW5uZXIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMjsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+LnN0MHtmaWxsLXJ1bGU6ZXZlbm9kZDtjbGlwLXJ1bGU6ZXZlbm9kZDtmaWxsOiMwMDI3OEM7fTwvc3R5bGU+PGcgaWQ9InNuYWtlcyI+PGc+PHBhdGggY2xhc3M9InN0MCIgZD0iTTI5My45LDU0LjhjNzAuMywyOC43LDczLjMsNzcsMTAwLjYsMTE1LjVjMTMuMiwxOC42LDM4LDI1LjgsNjEuOCwxMy45YzIwLjctMTAuMywyNC44LTM5LjIsMTQuOS02MS44QzQ2OC45LDExNy41LDQwMy40LDAsMjU1LDFDMTEzLjYsMiw0OS44LDEwNC42LDQzLjgsMTE1LjVDMzcuNywxMjYuNywxNDEuNS03LjQsMjkzLjksNTQuOHogTTIxOCw0NTdjLTcwLjMtMjguNy03My4zLTc3LTEwMC42LTExNS41Yy0xMy4yLTE4LjYtMzgtMjUuOC02MS44LTEzLjljLTIwLjcsMTAuMy0yNC44LDM5LjItMTQuOSw2MS44YzIuMiw1LjEsNjcuNywxMjIuNiwyMTYuMiwxMjEuNWMxNDEuNC0xLDIwNS4yLTEwMy42LDIxMS4yLTExNC42QzQ3NC4yLDM4NS4xLDM3MC4zLDUxOS4yLDIxOCw0NTd6Ii8+PC9nPjwvZz48L3N2Zz4=');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        box-sizing: border-box;
+        position: fixed;
+        left: 0;
+        right:0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        width: 50px;
+        height: 50px;
+        animation: spinner 1.2s linear infinite;
+    }
+    .body-loading table {
+        opacity: 0.5;
+    }
+}
+-->
+</style>
+<noscript>
+<style type="text/css">
+<!--
+@media screen {
+    .body-loading:before {
+        content: ' ';
+        background-image: '';
+        background-size: 0;
+		width: 0px;
+        height: 0px;
+    }
+    .body-loading table {
+        opacity: 1;
+	}
+}
+-->
+</style>
+</noscript>
+<script type="text/javascript">
+<!--//<![CDATA[
+        window.addEventListener("load", function() {
+            if (false) return;
+
+            document.body.innerHTML = '<div id="header">\
+        <a id="logo" href="https://in-situ.com" target="_blank"></a>\
+        <div id="message">\
+            <span id="excelMessage">This file can be opened directly in Microsoft Excel\
+                <span class="minor">(or you can <a href="#" onclick="exportButton();">Export a CSV</a>)</span>\
+            </span>\
+            <span id="processing">\
+                <i class="spinner"></i>\
+            </span>\
+        </div>\
+        <div id="devLink"><a href="http://in-situ.com/developer" target="_blank">How can I auto-import these files?</a></div>\
+        </div>' + document.body.innerHTML;
+            document.body.classList.remove('body-loading');
+        });
+    function exportButton() {
+        document.getElementById('processing').classList.add('spinning');
+        window.setTimeout(function() {
+            var csvData = ToCSV();
+            // console.log(csvData);
+            var blob = new Blob([csvData], {type: 'text/csv'});
+            var a = window.document.createElement('a');
+            a.href = window.URL.createObjectURL(blob);
+            var filename = getFileName();
+            a.download = filename.substr(0, filename.length - 3) +'csv';
+            document.getElementById('processing').classList.remove('spinning');
+            // Append anchor to body.
+            document.body.appendChild(a);
+            a.click();
+            // Remove anchor from body
+            document.body.removeChild(a);
+        }, 10);
+    };
+
+    function getFileName() {
+        var metaTags = document.getElementsByTagName("META");
+        for (var metaTagIndex=0; metaTagIndex < metaTags.length; metaTagIndex++) {
+            var metaTag = document.getElementsByTagName("META")[metaTagIndex];
+            var attribute = metaTag.getAttribute("name");
+            if (attribute === "isi-csv-file-name") {
+                return metaTag.getAttribute("content");
+            }
+        }
+        return "report.htm";
+    }
+
+    function ToCSV() {
+        var newLine = "\r\n";
+        var quote ="\"";
+        var csv = "";
+        var delimiter = ",";
+        var dataTable = document.getElementById("isi-report");
+        var rows = dataTable.rows;
+        for (var rowIndex=0; rowIndex < rows.length; rowIndex++) {
+            var row = rows[rowIndex];
+            var cells = row.cells;
+            for (var cellIndex=0; cellIndex < cells.length; cellIndex ++) {
+                var cell = cells[cellIndex];
+                if (cell.previousElementSibling != null)
+                    csv += delimiter;
+
+                csv += quote + sanitize(cell.innerText) + quote;
+
+                for (var span = 1; span < cell.colSpan; span++)
+                    csv += delimiter;
+            }
+            csv += newLine
+        }
+        return csv;
+    }
+
+    // NOTE: CSV quote escaping and whitespace cleanup
+    function sanitize(strValue) {
+        return strValue
+            .replace(/"/g, "\"\"")
+            .replace(/\n/g, " ")
+            .replace(/\r/g, " ")
+            .replace(/\t/g, " ")
+            .trim();
+    }
+//]]>-->
+</script>
+</head>
+<body class="body-loading" dir="ltr">
+<table id="isi-report"><tr class="sectionHeader"><td isi-group="LocationProperties">Location Properties</td></tr>
+<tr class="sectionMember"><td isi-group-member="LocationProperties" isi-property="Name" isi-text-node=""><span isi-label="">Location Name</span> = <span isi-value="">Device Location</span></td></tr>
+<tr><td></td></tr>
+<tr class="sectionHeader"><td isi-group="ReportProperties">Report Properties</td></tr>
+<tr class="sectionMember"><td isi-group-member="ReportProperties" isi-property="StartTime" isi-timestamp="114871365337088"><span isi-label="">Start Time</span> = <span isi-value="">2025-07-17 17:18:53</span></td></tr>
+<tr class="sectionMember"><td isi-group-member="ReportProperties" isi-property="TimeOffset" isi-timespan-milliseconds="-25200000"><span isi-label="">Time Offset</span> = <span isi-value="">-07:00:00</span></td></tr>
+<tr class="sectionMember"><td isi-group-member="ReportProperties" isi-property="Duration" isi-timespan-milliseconds="245000"><span isi-label="">Duration</span> = <span isi-value="">00:04:05</span></td></tr>
+<tr class="sectionMember"><td isi-group-member="ReportProperties" isi-property="Readings" isi-text-node=""><span isi-label="">Readings</span> = <span isi-value="">246</span></td></tr>
+<tr><td></td></tr>
+<tr class="sectionHeader"><td isi-group="InstrumentProperties-790481">Instrument Properties</td></tr>
+<tr class="sectionMember"><td isi-group-member="InstrumentProperties-790481" isi-property="Model" isi-device-type="5"><span isi-label="">Device Model</span> = <span isi-value="">Aqua TROLL 200</span></td></tr>
+<tr class="sectionMember"><td isi-group-member="InstrumentProperties-790481" isi-property="SerialNumber" isi-text-node=""><span isi-label="">Device SN</span> = <span isi-value="">790481</span></td></tr>
+<tr><td></td></tr>
+<tr class="sectionHeader"><td isi-group="InstrumentProperties-670831">Instrument Properties</td></tr>
+<tr class="sectionMember"><td isi-group-member="InstrumentProperties-670831" isi-property="Model" isi-device-type="32771"><span isi-label="">Device Model</span> = <span isi-value="">Wireless TROLL Com</span></td></tr>
+<tr class="sectionMember"><td isi-group-member="InstrumentProperties-670831" isi-property="SerialNumber" isi-text-node=""><span isi-label="">Device SN</span> = <span isi-value="">670831</span></td></tr>
+<tr><td></td></tr>
+<tr><td></td></tr>
+<tr class="dataHeader" isi-data-table="">
+<td isi-data-column-header="DateTime">Date Time</td>
+<td isi-data-column-header="Parameter" isi-device-serial-number="790481" isi-sensor-serial-number="790481" isi-sensor-type="21" isi-parameter-type="2" isi-unit-type="17">Pressure (psi) (790481)</td>
+<td isi-data-column-header="Parameter" isi-device-serial-number="790481" isi-sensor-serial-number="790481" isi-sensor-type="21" isi-parameter-type="1" isi-unit-type="1">Temperature (°C) (790481)</td>
+<td isi-data-column-header="Parameter" isi-device-serial-number="790481" isi-sensor-serial-number="790481" isi-sensor-type="21" isi-parameter-type="3" isi-unit-type="38">Depth (ft) (790481)</td>
+<td isi-data-column-header="Parameter" isi-device-serial-number="790481" isi-sensor-serial-number="790481" isi-sensor-type="21" isi-parameter-type="9" isi-unit-type="65">Actual Conductivity (µS/cm) (790481)</td>
+<td isi-data-column-header="Parameter" isi-device-serial-number="790481" isi-sensor-serial-number="790481" isi-sensor-type="21" isi-parameter-type="10" isi-unit-type="65">Specific Conductivity (µS/cm) (790481)</td>
+<td isi-data-column-header="Parameter" isi-device-serial-number="790481" isi-sensor-serial-number="790481" isi-sensor-type="21" isi-parameter-type="12" isi-unit-type="97">Salinity (PSU) (790481)</td>
+<td isi-data-column-header="Parameter" isi-device-serial-number="790481" isi-sensor-serial-number="790481" isi-sensor-type="21" isi-parameter-type="13" isi-unit-type="114">Total Dissolved Solids (ppt) (790481)</td>
+<td isi-data-column-header="Parameter" isi-device-serial-number="790481" isi-sensor-serial-number="790481" isi-sensor-type="21" isi-parameter-type="11" isi-unit-type="81">Resistivity (Ω⋅cm) (790481)</td>
+<td isi-data-column-header="Parameter" isi-device-serial-number="790481" isi-sensor-serial-number="790481" isi-sensor-type="21" isi-parameter-type="14" isi-unit-type="129">Density (g/cm³) (790481)</td>
+<td isi-data-column-header="Parameter" isi-device-serial-number="670831" isi-sensor-serial-number="670831" isi-sensor-type="13" isi-parameter-type="16" isi-unit-type="21">Barometric Pressure (mbar) (670831)</td>
+<td isi-data-column-header="Parameter" isi-device-serial-number="670831" isi-sensor-serial-number="670831" isi-sensor-type="13" isi-parameter-type="1" isi-unit-type="1">Temperature (°C) (670831)</td>
+<td isi-data-column-header="Marked">Marked</td>
+</tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871365337088"><td class="dateTime">2025-07-17 17:18:53</td><td>-0.002338409</td><td>14.456281</td><td>-0.0053982786</td><td>16.255527</td><td>20.355028</td><td>0.008149927</td><td>0.013230769</td><td>61517.59</td><td>0.999188</td><td>915.9696</td><td>31.901249</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871365402624"><td class="dateTime">2025-07-17 17:18:54</td><td>0.025973717</td><td>14.236358</td><td>0.05995877</td><td>16.265003</td><td>20.474684</td><td>0.008205605</td><td>0.013308545</td><td>61481.78</td><td>0.9992195</td><td>915.96136</td><td>31.875664</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871365468160"><td class="dateTime">2025-07-17 17:18:55</td><td>0.027573735</td><td>14.210103</td><td>0.06365231</td><td>16.267342</td><td>20.490326</td><td>0.008212904</td><td>0.013318713</td><td>61472.895</td><td>0.9992233</td><td>915.9608</td><td>31.873714</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871365533696"><td class="dateTime">2025-07-17 17:18:56</td><td>0.029173754</td><td>14.183847</td><td>0.06734585</td><td>16.269682</td><td>20.50597</td><td>0.008220205</td><td>0.013328881</td><td>61464.008</td><td>0.9992271</td><td>915.9603</td><td>31.871763</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871365599232"><td class="dateTime">2025-07-17 17:18:57</td><td>0.031588342</td><td>14.119276</td><td>0.072919145</td><td>16.275465</td><td>20.545252</td><td>0.008238497</td><td>0.013354414</td><td>61442.18</td><td>0.99923617</td><td>915.95135</td><td>31.85363</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871365664768"><td class="dateTime">2025-07-17 17:18:58</td><td>0.032402296</td><td>14.110256</td><td>0.07479807</td><td>16.275991</td><td>20.55036</td><td>0.008240875</td><td>0.013357734</td><td>61440.188</td><td>0.9992374</td><td>915.9506</td><td>31.851912</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871365730304"><td class="dateTime">2025-07-17 17:18:59</td><td>0.033216245</td><td>14.101236</td><td>0.076676995</td><td>16.27652</td><td>20.555468</td><td>0.008243252</td><td>0.0133610545</td><td>61438.195</td><td>0.9992387</td><td>915.9498</td><td>31.850195</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871365795840"><td class="dateTime">2025-07-17 17:19:00</td><td>0.030316636</td><td>14.058688</td><td>0.06998304</td><td>16.27535</td><td>20.575127</td><td>0.008252348</td><td>0.013373832</td><td>61442.613</td><td>0.99924463</td><td>915.95874</td><td>31.832804</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871365861376"><td class="dateTime">2025-07-17 17:19:01</td><td>0.030201416</td><td>14.054422</td><td>0.06971702</td><td>16.275442</td><td>20.577358</td><td>0.008253384</td><td>0.013375283</td><td>61442.26</td><td>0.9992452</td><td>915.95905</td><td>31.831297</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871365926912"><td class="dateTime">2025-07-17 17:19:02</td><td>0.030620232</td><td>13.998428</td><td>0.07068326</td><td>16.279997</td><td>20.610992</td><td>0.008269032</td><td>0.013397146</td><td>61425.074</td><td>0.9992531</td><td>915.99304</td><td>31.805466</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871365992448"><td class="dateTime">2025-07-17 17:19:03</td><td>0.03058627</td><td>13.993918</td><td>0.070604816</td><td>16.28025</td><td>20.61356</td><td>0.0082702255</td><td>0.013398814</td><td>61424.113</td><td>0.9992537</td><td>915.99536</td><td>31.80346</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366057984"><td class="dateTime">2025-07-17 17:19:04</td><td>0.030552309</td><td>13.989409</td><td>0.07052638</td><td>16.280506</td><td>20.616125</td><td>0.008271418</td><td>0.013400482</td><td>61423.15</td><td>0.99925435</td><td>915.9976</td><td>31.80145</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366123520"><td class="dateTime">2025-07-17 17:19:05</td><td>0.029253392</td><td>13.967681</td><td>0.06752779</td><td>16.279778</td><td>20.626041</td><td>0.008276002</td><td>0.013406928</td><td>61425.902</td><td>0.9992573</td><td>915.9812</td><td>31.792269</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366189056"><td class="dateTime">2025-07-17 17:19:06</td><td>0.029185185</td><td>13.9649725</td><td>0.06737032</td><td>16.279846</td><td>20.62748</td><td>0.008276668</td><td>0.013407861</td><td>61425.645</td><td>0.9992577</td><td>915.981</td><td>31.79107</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366254592"><td class="dateTime">2025-07-17 17:19:07</td><td>0.029116977</td><td>13.962265</td><td>0.06721284</td><td>16.279915</td><td>20.628916</td><td>0.008277335</td><td>0.013408795</td><td>61425.383</td><td>0.9992581</td><td>915.9809</td><td>31.789873</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366320128"><td class="dateTime">2025-07-17 17:19:08</td><td>0.029777912</td><td>13.9299</td><td>0.068738215</td><td>16.285273</td><td>20.651888</td><td>0.008288047</td><td>0.013423728</td><td>61405.176</td><td>0.9992626</td><td>915.9625</td><td>31.763798</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366385664"><td class="dateTime">2025-07-17 17:19:09</td><td>0.02978345</td><td>13.927388</td><td>0.06875097</td><td>16.285574</td><td>20.653524</td><td>0.00828881</td><td>0.013424792</td><td>61404.04</td><td>0.9992629</td><td>915.96106</td><td>31.762</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366451200"><td class="dateTime">2025-07-17 17:19:10</td><td>0.028790059</td><td>13.880396</td><td>0.06645744</td><td>16.301191</td><td>20.696901</td><td>0.008309115</td><td>0.013452985</td><td>61345.223</td><td>0.9992694</td><td>915.97723</td><td>31.752829</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366516736"><td class="dateTime">2025-07-17 17:19:11</td><td>0.028745791</td><td>13.876762</td><td>0.06635522</td><td>16.302267</td><td>20.700087</td><td>0.008310605</td><td>0.013455057</td><td>61341.17</td><td>0.9992699</td><td>915.97784</td><td>31.751646</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366582272"><td class="dateTime">2025-07-17 17:19:12</td><td>0.028701521</td><td>13.873128</td><td>0.066253</td><td>16.303343</td><td>20.703274</td><td>0.008312095</td><td>0.013457128</td><td>61337.117</td><td>0.99927044</td><td>915.9784</td><td>31.750465</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366647808"><td class="dateTime">2025-07-17 17:19:13</td><td>0.027620642</td><td>13.81781</td><td>0.06375747</td><td>16.315027</td><td>20.745958</td><td>0.008332021</td><td>0.013484872</td><td>61293.195</td><td>0.99927807</td><td>915.94476</td><td>31.716011</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366713344"><td class="dateTime">2025-07-17 17:19:14</td><td>0.027530475</td><td>13.8133135</td><td>0.063549295</td><td>16.316114</td><td>20.749598</td><td>0.008333721</td><td>0.013487238</td><td>61289.11</td><td>0.99927866</td><td>915.94305</td><td>31.713694</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366778880"><td class="dateTime">2025-07-17 17:19:15</td><td>0.027440306</td><td>13.808818</td><td>0.06334111</td><td>16.3172</td><td>20.753239</td><td>0.008335422</td><td>0.013489604</td><td>61285.023</td><td>0.9992793</td><td>915.9414</td><td>31.711378</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366844416"><td class="dateTime">2025-07-17 17:19:16</td><td>0.028471377</td><td>13.786941</td><td>0.06572096</td><td>16.323616</td><td>20.772442</td><td>0.008344399</td><td>0.013502087</td><td>61260.934</td><td>0.99928224</td><td>916.01135</td><td>31.702108</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366909952"><td class="dateTime">2025-07-17 17:19:17</td><td>0.028507015</td><td>13.784218</td><td>0.06580319</td><td>16.324299</td><td>20.774683</td><td>0.008345446</td><td>0.013503544</td><td>61258.37</td><td>0.9992826</td><td>916.0147</td><td>31.700674</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871366975488"><td class="dateTime">2025-07-17 17:19:18</td><td>0.026762508</td><td>13.7288685</td><td>0.061775863</td><td>16.314087</td><td>20.78966</td><td>0.008352222</td><td>0.013513279</td><td>61296.723</td><td>0.9992901</td><td>915.9744</td><td>31.674967</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367041024"><td class="dateTime">2025-07-17 17:19:19</td><td>0.026678335</td><td>13.724887</td><td>0.061581533</td><td>16.3136</td><td>20.791054</td><td>0.008352859</td><td>0.013514185</td><td>61298.547</td><td>0.99929065</td><td>915.97363</td><td>31.673147</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367106560"><td class="dateTime">2025-07-17 17:19:20</td><td>0.02659416</td><td>13.720905</td><td>0.0613872</td><td>16.313114</td><td>20.792446</td><td>0.008353496</td><td>0.0135150915</td><td>61300.37</td><td>0.99929124</td><td>915.9728</td><td>31.671328</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367172096"><td class="dateTime">2025-07-17 17:19:21</td><td>0.02626778</td><td>13.672315</td><td>0.060633417</td><td>16.32634</td><td>20.833958</td><td>0.00837289</td><td>0.013542073</td><td>61250.723</td><td>0.99929774</td><td>916.02264</td><td>31.66237</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367237632"><td class="dateTime">2025-07-17 17:19:22</td><td>0.026203306</td><td>13.667985</td><td>0.060484555</td><td>16.326868</td><td>20.836826</td><td>0.008374224</td><td>0.013543938</td><td>61248.74</td><td>0.99929833</td><td>916.02454</td><td>31.661177</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367303168"><td class="dateTime">2025-07-17 17:19:23</td><td>0.02613883</td><td>13.663654</td><td>0.060335692</td><td>16.327398</td><td>20.839697</td><td>0.008375559</td><td>0.013545803</td><td>61246.75</td><td>0.99929893</td><td>916.0265</td><td>31.659983</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367368704"><td class="dateTime">2025-07-17 17:19:24</td><td>0.02631273</td><td>13.628227</td><td>0.060736813</td><td>16.340788</td><td>20.874825</td><td>0.008391997</td><td>0.013568635</td><td>61196.57</td><td>0.99930376</td><td>916.0195</td><td>31.633734</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367434240"><td class="dateTime">2025-07-17 17:19:25</td><td>0.026314566</td><td>13.624851</td><td>0.060741022</td><td>16.34192</td><td>20.877985</td><td>0.008393476</td><td>0.0135706905</td><td>61192.324</td><td>0.99930423</td><td>916.02026</td><td>31.631905</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367499776"><td class="dateTime">2025-07-17 17:19:26</td><td>0.026483083</td><td>13.598343</td><td>0.061129782</td><td>16.344095</td><td>20.894281</td><td>0.008401042</td><td>0.013581283</td><td>61184.176</td><td>0.9993078</td><td>916.0029</td><td>31.613943</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367565312"><td class="dateTime">2025-07-17 17:19:27</td><td>0.026497424</td><td>13.5958185</td><td>0.061162863</td><td>16.344542</td><td>20.896137</td><td>0.008401906</td><td>0.013582489</td><td>61182.504</td><td>0.99930817</td><td>916.00165</td><td>31.61217</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367630848"><td class="dateTime">2025-07-17 17:19:28</td><td>0.026511762</td><td>13.593294</td><td>0.061195944</td><td>16.344988</td><td>20.897993</td><td>0.00840277</td><td>0.0135836955</td><td>61180.836</td><td>0.9993085</td><td>916.0003</td><td>31.610394</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367696384"><td class="dateTime">2025-07-17 17:19:29</td><td>0.027109249</td><td>13.556303</td><td>0.06257479</td><td>16.35013</td><td>20.923473</td><td>0.00841462</td><td>0.013600258</td><td>61161.598</td><td>0.9993134</td><td>916.03485</td><td>31.593195</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367761920"><td class="dateTime">2025-07-17 17:19:30</td><td>0.027149852</td><td>13.55337</td><td>0.06266849</td><td>16.350496</td><td>20.92544</td><td>0.008415534</td><td>0.013601536</td><td>61160.223</td><td>0.9993138</td><td>916.0365</td><td>31.591682</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367827456"><td class="dateTime">2025-07-17 17:19:31</td><td>0.027190456</td><td>13.550438</td><td>0.062762186</td><td>16.350863</td><td>20.927406</td><td>0.008416448</td><td>0.013602815</td><td>61158.85</td><td>0.9993142</td><td>916.0381</td><td>31.590168</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367892992"><td class="dateTime">2025-07-17 17:19:32</td><td>0.026595369</td><td>13.516254</td><td>0.061388303</td><td>16.36034</td><td>20.957056</td><td>0.008430291</td><td>0.013622087</td><td>61123.426</td><td>0.9993187</td><td>916.03864</td><td>31.564713</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871367958528"><td class="dateTime">2025-07-17 17:19:33</td><td>0.026577331</td><td>13.513333</td><td>0.061346643</td><td>16.361015</td><td>20.959415</td><td>0.008431391</td><td>0.013623619</td><td>61120.906</td><td>0.9993191</td><td>916.03955</td><td>31.562805</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368024064"><td class="dateTime">2025-07-17 17:19:34</td><td>0.025335047</td><td>13.482856</td><td>0.05847892</td><td>16.367218</td><td>20.98301</td><td>0.008442386</td><td>0.013638956</td><td>61097.746</td><td>0.9993232</td><td>916.0225</td><td>31.544</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368089600"><td class="dateTime">2025-07-17 17:19:35</td><td>0.025240729</td><td>13.480146</td><td>0.058261193</td><td>16.367819</td><td>20.98517</td><td>0.008443394</td><td>0.013640361</td><td>61095.496</td><td>0.99932355</td><td>916.0214</td><td>31.542236</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368155136"><td class="dateTime">2025-07-17 17:19:36</td><td>0.02514641</td><td>13.477437</td><td>0.05804346</td><td>16.368422</td><td>20.987331</td><td>0.008444401</td><td>0.013641765</td><td>61093.25</td><td>0.9993239</td><td>916.02026</td><td>31.540474</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368220672"><td class="dateTime">2025-07-17 17:19:37</td><td>0.0243379</td><td>13.426029</td><td>0.056176867</td><td>16.373802</td><td>21.020706</td><td>0.008459891</td><td>0.01366346</td><td>61073.168</td><td>0.9993307</td><td>916.0115</td><td>31.514471</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368286208"><td class="dateTime">2025-07-17 17:19:38</td><td>0.024254806</td><td>13.422116</td><td>0.055985037</td><td>16.374289</td><td>21.023342</td><td>0.008461116</td><td>0.013665173</td><td>61071.355</td><td>0.9993312</td><td>916.0105</td><td>31.51241</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368351744"><td class="dateTime">2025-07-17 17:19:39</td><td>0.024171712</td><td>13.418203</td><td>0.055793207</td><td>16.374773</td><td>21.025978</td><td>0.008462341</td><td>0.013666886</td><td>61069.547</td><td>0.9993317</td><td>916.00946</td><td>31.510347</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368417280"><td class="dateTime">2025-07-17 17:19:40</td><td>0.024748007</td><td>13.369608</td><td>0.05712304</td><td>16.369717</td><td>21.044573</td><td>0.008470838</td><td>0.013678973</td><td>61088.414</td><td>0.9993382</td><td>915.99225</td><td>31.492973</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368482816"><td class="dateTime">2025-07-17 17:19:41</td><td>0.024759533</td><td>13.365366</td><td>0.05714961</td><td>16.369564</td><td>21.046564</td><td>0.008471754</td><td>0.013680267</td><td>61088.984</td><td>0.99933875</td><td>915.99097</td><td>31.491251</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368548352"><td class="dateTime">2025-07-17 17:19:42</td><td>0.024252687</td><td>13.326399</td><td>0.055979438</td><td>16.370268</td><td>21.067635</td><td>0.008481481</td><td>0.013693962</td><td>61086.355</td><td>0.9993438</td><td>915.982</td><td>31.465279</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368613888"><td class="dateTime">2025-07-17 17:19:43</td><td>0.024234133</td><td>13.322835</td><td>0.055936586</td><td>16.370197</td><td>21.069386</td><td>0.008482288</td><td>0.0136951</td><td>61086.62</td><td>0.9993443</td><td>915.981</td><td>31.463257</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368679424"><td class="dateTime">2025-07-17 17:19:44</td><td>0.024215579</td><td>13.31927</td><td>0.055893734</td><td>16.370125</td><td>21.071136</td><td>0.008483093</td><td>0.013696238</td><td>61086.89</td><td>0.99934477</td><td>915.98004</td><td>31.461233</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368744960"><td class="dateTime">2025-07-17 17:19:45</td><td>0.025004942</td><td>13.282631</td><td>0.05771544</td><td>16.37955</td><td>21.102283</td><td>0.008497614</td><td>0.013716484</td><td>61051.74</td><td>0.9993496</td><td>915.9627</td><td>31.452217</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368810496"><td class="dateTime">2025-07-17 17:19:46</td><td>0.025039824</td><td>13.279437</td><td>0.057795927</td><td>16.38014</td><td>21.1047</td><td>0.0084987385</td><td>0.013718055</td><td>61049.54</td><td>0.99935</td><td>915.9614</td><td>31.451017</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368876032"><td class="dateTime">2025-07-17 17:19:47</td><td>0.025074705</td><td>13.276244</td><td>0.05787642</td><td>16.38073</td><td>21.107115</td><td>0.008499862</td><td>0.013719624</td><td>61047.34</td><td>0.9993504</td><td>915.96014</td><td>31.44982</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871368941568"><td class="dateTime">2025-07-17 17:19:48</td><td>0.024816677</td><td>13.238198</td><td>0.057280563</td><td>16.374125</td><td>21.11838</td><td>0.008504939</td><td>0.013726947</td><td>61071.973</td><td>0.9993554</td><td>915.97784</td><td>31.43256</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369007104"><td class="dateTime">2025-07-17 17:19:49</td><td>0.024821237</td><td>13.234974</td><td>0.057291064</td><td>16.37397</td><td>21.119858</td><td>0.008505618</td><td>0.013727907</td><td>61072.547</td><td>0.9993558</td><td>915.97845</td><td>31.431286</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369072640"><td class="dateTime">2025-07-17 17:19:50</td><td>0.02456028</td><td>13.199552</td><td>0.05668848</td><td>16.371729</td><td>21.13541</td><td>0.008512747</td><td>0.013738017</td><td>61080.91</td><td>0.9993603</td><td>915.9959</td><td>31.413776</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369138176"><td class="dateTime">2025-07-17 17:19:51</td><td>0.024537716</td><td>13.196456</td><td>0.056636374</td><td>16.371433</td><td>21.13664</td><td>0.008513309</td><td>0.013738818</td><td>61082.008</td><td>0.99936074</td><td>915.99744</td><td>31.41228</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369203712"><td class="dateTime">2025-07-17 17:19:52</td><td>0.024515152</td><td>13.19336</td><td>0.05658427</td><td>16.371138</td><td>21.137873</td><td>0.008513872</td><td>0.013739618</td><td>61083.11</td><td>0.99936116</td><td>915.9989</td><td>31.41078</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369269248"><td class="dateTime">2025-07-17 17:19:53</td><td>0.02372147</td><td>13.160083</td><td>0.054752115</td><td>16.376211</td><td>21.161795</td><td>0.0085249785</td><td>0.013755167</td><td>61064.184</td><td>0.9993654</td><td>915.9991</td><td>31.39329</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369334784"><td class="dateTime">2025-07-17 17:19:54</td><td>0.02366689</td><td>13.157182</td><td>0.05462612</td><td>16.376465</td><td>21.163635</td><td>0.008525831</td><td>0.013756363</td><td>61063.242</td><td>0.9993658</td><td>915.9996</td><td>31.391792</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369400320"><td class="dateTime">2025-07-17 17:19:55</td><td>0.02361231</td><td>13.15428</td><td>0.054500118</td><td>16.376717</td><td>21.165474</td><td>0.008526683</td><td>0.013757559</td><td>61062.297</td><td>0.99936616</td><td>916</td><td>31.390295</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369465856"><td class="dateTime">2025-07-17 17:19:56</td><td>0.023737112</td><td>13.119969</td><td>0.054787934</td><td>16.369837</td><td>21.174517</td><td>0.008530723</td><td>0.013763437</td><td>61087.97</td><td>0.9993706</td><td>915.99084</td><td>31.363974</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369531392"><td class="dateTime">2025-07-17 17:19:57</td><td>0.023724176</td><td>13.117058</td><td>0.054758057</td><td>16.369553</td><td>21.175673</td><td>0.00853125</td><td>0.013764189</td><td>61089.023</td><td>0.99937093</td><td>915.99036</td><td>31.361954</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369596928"><td class="dateTime">2025-07-17 17:19:58</td><td>0.023507308</td><td>13.082087</td><td>0.054257255</td><td>16.370876</td><td>21.195702</td><td>0.008540494</td><td>0.013777207</td><td>61084.09</td><td>0.9993755</td><td>916.0324</td><td>31.352633</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369662464"><td class="dateTime">2025-07-17 17:19:59</td><td>0.023496848</td><td>13.079106</td><td>0.054233093</td><td>16.370794</td><td>21.197157</td><td>0.008541163</td><td>0.013778152</td><td>61084.395</td><td>0.9993759</td><td>916.0348</td><td>31.351435</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369728000"><td class="dateTime">2025-07-17 17:20:00</td><td>0.023486387</td><td>13.076127</td><td>0.054208927</td><td>16.370712</td><td>21.198612</td><td>0.008541832</td><td>0.013779098</td><td>61084.7</td><td>0.9993763</td><td>916.03723</td><td>31.350235</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369793536"><td class="dateTime">2025-07-17 17:20:01</td><td>0.022942143</td><td>13.041302</td><td>0.052952517</td><td>16.370457</td><td>21.216557</td><td>0.008550086</td><td>0.013790762</td><td>61085.652</td><td>0.9993807</td><td>916.00366</td><td>31.32436</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369859072"><td class="dateTime">2025-07-17 17:20:02</td><td>0.022903623</td><td>13.038316</td><td>0.052863587</td><td>16.370476</td><td>21.21815</td><td>0.008550819</td><td>0.013791797</td><td>61085.58</td><td>0.99938107</td><td>916.0027</td><td>31.322563</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369924608"><td class="dateTime">2025-07-17 17:20:03</td><td>0.022865102</td><td>13.03533</td><td>0.052774657</td><td>16.370497</td><td>21.21974</td><td>0.008551552</td><td>0.013792831</td><td>61085.504</td><td>0.9993815</td><td>916.0017</td><td>31.320766</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871369990144"><td class="dateTime">2025-07-17 17:20:04</td><td>0.024858488</td><td>13.002813</td><td>0.05737533</td><td>16.36706</td><td>21.232384</td><td>0.008557301</td><td>0.013801049</td><td>61098.33</td><td>0.9993856</td><td>916.0183</td><td>31.303028</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370055680"><td class="dateTime">2025-07-17 17:20:05</td><td>0.024963101</td><td>12.9999695</td><td>0.057616767</td><td>16.366848</td><td>21.233604</td><td>0.008557859</td><td>0.013801843</td><td>61099.117</td><td>0.99938595</td><td>916.01843</td><td>31.301304</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370121216"><td class="dateTime">2025-07-17 17:20:06</td><td>0.02348896</td><td>12.967699</td><td>0.05421412</td><td>16.377645</td><td>21.26462</td><td>0.008572327</td><td>0.013822002</td><td>61058.848</td><td>0.99938995</td><td>916.02747</td><td>31.283808</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370186752"><td class="dateTime">2025-07-17 17:20:07</td><td>0.023444436</td><td>12.96493</td><td>0.054111335</td><td>16.378233</td><td>21.266842</td><td>0.00857336</td><td>0.013823448</td><td>61056.65</td><td>0.9993903</td><td>916.02844</td><td>31.282309</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370252288"><td class="dateTime">2025-07-17 17:20:08</td><td>0.023399912</td><td>12.96216</td><td>0.054008555</td><td>16.378822</td><td>21.269066</td><td>0.008574394</td><td>0.013824892</td><td>61054.453</td><td>0.99939066</td><td>916.0294</td><td>31.28081</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370317824"><td class="dateTime">2025-07-17 17:20:09</td><td>0.022812098</td><td>12.931309</td><td>0.052651633</td><td>16.369564</td><td>21.273321</td><td>0.008576174</td><td>0.013827658</td><td>61088.99</td><td>0.9993946</td><td>916.05536</td><td>31.271955</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370383360"><td class="dateTime">2025-07-17 17:20:10</td><td>0.022738695</td><td>12.928632</td><td>0.05248219</td><td>16.369274</td><td>21.274357</td><td>0.0085766455</td><td>0.013828333</td><td>61090.062</td><td>0.9993949</td><td>916.0572</td><td>31.270983</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370448896"><td class="dateTime">2025-07-17 17:20:11</td><td>0.02266529</td><td>12.925956</td><td>0.05231275</td><td>16.368986</td><td>21.275394</td><td>0.008577117</td><td>0.013829007</td><td>61091.14</td><td>0.99939525</td><td>916.05896</td><td>31.270008</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370514432"><td class="dateTime">2025-07-17 17:20:12</td><td>0.023234628</td><td>12.896477</td><td>0.053626616</td><td>16.363178</td><td>21.28342</td><td>0.008580697</td><td>0.013834223</td><td>61112.83</td><td>0.999399</td><td>916.0855</td><td>31.234972</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370579968"><td class="dateTime">2025-07-17 17:20:13</td><td>0.02325324</td><td>12.893916</td><td>0.053669553</td><td>16.362602</td><td>21.284025</td><td>0.008580964</td><td>0.013834616</td><td>61114.977</td><td>0.9993993</td><td>916.08777</td><td>31.232649</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370645504"><td class="dateTime">2025-07-17 17:20:14</td><td>0.024154516</td><td>12.866616</td><td>0.05574955</td><td>16.369852</td><td>21.307915</td><td>0.00859208</td><td>0.013850145</td><td>61087.906</td><td>0.9994027</td><td>916.08856</td><td>31.223152</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370711040"><td class="dateTime">2025-07-17 17:20:15</td><td>0.024222435</td><td>12.864248</td><td>0.0559063</td><td>16.370165</td><td>21.309574</td><td>0.008592849</td><td>0.013851224</td><td>61086.742</td><td>0.999403</td><td>916.08923</td><td>31.22174</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370776576"><td class="dateTime">2025-07-17 17:20:16</td><td>0.024290357</td><td>12.861879</td><td>0.05606305</td><td>16.370478</td><td>21.311235</td><td>0.008593618</td><td>0.013852303</td><td>61085.574</td><td>0.9994033</td><td>916.0899</td><td>31.220327</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370842112"><td class="dateTime">2025-07-17 17:20:17</td><td>0.024312697</td><td>12.834603</td><td>0.056114428</td><td>16.361736</td><td>21.31431</td><td>0.008594864</td><td>0.013854302</td><td>61118.215</td><td>0.9994067</td><td>916.0897</td><td>31.194523</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370907648"><td class="dateTime">2025-07-17 17:20:18</td><td>0.024335828</td><td>12.832285</td><td>0.056167793</td><td>16.361382</td><td>21.315077</td><td>0.008595209</td><td>0.013854799</td><td>61119.54</td><td>0.999407</td><td>916.0897</td><td>31.19273</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871370973184"><td class="dateTime">2025-07-17 17:20:19</td><td>0.024358956</td><td>12.8299675</td><td>0.05622116</td><td>16.361027</td><td>21.315842</td><td>0.008595554</td><td>0.013855297</td><td>61120.86</td><td>0.99940723</td><td>916.0897</td><td>31.190937</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371038720"><td class="dateTime">2025-07-17 17:20:20</td><td>0.022327166</td><td>12.804043</td><td>0.051531564</td><td>16.360632</td><td>21.32909</td><td>0.008601632</td><td>0.013863909</td><td>61122.332</td><td>0.9994105</td><td>916.06323</td><td>31.18183</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371104256"><td class="dateTime">2025-07-17 17:20:21</td><td>0.022204705</td><td>12.801776</td><td>0.051248904</td><td>16.360388</td><td>21.329975</td><td>0.008602032</td><td>0.013864483</td><td>61123.25</td><td>0.99941075</td><td>916.0616</td><td>31.180618</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371169792"><td class="dateTime">2025-07-17 17:20:22</td><td>0.022566153</td><td>12.778644</td><td>0.052082982</td><td>16.363285</td><td>21.34605</td><td>0.008609472</td><td>0.013874933</td><td>61112.426</td><td>0.99941367</td><td>916.0523</td><td>31.154993</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371235328"><td class="dateTime">2025-07-17 17:20:23</td><td>0.02253968</td><td>12.776582</td><td>0.052021872</td><td>16.36346</td><td>21.347374</td><td>0.008610084</td><td>0.013875794</td><td>61111.77</td><td>0.9994139</td><td>916.0511</td><td>31.153189</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371300864"><td class="dateTime">2025-07-17 17:20:24</td><td>0.022513209</td><td>12.774521</td><td>0.051960763</td><td>16.363636</td><td>21.3487</td><td>0.008610696</td><td>0.013876654</td><td>61111.113</td><td>0.9994142</td><td>916.04987</td><td>31.151384</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371366400"><td class="dateTime">2025-07-17 17:20:25</td><td>0.022242349</td><td>12.75185</td><td>0.051335465</td><td>16.362394</td><td>21.359148</td><td>0.008615468</td><td>0.013883446</td><td>61115.75</td><td>0.999417</td><td>916.0413</td><td>31.133648</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371431936"><td class="dateTime">2025-07-17 17:20:26</td><td>0.022235101</td><td>12.749891</td><td>0.051318724</td><td>16.362392</td><td>21.360188</td><td>0.0086159455</td><td>0.013884122</td><td>61115.758</td><td>0.99941725</td><td>916.0406</td><td>31.131926</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371497472"><td class="dateTime">2025-07-17 17:20:27</td><td>0.022227852</td><td>12.747932</td><td>0.051301982</td><td>16.362389</td><td>21.361225</td><td>0.008616422</td><td>0.013884797</td><td>61115.77</td><td>0.9994175</td><td>916.03986</td><td>31.130203</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371563008"><td class="dateTime">2025-07-17 17:20:28</td><td>0.022888632</td><td>12.726032</td><td>0.052826926</td><td>16.36231</td><td>21.372795</td><td>0.008621732</td><td>0.013892317</td><td>61116.062</td><td>0.9994202</td><td>916.0224</td><td>31.104053</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371628544"><td class="dateTime">2025-07-17 17:20:29</td><td>0.022920744</td><td>12.724134</td><td>0.052901026</td><td>16.362276</td><td>21.37376</td><td>0.008622175</td><td>0.013892944</td><td>61116.19</td><td>0.9994204</td><td>916.0211</td><td>31.102032</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371694080"><td class="dateTime">2025-07-17 17:20:30</td><td>0.023730023</td><td>12.702598</td><td>0.054768693</td><td>16.364237</td><td>21.387817</td><td>0.0086286655</td><td>0.013902081</td><td>61108.87</td><td>0.9994231</td><td>916.04584</td><td>31.092682</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371759616"><td class="dateTime">2025-07-17 17:20:31</td><td>0.023796016</td><td>12.700744</td><td>0.054920994</td><td>16.364359</td><td>21.388966</td><td>0.008629194</td><td>0.013902827</td><td>61108.418</td><td>0.9994233</td><td>916.04694</td><td>31.091482</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371825152"><td class="dateTime">2025-07-17 17:20:32</td><td>0.02386201</td><td>12.698891</td><td>0.05507329</td><td>16.36448</td><td>21.390112</td><td>0.008629723</td><td>0.013903573</td><td>61107.965</td><td>0.99942356</td><td>916.04803</td><td>31.090284</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371890688"><td class="dateTime">2025-07-17 17:20:33</td><td>0.022716714</td><td>12.677373</td><td>0.05242983</td><td>16.361958</td><td>21.398312</td><td>0.008633433</td><td>0.013908903</td><td>61117.383</td><td>0.9994262</td><td>916.04877</td><td>31.064432</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871371956224"><td class="dateTime">2025-07-17 17:20:34</td><td>0.022667263</td><td>12.67553</td><td>0.052315682</td><td>16.361853</td><td>21.39916</td><td>0.008633819</td><td>0.013909454</td><td>61117.77</td><td>0.9994264</td><td>916.04944</td><td>31.062635</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372021760"><td class="dateTime">2025-07-17 17:20:35</td><td>0.022617811</td><td>12.673688</td><td>0.052201536</td><td>16.36175</td><td>21.40001</td><td>0.008634207</td><td>0.013910006</td><td>61118.156</td><td>0.99942666</td><td>916.0501</td><td>31.060837</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372087296"><td class="dateTime">2025-07-17 17:20:36</td><td>0.023941709</td><td>12.653431</td><td>0.055256926</td><td>16.357218</td><td>21.404913</td><td>0.008636368</td><td>0.013913193</td><td>61135.09</td><td>0.99942917</td><td>916.0145</td><td>31.0343</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372152832"><td class="dateTime">2025-07-17 17:20:37</td><td>0.023992049</td><td>12.651664</td><td>0.0553731</td><td>16.356886</td><td>21.405422</td><td>0.008636596</td><td>0.013913524</td><td>61136.336</td><td>0.9994294</td><td>916.0124</td><td>31.032053</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372218368"><td class="dateTime">2025-07-17 17:20:38</td><td>0.023088232</td><td>12.631993</td><td>0.053286977</td><td>16.361864</td><td>21.422474</td><td>0.008644518</td><td>0.013924609</td><td>61117.727</td><td>0.9994318</td><td>916.0197</td><td>31.022694</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372283904"><td class="dateTime">2025-07-17 17:20:39</td><td>0.023063809</td><td>12.630295</td><td>0.053230595</td><td>16.36207</td><td>21.423653</td><td>0.008645062</td><td>0.013925374</td><td>61116.96</td><td>0.999432</td><td>916.01935</td><td>31.021496</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372349440"><td class="dateTime">2025-07-17 17:20:40</td><td>0.023039384</td><td>12.628596</td><td>0.053174216</td><td>16.362274</td><td>21.42483</td><td>0.008645606</td><td>0.013926138</td><td>61116.2</td><td>0.9994322</td><td>916.019</td><td>31.020298</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372414976"><td class="dateTime">2025-07-17 17:20:41</td><td>0.022224003</td><td>12.60998</td><td>0.05129223</td><td>16.364275</td><td>21.437431</td><td>0.008651427</td><td>0.013934331</td><td>61108.727</td><td>0.9994345</td><td>916.0108</td><td>30.99445</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372480512"><td class="dateTime">2025-07-17 17:20:42</td><td>0.022151154</td><td>12.608359</td><td>0.051124085</td><td>16.364525</td><td>21.438625</td><td>0.008651979</td><td>0.013935108</td><td>61107.797</td><td>0.99943465</td><td>916.0105</td><td>30.992653</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372546048"><td class="dateTime">2025-07-17 17:20:43</td><td>0.022078305</td><td>12.60674</td><td>0.050955944</td><td>16.364773</td><td>21.43982</td><td>0.0086525325</td><td>0.0139358835</td><td>61106.867</td><td>0.9994348</td><td>916.0102</td><td>30.990854</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372611584"><td class="dateTime">2025-07-17 17:20:44</td><td>0.021568816</td><td>12.588925</td><td>0.04977995</td><td>16.363207</td><td>21.447329</td><td>0.008655944</td><td>0.013940765</td><td>61112.715</td><td>0.99943703</td><td>916.0188</td><td>30.981905</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372677120"><td class="dateTime">2025-07-17 17:20:45</td><td>0.021517618</td><td>12.5873785</td><td>0.049661778</td><td>16.363165</td><td>21.448105</td><td>0.008656299</td><td>0.013941268</td><td>61112.87</td><td>0.9994372</td><td>916.0191</td><td>30.980707</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372742656"><td class="dateTime">2025-07-17 17:20:46</td><td>0.022761531</td><td>12.570073</td><td>0.052532565</td><td>16.362514</td><td>21.456549</td><td>0.008660154</td><td>0.013946756</td><td>61115.305</td><td>0.9994393</td><td>916.0446</td><td>30.971941</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372808192"><td class="dateTime">2025-07-17 17:20:47</td><td>0.022826768</td><td>12.56858</td><td>0.05268312</td><td>16.362438</td><td>21.45725</td><td>0.008660475</td><td>0.013947213</td><td>61115.59</td><td>0.9994395</td><td>916.04645</td><td>30.971191</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372873728"><td class="dateTime">2025-07-17 17:20:48</td><td>0.022892006</td><td>12.567085</td><td>0.052833676</td><td>16.362362</td><td>21.457954</td><td>0.008660796</td><td>0.01394767</td><td>61115.87</td><td>0.99943966</td><td>916.0482</td><td>30.970442</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871372939264"><td class="dateTime">2025-07-17 17:20:49</td><td>0.022411883</td><td>12.550671</td><td>0.051725477</td><td>16.364391</td><td>21.469442</td><td>0.008666105</td><td>0.013955138</td><td>61108.293</td><td>0.9994416</td><td>916.01434</td><td>30.935865</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373004800"><td class="dateTime">2025-07-17 17:20:50</td><td>0.022414228</td><td>12.549244</td><td>0.05173088</td><td>16.364498</td><td>21.47035</td><td>0.008666523</td><td>0.013955728</td><td>61107.89</td><td>0.9994418</td><td>916.01294</td><td>30.933546</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373070336"><td class="dateTime">2025-07-17 17:20:51</td><td>0.022416573</td><td>12.547817</td><td>0.051736284</td><td>16.364605</td><td>21.47126</td><td>0.008666942</td><td>0.013956319</td><td>61107.492</td><td>0.999442</td><td>916.0115</td><td>30.931225</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373135872"><td class="dateTime">2025-07-17 17:20:52</td><td>0.022551712</td><td>12.532044</td><td>0.052048083</td><td>16.36341</td><td>21.478184</td><td>0.008670091</td><td>0.01396082</td><td>61111.953</td><td>0.9994439</td><td>916.0546</td><td>30.922157</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373201408"><td class="dateTime">2025-07-17 17:20:53</td><td>0.022548012</td><td>12.530677</td><td>0.052039534</td><td>16.36339</td><td>21.478891</td><td>0.008670415</td><td>0.01396128</td><td>61112.027</td><td>0.999444</td><td>916.05634</td><td>30.920734</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373266944"><td class="dateTime">2025-07-17 17:20:54</td><td>0.022900598</td><td>12.516247</td><td>0.052853186</td><td>16.35708</td><td>21.478378</td><td>0.008670046</td><td>0.013960945</td><td>61135.605</td><td>0.99944574</td><td>916.0409</td><td>30.895073</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373332480"><td class="dateTime">2025-07-17 17:20:55</td><td>0.022926379</td><td>12.514979</td><td>0.05291268</td><td>16.356659</td><td>21.478508</td><td>0.008670097</td><td>0.013961029</td><td>61137.18</td><td>0.9994459</td><td>916.04095</td><td>30.893274</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373398016"><td class="dateTime">2025-07-17 17:20:56</td><td>0.02295216</td><td>12.513712</td><td>0.05297217</td><td>16.356237</td><td>21.478636</td><td>0.0086701475</td><td>0.013961113</td><td>61138.754</td><td>0.9994461</td><td>916.041</td><td>30.891474</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373463552"><td class="dateTime">2025-07-17 17:20:57</td><td>0.022702409</td><td>12.499364</td><td>0.052395664</td><td>16.353594</td><td>21.482895</td><td>0.008672045</td><td>0.013963883</td><td>61148.64</td><td>0.9994478</td><td>916.0489</td><td>30.873718</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373529088"><td class="dateTime">2025-07-17 17:20:58</td><td>0.022696033</td><td>12.498134</td><td>0.05238094</td><td>16.353275</td><td>21.483139</td><td>0.00867215</td><td>0.01396404</td><td>61149.836</td><td>0.999448</td><td>916.049</td><td>30.871994</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373594624"><td class="dateTime">2025-07-17 17:20:59</td><td>0.022689657</td><td>12.496903</td><td>0.052366223</td><td>16.352955</td><td>21.483381</td><td>0.008672254</td><td>0.0139641985</td><td>61151.027</td><td>0.9994481</td><td>916.0491</td><td>30.870272</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373660160"><td class="dateTime">2025-07-17 17:21:00</td><td>0.021362498</td><td>12.483241</td><td>0.049303148</td><td>16.356802</td><td>21.495808</td><td>0.008678026</td><td>0.013972274</td><td>61136.65</td><td>0.9994498</td><td>916.0232</td><td>30.852911</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373725696"><td class="dateTime">2025-07-17 17:21:01</td><td>0.02127707</td><td>12.482054</td><td>0.049105976</td><td>16.356962</td><td>21.496658</td><td>0.008678419</td><td>0.013972827</td><td>61136.05</td><td>0.99944997</td><td>916.02185</td><td>30.851414</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373791232"><td class="dateTime">2025-07-17 17:21:02</td><td>0.023013733</td><td>12.469729</td><td>0.053113993</td><td>16.359304</td><td>21.506388</td><td>0.008682926</td><td>0.013979153</td><td>61127.297</td><td>0.9994514</td><td>916.06287</td><td>30.84239</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373856768"><td class="dateTime">2025-07-17 17:21:03</td><td>0.023090022</td><td>12.468648</td><td>0.053290058</td><td>16.359537</td><td>21.507278</td><td>0.00868334</td><td>0.013979732</td><td>61126.426</td><td>0.9994515</td><td>916.0648</td><td>30.841421</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373922304"><td class="dateTime">2025-07-17 17:21:04</td><td>0.023166312</td><td>12.4675665</td><td>0.05346612</td><td>16.35977</td><td>21.50817</td><td>0.008683752</td><td>0.01398031</td><td>61125.555</td><td>0.9994517</td><td>916.0667</td><td>30.840454</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871373987840"><td class="dateTime">2025-07-17 17:21:05</td><td>0.023380186</td><td>12.454785</td><td>0.05395965</td><td>16.353626</td><td>21.506994</td><td>0.0086830845</td><td>0.013979546</td><td>61148.52</td><td>0.99945325</td><td>916.0595</td><td>30.814455</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374053376"><td class="dateTime">2025-07-17 17:21:06</td><td>0.023436802</td><td>12.453702</td><td>0.0540903</td><td>16.353304</td><td>21.507154</td><td>0.0086831525</td><td>0.013979651</td><td>61149.723</td><td>0.99945337</td><td>916.0601</td><td>30.812641</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374118912"><td class="dateTime">2025-07-17 17:21:07</td><td>0.023493415</td><td>12.452619</td><td>0.054220952</td><td>16.352983</td><td>21.507317</td><td>0.00868322</td><td>0.013979756</td><td>61150.926</td><td>0.9994535</td><td>916.06067</td><td>30.81083</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374184448"><td class="dateTime">2025-07-17 17:21:08</td><td>0.023697961</td><td>12.416771</td><td>0.0546928</td><td>16.326696</td><td>21.492098</td><td>0.008675688</td><td>0.013969863</td><td>61249.402</td><td>0.9994577</td><td>916.0775</td><td>30.793142</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374249984"><td class="dateTime">2025-07-17 17:21:09</td><td>0.023715708</td><td>12.414297</td><td>0.054733746</td><td>16.324968</td><td>21.491161</td><td>0.008675222</td><td>0.013969255</td><td>61255.875</td><td>0.999458</td><td>916.0783</td><td>30.791412</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374315520"><td class="dateTime">2025-07-17 17:21:10</td><td>0.025122756</td><td>12.393107</td><td>0.057980932</td><td>16.32641</td><td>21.504519</td><td>0.008681369</td><td>0.013977937</td><td>61250.46</td><td>0.9994606</td><td>916.0705</td><td>30.77401</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374381056"><td class="dateTime">2025-07-17 17:21:11</td><td>0.025215054</td><td>12.390957</td><td>0.05819393</td><td>16.325884</td><td>21.504992</td><td>0.008681574</td><td>0.013978244</td><td>61252.426</td><td>0.9994608</td><td>916.07043</td><td>30.772524</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374446592"><td class="dateTime">2025-07-17 17:21:12</td><td>0.02530735</td><td>12.388806</td><td>0.058406927</td><td>16.32536</td><td>21.505463</td><td>0.008681778</td><td>0.01397855</td><td>61254.395</td><td>0.9994611</td><td>916.0704</td><td>30.771036</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374512128"><td class="dateTime">2025-07-17 17:21:13</td><td>0.022739666</td><td>12.38446</td><td>0.052480906</td><td>17.361664</td><td>22.873138</td><td>0.009331273</td><td>0.01486754</td><td>57632.87</td><td>0.9994621</td><td>916.0183</td><td>30.75341</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374577664"><td class="dateTime">2025-07-17 17:21:14</td><td>0.022616114</td><td>12.383688</td><td>0.052195758</td><td>17.425533</td><td>22.957705</td><td>0.009371427</td><td>0.014922508</td><td>57409.66</td><td>0.99946225</td><td>916.0149</td><td>30.751905</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374643200"><td class="dateTime">2025-07-17 17:21:15</td><td>0.022492563</td><td>12.3829155</td><td>0.05191061</td><td>17.489403</td><td>23.042269</td><td>0.009411582</td><td>0.014977475</td><td>57186.445</td><td>0.99946237</td><td>916.01154</td><td>30.750399</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374708736"><td class="dateTime">2025-07-17 17:21:16</td><td>0.02325159</td><td>12.381424</td><td>0.05366227</td><td>20.714989</td><td>27.293053</td><td>0.0114417225</td><td>0.017740484</td><td>48494.75</td><td>0.9994641</td><td>916.0813</td><td>30.741693</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374774272"><td class="dateTime">2025-07-17 17:21:17</td><td>0.023230964</td><td>12.381215</td><td>0.05361466</td><td>20.934511</td><td>27.582401</td><td>0.011579817</td><td>0.017928561</td><td>47881.86</td><td>0.9994643</td><td>916.0841</td><td>30.740713</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374839808"><td class="dateTime">2025-07-17 17:21:18</td><td>0.022975793</td><td>12.381986</td><td>0.05302575</td><td>21.413424</td><td>28.212835</td><td>0.011881768</td><td>0.018338341</td><td>46777.625</td><td>0.9994644</td><td>916.06134</td><td>30.72355</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374905344"><td class="dateTime">2025-07-17 17:21:19</td><td>0.022978846</td><td>12.381993</td><td>0.053032793</td><td>21.518425</td><td>28.35117</td><td>0.01194789</td><td>0.018428259</td><td>46506.51</td><td>0.9994644</td><td>916.0616</td><td>30.722277</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871374970880"><td class="dateTime">2025-07-17 17:21:20</td><td>0.022981897</td><td>12.382001</td><td>0.053039834</td><td>21.623426</td><td>28.489504</td><td>0.012014011</td><td>0.018518176</td><td>46235.402</td><td>0.99946445</td><td>916.0618</td><td>30.721003</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375036416"><td class="dateTime">2025-07-17 17:21:21</td><td>0.023946183</td><td>12.382492</td><td>0.055265363</td><td>19.290369</td><td>25.415325</td><td>0.010543186</td><td>0.016519962</td><td>51944.156</td><td>0.99946326</td><td>916.0349</td><td>30.694857</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375101952"><td class="dateTime">2025-07-17 17:21:22</td><td>0.023998236</td><td>12.382543</td><td>0.0553855</td><td>19.158451</td><td>25.241488</td><td>0.010460024</td><td>0.016406966</td><td>52269.05</td><td>0.9994632</td><td>916.03265</td><td>30.692835</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375167488"><td class="dateTime">2025-07-17 17:21:23</td><td>0.024050288</td><td>12.382593</td><td>0.055505637</td><td>19.026533</td><td>25.067648</td><td>0.010376861</td><td>0.016293973</td><td>52593.945</td><td>0.99946314</td><td>916.0304</td><td>30.690813</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375233024"><td class="dateTime">2025-07-17 17:21:24</td><td>-0.013064675</td><td>12.288302</td><td>-0.03015116</td><td>34.236805</td><td>45.22117</td><td>0.020083725</td><td>0.02939376</td><td>30497.777</td><td>0.9994819</td><td>916.05676</td><td>30.673199</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375298560"><td class="dateTime">2025-07-17 17:21:25</td><td>-0.015260281</td><td>12.282675</td><td>-0.03521835</td><td>35.088146</td><td>46.34962</td><td>0.020627487</td><td>0.030127255</td><td>29319.06</td><td>0.999483</td><td>916.0577</td><td>30.671476</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375364096"><td class="dateTime">2025-07-17 17:21:26</td><td>-0.017455887</td><td>12.277047</td><td>-0.04028554</td><td>35.93949</td><td>47.478077</td><td>0.02117125</td><td>0.03086075</td><td>28140.344</td><td>0.9994841</td><td>916.0586</td><td>30.669754</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375429632"><td class="dateTime">2025-07-17 17:21:27</td><td>-0.019962845</td><td>12.221802</td><td>-0.04607096</td><td>34.11553</td><td>45.13122</td><td>0.02003446</td><td>0.029335294</td><td>29499.678</td><td>0.9994897</td><td>916.0681</td><td>30.6614</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375495168"><td class="dateTime">2025-07-17 17:21:28</td><td>-0.02105634</td><td>12.216155</td><td>-0.04859459</td><td>34.39445</td><td>45.504906</td><td>0.020214077</td><td>0.02957819</td><td>29021.129</td><td>0.9994905</td><td>916.06934</td><td>30.660425</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375560704"><td class="dateTime">2025-07-17 17:21:29</td><td>-0.02778339</td><td>12.187203</td><td>-0.06411929</td><td>34.10799</td><td>45.159435</td><td>0.0200465</td><td>0.029353634</td><td>29322.621</td><td>0.9994937</td><td>916.1121</td><td>30.643217</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375626240"><td class="dateTime">2025-07-17 17:21:30</td><td>-0.028262679</td><td>12.184107</td><td>-0.065225385</td><td>34.051235</td><td>45.087967</td><td>0.02001186</td><td>0.02930718</td><td>29368.818</td><td>0.9994941</td><td>916.1149</td><td>30.641954</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375691776"><td class="dateTime">2025-07-17 17:21:31</td><td>-0.028741969</td><td>12.18101</td><td>-0.06633148</td><td>33.99448</td><td>45.016502</td><td>0.01997722</td><td>0.029260727</td><td>29415.014</td><td>0.99949443</td><td>916.1178</td><td>30.640694</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375757312"><td class="dateTime">2025-07-17 17:21:32</td><td>-0.014441142</td><td>12.159734</td><td>-0.033327583</td><td>34.015427</td><td>45.06841</td><td>0.020001749</td><td>0.029294467</td><td>29398.445</td><td>0.99949694</td><td>916.0307</td><td>30.614174</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375822848"><td class="dateTime">2025-07-17 17:21:33</td><td>-0.013751708</td><td>12.157701</td><td>-0.031736482</td><td>34.011497</td><td>45.06553</td><td>0.020000303</td><td>0.029292595</td><td>29401.822</td><td>0.9994971</td><td>916.02655</td><td>30.612139</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375888384"><td class="dateTime">2025-07-17 17:21:34</td><td>-0.026123127</td><td>12.14087</td><td>-0.060287364</td><td>34.031277</td><td>45.110954</td><td>0.020021807</td><td>0.02932212</td><td>29384.736</td><td>0.9994991</td><td>916.03204</td><td>30.594355</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871375953920"><td class="dateTime">2025-07-17 17:21:35</td><td>-0.026551353</td><td>12.139317</td><td>-0.061275624</td><td>34.03248</td><td>45.11432</td><td>0.020023393</td><td>0.029324308</td><td>29383.697</td><td>0.99949926</td><td>916.0303</td><td>30.592625</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376019456"><td class="dateTime">2025-07-17 17:21:36</td><td>-0.026979579</td><td>12.137763</td><td>-0.06226388</td><td>34.03368</td><td>45.117683</td><td>0.020024978</td><td>0.029326495</td><td>29382.66</td><td>0.99949944</td><td>916.02856</td><td>30.590895</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376084992"><td class="dateTime">2025-07-17 17:21:37</td><td>0.0074663097</td><td>12.132987</td><td>0.017230846</td><td>34.05075</td><td>45.14577</td><td>0.02003843</td><td>0.029344752</td><td>29367.932</td><td>0.99950004</td><td>916.0122</td><td>30.582062</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376150528"><td class="dateTime">2025-07-17 17:21:38</td><td>0.009256039</td><td>12.132284</td><td>0.021361208</td><td>34.052303</td><td>45.148636</td><td>0.020039797</td><td>0.029346613</td><td>29366.59</td><td>0.99950016</td><td>916.0114</td><td>30.581087</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376216064"><td class="dateTime">2025-07-17 17:21:39</td><td>0.011045767</td><td>12.131581</td><td>0.025491571</td><td>34.05386</td><td>45.151497</td><td>0.020041162</td><td>0.029348474</td><td>29365.248</td><td>0.9995002</td><td>916.01056</td><td>30.580112</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376281600"><td class="dateTime">2025-07-17 17:21:40</td><td>0.02182881</td><td>12.133899</td><td>0.050376836</td><td>34.050663</td><td>45.144615</td><td>0.020037897</td><td>0.029344</td><td>29368.004</td><td>0.9994999</td><td>916.0102</td><td>30.554092</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376347136"><td class="dateTime">2025-07-17 17:21:41</td><td>0.02334513</td><td>12.133908</td><td>0.05387622</td><td>34.05091</td><td>45.144936</td><td>0.020038052</td><td>0.029344209</td><td>29367.79</td><td>0.9994999</td><td>916.00977</td><td>30.55231</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376412672"><td class="dateTime">2025-07-17 17:21:42</td><td>0.022841105</td><td>12.135579</td><td>0.05271303</td><td>34.052</td><td>45.144463</td><td>0.020037865</td><td>0.029343903</td><td>29366.852</td><td>0.9994998</td><td>916.06866</td><td>30.551214</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376478208"><td class="dateTime">2025-07-17 17:21:43</td><td>0.023033982</td><td>12.135735</td><td>0.053158157</td><td>34.05199</td><td>45.14428</td><td>0.02003778</td><td>0.029343782</td><td>29366.857</td><td>0.99949974</td><td>916.0724</td><td>30.550549</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376543744"><td class="dateTime">2025-07-17 17:21:44</td><td>0.023226859</td><td>12.13589</td><td>0.05360328</td><td>34.051987</td><td>45.144093</td><td>0.020037694</td><td>0.02934366</td><td>29366.863</td><td>0.99949974</td><td>916.07605</td><td>30.549881</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376609280"><td class="dateTime">2025-07-17 17:21:45</td><td>0.023299158</td><td>12.140035</td><td>0.05377016</td><td>34.05393</td><td>45.14193</td><td>0.020036759</td><td>0.029342255</td><td>29365.188</td><td>0.99949926</td><td>916.0775</td><td>30.524267</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376674816"><td class="dateTime">2025-07-17 17:21:46</td><td>0.023279956</td><td>12.14033</td><td>0.05372585</td><td>34.054077</td><td>45.14179</td><td>0.0200367</td><td>0.029342163</td><td>29365.06</td><td>0.99949926</td><td>916.0791</td><td>30.522694</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376740352"><td class="dateTime">2025-07-17 17:21:47</td><td>0.023260755</td><td>12.140625</td><td>0.053681538</td><td>34.054222</td><td>45.141647</td><td>0.020036638</td><td>0.02934207</td><td>29364.934</td><td>0.9994992</td><td>916.0807</td><td>30.52112</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376805888"><td class="dateTime">2025-07-17 17:21:48</td><td>0.024053317</td><td>12.140657</td><td>0.055510625</td><td>34.040894</td><td>45.12394</td><td>0.02002808</td><td>0.029330561</td><td>29376.434</td><td>0.99949914</td><td>916.0972</td><td>30.4945</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376871424"><td class="dateTime">2025-07-17 17:21:49</td><td>0.024103416</td><td>12.140765</td><td>0.055626243</td><td>34.040146</td><td>45.12282</td><td>0.020027544</td><td>0.029329835</td><td>29377.08</td><td>0.99949914</td><td>916.09827</td><td>30.492252</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871376936960"><td class="dateTime">2025-07-17 17:21:50</td><td>0.024153516</td><td>12.140874</td><td>0.055741865</td><td>34.039394</td><td>45.121708</td><td>0.020027008</td><td>0.029329108</td><td>29377.727</td><td>0.99949914</td><td>916.0993</td><td>30.490005</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377002496"><td class="dateTime">2025-07-17 17:21:51</td><td>0.024986386</td><td>12.140056</td><td>0.057663977</td><td>34.04648</td><td>45.13203</td><td>0.020031981</td><td>0.029335821</td><td>29371.613</td><td>0.99949926</td><td>916.0726</td><td>30.481606</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377068032"><td class="dateTime">2025-07-17 17:21:52</td><td>0.025055252</td><td>12.140014</td><td>0.057822905</td><td>34.04656</td><td>45.132183</td><td>0.020032054</td><td>0.02933592</td><td>29371.545</td><td>0.99949926</td><td>916.0715</td><td>30.480406</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377133568"><td class="dateTime">2025-07-17 17:21:53</td><td>0.025072107</td><td>12.140303</td><td>0.057861805</td><td>34.048424</td><td>45.134323</td><td>0.020033097</td><td>0.029337311</td><td>29369.936</td><td>0.99949926</td><td>916.0535</td><td>30.463182</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377199104"><td class="dateTime">2025-07-17 17:21:54</td><td>0.025093108</td><td>12.140304</td><td>0.05791027</td><td>34.048702</td><td>45.134693</td><td>0.020033274</td><td>0.02933755</td><td>29369.695</td><td>0.99949926</td><td>916.0518</td><td>30.461908</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377264640"><td class="dateTime">2025-07-17 17:21:55</td><td>0.025114108</td><td>12.140304</td><td>0.057958737</td><td>34.04898</td><td>45.135063</td><td>0.020033453</td><td>0.02933779</td><td>29369.455</td><td>0.99949926</td><td>916.05005</td><td>30.460634</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377330176"><td class="dateTime">2025-07-17 17:21:56</td><td>0.02405352</td><td>12.1426935</td><td>0.055511102</td><td>34.04626</td><td>45.128727</td><td>0.020030454</td><td>0.029333673</td><td>29371.8</td><td>0.99949896</td><td>916.059</td><td>30.443016</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377395712"><td class="dateTime">2025-07-17 17:21:57</td><td>0.023990618</td><td>12.142844</td><td>0.05536594</td><td>34.046146</td><td>45.128403</td><td>0.020030301</td><td>0.029333461</td><td>29371.902</td><td>0.9994989</td><td>916.0591</td><td>30.441519</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377461248"><td class="dateTime">2025-07-17 17:21:58</td><td>0.023927717</td><td>12.142994</td><td>0.05522078</td><td>34.04603</td><td>45.128075</td><td>0.020030146</td><td>0.02933325</td><td>29372.002</td><td>0.9994989</td><td>916.05914</td><td>30.44002</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377526784"><td class="dateTime">2025-07-17 17:21:59</td><td>0.02471084</td><td>12.140975</td><td>0.05702807</td><td>34.046497</td><td>45.131004</td><td>0.020031506</td><td>0.029335152</td><td>29371.598</td><td>0.9994992</td><td>916.0239</td><td>30.422525</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377592320"><td class="dateTime">2025-07-17 17:22:00</td><td>0.024730116</td><td>12.140917</td><td>0.057072554</td><td>34.04646</td><td>45.13102</td><td>0.020031512</td><td>0.029335164</td><td>29371.629</td><td>0.9994992</td><td>916.02203</td><td>30.421028</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377657856"><td class="dateTime">2025-07-17 17:22:01</td><td>0.024227433</td><td>12.13829</td><td>0.05591244</td><td>34.04854</td><td>45.13678</td><td>0.020034228</td><td>0.029338907</td><td>29369.836</td><td>0.99949944</td><td>916.03815</td><td>30.394958</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377723392"><td class="dateTime">2025-07-17 17:22:02</td><td>0.024214886</td><td>12.1380825</td><td>0.055883482</td><td>34.048676</td><td>45.137203</td><td>0.020034425</td><td>0.029339181</td><td>29369.717</td><td>0.99949944</td><td>916.03827</td><td>30.392937</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377788928"><td class="dateTime">2025-07-17 17:22:03</td><td>0.02420234</td><td>12.137875</td><td>0.05585452</td><td>34.048817</td><td>45.137623</td><td>0.020034624</td><td>0.029339455</td><td>29369.598</td><td>0.9994995</td><td>916.03845</td><td>30.390913</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377854464"><td class="dateTime">2025-07-17 17:22:04</td><td>0.023677878</td><td>12.133989</td><td>0.054644138</td><td>34.05154</td><td>45.14567</td><td>0.020038411</td><td>0.029344687</td><td>29367.248</td><td>0.9995</td><td>916.0042</td><td>30.373287</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377920000"><td class="dateTime">2025-07-17 17:22:05</td><td>0.02363366</td><td>12.13369</td><td>0.054542094</td><td>34.051754</td><td>45.1463</td><td>0.020038705</td><td>0.029345095</td><td>29367.062</td><td>0.9995</td><td>916.00256</td><td>30.371565</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871377985536"><td class="dateTime">2025-07-17 17:22:06</td><td>0.023589445</td><td>12.13339</td><td>0.05444005</td><td>34.05197</td><td>45.14693</td><td>0.020039001</td><td>0.029345505</td><td>29366.875</td><td>0.99950004</td><td>916.0009</td><td>30.369843</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378051072"><td class="dateTime">2025-07-17 17:22:07</td><td>0.024050968</td><td>12.127865</td><td>0.055505116</td><td>34.060287</td><td>45.164276</td><td>0.02004724</td><td>0.02935678</td><td>29359.703</td><td>0.9995007</td><td>916.0183</td><td>30.352533</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378116608"><td class="dateTime">2025-07-17 17:22:08</td><td>0.02406453</td><td>12.127438</td><td>0.05553641</td><td>34.060852</td><td>45.16551</td><td>0.020047825</td><td>0.02935758</td><td>29359.219</td><td>0.99950075</td><td>916.0185</td><td>30.351036</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378182144"><td class="dateTime">2025-07-17 17:22:09</td><td>0.024078807</td><td>12.123125</td><td>0.05556934</td><td>34.062378</td><td>45.17247</td><td>0.02005107</td><td>0.029362107</td><td>29357.902</td><td>0.9995012</td><td>916.04474</td><td>30.342098</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378247680"><td class="dateTime">2025-07-17 17:22:10</td><td>0.024090193</td><td>12.122727</td><td>0.055595614</td><td>34.06267</td><td>45.173313</td><td>0.020051466</td><td>0.029362652</td><td>29357.65</td><td>0.9995013</td><td>916.04675</td><td>30.341124</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378313216"><td class="dateTime">2025-07-17 17:22:11</td><td>0.024101578</td><td>12.122331</td><td>0.05562189</td><td>34.062965</td><td>45.174152</td><td>0.020051861</td><td>0.0293632</td><td>29357.398</td><td>0.99950135</td><td>916.04877</td><td>30.34015</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378378752"><td class="dateTime">2025-07-17 17:22:12</td><td>0.023927288</td><td>12.119975</td><td>0.055219647</td><td>34.068768</td><td>45.184547</td><td>0.020056821</td><td>0.029369954</td><td>29352.4</td><td>0.9995016</td><td>916.0664</td><td>30.322788</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378444288"><td class="dateTime">2025-07-17 17:22:13</td><td>0.02391719</td><td>12.119723</td><td>0.05519634</td><td>34.069153</td><td>45.18535</td><td>0.020057203</td><td>0.029370476</td><td>29352.064</td><td>0.99950165</td><td>916.0681</td><td>30.321516</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378509824"><td class="dateTime">2025-07-17 17:22:14</td><td>0.023907093</td><td>12.119472</td><td>0.055173036</td><td>34.069542</td><td>45.186153</td><td>0.020057585</td><td>0.029370999</td><td>29351.73</td><td>0.99950165</td><td>916.0698</td><td>30.320242</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378575360"><td class="dateTime">2025-07-17 17:22:15</td><td>0.024692088</td><td>12.118993</td><td>0.05698465</td><td>34.064907</td><td>45.18055</td><td>0.020054866</td><td>0.029367357</td><td>29355.725</td><td>0.9995017</td><td>916.0605</td><td>30.293648</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378640896"><td class="dateTime">2025-07-17 17:22:16</td><td>0.024734003</td><td>12.118898</td><td>0.05708138</td><td>34.064785</td><td>45.180496</td><td>0.020054838</td><td>0.029367324</td><td>29355.828</td><td>0.9995017</td><td>916.0604</td><td>30.291626</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378706432"><td class="dateTime">2025-07-17 17:22:17</td><td>0.024603043</td><td>12.118973</td><td>0.056779146</td><td>34.06819</td><td>45.184933</td><td>0.02005698</td><td>0.029370205</td><td>29352.893</td><td>0.9995017</td><td>916.0429</td><td>30.265331</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378771968"><td class="dateTime">2025-07-17 17:22:18</td><td>0.024613507</td><td>12.118963</td><td>0.056803294</td><td>34.068295</td><td>45.185078</td><td>0.020057049</td><td>0.0293703</td><td>29352.807</td><td>0.9995017</td><td>916.0416</td><td>30.263084</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378837504"><td class="dateTime">2025-07-17 17:22:19</td><td>0.024623971</td><td>12.118955</td><td>0.05682744</td><td>34.068394</td><td>45.185223</td><td>0.02005712</td><td>0.029370395</td><td>29352.719</td><td>0.9995017</td><td>916.04034</td><td>30.260836</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378903040"><td class="dateTime">2025-07-17 17:22:20</td><td>0.022794807</td><td>12.118569</td><td>0.05260608</td><td>34.068203</td><td>45.185413</td><td>0.020057205</td><td>0.029370518</td><td>29352.883</td><td>0.99950176</td><td>916.04895</td><td>30.252047</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871378968576"><td class="dateTime">2025-07-17 17:22:21</td><td>0.022681674</td><td>12.118548</td><td>0.05234499</td><td>34.06828</td><td>45.185535</td><td>0.020057265</td><td>0.029370598</td><td>29352.818</td><td>0.99950176</td><td>916.049</td><td>30.250849</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379034112"><td class="dateTime">2025-07-17 17:22:22</td><td>0.022568539</td><td>12.118526</td><td>0.0520839</td><td>34.068356</td><td>45.18566</td><td>0.020057324</td><td>0.02937068</td><td>29352.754</td><td>0.99950176</td><td>916.0491</td><td>30.24965</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379099648"><td class="dateTime">2025-07-17 17:22:23</td><td>0.02379009</td><td>12.117708</td><td>0.054902993</td><td>34.07064</td><td>45.18963</td><td>0.020059219</td><td>0.029373258</td><td>29350.783</td><td>0.9995019</td><td>916.03174</td><td>30.232382</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379165184"><td class="dateTime">2025-07-17 17:22:24</td><td>0.023815516</td><td>12.11765</td><td>0.054961678</td><td>34.070774</td><td>45.18987</td><td>0.020059334</td><td>0.029373415</td><td>29350.67</td><td>0.9995019</td><td>916.0309</td><td>30.231108</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379230720"><td class="dateTime">2025-07-17 17:22:25</td><td>0.024021419</td><td>12.116084</td><td>0.05543685</td><td>34.067284</td><td>45.187035</td><td>0.020057919</td><td>0.029371573</td><td>29353.678</td><td>0.999502</td><td>916.0389</td><td>30.213568</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379296256"><td class="dateTime">2025-07-17 17:22:26</td><td>0.024062462</td><td>12.115969</td><td>0.05553157</td><td>34.067123</td><td>45.186954</td><td>0.020057878</td><td>0.02937152</td><td>29353.812</td><td>0.99950206</td><td>916.039</td><td>30.21207</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379361792"><td class="dateTime">2025-07-17 17:22:27</td><td>0.024103506</td><td>12.115853</td><td>0.055626288</td><td>34.066967</td><td>45.18688</td><td>0.020057837</td><td>0.02937147</td><td>29353.95</td><td>0.99950206</td><td>916.03906</td><td>30.210571</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379427328"><td class="dateTime">2025-07-17 17:22:28</td><td>0.024310147</td><td>12.115206</td><td>0.05610318</td><td>34.073845</td><td>45.196743</td><td>0.020062592</td><td>0.029377885</td><td>29348.023</td><td>0.9995021</td><td>916.0656</td><td>30.210522</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379492864"><td class="dateTime">2025-07-17 17:22:29</td><td>0.024327679</td><td>12.115128</td><td>0.05614364</td><td>34.074173</td><td>45.197266</td><td>0.020062841</td><td>0.029378224</td><td>29347.742</td><td>0.9995021</td><td>916.0674</td><td>30.210072</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379558400"><td class="dateTime">2025-07-17 17:22:30</td><td>0.02434521</td><td>12.115049</td><td>0.056184098</td><td>34.074497</td><td>45.19779</td><td>0.020063091</td><td>0.029378563</td><td>29347.463</td><td>0.9995021</td><td>916.0692</td><td>30.209623</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379623936"><td class="dateTime">2025-07-17 17:22:31</td><td>0.023405889</td><td>12.113553</td><td>0.05401631</td><td>34.062626</td><td>45.183758</td><td>0.020056266</td><td>0.029369442</td><td>29357.69</td><td>0.99950236</td><td>916.0247</td><td>30.174412</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379689472"><td class="dateTime">2025-07-17 17:22:32</td><td>0.023356343</td><td>12.113446</td><td>0.053901967</td><td>34.0621</td><td>45.183178</td><td>0.020055983</td><td>0.029369067</td><td>29358.143</td><td>0.99950236</td><td>916.02277</td><td>30.172316</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379755008"><td class="dateTime">2025-07-17 17:22:33</td><td>0.023581821</td><td>12.11123</td><td>0.05442231</td><td>34.072426</td><td>45.199413</td><td>0.020063773</td><td>0.029379621</td><td>29349.246</td><td>0.9995026</td><td>915.9957</td><td>30.162806</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379820544"><td class="dateTime">2025-07-17 17:22:34</td><td>0.023573613</td><td>12.111058</td><td>0.05440337</td><td>34.072777</td><td>45.20008</td><td>0.02006409</td><td>0.029380053</td><td>29348.943</td><td>0.9995026</td><td>915.99304</td><td>30.161383</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379886080"><td class="dateTime">2025-07-17 17:22:35</td><td>0.023565406</td><td>12.110886</td><td>0.05438442</td><td>34.07313</td><td>45.200745</td><td>0.020064406</td><td>0.029380485</td><td>29348.639</td><td>0.99950266</td><td>915.99036</td><td>30.159958</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871379951616"><td class="dateTime">2025-07-17 17:22:36</td><td>0.021989116</td><td>12.108268</td><td>0.05074664</td><td>34.071255</td><td>45.201252</td><td>0.02006458</td><td>0.029380815</td><td>29350.256</td><td>0.99950296</td><td>916.00793</td><td>30.134108</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380017152"><td class="dateTime">2025-07-17 17:22:37</td><td>0.021899978</td><td>12.108054</td><td>0.050540924</td><td>34.0714</td><td>45.201694</td><td>0.020064788</td><td>0.029381102</td><td>29350.129</td><td>0.999503</td><td>916.0083</td><td>30.132309</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380082688"><td class="dateTime">2025-07-17 17:22:38</td><td>0.02181084</td><td>12.107841</td><td>0.050335214</td><td>34.07155</td><td>45.202137</td><td>0.020064995</td><td>0.029381389</td><td>29350.002</td><td>0.999503</td><td>916.00867</td><td>30.130512</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380148224"><td class="dateTime">2025-07-17 17:22:39</td><td>0.023871547</td><td>12.1048155</td><td>0.055090904</td><td>34.068672</td><td>45.20178</td><td>0.020064745</td><td>0.029381156</td><td>29352.48</td><td>0.9995034</td><td>916.0183</td><td>30.121677</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380213760"><td class="dateTime">2025-07-17 17:22:40</td><td>0.02395282</td><td>12.1045685</td><td>0.055278465</td><td>34.06846</td><td>45.201782</td><td>0.02006474</td><td>0.029381158</td><td>29352.664</td><td>0.99950343</td><td>916.0193</td><td>30.12048</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380279296"><td class="dateTime">2025-07-17 17:22:41</td><td>0.0238517</td><td>12.102404</td><td>0.055045087</td><td>34.072247</td><td>45.209286</td><td>0.020068306</td><td>0.029386036</td><td>29349.4</td><td>0.9995036</td><td>916.02795</td><td>30.103262</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380344832"><td class="dateTime">2025-07-17 17:22:42</td><td>0.023894021</td><td>12.102198</td><td>0.055142757</td><td>34.072414</td><td>45.209747</td><td>0.020068523</td><td>0.029386336</td><td>29349.254</td><td>0.9995037</td><td>916.0287</td><td>30.101988</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380410368"><td class="dateTime">2025-07-17 17:22:43</td><td>0.023936344</td><td>12.101992</td><td>0.055240426</td><td>34.072586</td><td>45.21021</td><td>0.02006874</td><td>0.029386636</td><td>29349.107</td><td>0.9995037</td><td>916.0294</td><td>30.100716</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380475904"><td class="dateTime">2025-07-17 17:22:44</td><td>0.024516882</td><td>12.099807</td><td>0.05658018</td><td>34.073677</td><td>45.21416</td><td>0.02007059</td><td>0.029389204</td><td>29348.168</td><td>0.9995039</td><td>916.038</td><td>30.091911</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380541440"><td class="dateTime">2025-07-17 17:22:45</td><td>0.024548683</td><td>12.099622</td><td>0.056653567</td><td>34.073837</td><td>45.21459</td><td>0.02007079</td><td>0.02938948</td><td>29348.031</td><td>0.99950397</td><td>916.03876</td><td>30.090948</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380606976"><td class="dateTime">2025-07-17 17:22:46</td><td>0.024580482</td><td>12.099437</td><td>0.056726955</td><td>34.073997</td><td>45.21501</td><td>0.02007099</td><td>0.029389758</td><td>29347.893</td><td>0.99950397</td><td>916.0395</td><td>30.089985</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380672512"><td class="dateTime">2025-07-17 17:22:47</td><td>0.023683479</td><td>12.096288</td><td>0.054656826</td><td>34.072815</td><td>45.21705</td><td>0.02007189</td><td>0.02939108</td><td>29348.91</td><td>0.9995043</td><td>916.0217</td><td>30.063423</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380738048"><td class="dateTime">2025-07-17 17:22:48</td><td>0.023644414</td><td>12.096043</td><td>0.05456667</td><td>34.072773</td><td>45.217274</td><td>0.020071993</td><td>0.029391227</td><td>29348.947</td><td>0.9995044</td><td>916.0209</td><td>30.061594</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380803584"><td class="dateTime">2025-07-17 17:22:49</td><td>0.024816662</td><td>12.093972</td><td>0.05727198</td><td>34.07124</td><td>45.217613</td><td>0.020072103</td><td>0.029391449</td><td>29350.266</td><td>0.99950457</td><td>915.99475</td><td>30.052444</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380869120"><td class="dateTime">2025-07-17 17:22:50</td><td>0.024866667</td><td>12.093768</td><td>0.057387378</td><td>34.07112</td><td>45.217686</td><td>0.020072132</td><td>0.029391497</td><td>29350.371</td><td>0.9995046</td><td>915.9927</td><td>30.051231</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871380934656"><td class="dateTime">2025-07-17 17:22:51</td><td>0.024916673</td><td>12.093564</td><td>0.05750278</td><td>34.071</td><td>45.217762</td><td>0.020072162</td><td>0.029391544</td><td>29350.475</td><td>0.9995046</td><td>915.99066</td><td>30.050016</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871381000192"><td class="dateTime">2025-07-17 17:22:52</td><td>0.0230889</td><td>12.090819</td><td>0.053284626</td><td>34.07346</td><td>45.224174</td><td>0.020075185</td><td>0.029395713</td><td>29348.355</td><td>0.9995049</td><td>915.9818</td><td>30.032852</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871381065728"><td class="dateTime">2025-07-17 17:22:53</td><td>0.02300827</td><td>12.090601</td><td>0.05309855</td><td>34.07357</td><td>45.22457</td><td>0.02007537</td><td>0.02939597</td><td>29348.262</td><td>0.999505</td><td>915.98065</td><td>30.03158</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871381131264"><td class="dateTime">2025-07-17 17:22:54</td><td>0.022927642</td><td>12.090382</td><td>0.05291247</td><td>34.073677</td><td>45.224964</td><td>0.020075554</td><td>0.029396227</td><td>29348.168</td><td>0.999505</td><td>915.97943</td><td>30.030306</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871381196800"><td class="dateTime">2025-07-17 17:22:55</td><td>0.021927122</td><td>12.087918</td><td>0.05060345</td><td>34.070255</td><td>45.223244</td><td>0.02007466</td><td>0.029395109</td><td>29351.115</td><td>0.99950534</td><td>915.9888</td><td>30.012644</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871381262336"><td class="dateTime">2025-07-17 17:22:56</td><td>0.021822218</td><td>12.0877</td><td>0.05036135</td><td>34.070114</td><td>45.22331</td><td>0.020074686</td><td>0.02939515</td><td>29351.236</td><td>0.9995054</td><td>915.9891</td><td>30.011148</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871381327872"><td class="dateTime">2025-07-17 17:22:57</td><td>0.023182705</td><td>12.0848875</td><td>0.05350107</td><td>34.074642</td><td>45.232544</td><td>0.020079073</td><td>0.029401153</td><td>29347.338</td><td>0.9995057</td><td>916.0568</td><td>30.002295</td><td></td></tr>
+<tr class="data" isi-data-row="" isi-timestamp="114871381393408"><td class="dateTime">2025-07-17 17:22:58</td><td>0.023241494</td><td>12.084659</td><td>0.05363674</td><td>34.074833</td><td>45.233063</td><td>0.020079315</td><td>0.029401489</td><td>29347.172</td><td>0.9995057</td><td>916.06116</td><td>30.001337</td><td></td></tr>
+</table>
+</body>
+</html>
+<!-- cX9dSbGKPuo8u4fQGfABvCfO7yVlVOh2YEXxQXP2hpztwLfnEbGFnBnhXfOnXFAU+MlIPzp45K2vd0AGuPy3yA== -->

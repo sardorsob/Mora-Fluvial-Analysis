@@ -1,0 +1,9 @@
+Group,Property,Label,Value
+ReportProperties,StartTime,Start Time,2025-07-17 17:27:36
+ReportProperties,TimeOffset,Time Offset,-07:00:00
+ReportProperties,Duration,Duration,00:07:31
+ReportProperties,Readings,Readings,452
+InstrumentProperties-790481,Model,Device Model,Aqua TROLL 200
+InstrumentProperties-790481,SerialNumber,Device SN,790481
+InstrumentProperties-670831,Model,Device Model,Wireless TROLL Com
+InstrumentProperties-670831,SerialNumber,Device SN,670831

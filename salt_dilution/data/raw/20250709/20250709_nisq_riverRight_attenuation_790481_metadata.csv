@@ -1,0 +1,15 @@
+Group,Property,Label,Value
+LocationProperties,GUID,Location ID,6e4f000f-d4dd-5d91-b59d-8c0c27772fd8
+LocationProperties,Latitude,Latitude,46.74942753876294 °
+LocationProperties,Longitude,Longitude,-121.8076592311121 °
+ReportProperties,StartTime,Start Time,2025-07-09 14:00:47.895
+ReportProperties,Duration,Duration,03:04:01
+ReportProperties,Readings,Readings,185
+ReportProperties,TimeOffset,Time Offset,-07:00:00
+InstrumentProperties,Model,Device Model,Aqua TROLL 200
+InstrumentProperties,SerialNumber,Device SN,790481
+InstrumentProperties,FirmwareVersion,Device Firmware,2.01
+LogProperties,LogType,Log Type,Linear
+LogProperties,FileNumber,Log File Number,1
+LogProperties,GUID,Log ID,6707c1b5-8f05-5078-ab6a-e76f8925950a
+LogProperties,Interval,Interval,00:01:00
