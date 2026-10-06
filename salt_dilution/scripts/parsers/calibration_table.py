@@ -15,7 +15,6 @@ SOLUTION_SCHEMAS = (
     {
         "Calibration_volume_ml",
         "additions_of_calibration_ml",
-        "Cumulative_calibration_solution_ml",
         "Conductivity",
     },
 )

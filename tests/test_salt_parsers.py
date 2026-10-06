@@ -126,6 +126,37 @@ class AquaTrollTests(unittest.TestCase):
             "-07:00:00",
         )
 
+    def test_winsitu_csv_skips_notes_table_and_finds_log_data(self):
+        from salt_dilution.scripts.parsers.aquatroll import read_aquatroll
+
+        path = self.dir / "NaCl_20260716.csv"
+        path.write_text(
+            "Report Date:,8/14/2026 6:02:16 PM\n"
+            "Application:,WinSitu.exe\n"
+            "\n"
+            "Log Notes:\n"
+            "Date and Time,Note\n"
+            "7/16/2026 2:49:07 PM,field note\n"
+            "\n"
+            "Log Data:\n"
+            "Time Zone: Pacific Daylight Time\n"
+            "Date and Time,Seconds,Temperature (C),"
+            "Actual Conductivity (µS/cm),Specific Conductivity (µS/cm)\n"
+            "7/16/2026 4:07:15 PM,0,9.277,16.016,22.890\n",
+            encoding="utf-8",
+        )
+
+        df, meta = read_aquatroll(path)
+
+        self.assertEqual(len(df), 1)
+        self.assertEqual(str(df.loc[0, "timestamp"]), "2026-07-16 16:07:15")
+        self.assertEqual(df.loc[0, "actual_conductivity_us_cm"], 16.016)
+        self.assertEqual(df.loc[0, "specific_conductivity_us_cm"], 22.89)
+        self.assertEqual(
+            meta["embedded_metadata"]["Log Data"]["Time Zone"],
+            "Pacific Daylight Time",
+        )
+
     def test_multiple_temperature_columns_are_not_collapsed(self):
         from salt_dilution.scripts.parsers.aquatroll import read_aquatroll
 
@@ -209,6 +240,22 @@ class CalibrationTableTests(unittest.TestCase):
 
         self.assertEqual(meta["calibration_type"], "solution_injection")
         self.assertEqual(df.loc[0, "Conductivity"], 36.49)
+
+    def test_solution_injection_schema_without_cumulative_column(self):
+        from salt_dilution.scripts.parsers.calibration_table import read_calibration_table
+
+        path = self.dir / "field_solution.csv"
+        path.write_text(
+            "Calibration_volume_ml,additions_of_calibration_ml,Conductivity,Tempature (C)\n"
+            "2000,0,n/a,n/a\n"
+            "2002,2,34.5,12.6\n",
+            encoding="utf-8",
+        )
+
+        df, meta = read_calibration_table(path)
+
+        self.assertEqual(meta["calibration_type"], "solution_injection")
+        self.assertNotIn("Cumulative_calibration_solution_ml", df.columns)
 
     def test_mass_stock_schema(self):
         from salt_dilution.scripts.parsers.calibration_table import read_calibration_table

@@ -94,6 +94,8 @@ def _normalize(df):
 
     if "Date Time" in df.columns:
         rename["Date Time"] = "timestamp"
+    elif "Date and Time" in df.columns:
+        rename["Date and Time"] = "timestamp"
 
     for prefix, normalized in patterns.items():
         matches = [column for column in df.columns if str(column).startswith(prefix)]
@@ -139,20 +141,35 @@ def _read_csv(path):
     with path.open("r", encoding="utf-8-sig", newline="") as stream:
         reader = csv.reader(stream)
         for index, row in enumerate(reader):
-            first = row[0].strip() if row else ""
-            if first in {"Date Time", "Time"}:
+            values = [value.strip() for value in row]
+            first = values[0] if values else ""
+
+            is_measurement_header = (
+                first in {"Date Time", "Date and Time", "Time"}
+                and any(
+                    value.startswith(("Actual Conductivity", "Specific Conductivity"))
+                    for value in values[1:]
+                )
+            )
+            if is_measurement_header:
                 header_index = index
                 break
 
-            if len(row) == 1:
+            if not any(values):
+                continue
+
+            if len(values) == 1:
                 value = first
-                if not value:
-                    continue
                 if "=" in value:
                     key, item = (part.strip() for part in value.split("=", 1))
                     metadata.setdefault(section or "Preamble", {})[key] = item
+                elif ":" in value and value.split(":", 1)[1].strip():
+                    key, item = (part.strip() for part in value.split(":", 1))
+                    metadata.setdefault(section or "Preamble", {})[key] = item
                 else:
-                    section = value
+                    section = value.rstrip(":")
+            elif first and values[1]:
+                metadata.setdefault(section or "Preamble", {})[first.rstrip(":")] = values[1]
 
     if header_index is None:
         raise ValueError(f"No Aqua TROLL measurement header found in {path}")

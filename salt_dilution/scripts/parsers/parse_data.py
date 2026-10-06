@@ -32,9 +32,10 @@ def read_data(path):
         try:
             detect_calibration_type(header)
         except ValueError:
-            if header and header[0] in {"Date Time", "Time"}:
+            try:
                 return read_aquatroll(path)
-            raise ValueError(f"Unsupported CSV schema: {path}")
+            except ValueError as exc:
+                raise ValueError(f"Unsupported CSV schema: {path}") from exc
         return read_calibration_table(path)
 
     raise ValueError(f"Unsupported data file: {path}")
