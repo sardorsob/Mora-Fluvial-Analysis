@@ -89,7 +89,7 @@ It selects the correct reader from the file type/content and returns:
 1. a pandas DataFrame;
 2. a plain metadata dictionary.
 
-No parser class hierarchy, registry, factory, or new dependency is required.
+No parser class hierarchy, registry, or factory is required. Use existing project dependencies plus `xlrd` for legacy `.xls` General logger files.
 
 ## Metadata contract
 
@@ -119,7 +119,7 @@ The parser layer must preserve the distinction between:
 - calibration tables;
 - new normalized/processed outputs.
 
-Raw inputs stay under `salt_dilution/data/raw/`. New normalized outputs, when written by the CLI, belong under `salt_dilution/data/processed/`.
+Raw inputs stay under `salt_dilution/data/raw/`. `read_data()` is read-only. The CLI may write normalized data only when `--output` is supplied; those outputs belong under `salt_dilution/data/processed/` as a normalized CSV plus metadata JSON.
 
 HTML and exported CSV may represent the same physical recording. The parser reads either form but does not decide trial identity or deduplicate physical events.
 
@@ -130,6 +130,7 @@ HTML and exported CSV may represent the same physical recording. The parser read
 - Unknown filename patterns do not fail parsing.
 - The parser preserves extra source columns instead of silently dropping them.
 - Raw input files are never modified.
+- CLI output is explicit: no `--output`, no files written.
 
 ## Testing
 
@@ -173,4 +174,5 @@ This refactor does not:
 - infer which files belong to one physical trial;
 - redesign the raw-data folder structure again;
 - normalize every possible source column;
-- build a general plugin/registry framework.
+- build a general plugin/registry framework;
+- recursively sweep mixed raw-data folders. Batch processing should later use an explicit file list or manifest.
