@@ -133,12 +133,12 @@ def _read_html(path):
     return df, parser.metadata, parser.meta_tags
 
 
-def _read_csv(path):
+def _scan_csv(path, encoding):
     header_index = None
     section = None
     metadata = {}
 
-    with path.open("r", encoding="utf-8-sig", newline="") as stream:
+    with path.open("r", encoding=encoding, newline="") as stream:
         reader = csv.reader(stream)
         for index, row in enumerate(reader):
             values = [value.strip() for value in row]
@@ -171,11 +171,24 @@ def _read_csv(path):
             elif first and values[1]:
                 metadata.setdefault(section or "Preamble", {})[first.rstrip(":")] = values[1]
 
+    return header_index, metadata
+
+
+def _read_csv(path):
+    for encoding in ("utf-8-sig", "cp1252"):
+        try:
+            header_index, metadata = _scan_csv(path, encoding)
+            break
+        except UnicodeDecodeError:
+            continue
+    else:
+        raise ValueError(f"Could not decode Aqua TROLL CSV: {path}")
+
     if header_index is None:
         raise ValueError(f"No Aqua TROLL measurement header found in {path}")
 
-    df = pd.read_csv(path, skiprows=header_index)
-    return df, metadata, {}
+    df = pd.read_csv(path, skiprows=header_index, encoding=encoding)
+    return df, metadata, {"text_encoding": encoding}
 
 
 def read_aquatroll(path):
