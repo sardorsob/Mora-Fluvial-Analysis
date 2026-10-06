@@ -9,12 +9,17 @@ from .general_logger import read_general_logger
 
 
 def _csv_header(path):
-    with path.open("r", encoding="utf-8-sig", newline="") as stream:
-        for row in csv.reader(stream):
-            values = [value.strip() for value in row]
-            if len(values) > 1:
-                return values
-    return []
+    for encoding in ("utf-8-sig", "cp1252"):
+        try:
+            with path.open("r", encoding=encoding, newline="") as stream:
+                for row in csv.reader(stream):
+                    values = [value.strip() for value in row]
+                    if len(values) > 1:
+                        return values
+            return []
+        except UnicodeDecodeError:
+            continue
+    raise ValueError(f"Could not decode CSV: {path}")
 
 
 def read_data(path):
