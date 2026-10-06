@@ -22,3 +22,11 @@ __pycache__/
 /fluvial_seismology/results/*
 !/fluvial_seismology/results/README.md
 !/fluvial_seismology/results/_template/
+
+# Salt-dilution parser outputs and generated analysis runs stay local.
+/salt_dilution/data/processed/*
+!/salt_dilution/data/processed/.gitkeep
+/salt_dilution/results/*
+!/salt_dilution/results/README.md
+!/salt_dilution/results/_template/
+!/salt_dilution/results/_template/**
