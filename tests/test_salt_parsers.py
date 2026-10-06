@@ -186,5 +186,55 @@ class GeneralLoggerTests(unittest.TestCase):
         self.assertEqual(meta["filename_metadata"]["bank"], "river_left")
 
 
+class CalibrationTableTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.dir = Path(self.temp.name)
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def test_solution_injection_schema(self):
+        from salt_dilution.scripts.parsers.calibration_table import read_calibration_table
+
+        path = self.dir / "solution.csv"
+        path.write_text(
+            "Calibration_volume_ml,Additions_of_secondary_ml,"
+            "Cumulative_secondary_solution_ml,Conductivity\n"
+            "15000,0.5,0.5,36.49\n",
+            encoding="utf-8",
+        )
+
+        df, meta = read_calibration_table(path)
+
+        self.assertEqual(meta["calibration_type"], "solution_injection")
+        self.assertEqual(df.loc[0, "Conductivity"], 36.49)
+
+    def test_mass_stock_schema(self):
+        from salt_dilution.scripts.parsers.calibration_table import read_calibration_table
+
+        path = self.dir / "mass.csv"
+        path.write_text(
+            "Calibration volume (ml),Calibration solution added (ml),"
+            "Salt added (g),Concentration (g/mL),Conductivity,Temp\n"
+            "2000,10,1,0.0005,50,8\n",
+            encoding="utf-8",
+        )
+
+        df, meta = read_calibration_table(path)
+
+        self.assertEqual(meta["calibration_type"], "mass_stock_titration")
+        self.assertEqual(df.loc[0, "Salt added (g)"], 1)
+
+    def test_unknown_calibration_schema_fails_clearly(self):
+        from salt_dilution.scripts.parsers.calibration_table import read_calibration_table
+
+        path = self.dir / "unknown.csv"
+        path.write_text("foo,bar\n1,2\n", encoding="utf-8")
+
+        with self.assertRaisesRegex(ValueError, "Unsupported calibration table schema"):
+            read_calibration_table(path)
+
+
 if __name__ == "__main__":
     unittest.main()
