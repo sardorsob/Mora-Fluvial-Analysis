@@ -20,6 +20,8 @@
 - Keep calibration/discharge mathematics out of the parser layer.
 - No parser classes, registry, factory, or new framework.
 - Comments only for vendor quirks, provenance, or non-obvious scientific distinctions.
+- `read_data()` is read-only; CLI writes only when `--output` is explicit.
+- CLI normalized outputs are one CSV plus one metadata JSON under the caller-selected processed-data directory.
 - Support legacy General logger `.xls` files with `xlrd`.
 
 ## Review Focus
@@ -113,11 +115,11 @@
 **Interfaces:**
 - Consumes: the three reader functions.
 - Produces: `read_data(path) -> tuple[pandas.DataFrame, dict]`
-- CLI: `python -m salt_dilution.scripts.parsers.parse_data <path>`
+- CLI: `python -m salt_dilution.scripts.parsers.parse_data <path> [--output <processed-dir>]`
 
 - [ ] Add failing dispatch tests for HTML, Aqua TROLL CSV, General Excel, calibration CSV, and unsupported extensions.
 - [ ] Implement simple suffix/content dispatch; no registry or parser classes.
-- [ ] Keep CLI output minimal: source metadata plus a compact table summary; no automatic raw-file mutation.
+- [ ] Keep CLI output minimal. Without `--output`, print source metadata plus a compact table summary and write nothing. With `--output`, write one normalized CSV and one metadata JSON using the source stem.
 - [ ] Update the portability test to launch `parse_data --help` instead of the deleted parser modules.
 - [ ] Update setup/method docs to describe the one parser entry point and processed-output boundary.
 - [ ] Delete the three historical parser scripts after the replacement tests cover their required use cases.
