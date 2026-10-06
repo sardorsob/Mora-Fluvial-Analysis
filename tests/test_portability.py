@@ -59,16 +59,15 @@ class PortabilityTests(unittest.TestCase):
             finally:
                 os.chdir(previous)
 
-    def test_parser_modules_can_be_launched(self):
+    def test_parser_module_can_be_launched(self):
         folder = ROOT / 'salt_dilution/scripts/parsers'
         self.assertTrue(folder.is_dir(), 'The relocated parsers are missing')
-        for name in ['parse_aquatroll_filename_cli', 'parse_aquatroll_metadata_cli']:
-            result = subprocess.run(
-                [sys.executable, '-m', f'salt_dilution.scripts.parsers.{name}', '--help'],
-                cwd=ROOT, capture_output=True, text=True,
-            )
-            self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertIn('--output', result.stdout)
+        result = subprocess.run(
+            [sys.executable, '-m', 'salt_dilution.scripts.parsers.parse_data', '--help'],
+            cwd=ROOT, capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('--output', result.stdout)
 
     def test_output_paths_stay_within_the_named_run(self):
         self.assertTrue((ROOT / 'project_paths.py').is_file(), 'The portable path helper is missing')

@@ -25,17 +25,23 @@ The example uses [2025-07-24_trial_01.ini](../salt_dilution/config/2025-07-24_tr
 
 Set `MORA_RUN_ID` before starting Jupyter to choose a descriptive run name. Otherwise, the shared path helper generates a UTC timestamp. Outputs go under `salt_dilution/results/<run_id>/`: three figures, a discharge table, a configuration snapshot, and a run record. Review the [scientific limitations](../salt_dilution/README.md#known-source-limitations) before interpreting results.
 
-## AquaTROLL parsers
+## Salt-dilution parser
 
-Launch parser modules from the repository root:
+Use the single parser entry point from the repository root:
 
 ```sh
-python -m salt_dilution.scripts.parsers.parse_aquatroll_filename_cli --help
-python -m salt_dilution.scripts.parsers.parse_aquatroll_metadata_cli --help
-python -m salt_dilution.scripts.parsers.parse_aquatroll_interactive
+python -m salt_dilution.scripts.parsers.parse_data <source-file>
 ```
 
-Batch parsers default to `salt_dilution/data/processed/`; use `--output` for another destination. The metadata parser's original `--dry-run` flag is not passed through to its writer; do not rely on that flag to prevent writes. See [parser differences](../salt_dilution/README.md#parsers).
+This reads one Aqua TROLL HTML/CSV, General logger XLS/XLSX, or recognized calibration CSV and prints a compact summary without writing files.
+
+Write normalized data only when requested:
+
+```sh
+python -m salt_dilution.scripts.parsers.parse_data <source-file> --output salt_dilution/data/processed/<date>
+```
+
+The CLI writes one normalized CSV plus one metadata JSON. Raw source files are never changed. Process files explicitly rather than recursively scanning a mixed raw-data folder; a future batch workflow should use a reviewed file list or manifest.
 
 ## Fluvial seismology
 

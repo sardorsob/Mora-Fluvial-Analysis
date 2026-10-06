@@ -12,18 +12,30 @@ Start with [salt_dilution_discharge.ipynb](notebooks/salt_dilution_discharge.ipy
 | `scripts/processing/dilution_calculations.py` | Configuration loading, calibration, discharge calculations, and plotting. |
 | `scripts/processing/convert_units.py` | Volume and mass conversion helpers. |
 | `scripts/processing/datetime_utils.py` | Time-window and CSV helpers. |
+| `scripts/parsers/` | Source readers for Aqua TROLL, General logger, calibration tables, filename metadata, and the single parser CLI. |
 | `scripts/experimental/` | Unfinished class-based dilution implementation and its example launcher. |
 | `config/dilution_draft.ini` | Incomplete historical configuration; not the primary example's settings. |
 
 ## Parsers
 
-All three source variants are retained separately:
+The parser layer has one public entry point:
 
-- `parse_aquatroll_filename_cli.py`: batch HTML parser whose output names use the source filename plus instrument metadata.
-- `parse_aquatroll_metadata_cli.py`: batch parser that also reads HTML meta tags, including exported CSV names.
-- `parse_aquatroll_interactive.py`: prompts for a single input file and output directory. Its metadata filename is fixed and can be overwritten by another input in the same destination.
+```python
+from salt_dilution.scripts.parsers.parse_data import read_data
 
-Parser calculations and extraction behavior are unchanged. The metadata variant's original `--dry-run` flag is not forwarded to its writer. Use separate destinations and inspect outputs when selecting a parser. Launch instructions are in [getting started](../docs/getting_started.md).
+df, metadata = read_data(path)
+```
+
+The focused readers are:
+
+- `aquatroll.py`: Aqua TROLL/VuSitu HTML and metadata-prefixed CSV exports;
+- `general_logger.py`: General logger XLS/XLSX files;
+- `calibration_table.py`: known solution-injection and mass/stock calibration-table schemas; and
+- `filename_metadata.py`: provisional hints from known filename patterns.
+
+`read_data()` is read-only. The CLI writes normalized CSV plus metadata JSON only when `--output` is supplied, and those files belong under `data/processed/`. The parser preserves full timestamps, keeps actual and specific conductivity distinct, retains extra source columns, and does not perform calibration or discharge calculations.
+
+The three historical Aqua TROLL parser variants were replaced after their required source-reading behavior was covered by the focused readers and tests. Raw HTML/Excel source files remain unchanged.
 
 ## Known source limitations
 

@@ -29,7 +29,7 @@ MASS_STOCK_SCHEMA = {
 }
 
 
-def _calibration_type(columns):
+def detect_calibration_type(columns):
     columns = set(columns)
     if any(required <= columns for required in SOLUTION_SCHEMAS):
         return "solution_injection"
@@ -44,7 +44,7 @@ def read_calibration_table(path):
         raise ValueError(f"Unsupported calibration table file type: {path.suffix.lower()}")
 
     df = pd.read_csv(path)
-    calibration_type = _calibration_type(df.columns)
+    calibration_type = detect_calibration_type(df.columns)
 
     metadata = {
         "source_file": str(path),

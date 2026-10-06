@@ -236,5 +236,86 @@ class CalibrationTableTests(unittest.TestCase):
             read_calibration_table(path)
 
 
+class ParseDataTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.dir = Path(self.temp.name)
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def test_dispatches_aquatroll_csv(self):
+        from salt_dilution.scripts.parsers.parse_data import read_data
+
+        path = self.dir / "slug.csv"
+        path.write_text(
+            '"Date Time","Actual Conductivity (µS/cm) (1)",'
+            '"Specific Conductivity (µS/cm) (1)"\n'
+            '"2026-09-01 16:21:24","1","2"\n',
+            encoding="utf-8",
+        )
+
+        _, meta = read_data(path)
+        self.assertEqual(meta["instrument_family"], "aquatroll")
+
+    def test_dispatches_calibration_csv(self):
+        from salt_dilution.scripts.parsers.parse_data import read_data
+
+        path = self.dir / "calibration.csv"
+        path.write_text(
+            "Calibration_volume_ml,additions_of_calibration_ml,"
+            "Cumulative_calibration_solution_ml,Conductivity\n"
+            "2000,1,1,20\n",
+            encoding="utf-8",
+        )
+
+        _, meta = read_data(path)
+        self.assertEqual(meta["source_type"], "calibration")
+
+    def test_dispatches_general_xlsx(self):
+        from salt_dilution.scripts.parsers.parse_data import read_data
+
+        path = self.dir / "20250731_General1_attenuation_riverLeft.xlsx"
+        pd.DataFrame(
+            {
+                "Date": ["2025-07-31"],
+                "Time": ["07:52:34"],
+                "Ch1 Value": [18.1],
+                "Ch1 Unit": ["uS/cm"],
+            }
+        ).to_excel(path, index=False)
+
+        _, meta = read_data(path)
+        self.assertEqual(meta["instrument_family"], "general_logger")
+
+    def test_unsupported_extension_fails(self):
+        from salt_dilution.scripts.parsers.parse_data import read_data
+
+        path = self.dir / "data.txt"
+        path.write_text("not data", encoding="utf-8")
+
+        with self.assertRaisesRegex(ValueError, "Unsupported data file"):
+            read_data(path)
+
+    def test_cli_writes_only_when_output_is_given(self):
+        from salt_dilution.scripts.parsers.parse_data import main
+
+        path = self.dir / "slug.csv"
+        path.write_text(
+            '"Date Time","Actual Conductivity (µS/cm) (1)",'
+            '"Specific Conductivity (µS/cm) (1)"\n'
+            '"2026-09-01 16:21:24","1","2"\n',
+            encoding="utf-8",
+        )
+        output = self.dir / "processed"
+
+        main([str(path)])
+        self.assertFalse(output.exists())
+
+        main([str(path), "--output", str(output)])
+        self.assertTrue((output / "slug.csv").is_file())
+        self.assertTrue((output / "slug_metadata.json").is_file())
+
+
 if __name__ == "__main__":
     unittest.main()
