@@ -1,3 +1,10 @@
+"""Single public entry point for salt-dilution source ingestion.
+
+Readers stay format-specific; this module only decides which reader owns a file
+and optionally writes normalized outputs. Scientific calculations never happen
+during dispatch.
+"""
+
 import argparse
 import csv
 import json
@@ -9,6 +16,8 @@ from .general_logger import read_general_logger
 
 
 def _csv_header(path):
+    # Dispatch must tolerate the same encodings as the reader or a valid legacy
+    # WinSitu file could fail before it reaches `read_aquatroll()`.
     for encoding in ("utf-8-sig", "cp1252"):
         try:
             with path.open("r", encoding=encoding, newline="") as stream:
@@ -23,6 +32,8 @@ def _csv_header(path):
 
 
 def read_data(path):
+    """Read one supported source file and return `(DataFrame, metadata)`."""
+
     path = Path(path)
     if not path.is_file():
         raise FileNotFoundError(path)
@@ -33,6 +44,9 @@ def read_data(path):
     if suffix in {".xls", ".xlsx"}:
         return read_general_logger(path)
     if suffix == ".csv":
+        # Calibration CSVs have compact, recognizable schemas. Other CSVs are
+        # given to the Aqua TROLL reader, which performs the stricter search for
+        # a real conductivity measurement table.
         header = _csv_header(path)
         try:
             detect_calibration_type(header)
@@ -47,6 +61,8 @@ def read_data(path):
 
 
 def _write_processed(df, metadata, source, output_dir):
+    """Write reproducible normalized data separately from the untouched source."""
+
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 

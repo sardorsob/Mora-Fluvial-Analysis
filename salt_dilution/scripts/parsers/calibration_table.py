@@ -1,3 +1,10 @@
+"""Classify calibration input tables without performing calibration math.
+
+This module answers only which known source schema a table follows and returns
+its original values. Cumulative additions, concentrations, regression fits, and
+correction factors belong in the processing layer where assumptions are explicit.
+"""
+
 from pathlib import Path
 
 import pandas as pd
@@ -5,6 +12,9 @@ import pandas as pd
 from .filename_metadata import parse_filename
 
 
+# Historical tables sometimes include cumulative additions and sometimes only
+# the individual additions. Both are valid inputs because cumulative volume can
+# be derived later from the recorded additions.
 SOLUTION_SCHEMAS = (
     {
         "Calibration_volume_ml",
@@ -29,6 +39,8 @@ MASS_STOCK_SCHEMA = {
 
 
 def detect_calibration_type(columns):
+    """Identify a supported calibration family from its required columns."""
+
     columns = set(columns)
     if any(required <= columns for required in SOLUTION_SCHEMAS):
         return "solution_injection"
@@ -38,6 +50,8 @@ def detect_calibration_type(columns):
 
 
 def read_calibration_table(path):
+    """Read one recognized calibration CSV and attach schema provenance."""
+
     path = Path(path)
     if path.suffix.lower() != ".csv":
         raise ValueError(f"Unsupported calibration table file type: {path.suffix.lower()}")
