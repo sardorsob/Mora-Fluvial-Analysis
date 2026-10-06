@@ -33,6 +33,7 @@ nbclient
 # MORA domain-specific scientific tools
 obspy
 openpyxl
+xlrd
 
 # Statistics and machine learning
 scikit-learn

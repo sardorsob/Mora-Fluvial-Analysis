@@ -43,9 +43,15 @@ def parse_filename(path):
         index += 1
 
     if index < len(parts):
-        source = SOURCE_TYPES.get(parts[index].lower())
+        token = parts[index].lower()
+        source = SOURCE_TYPES.get(token)
+        general = re.fullmatch(r"general(\d+)", token)
         if source:
             out["source_type"] = source
+            index += 1
+        elif general:
+            out["source_type"] = "general"
+            out["instrument_id"] = general.group(1)
             index += 1
 
     if index < len(parts) and re.fullmatch(r"\d+", parts[index]):

@@ -2,6 +2,8 @@ import tempfile
 from pathlib import Path
 import unittest
 
+import pandas as pd
+
 from salt_dilution.scripts.parsers.filename_metadata import parse_filename
 
 
@@ -141,6 +143,47 @@ class AquaTrollTests(unittest.TestCase):
         self.assertNotIn("temperature_c", df)
         self.assertIn("Temperature (°C) (1)", df)
         self.assertIn("Temperature (°C) (2)", df)
+
+
+class GeneralLoggerTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.dir = Path(self.temp.name)
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def test_xlsx_reader_combines_date_time_and_preserves_channels(self):
+        from salt_dilution.scripts.parsers.general_logger import read_general_logger
+
+        path = self.dir / "20250731_General1_attenuation_riverLeft.xlsx"
+        source = pd.DataFrame(
+            {
+                "Position": [1, 2],
+                "Date": ["2025-07-31", "2025-07-31"],
+                "Time": ["07:52:34", "07:52:35"],
+                "Ch1 Value": [18.1, 18.2],
+                "Ch1 Unit": ["uS/cm", "uS/cm"],
+                "Ch2 Value": [7.2, 7.3],
+                "Ch2 Unit": ["deg C", "deg C"],
+            }
+        )
+        source.to_excel(path, index=False)
+
+        df, meta = read_general_logger(path)
+
+        self.assertIn("timestamp", df)
+        self.assertEqual(str(df.loc[0, "timestamp"]), "2025-07-31 07:52:34")
+        self.assertEqual(df.loc[0, "Ch1 Value"], 18.1)
+        self.assertEqual(df.loc[0, "Ch1 Unit"], "uS/cm")
+        self.assertEqual(df.loc[0, "Ch2 Value"], 7.2)
+        self.assertEqual(df.loc[0, "Ch2 Unit"], "deg C")
+        self.assertEqual(meta["source_format"], "xlsx")
+        self.assertEqual(meta["source_type"], "general")
+        self.assertEqual(meta["instrument_family"], "general_logger")
+        self.assertEqual(meta["filename_metadata"]["instrument_id"], "1")
+        self.assertEqual(meta["filename_metadata"]["site"], "attenuation")
+        self.assertEqual(meta["filename_metadata"]["bank"], "river_left")
 
 
 if __name__ == "__main__":
