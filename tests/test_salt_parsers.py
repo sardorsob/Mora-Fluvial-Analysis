@@ -305,6 +305,28 @@ class ParseDataTests(unittest.TestCase):
         _, meta = read_data(path)
         self.assertEqual(meta["instrument_family"], "aquatroll")
 
+    def test_dispatches_cp1252_winsitu_csv(self):
+        from salt_dilution.scripts.parsers.parse_data import read_data
+
+        path = self.dir / "NaCl_20260716.csv"
+        text = (
+            "Report Date:,8/14/2026 6:02:16 PM\n"
+            "Application:,WinSitu.exe\n"
+            "\n"
+            "Log Data:\n"
+            "Time Zone: Pacific Daylight Time\n"
+            "Date and Time,Seconds,Temperature (C),"
+            "Actual Conductivity (µS/cm),Specific Conductivity (µS/cm)\n"
+            "7/16/2026 4:07:15 PM,0,9.277,16.016,22.890\n"
+        )
+        path.write_bytes(text.encode("cp1252"))
+
+        df, meta = read_data(path)
+
+        self.assertEqual(str(df.loc[0, "timestamp"]), "2026-07-16 16:07:15")
+        self.assertEqual(df.loc[0, "actual_conductivity_us_cm"], 16.016)
+        self.assertEqual(meta["report_metadata"]["text_encoding"], "cp1252")
+
     def test_dispatches_calibration_csv(self):
         from salt_dilution.scripts.parsers.parse_data import read_data
 
