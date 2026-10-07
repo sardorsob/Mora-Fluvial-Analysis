@@ -1,17 +1,16 @@
 # Salt-dilution discharge analysis
 
-Start with [salt_dilution_discharge.ipynb](notebooks/salt_dilution_discharge.ipynb). It replays the original July 24, 2025 solution-injection example using [its configuration](config/2025-07-24_trial_01.ini) and eleven preserved [source CSVs](data/README.md).
+Historical notebooks are preserved for provenance, but they are no longer the maintained processing path and may reference retired helper functions. New work starts with the normalized parser output and will move through `scripts/processing/calibration.py` and `scripts/processing/mass_slug.py` as those modules are implemented and validated.
 
 ## Workflows
 
 | Location | Purpose and status |
 | --- | --- |
-| `notebooks/salt_dilution_discharge.ipynb` | Primary historical example; scientific review still required. |
-| `notebooks/exploratory/explore_salt_dilution.ipynb` | Earlier interactive investigation with different calibration assumptions and index-based CSV selection. |
-| `notebooks/exploratory/check_dilution_calculations.ipynb` | Historical checks; refers to missing source inputs and older function interfaces. |
-| `scripts/processing/dilution_calculations.py` | Configuration loading, calibration, discharge calculations, and plotting. |
-| `scripts/processing/convert_units.py` | Volume and mass conversion helpers. |
-| `scripts/processing/datetime_utils.py` | Time-window and CSV helpers. |
+| `notebooks/salt_dilution_discharge.ipynb` | Historical July 24 example; preserved for provenance and not expected to run against the retired helper API. |
+| `notebooks/exploratory/explore_salt_dilution.ipynb` | Historical interactive investigation with older calibration assumptions and index-based selection. |
+| `notebooks/exploratory/check_dilution_calculations.ipynb` | Historical checks using older helper interfaces and incomplete source inputs. |
+| `scripts/processing/calibration.py` | Reserved for the maintained calibration implementation; intentionally not implemented yet. |
+| `scripts/processing/mass_slug.py` | Reserved for the maintained mass-based slug-discharge implementation; intentionally not implemented yet. |
 | `scripts/parsers/` | Source readers for Aqua TROLL, General logger, calibration tables, filename metadata, and the single parser CLI. |
 | `scripts/experimental/` | Unfinished class-based dilution implementation and its example launcher. |
 | `config/dilution_draft.ini` | Incomplete historical configuration; not the primary example's settings. |
@@ -41,11 +40,10 @@ The three historical Aqua TROLL parser variants were replaced after their requir
 
 These remain visible for scientific review; organizing files does not resolve them.
 
-- The primary notebook uses hard-coded sample indices 230:500 for the injection interval even though the configuration also contains clock-time windows.
-- `calibration_RC` multiplies each addition by its row index; its cumulative-volume calculation assumes equal increments and an initial zero row.
-- `calculate_k` uses the endpoint range, while the calibration plot uses a linear regression.
-- Actual and temperature-compensated conductivity labels are not consistently distinguished in the source.
-- The exploratory check notebook refers to an absent configuration and `calibration.csv`, missing/older helper interfaces, and incomplete imports.
+- The historical primary notebook uses hard-coded sample indices for the injection interval and calls helper functions that have now been retired.
+- The retired processing code assumed equal calibration increments in places and used inconsistent definitions of the calibration relationship; those assumptions must not be carried into the maintained implementation.
+- Actual and temperature-compensated conductivity labels were not consistently distinguished in the historical workflow; the parser now keeps those channels separate.
+- The exploratory notebooks refer to older helper interfaces and incomplete or missing source inputs, so they should be read as provenance rather than executed as the maintained workflow.
 - The class-based prototype explicitly marks its discharge formula as unfinished and omits the required time integration. It is not a second validated method.
 
-The main example saves figures, a discharge table, a configuration snapshot, and `run_info.json` under [results](results/README.md). Preserve raw observations, units, calibration records, time zones, and the reasoning behind any future change to these calculations.
+Future maintained processing should consume normalized parser tables rather than reopen source files or recreate timestamp/file-selection helpers. Preserve raw observations, units, calibration records, time zones, and the reasoning behind any scientific calculation.

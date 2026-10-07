@@ -44,21 +44,6 @@ class PortabilityTests(unittest.TestCase):
                 namespace['get_iris_data'](0, 0, ['ZE.2411..GPZ'], temp)
             self.assertIn('Data retrieval and saving completed.', captured.getvalue())
 
-    def test_config_resolves_inputs_from_an_unrelated_working_directory(self):
-        module_file = ROOT / 'salt_dilution/scripts/processing/dilution_calculations.py'
-        self.assertTrue(module_file.is_file(), 'The relocated dilution module is missing')
-        dilution = importlib.import_module('salt_dilution.scripts.processing.dilution_calculations')
-        previous = Path.cwd()
-        with tempfile.TemporaryDirectory() as temp:
-            try:
-                os.chdir(temp)
-                files, _, _ = dilution.load_config(ROOT / 'salt_dilution/config/2025-07-24_trial_01.ini')
-                inputs = dilution.get_file_paths(files['data_folder'], files['search_string'])
-                self.assertEqual([Path(p).name for p in inputs], ['20250724_162611_840058.csv'])
-                self.assertTrue(Path(files['calibration_file']).is_file())
-            finally:
-                os.chdir(previous)
-
     def test_parser_module_can_be_launched(self):
         folder = ROOT / 'salt_dilution/scripts/parsers'
         self.assertTrue(folder.is_dir(), 'The relocated parsers are missing')
