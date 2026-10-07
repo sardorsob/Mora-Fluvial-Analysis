@@ -1,8 +1,7 @@
-"""Read Aqua TROLL/VuSitu/WinSitu exports into a stable table plus provenance.
+"""Read Aqua TROLL, VuSitu and WinSitu exports into a table and source metadata.
 
-Only fields with an unambiguous source meaning are normalized. Everything else
-stays available under its original column name so later QA or scientific
-processing can still trace values back to the vendor export.
+Recognized column labels get consistent names. Other columns keep their source
+names so they remain available for later checks and analysis.
 """
 
 import csv
@@ -15,12 +14,10 @@ from .filename_metadata import parse_filename
 
 
 class _VuSituHTMLParser(HTMLParser):
-    """Collect VuSitu metadata and measurement rows from vendor-specific HTML.
+    """Read the tables and metadata marked by VuSitu's HTML attributes.
 
-    VuSitu stores metadata and observations in the same HTML stream and marks
-    their roles with `isi-*` attributes. Keeping this parser small and tied to
-    those attributes avoids adding another HTML dependency while preserving the
-    source structure we need for reproducible conversion.
+    The ``isi-*`` attributes distinguish measurements from report details that
+    appear in the same table. This reader depends on those VuSitu markers.
     """
 
     def __init__(self):
@@ -61,9 +58,8 @@ class _VuSituHTMLParser(HTMLParser):
             self._cells = None
 
     def _finish_row(self):
-        # VuSitu mixes headers, observations, and metadata rows in one table.
-        # Resolve those row types in that order so metadata is never mistaken
-        # for a measurement record.
+        # One table can contain headers, readings and instrument details.
+        # Check the VuSitu markers before deciding where this row belongs.
         header_cells = [
             text for attrs, text in self._cells if "isi-data-column-header" in attrs
         ]
@@ -104,9 +100,9 @@ def _source_type(path, meta_tags, filename_meta):
 
 def _normalize(df):
     rename = {}
-    # Normalize only source labels that map cleanly to one scientific concept.
-    # If a file has multiple temperature sensors, for example, leave both
-    # original columns intact rather than guessing which one is authoritative.
+    # Rename a channel only when its label matches once. If two temperature
+    # sensors are present, keep both names so we don't choose one by accident.
+    # These names assume the source uses µS/cm and °C; no units are converted.
     patterns = {
         "Actual Conductivity": "actual_conductivity_us_cm",
         "Specific Conductivity": "specific_conductivity_us_cm",
@@ -126,6 +122,8 @@ def _normalize(df):
     df = df.rename(columns=rename)
 
     if "timestamp" in df:
+        # This relies on the source containing a full date: pandas can assign
+        # today's date to clock-only values. Time-zone text stays in metadata.
         df["timestamp"] = pd.to_datetime(df["timestamp"], errors="raise")
 
     for column in df.columns:
@@ -136,6 +134,7 @@ def _normalize(df):
         if not nonempty.any():
             continue
         numeric = pd.to_numeric(series, errors="coerce")
+        # Keep mixed text/numeric columns intact instead of losing text as NaN.
         if numeric[nonempty].notna().all():
             df[column] = numeric
 
@@ -165,9 +164,8 @@ def _scan_csv(path, encoding):
             values = [value.strip() for value in row]
             first = values[0] if values else ""
 
-            # WinSitu files can contain an earlier "Date and Time" notes table.
-            # Requiring a conductivity field distinguishes the real measurement
-            # table from those metadata/notes sections.
+            # WinSitu notes can also start with "Date and Time". Look for a
+            # conductivity column too, so we select the measurement table.
             is_measurement_header = (
                 first in {"Date Time", "Date and Time", "Time"}
                 and any(
@@ -199,8 +197,8 @@ def _scan_csv(path, encoding):
 
 
 def _read_csv(path):
-    # Newer exports are normally UTF-8, while older WinSitu CSVs encountered in
-    # the field corpus use Windows-1252 (notably for the µ symbol in units).
+    # Try UTF-8 first. Older WinSitu exports use Windows-1252 for characters
+    # such as the µ in conductivity units.
     for encoding in ("utf-8-sig", "cp1252"):
         try:
             header_index, metadata = _scan_csv(path, encoding)
@@ -218,7 +216,7 @@ def _read_csv(path):
 
 
 def read_aquatroll(path):
-    """Return normalized measurements and provenance for one Aqua TROLL export."""
+    """Return the measurement table, source details and column-name mapping."""
 
     path = Path(path)
     suffix = path.suffix.lower()

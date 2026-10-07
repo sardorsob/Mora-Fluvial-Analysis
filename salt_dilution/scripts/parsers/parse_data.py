@@ -1,8 +1,7 @@
-"""Single public entry point for salt-dilution source ingestion.
+"""Read salt-dilution files and optionally save them as CSVs with metadata.
 
-Readers stay format-specific; this module only decides which reader owns a file
-and optionally writes normalized outputs. Scientific calculations never happen
-during dispatch.
+Each file goes to the reader for its format. Calibration and discharge
+calculations are handled separately in scripts/processing/.
 """
 
 import argparse
@@ -16,8 +15,8 @@ from .general_logger import read_general_logger
 
 
 def _csv_header(path):
-    # Dispatch must tolerate the same encodings as the reader or a valid legacy
-    # WinSitu file could fail before it reaches `read_aquatroll()`.
+    # Use the same encodings as the Aqua TROLL reader so older WinSitu files
+    # can get through this first check too.
     for encoding in ("utf-8-sig", "cp1252"):
         try:
             with path.open("r", encoding=encoding, newline="") as stream:
@@ -32,7 +31,7 @@ def _csv_header(path):
 
 
 def read_data(path):
-    """Read one supported source file and return `(DataFrame, metadata)`."""
+    """Return a pandas table and its source metadata without writing files."""
 
     path = Path(path)
     if not path.is_file():
@@ -44,9 +43,8 @@ def read_data(path):
     if suffix in {".xls", ".xlsx"}:
         return read_general_logger(path)
     if suffix == ".csv":
-        # Calibration CSVs have compact, recognizable schemas. Other CSVs are
-        # given to the Aqua TROLL reader, which performs the stricter search for
-        # a real conductivity measurement table.
+        # Check for a calibration table first. Otherwise, let the Aqua TROLL
+        # reader look past any metadata rows for the measurement header.
         header = _csv_header(path)
         try:
             detect_calibration_type(header)
@@ -61,7 +59,10 @@ def read_data(path):
 
 
 def _write_processed(df, metadata, source, output_dir):
-    """Write reproducible normalized data separately from the untouched source."""
+    """Save the table and metadata using the source filename's stem.
+
+    Use a processed-data directory; existing files with these names are replaced.
+    """
 
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)

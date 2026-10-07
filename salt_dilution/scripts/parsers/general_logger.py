@@ -1,8 +1,7 @@
-"""Read General logger Excel exports without inventing channel meaning.
+"""Read General logger Excel files and combine their date and time columns.
 
-The General logger format is structurally different from Aqua TROLL exports.
-This reader creates a usable timestamp but otherwise preserves channel values
-and recorded units so later processing can decide what each channel represents.
+Keep the original channel names, values and units. The instrument setup is
+needed to tell us what each channel measures.
 """
 
 from datetime import datetime, time
@@ -14,8 +13,7 @@ from .filename_metadata import parse_filename
 
 
 def _find_header_row(path):
-    # Some logger workbooks begin with descriptive rows instead of the actual
-    # measurement header, so inspect a small prefix rather than assuming row 1.
+    # Notes can appear above the data. Look for the header in the first 25 rows.
     preview = pd.read_excel(path, header=None, nrows=25)
     for index, row in preview.iterrows():
         labels = {
@@ -31,7 +29,7 @@ def _find_header_row(path):
 def _time_text(value):
     if isinstance(value, (datetime, time)):
         return value.strftime("%H:%M:%S")
-    # Excel may store a time-of-day as a fraction of 24 hours rather than text.
+    # Excel can store time as a fraction of a day: 0.5 means noon.
     if isinstance(value, (int, float)) and 0 <= value < 1:
         seconds = round(value * 24 * 60 * 60)
         hours, seconds = divmod(seconds, 3600)
@@ -41,7 +39,7 @@ def _time_text(value):
 
 
 def read_general_logger(path):
-    """Return a General logger table with a combined timestamp when available."""
+    """Return the logger table and source metadata, adding a timestamp if found."""
 
     path = Path(path)
     suffix = path.suffix.lower()
@@ -63,8 +61,8 @@ def read_general_logger(path):
         times = df["Time"].map(_time_text)
         df["timestamp"] = pd.to_datetime(dates + " " + times, errors="raise")
 
-    # Keep generic channel names and units as recorded. Channel position alone
-    # is not enough evidence to rename a value as conductivity or temperature.
+    # A name like "Ch1" doesn't tell us whether it measures conductivity or
+    # temperature, so keep the recorded names and units.
     filename_meta = parse_filename(path)
     metadata = {
         "source_file": str(path),

@@ -1,8 +1,7 @@
-"""Extract best-effort metadata hints from source filenames.
+"""Pick out dates, instrument IDs and other hints from known filename patterns.
 
-Filename metadata is deliberately provisional. A filename can help identify a
-date, source type, site, or bank, but embedded metadata and field records remain
-authoritative when they disagree or provide more detail.
+These are hints to check against the file contents and field records, not
+verified trial metadata. This module doesn't compare or reconcile those sources.
 """
 
 from pathlib import Path
@@ -23,12 +22,12 @@ def _normalize_bank(value):
 
 
 def parse_filename(path):
-    """Return only filename fields that can be parsed without inventing values."""
+    """Return fields suggested by a known filename pattern, or an empty dict."""
 
     name = Path(path).stem
     lower = name.lower()
 
-    # VuSitu's own export names encode a full timestamp and source type.
+    # VuSitu export names include the date, time and report type.
     vendor = re.search(
         r"v(?:u)?situ_(livereadings|log)_(\d{4})-(\d{2})-(\d{2})_(\d{2})-(\d{2})-(\d{2})",
         lower,
@@ -41,8 +40,8 @@ def parse_filename(path):
             "source_type": SOURCE_TYPES[source],
         }
 
-    # Canonical/legacy project names are less regular, so parse them one token
-    # at a time and stop adding metadata when a component is not supported.
+    # Project filenames vary. Read optional parts in order, then treat the next
+    # part as the site label; field records still need to confirm that guess.
     parts = re.split(r"[_\s]+", name)
     if not parts or not re.fullmatch(r"\d{8}", parts[0]):
         return {}
