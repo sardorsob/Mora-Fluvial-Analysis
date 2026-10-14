@@ -1,0 +1,31 @@
+{
+  "solution_secondary": {
+    "calibration_basis": "relative_concentration",
+    "required_calibration_fields": [
+      "injectate_aliquot_ml",
+      "secondary_water_initial_ml",
+      "calibration_water_initial_ml"
+    ],
+    "discharge_input": "injection_solution_volume_ml"
+  },
+  "mass_stock_river": {
+    "calibration_basis": "mass_concentration",
+    "stock_water_source": "river",
+    "required_calibration_fields": [
+      "stock_salt_mass_g",
+      "stock_solution_final_ml",
+      "calibration_water_initial_ml"
+    ],
+    "discharge_input": "salt_mass_g"
+  },
+  "mass_stock_deionized": {
+    "calibration_basis": "mass_concentration",
+    "stock_water_source": "deionized",
+    "required_calibration_fields": [
+      "stock_salt_mass_g",
+      "stock_solution_final_ml",
+      "calibration_water_initial_ml"
+    ],
+    "discharge_input": "salt_mass_g"
+  }
+}
