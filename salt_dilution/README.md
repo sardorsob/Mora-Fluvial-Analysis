@@ -17,6 +17,8 @@ Historical notebooks are preserved for provenance, but they are no longer the ma
 
 ## Parsers
 
+The [four curated salt tables](data/records/README.md) hold physical releases, calibration preparations, observed points and candidate recording associations. The [field-data schema](../docs/field_data_schema.md) defines that compact interface and the preserved [broader transcription bundles](data/processed/field_notes/README.md), which also contain sediment and controlled seismic-source records. The populated tables need scientific review; file associations, units, clocks and calibration inputs must be checked before calculations.
+
 The parser layer has one public entry point:
 
 ```python

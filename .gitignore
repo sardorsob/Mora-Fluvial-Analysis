@@ -26,6 +26,7 @@ __pycache__/
 # Salt-dilution parser outputs and generated analysis runs stay local.
 /salt_dilution/data/processed/*
 !/salt_dilution/data/processed/.gitkeep
+!/salt_dilution/data/processed/README.md
 /salt_dilution/results/*
 !/salt_dilution/results/README.md
 !/salt_dilution/results/_template/

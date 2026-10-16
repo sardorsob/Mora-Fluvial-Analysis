@@ -12,6 +12,7 @@ This repository brings two existing research codebases into one self-contained p
 - [Naming conventions](docs/naming_conventions.md): rules for naming files.
 - [Provenance](docs/provenance.md) and [source manifest](docs/source_manifest.csv): source revisions and every original-to-new filename.
 - [Validation](docs/validation.md): what was checked and what remains unverified.
+- [October 16 local parser run](docs/parser_run_2026_10_16.md): saved stream readings, source checks and quarantined clock-only exports.
 - [References](docs/references/README.md): salt-dilution methodology references.
 
 ## Layout
@@ -36,7 +37,8 @@ mora-fluvial-analysis/
 │   ├── data/
 │   │   ├── examples/
 │   │   ├── raw/
-│   │   └── processed/
+│   │   ├── records/                  Curated notebook tables and provenance
+│   │   └── processed/                Local normalized stream readings
 │   └── results/
 │       └── _template/
 └── fluvial_seismology/
@@ -59,6 +61,6 @@ mora-fluvial-analysis/
         └── _template/
 ```
 
-Each run keeps its figures, tables, and `run_info.json` together. Raw field data, processed field data, and generated runs are ignored by Git. Small source examples and their inventory are tracked. Original instrument filenames are retained.
+Each run keeps its figures, tables, and `run_info.json` together. The small curated salt records, their provenance and historical examples/inventory are tracked. Salt raw exports already present in Git retain their original instrument filenames. Large normalized stream readings and generated runs stay local and ignored; fluvial-seismology field inputs also retain their existing ignore rules.
 
 The archived source repositories remain independent and unchanged. See [LICENSE](LICENSE) for the scope of retained source notices; this import does not assign a new blanket license to the combined work.
