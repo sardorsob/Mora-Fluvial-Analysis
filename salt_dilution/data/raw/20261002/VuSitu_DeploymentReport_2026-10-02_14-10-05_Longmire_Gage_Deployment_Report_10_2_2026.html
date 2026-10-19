@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Deployment Report 10/2/2026</title>
+    <meta name="isi-report-type" content="DeploymentReport"/>
+    <meta name="isi-report-version" content="1"/>
+    <meta name="isi-report-created" content="2026-10-19T10:50:16.0383231-07:00"/>
+    <meta name="isi-report-id" content="77b9d7a4-5835-4d03-a1ee-ef3603b547a2"/>
+
+    <!-- Raw JSON deployment data, which may be exported or extracted programatically -->
+    <script id="isi-deployment-data" type="application/json">{"model_version":1,"creation_time":"2026-10-02T14:10:05.22173-07:00","report":{"report_name":"Deployment Report 10/2/2026","technician_name":"Kenyon, T","field_notes":"Salty Rocks day 1\n"},"devices":[{"class":"isi-device","device_type":"troll_com_plus","hardware_version":"3","firmware_version":"1.07","bootcode_version":"1.01","manufacture_date":"2025-08-12T12:44:45.0529937+00:00","capabilities":{},"status":{"battery":{"remaining_percent":77,"last_changed":"2025-08-12T05:44:45.0529937-07:00"}},"vendor":"In-Situ","model":"TROLL Com Plus","serial_number":"1250803","role":"controller","settings":{"modbus":{"address":1,"mode":"rtu","baud_rate":19200,"data_bits":8,"parity":"even","stop_bits":"one"},"level_references":[],"derived_parameters":[]},"sensors":[{"class":"fixed_sensor","sensor_type":"pressure_30_psi_absolute_barometric"}],"parameters":[{"parameter_type":"barometric_pressure","unit_type":"millibars"},{"parameter_type":"temperature","unit_type":"celsius"}],"warnings":[]},{"class":"isi-device","device_type":"aqua_troll_200","hardware_version":"4","firmware_version":"2.04","bootcode_version":"1.10","manufacture_date":"2020-12-12T22:32:50+00:00","capabilities":{},"status":{"battery":{"remaining_percent":29,"last_changed":"2020-12-22T06:42:37.5269927-08:00"},"data_log_memory":{"remaining_percent":89,"total_bytes":4194304,"used_bytes":458752}},"vendor":"In-Situ","model":"Aqua TROLL 200","serial_number":"790478","role":"instrument","settings":{"analog_output":{"enabled":false,"parameter_type":"pressure","output_unit":"pounds_per_square_inch","output_value_4ma":0,"output_value_20ma":100},"modbus":{"address":1,"mode":"rtu","baud_rate":19200,"data_bits":8,"parity":"even","stop_bits":"one"},"level_references":[],"derived_parameters":[{"source_parameter_type":"specific_conductivity","source_unit_type":"microsiemens_per_centimeter","derived_parameter_type":"total_dissolved_solids","derived_unit_type":"parts_per_thousand","scale_factor":0.0006500000017695129}],"sdi12":{"enabled":true,"address":"0","parameters":[{"index":0,"parameter_type":"pressure","unit_type":"pounds_per_square_inch"},{"index":1,"parameter_type":"temperature","unit_type":"celsius"},{"index":2,"parameter_type":"actual_conductivity","unit_type":"microsiemens_per_centimeter"}]},"specific_gravity":{"auto_correction":"enabled","default_specific_gravity":1}},"sensors":[{"class":"fixed_sensor","sensor_type":"pressure_30_psi_absolute_with_conductivity"}],"parameters":[{"parameter_type":"pressure","unit_type":"pounds_per_square_inch"},{"parameter_type":"temperature","unit_type":"celsius"},{"parameter_type":"depth","unit_type":"feet"},{"parameter_type":"actual_conductivity","unit_type":"microsiemens_per_centimeter"},{"parameter_type":"specific_conductivity","unit_type":"microsiemens_per_centimeter"},{"parameter_type":"salinity","unit_type":"practical_salinity_units"},{"parameter_type":"total_dissolved_solids","unit_type":"parts_per_thousand"},{"parameter_type":"resistivity","unit_type":"ohm_centimeters"},{"parameter_type":"density_of_water","unit_type":"grams_per_cubic_centimeter"}],"active_log":{"id":"4e2920e6-5934-51a2-bcb4-f90decc31bac","status":"ready","name":"SaltyRocks_20261002","log_type":"linear_average","recording_interval":"PT10M","averaging_sample_count":10,"averaging_sample_interval":"PT1S","steps":[],"wrapping_enabled":true,"zero_level_on_start":false,"location":{"name":"Longmire Gage","id":"2da5b8c6-cd72-4fbe-a534-b8b1f91c89bc","latitude":46.7490981,"longitude":-121.8089474},"parameters":[{"parameter_type":"pressure","unit_type":"pounds_per_square_inch"},{"parameter_type":"temperature","unit_type":"celsius"},{"parameter_type":"depth","unit_type":"feet"},{"parameter_type":"actual_conductivity","unit_type":"microsiemens_per_centimeter"},{"parameter_type":"specific_conductivity","unit_type":"microsiemens_per_centimeter"},{"parameter_type":"density_of_water","unit_type":"grams_per_cubic_centimeter"}]},"warnings":[]}],"location":{"name":"Longmire Gage","id":"2da5b8c6-cd72-4fbe-a534-b8b1f91c89bc","latitude":46.7490981,"longitude":-121.8089474},"vusitu":{"app_version":"2.8.7","mobile_device":{"manufacturer":"samsung","model":"SM-S921U","platform":"Android","os_version":"16"}}}</script>
+
+    <!-- Include 'Source Sans 3' font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>:root {
+    --brand-black: #221F20;
+    --brand-black-70: #646263;
+    --brand-yellow: #FFB937;
+    --brand-blue: #00238C;
+    --brand-blue-80: #334FA3;
+    --brand-blue-70: #4D65AF;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans 3', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: var(--brand-black);
+}
+
+.columnLayout {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0 1fr [content-left] repeat(10, 1fr)  [content-right] 1fr 0; /* 12 columns */
+    column-gap: 32px;
+}
+
+header {
+    height: 156px;
+    background: var(--brand-black);
+    border-bottom: 8px solid var(--brand-yellow);
+}
+
+header * {
+    color: white;
+    fill: white;
+}
+
+#header-contents {
+    grid-column: content-left / content-right;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#report-title {
+    text-transform: uppercase;
+    font-size: 48px;
+    font-weight: bold;
+    flex-grow: 1;
+    white-space: nowrap;
+}
+
+#branding {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin-left: 32px;
+}
+
+#produced-by {
+    font-size: 16px;
+    font-style: italic;
+}
+
+#in-situ-logo svg {
+    height: 24px;
+    width: auto;
+}
+
+#instructions {
+    grid-column: content-left / content-right;
+    margin: 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--brand-black-70);
+}
+
+#buttons {
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+    gap: 12px;
+}
+
+#instructions button {
+    border: none;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 12px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#instructions button svg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+
+#json-button {
+    background-color: var(--brand-blue-70);
+}
+
+#csv-button {
+    background-color: var(--brand-blue);
+}
+
+h1 {
+    grid-column: content-left / content-right;
+    margin: 12px 0;
+    line-height: 125%;
+}
+
+table {
+    grid-column: content-left / content-right;
+    width: 100%;
+    margin-bottom: 32px;
+    border-collapse: collapse;
+}
+
+table caption {
+    text-align: left;
+    color: var(--brand-blue-80);
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 150%;
+    white-space: nowrap;
+}
+
+th {
+    text-align: left;
+    vertical-align: top;
+    font-weight: bold;
+    white-space: nowrap;
+    width: 256px;
+    min-width: 256px;
+}
+
+th[scope="col"] {
+    color: var(--brand-black-70);
+    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 150%;
+}
+
+td {
+    white-space: pre-wrap;
+}
+
+.TabularData {
+    display: block;
+    overflow-x: auto;
+}
+
+hr {
+    background-color: var(--brand-yellow);
+    border: none;
+    height: 4px;
+    grid-column: content-left / content-right;
+    width: 100%;
+    margin-top: 16px;
+    margin-bottom: 0;
+}
+
+/* TABLET: Responsive styling for mid-sized screens */
+@media only screen and (max-width: 1024px) {
+
+    .columnLayout {
+        grid-template-columns: 0 [content-left] repeat(8, 1fr)  [content-right] 0; /* 8 columns */
+    }
+
+    header {
+        height: 146px;
+    }
+
+    #report-title {
+        font-size: 40px;
+    }
+}
+
+/* MOBILE: Responsive styling for smaller screens */
+@media only screen and (max-width: 760px) {
+
+    .columnLayout {
+        grid-template-columns: 0 [content-left] repeat(4, 1fr)  [content-right] 0; /* 4 columns */
+        gap: 12px;
+    }
+
+    header {
+        height: 64px;
+    }
+
+    #report-title {
+        font-size: 24px;
+    }
+
+    #branding {
+        flex-direction: column;
+        align-items: end;
+    }
+
+    #produced-by {
+        font-size: 8px;
+        margin: 0;
+    }
+
+    #in-situ-logo svg {
+        height: 14px;
+    }
+
+    #instructions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #instructions span {
+        text-align: center;
+    }
+
+    #buttons {
+        margin: 0;
+    }
+
+    .NameValue {
+        margin-bottom: 20px;
+    }
+
+    .NameValue th[scope="row"] {
+        display: block;
+    }
+
+    .NameValue td {
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .TabularData {
+        overflow-x: scroll;
+    }
+}
+
+/* PRINT: Responsive styling for printing */
+@media print {
+    body {
+        font-size: 12pt;
+    }
+
+    .columnLayout {
+        grid-template-columns: 0 [content-left] 1fr  [content-right] 0;
+    }
+
+    header {
+        height: 120px;
+    }
+
+    #report-title {
+        font-size: 40px;
+    }
+
+    #instructions {
+        display: none;
+    }
+
+    table {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        overflow-x: visible;
+    }
+
+    th, td {
+        vertical-align: top;
+        padding-right: 15px;
+        break-inside: avoid;
+    }
+
+    th {
+        white-space: pre-wrap;
+        min-width: 0;
+    }
+
+    .NameValue {
+        table-layout: auto;
+    }
+
+    .NameValue th[scope="row"] {
+        width: 33%;
+    }
+
+    .NameValue td {
+        width: 67%;
+    }
+}</style>
+    <script>function exportJson() {
+    let obj = getData();
+    const formattedJson = JSON.stringify(obj, null, 2);
+    download(formattedJson, 'application/json', '.json');
+}
+
+function exportCsv() {
+    let obj = getData();
+    let csv = convertToCsv(obj);
+    download(csv, 'text/csv', '.csv');
+}
+
+function getData() {
+    let data = document.getElementById('isi-deployment-data');
+    if (!data) { throw new Error("Missing data element in document"); }
+    return JSON.parse(data.textContent);
+}
+
+function download(content, type, ext) {
+    let url = URL.createObjectURL(new Blob([content], {type: type}));
+    let a = document.createElement('a');
+    a.href = url;
+    a.download = (window.location.pathname.split('/').pop() || 'export.html').replace(/\.html?$/i, ext);
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function convertToCsv(obj) {
+    let rows = [];
+    convertToRows(obj, '', rows);
+
+    let lastPath = null;
+    let csvLines = ['Path,Key,Value', ''];
+    for (const row of rows) {
+        let isPathShown = !!row.path && row.path !== lastPath;
+        if (isPathShown) {csvLines.push('');} // Add a blank line between paths
+        csvLines.push((isPathShown ? escapeForCsv(row.path) : '') + ',' + escapeForCsv(row.key) + ',' + escapeForCsv(row.value));
+        lastPath = row.path;
+    }
+ 
+    return csvLines.join('\n')
+}
+
+/**
+ * Converts the provided object to an array of rows for CSV conversion.
+ * @param node - The object or array to convert.
+ * @param path - The current path prefix (e.g. "devices [0] / status").
+ * @param rows - The array to append to.
+ * @returns Array of {path, key, value}.
+ */
+function convertToRows(node, path, rows) {
+    if (Array.isArray(node)) {
+        node.forEach(function (item, i) {
+            if (isObject(item)) {
+                convertToRows(item, `${path} [${i}]`, rows);
+            } else {
+                rows.push({path: path, key: `[${i}]`, value: item});
+            }
+        });
+    } else if (isObject(node)) {
+        // Process primitive values first, before nested objects,
+        // so parent properties appear above their children in the CSV.
+        let nested = [];
+        for (const [key, val] of Object.entries(node)) {
+            if (isObject(val)) {
+                nested.push([key, val]);
+            } else {
+                rows.push({path: path, key: key, value: val});
+            }
+        }
+        for (const [key, val] of nested) {
+            let newPath = path ? `${path} / ${key}` : key;
+            convertToRows(val, newPath, rows);
+        }
+    }
+}
+
+function isObject(val) { return typeof val === 'object' && val !== null; }
+
+/**
+ * Wraps the value in double quotes if it contains commas, quotes, or newlines.
+ * Any existing double quotes are doubled ("") per the CSV spec.
+ */
+function escapeForCsv(value) {
+    let str = String(value);
+    if (/[,"\n\r]/.test(str)) {
+        const escaped = str.replace(/"/g, '""');
+        str = `"${escaped}"`;
+    }
+    return str;
+}
+</script>
+</head>
+<body>
+    
+<header class="columnLayout">
+    <div id="header-contents">
+        <h1 id="report-title">Deployment Report</h1>
+        <div id="branding">
+            <span id="produced-by">Produced by</span>
+            <div id="in-situ-logo"><svg width="417" height="77" viewBox="0 0 417 77" fill="black" xmlns="http://www.w3.org/2000/svg">
+    <path d="M51.7578 41.2998C54.4086 40.4251 56.0879 38.2926 55.5086 36.5367C54.9292 34.7808 52.3106 34.0664 49.6598 34.9411C47.0089 35.8157 45.3296 37.9482 45.9089 39.7041C46.4883 41.46 49.1069 42.1744 51.7578 41.2998Z"/>
+    <path d="M69.615 12.9189C65.5741 12.1003 63.296 11.6412 60.8402 12.9492C57.0419 14.9675 55.4697 19.814 53.5857 25.5137C53.2912 26.4102 52.451 29.8188 51.745 33.0064C55.4308 32.7336 58.064 34.5656 57.8302 37.1989C61.243 36.7138 64.9894 36.1118 66.8907 35.6007C74.9075 33.4439 84.5874 31.5902 85.8564 27.0902C86.3458 25.3491 85.393 23.9372 83.7082 21.4468C79.3382 14.9978 72.2309 13.4473 69.615 12.9189Z"/>
+    <path d="M39.8828 15.6174C44.7033 13.9023 47.3019 12.9754 49.3245 14.2314C52.0834 15.9465 52.0964 20.6631 52.0834 25.6438C52.0834 26.5144 51.7759 29.8709 51.4121 33.0283C47.7047 33.4268 44.3568 35.8045 43.6985 38.4725C40.3505 38.5981 36.6865 38.676 34.9064 38.4985C28.5094 37.8661 19.0764 37.5889 18.3185 33.7169C17.9763 31.9629 19.5398 30.2218 22.433 27.0038C24.1654 25.0764 29.7698 19.2208 39.8828 15.6174Z"/>
+    <path d="M61.543 60.6424C56.7226 62.3575 54.1239 63.2844 52.1013 62.0284C49.3425 60.3132 49.3295 55.5967 49.3425 50.616C49.3425 49.7454 49.65 46.3888 50.0138 43.2315C53.7212 42.833 57.0691 40.4552 57.7274 37.7873C61.0753 37.6617 64.7394 37.5837 66.5194 37.7613C72.9164 38.3937 82.3494 38.6708 83.1074 42.5428C83.4495 44.2969 81.886 46.038 78.9929 49.256C77.2605 51.1833 71.6604 57.0389 61.543 60.6424Z"/>
+    <path d="M31.8149 63.3444C35.8558 64.163 38.1339 64.6221 40.5896 63.3141C44.388 61.2958 45.9601 56.4494 47.8442 50.7497C48.1387 49.8531 48.9789 46.4446 49.6848 43.2569C45.9991 43.5298 43.3658 41.6977 43.5997 39.0644C40.1868 39.5495 36.4405 40.1515 34.5391 40.6626C26.5224 42.8195 16.8424 44.6732 15.5734 49.1731C15.084 50.9142 16.0369 52.3262 17.7216 54.8165C22.0917 61.2655 29.1989 62.816 31.8149 63.3444Z"/>
+    <path d="M95.3066 11.9812C75.4011 -6.09668 40.8349 -2.22469 18.6426 13.6574C10.0454 19.8075 8.15274 24.1429 5.01705 28.5952C7.76727 25.1001 12.5964 19.4523 16.8841 16.4379C33.563 4.70936 56.7688 1.82486 73.0623 8.69395C75.7345 9.82003 77.8308 11.3229 81.5338 13.0943C84.9857 14.7445 95.3066 11.9812 95.3066 11.9812Z"/>
+    <path d="M3.84652 31.002C-7.57881 52.3412 7.64485 72.3811 33.7178 76.4394C39.9242 77.4052 49.5651 76.5303 55.9361 75.6035C50.8255 76.1405 42.6528 76.5087 37.6201 75.7204C18.5634 72.7579 9.34696 60.6612 9.24734 48.6165C9.23002 46.2821 9.88401 42.2672 9.90566 39.7768C9.94031 35.6709 3.84652 31.002 3.84652 31.002Z"/>
+    <path d="M60.4327 74.713C91.9888 67.0296 107.862 45.5994 104.025 25.7804C103.12 21.0899 100.131 17.4648 96.9089 13.9393C99.252 16.8974 101.14 19.9205 101.881 23.7145C104.159 35.482 96.7746 46.5913 85.5572 54.7294C80.3902 58.4757 72.7286 61.122 68.1853 63.8549C63.6464 66.5878 60.4327 74.713 60.4327 74.713Z"/>
+    <path d="M200.858 41.612H225.51L221.448 54.6572H196.786L200.858 41.612Z"/>
+    <path d="M249.786 49.0558C249.396 50.3334 249.331 51.4812 249.526 52.3994C250.128 55.4571 254.545 56.1024 258.478 56.1024C261.938 56.1024 267.491 55.2449 268.639 51.4812C269.444 48.8435 266.685 48.1376 255.632 45.6429C245.467 43.3647 233.756 41.1559 236.892 30.9129C240.482 19.167 255.572 14.1213 269.695 14.1213C284.586 14.1213 296.457 18.3181 293.248 30.7007H273.269C274.239 28.7777 273.485 27.4957 272.017 26.6468C270.566 25.7199 268.27 25.3648 266.157 25.3648C263.281 25.3648 258.4 25.9321 257.529 28.782C256.802 32.4071 266.36 33.191 275.447 35.1833C284.542 37.18 293.135 40.5149 290.281 49.8397C286.227 63.0798 268.496 67.3459 253.216 67.3459C245.437 67.3459 223.881 65.2843 228.65 49.0601H249.786V49.0558Z"/>
+    <path d="M321.483 24.8204H302.465L305.631 14.4561H324.649L321.483 24.8204ZM301.053 29.2078H320.075L308.771 66.1345H289.745L301.053 29.2078Z"/>
+    <path d="M350.197 29.2069H359.452L356.789 37.8864H347.533L343.601 50.7626C342.544 54.1799 343.154 55.6698 347.953 55.6698C349.391 55.6698 350.859 55.5961 352.349 55.4575L349.075 66.1336C345.233 66.1336 340.785 66.5667 336.753 66.5667C328.689 66.5667 320.031 65.6356 323.132 55.5355L328.524 37.8864H321.737L324.392 29.2069H331.175L334.609 17.9721H353.631L350.197 29.2069Z"/>
+    <path d="M405.499 66.1353H387.148L388.586 61.4361H388.4C383.705 65.1348 378.031 67.0621 370.439 67.0621C361.513 67.0621 354.583 62.9996 357.173 54.5367L364.921 29.2042H383.948L378.027 48.5598C376.715 52.8302 376.472 55.8143 382.038 55.8143C385.312 55.8143 390.007 54.5973 391.817 48.694L397.772 29.2042H416.794L405.499 66.1353Z"/>
+    <path d="M123.848 15.3335H144.979L129.44 66.1327H108.3L123.848 15.3335Z"/>
+    <path d="M147.081 29.2074H165.431L163.989 33.9023H164.184C168.875 30.2035 174.553 28.2805 182.141 28.2805C191.076 28.2805 197.997 32.3344 195.411 40.8017L187.654 66.1342H168.636L174.557 46.7786C175.861 42.5081 176.116 39.524 170.538 39.524C167.272 39.524 162.582 40.7367 160.771 46.64L154.803 66.1342H135.781L147.081 29.2074Z"/>
+</svg></div>
+        </div>
+    </div>
+</header>
+
+<div class="columnLayout">
+    
+    <div id="instructions">
+        <span>
+            Print to PDF to export this report as a PDF.
+        </span>
+        <div id="buttons">
+            <button id="json-button" type="button" onclick="exportJson()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16.5278 8.29343H13.2303V2.62842H9.93275V8.29343H6.63525L11.5828 14.7659L16.5278 8.29343Z"/>
+    <path d="M21.33 11.7729V17.8979H2.67V11.7729H0V17.8979V21.368H2.67H21.33H23.8825H24V11.7729H21.33Z"/>
+</svg>
+                <span>JSON</span>
+            </button>
+            <button id="csv-button" type="button" onclick="exportCsv()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16.5278 8.29343H13.2303V2.62842H9.93275V8.29343H6.63525L11.5828 14.7659L16.5278 8.29343Z"/>
+    <path d="M21.33 11.7729V17.8979H2.67V11.7729H0V17.8979V21.368H2.67H21.33H23.8825H24V11.7729H21.33Z"/>
+</svg>
+                <span>CSV</span>
+            </button>
+        </div>
+    </div>
+
+    <h1>Report Information</h1>
+        <table class="NameValue">
+            <caption></caption>
+            <thead>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                            <th scope="row">Report Name:</th>
+                            <td>Deployment Report 10/2/2026</td>
+                </tr>
+                <tr>
+                            <th scope="row">Create Date and Time:</th>
+                            <td>10/2/2026 2:10 PM (UTC-07:00)</td>
+                </tr>
+                <tr>
+                            <th scope="row">Location Name:</th>
+                            <td>Longmire Gage</td>
+                </tr>
+                <tr>
+                            <th scope="row">Coordinates:</th>
+                            <td>46.7490981&#176;, -121.8089474&#176;</td>
+                </tr>
+                <tr>
+                            <th scope="row">HydroVu User:</th>
+                            <td>Not logged in</td>
+                </tr>
+                <tr>
+                            <th scope="row">Technician Name:</th>
+                            <td>Kenyon, T</td>
+                </tr>
+                <tr>
+                            <th scope="row">Notes:</th>
+                            <td>Salty Rocks day 1
+</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr/>
+    <h1>TROLL Com Plus</h1>
+        <table class="NameValue">
+            <caption>Overview</caption>
+            <thead>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                            <th scope="row">Manufacturer:</th>
+                            <td>In-Situ</td>
+                </tr>
+                <tr>
+                            <th scope="row">Serial Number:</th>
+                            <td>1250803</td>
+                </tr>
+                <tr>
+                            <th scope="row">Firmware Version:</th>
+                            <td>1.07</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="NameValue">
+            <caption>Modbus Communication</caption>
+            <thead>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                            <th scope="row">Address:</th>
+                            <td>1</td>
+                </tr>
+                <tr>
+                            <th scope="row">Mode:</th>
+                            <td>RTU</td>
+                </tr>
+                <tr>
+                            <th scope="row">Baud:</th>
+                            <td>19200</td>
+                </tr>
+                <tr>
+                            <th scope="row">Data Bits:</th>
+                            <td>8</td>
+                </tr>
+                <tr>
+                            <th scope="row">Parity:</th>
+                            <td>Even</td>
+                </tr>
+                <tr>
+                            <th scope="row">Stop Bits:</th>
+                            <td>1</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr/>
+    <h1>Aqua TROLL 200</h1>
+        <table class="NameValue">
+            <caption>Overview</caption>
+            <thead>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                            <th scope="row">Manufacturer:</th>
+                            <td>In-Situ</td>
+                </tr>
+                <tr>
+                            <th scope="row">Serial Number:</th>
+                            <td>790478</td>
+                </tr>
+                <tr>
+                            <th scope="row">Firmware Version:</th>
+                            <td>2.04</td>
+                </tr>
+                <tr>
+                            <th scope="row">Pressure:</th>
+                            <td>Non-Vented</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="NameValue">
+            <caption>Log</caption>
+            <thead>
+            <tr>
+                    <th scope="col">Log Properties</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                            <th scope="row">Log Status:</th>
+                            <td>Ready to Start</td>
+                </tr>
+                <tr>
+                            <th scope="row">Log Name:</th>
+                            <td>SaltyRocks_20261002</td>
+                </tr>
+                <tr>
+                            <th scope="row">Start Time:</th>
+                            <td>-</td>
+                </tr>
+                <tr>
+                            <th scope="row">Log Type:</th>
+                            <td>Linear Average</td>
+                </tr>
+                <tr>
+                            <th scope="row">Interval:</th>
+                            <td>10 Minutes</td>
+                </tr>
+                <tr>
+                            <th scope="row">Averaging Interval:</th>
+                            <td>1 Second</td>
+                </tr>
+                <tr>
+                            <th scope="row">Sampling Size:</th>
+                            <td>10 Readings</td>
+                </tr>
+                <tr>
+                            <th scope="row">Log Wrapping:</th>
+                            <td>Enabled</td>
+                </tr>
+                <tr>
+                            <th scope="row">Log ID:</th>
+                            <td>4e2920e6-5934-51a2-bcb4-f90decc31bac</td>
+                </tr>
+                <tr>
+                            <th scope="row">Logged Parameters and Units:</th>
+                            <td>Pressure (psi)
+Temperature (&#176;C)
+Depth (ft)
+Actual Conductivity (&#181;S/cm)
+Specific Conductivity (&#181;S/cm)
+Density (g/cm&#179;)</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="NameValue">
+            <caption></caption>
+            <thead>
+            <tr>
+                    <th scope="col">Location Properties</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                            <th scope="row">Location Name:</th>
+                            <td>Longmire Gage</td>
+                </tr>
+                <tr>
+                            <th scope="row">Coordinates:</th>
+                            <td>46.7490981&#176;, -121.8089474&#176;</td>
+                </tr>
+                <tr>
+                            <th scope="row">Location ID:</th>
+                            <td>2da5b8c6-cd72-4fbe-a534-b8b1f91c89bc</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="NameValue">
+            <caption>Settings</caption>
+            <thead>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                            <th scope="row">Specific Gravity:</th>
+                            <td>Automatic</td>
+                </tr>
+                <tr>
+                            <th scope="row">Derived Parameters:</th>
+                            <td>Total Dissolved Solids (ppt), Scale Factor = 0.00065</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="NameValue">
+            <caption>Modbus Communication</caption>
+            <thead>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                            <th scope="row">Address:</th>
+                            <td>1</td>
+                </tr>
+                <tr>
+                            <th scope="row">Mode:</th>
+                            <td>RTU</td>
+                </tr>
+                <tr>
+                            <th scope="row">Baud:</th>
+                            <td>19200</td>
+                </tr>
+                <tr>
+                            <th scope="row">Data Bits:</th>
+                            <td>8</td>
+                </tr>
+                <tr>
+                            <th scope="row">Parity:</th>
+                            <td>Even</td>
+                </tr>
+                <tr>
+                            <th scope="row">Stop Bits:</th>
+                            <td>1</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="NameValue">
+            <caption>SDI-12 Communication</caption>
+            <thead>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                            <th scope="row">SDI-12:</th>
+                            <td>Enabled</td>
+                </tr>
+                <tr>
+                            <th scope="row">Address:</th>
+                            <td>0</td>
+                </tr>
+                <tr>
+                            <th scope="row">Parameter Order:</th>
+                            <td>Pressure (psi)
+Temperature (&#176;C)
+Actual Conductivity (&#181;S/cm)</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="NameValue">
+            <caption>Analog Output</caption>
+            <thead>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                            <th scope="row">Analog Output:</th>
+                            <td>Disabled</td>
+                </tr>
+            </tbody>
+        </table>
+
+</div>
+</body>
+</html>
+<!-- GVx82730XPFVMieJhHiapc4NdNZORfE99vFeXM/5Tmz7p+AAVsVjnmqfDmBD/XdEjjTtj2cBTGgu7b4Eefz9Tw== -->
