@@ -36,6 +36,20 @@ The focused readers are:
 
 `read_data()` is read-only. The CLI writes normalized CSV plus metadata JSON only when `--output` is supplied, and those files belong under `data/processed/`. The parser preserves full timestamps, keeps actual and specific conductivity distinct, retains extra source columns, and does not perform calibration or discharge calculations.
 
+For single-file and recursive folder commands, filters, metadata/UTC behavior,
+overwrite protection and the per-file manifest, see [reusable salt-data extraction](../docs/parser_ingestion.md).
+The same CLI now accepts directories; no separate PowerShell wrapper is required.
+
+```sh
+python -m salt_dilution.scripts.parsers.parse_data salt_dilution/data/raw --recursive --output salt_dilution/data/processed/new_run
+```
+
+Use a fresh output directory. Supporting deployment/instrument reports are
+identified and logged as skips, while malformed measurements are failures.
+The new inline VuSitu metadata layout is supported. Source clocks are retained;
+UTC is added only from explicit offsets. Source-only time values without dates
+are rejected, and separate temperature sensors remain separate channels.
+
 The three historical Aqua TROLL parser variants were replaced after their required source-reading behavior was covered by the focused readers and tests. Raw HTML/Excel source files remain unchanged.
 
 ## Known source limitations
