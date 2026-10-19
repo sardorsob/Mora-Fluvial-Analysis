@@ -56,11 +56,11 @@
   "tables": {
     "trials.csv": {
       "rows": 38,
-      "sha256": "cca168b7699e0b20eae510d73dafa670661e1adedd1a7081002f6610858379ef"
+      "sha256": "4f57b0ba3d551ef0b8fa6e8820e043d545b0222b49bc0646b449dede27acfb54"
     },
     "calibrations.csv": {
       "rows": 43,
-      "sha256": "3b122cebe646aa273a7a8694641679a2375a2b31d3515ce6202f2738406bc184"
+      "sha256": "0f07b4992a85ed140e9d1cd4a1ec9f64fbdb7cf57ce8b4dd7dc01adbb1d8839d"
     },
     "calibration_points.csv": {
       "rows": 262,
@@ -91,11 +91,5 @@
     "C": "ae85881ef5339438985b9b3528ebbc4c3263d16dd83cd9bd1ee94064d4c9dbff"
   },
   "procedure_profiles_sha256": "3c19a83554c7dae85e956b9d97e1efa55281a8bc603353ef734a8dec44a7d154",
-  "source_code_git_commit": "50301f70363cb3cda9e617595628b89ca3cf56f6",
-  "updated_on": "2026-10-19",
-  "inheritance_file": "inheritance.json",
-  "inheritance_sha256": "769cd5fd6ba2c1ace51200fc9eb6ea83a856735864379bf31615c7bf34a55abb",
-  "inheritance_source_commit": "18cc1061d157ffab400815b3f3976b1257047965",
-  "latest_inheritance_source_commit": "d1f7a015ca80d55fcbdac931076d4dc802c47a92",
-  "inheritance_revision": 2
+  "source_code_git_commit": "50301f70363cb3cda9e617595628b89ca3cf56f6"
 }
