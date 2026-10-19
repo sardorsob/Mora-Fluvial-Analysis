@@ -1,6 +1,8 @@
 {
-  "checked_on": "2026-10-16",
-  "status": "structural_checks_passed; scientific_review_pending",
+  "checked_on": "2026-10-19",
+  "status": "inheritance_table_checks_passed; scientific_review_pending",
+  "scope": "Manual protocol-setting resolution only. No source PDF, waveform, stream-response or discharge reanalysis. Historical validation is preserved separately below.",
+  "source_commit": "18cc1061d157ffab400815b3f3976b1257047965",
   "row_counts": {
     "trials": 38,
     "calibrations": 43,
@@ -12,64 +14,122 @@
     "PAR": 6
   },
   "procedure_counts": {
-    "unresolved": 27,
+    "unresolved": 14,
     "solution_secondary": 10,
-    "mass_stock_river": 4,
+    "mass_stock_river": 17,
     "mass_stock_deionized": 2
+  },
+  "inheritance_summary": {
+    "filled_cells": 79,
+    "trial_cells_filled": 17,
+    "calibration_cells_filled": 62,
+    "trial_rows_changed": 17,
+    "calibration_rows_changed": 17,
+    "nisqually_mass_populated_before": 13,
+    "nisqually_mass_populated_after": 30,
+    "nisqually_release_count": 32,
+    "calibration_procedure_populated_before": 16,
+    "calibration_procedure_populated_after": 29,
+    "calibration_count": 43
   },
   "recording_candidate_rows": 8,
   "unresolved_recording_rows": 34,
   "distinct_electronic_datasets": 7,
   "accepted_discharge_ready_rows": 0,
-  "excluded_source_rows": {
-    "trials": 1,
-    "calibrations": 2,
-    "calibration_points": 29
-  },
   "checks": [
-    "exact compact headers and CSV/JSON readback",
-    "unique primary/composite keys and foreign keys",
-    "all included releases represented in trial_inputs",
-    "controlled values and nullable finite numbers",
-    "original PDF hashes equal transcription evidence",
-    "stream candidate source/probe/path/hash checks",
-    "same dataset ID always points to one file",
-    "legacy dataset IDs reused only after full signal comparison",
-    "no date-only links promoted automatically",
-    "unequal October 4 additions preserved and total 46 mL",
-    "spill volume withheld",
-    "extra-diluted abandoned stock not flattened",
-    "stock final volume not inferred",
-    "no assumed UTC or unknown dry/solution forms",
-    "crossed-out or conductivity-empty rows excluded with provenance",
-    "independent readback of every point value against retained source tokens",
-    "all prior data/script file hashes checked; only the intended data README changed",
-    "October 16 CSV/provenance checksums and exact-header readback repeated before versioning"
+    "Original trials.csv and calibrations.csv bytes match fetched Git blob SHAs before editing.",
+    "Original manifest.json and validation_report.json objects match fetched Git blobs when serialized in their existing format.",
+    "Exactly 79 previously blank cells changed; every change is covered once by inheritance.json.",
+    "All previously populated CSV cells are unchanged.",
+    "Headers, row counts, row order, primary keys and sourcebook references are unchanged.",
+    "All donor values are populated in the original tables; donor and target sites match and donor dates are not later.",
+    "No cross-site inheritance; all Paradise and unresolved-site rows are unchanged.",
+    "All nonempty quantity fields in changed tables are finite and positive.",
+    "Calibration review_status remains needs_review throughout; no analysis-ready promotion.",
+    "UTC fields, physical injection forms, delivered-volume fields and final stock volumes are unchanged.",
+    "September spill volume remains blank and abandoned extra-dilution row is unchanged.",
+    "September 18 explicit 0.5 g recipe is preserved; October 4-5 inherit October 2 1 g recipe.",
+    "Updated CSVs round-trip exactly; JSON parses; current changed-table hashes match manifest.",
+    "calibration_points.csv, trial_inputs.csv, original provenance.json, procedure profiles, raw data and scientific code are not included in the change set."
   ],
-  "source_inputs_unchanged": true,
-  "preservation_check": {
-    "previous_files_checked": 535,
-    "unchanged_previous_files": 534,
-    "intentional_documentation_changes": [
-      "salt_dilution/data/README.md"
+  "limitations": [
+    "Inherited quantities are assumptions, not newly observed or verified delivered values.",
+    "Incomplete mixing, ambiguous handwriting, missing final stock volumes, clocks and associations remain unresolved.",
+    "Unchanged-file row counts and earlier source/stream validations are retained from the previous report, not new executions."
+  ],
+  "previous_validation": {
+    "checked_on": "2026-10-16",
+    "status": "structural_checks_passed; scientific_review_pending",
+    "row_counts": {
+      "trials": 38,
+      "calibrations": 43,
+      "calibration_points": 262,
+      "trial_inputs": 42
+    },
+    "study_site_release_counts": {
+      "NISQ": 32,
+      "PAR": 6
+    },
+    "procedure_counts": {
+      "unresolved": 27,
+      "solution_secondary": 10,
+      "mass_stock_river": 4,
+      "mass_stock_deionized": 2
+    },
+    "recording_candidate_rows": 8,
+    "unresolved_recording_rows": 34,
+    "distinct_electronic_datasets": 7,
+    "accepted_discharge_ready_rows": 0,
+    "excluded_source_rows": {
+      "trials": 1,
+      "calibrations": 2,
+      "calibration_points": 29
+    },
+    "checks": [
+      "exact compact headers and CSV/JSON readback",
+      "unique primary/composite keys and foreign keys",
+      "all included releases represented in trial_inputs",
+      "controlled values and nullable finite numbers",
+      "original PDF hashes equal transcription evidence",
+      "stream candidate source/probe/path/hash checks",
+      "same dataset ID always points to one file",
+      "legacy dataset IDs reused only after full signal comparison",
+      "no date-only links promoted automatically",
+      "unequal October 4 additions preserved and total 46 mL",
+      "spill volume withheld",
+      "extra-diluted abandoned stock not flattened",
+      "stock final volume not inferred",
+      "no assumed UTC or unknown dry/solution forms",
+      "crossed-out or conductivity-empty rows excluded with provenance",
+      "independent readback of every point value against retained source tokens",
+      "all prior data/script file hashes checked; only the intended data README changed",
+      "October 16 CSV/provenance checksums and exact-header readback repeated before versioning"
     ],
-    "all_existing_raw_processed_examples_inventory_and_scripts_unchanged": true,
-    "checked_on": "2026-10-14"
-  },
-  "original_transcription_validation_on": "2026-10-14",
-  "versioning_policy": {
-    "curated_records": "Version the four small CSV tables, provenance, manifest and validation report at the user's direction.",
-    "processed_stream_readings": "Remain local and Git-ignored; README is versioned."
-  },
-  "local_parser_run": {
-    "run_id": "2026-10-16_parser_ingestion",
-    "retained_csv_metadata_pairs": 143,
-    "retained_rows": 345642,
-    "unsupported_failed_or_empty_candidates": 28,
-    "quarantined_pairs": 2,
-    "unit_tests_passed": 22,
-    "raw_files_unchanged": true,
-    "generated_readings_git_ignored": true,
-    "note": "Normalization only; scientific review remains pending. The older transcription inventory retains the August duplicate's former path; current relocation is recorded in the parser run manifest."
+    "source_inputs_unchanged": true,
+    "preservation_check": {
+      "previous_files_checked": 535,
+      "unchanged_previous_files": 534,
+      "intentional_documentation_changes": [
+        "salt_dilution/data/README.md"
+      ],
+      "all_existing_raw_processed_examples_inventory_and_scripts_unchanged": true,
+      "checked_on": "2026-10-14"
+    },
+    "original_transcription_validation_on": "2026-10-14",
+    "versioning_policy": {
+      "curated_records": "Version the four small CSV tables, provenance, manifest and validation report at the user's direction.",
+      "processed_stream_readings": "Remain local and Git-ignored; README is versioned."
+    },
+    "local_parser_run": {
+      "run_id": "2026-10-16_parser_ingestion",
+      "retained_csv_metadata_pairs": 143,
+      "retained_rows": 345642,
+      "unsupported_failed_or_empty_candidates": 28,
+      "quarantined_pairs": 2,
+      "unit_tests_passed": 22,
+      "raw_files_unchanged": true,
+      "generated_readings_git_ignored": true,
+      "note": "Normalization only; scientific review remains pending. The older transcription inventory retains the August duplicate's former path; current relocation is recorded in the parser run manifest."
+    }
   }
 }

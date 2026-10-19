@@ -1,0 +1,242 @@
+{
+  "applied_on": "2026-10-19",
+  "source_commit": "18cc1061d157ffab400815b3f3976b1257047965",
+  "status": "Protocol-continuity assumptions applied to missing settings; no scientific acceptance implied.",
+  "authority": "User-directed interpretation: unchanged settings may carry forward within the applicable experimental sequence until a recorded change or exception.",
+  "provenance_policy": "provenance.json remains the unchanged original transcription evidence. This file is the field-resolution overlay for exactly the target cells enumerated below; its inherited_values do not alter source_record/raw tokens, delivered-quantity evidence, QA warnings, or analysis_ready. All changed cells were empty at source_commit. Each grouped entry expands to one audit entry per target_record_id and inherited field.",
+  "application_policy": [
+    "Manually selected finite target lists, not an automatic date-only fill for future records.",
+    "Explicit values override defaults; only blank protocol-setting cells are filled.",
+    "Keep sites and concurrent dry, solution-secondary, and later direct-stock sequences separate.",
+    "Source donors contain directly recorded values at source_commit; no recursive inferred-value chains.",
+    "Salt mass in trials is an assumed nominal dose, not verified delivered mass.",
+    "Recipe reuse does not imply reuse of physical stock, probe identity, observed calibration points, or a fitted K.",
+    "All scientific review states and delivery/mixing exceptions remain in force."
+  ],
+  "summary": {
+    "filled_cells": 79,
+    "trial_cells_filled": 17,
+    "calibration_cells_filled": 62,
+    "trial_rows_changed": 17,
+    "calibration_rows_changed": 17,
+    "nisqually_mass_populated_before": 13,
+    "nisqually_mass_populated_after": 30,
+    "nisqually_release_count": 32,
+    "calibration_procedure_populated_before": 16,
+    "calibration_procedure_populated_after": 29,
+    "calibration_count": 43
+  },
+  "applications": [
+    {
+      "rule_id": "dose_solution_20250709",
+      "table": "trials.csv",
+      "source_record_id": "NISQ-20250709-T01",
+      "sourcebook_reference": "Document_261007_113237.pdf#page=3;side=left;block=a_03_dump_01",
+      "target_record_ids": [
+        "NISQ-20250709-T02"
+      ],
+      "inherited_values": {
+        "salt_mass_g": "4000"
+      },
+      "original_value": "",
+      "basis": "assumed_protocol_continuity",
+      "scope": "Same-day solution releases; nominal dose only."
+    },
+    {
+      "rule_id": "dose_dry_20250717",
+      "table": "trials.csv",
+      "source_record_id": "NISQ-20250717-T01",
+      "sourcebook_reference": "Document_261007_113237.pdf#page=4;side=right;block=a_04_dump_01",
+      "target_record_ids": [
+        "NISQ-20250731-T01"
+      ],
+      "inherited_values": {
+        "salt_mass_g": "4000"
+      },
+      "original_value": "",
+      "basis": "assumed_protocol_continuity",
+      "scope": "Forward within the 2025 dry-release sequence; nominal dose only."
+    },
+    {
+      "rule_id": "dose_dry_20250805",
+      "table": "trials.csv",
+      "source_record_id": "NISQ-20250805-T01",
+      "sourcebook_reference": "Document_261007_113237.pdf#page=7;side=left;block=a_07_am_dry",
+      "target_record_ids": [
+        "NISQ-20250805-T03",
+        "NISQ-20250808-T01"
+      ],
+      "inherited_values": {
+        "salt_mass_g": "4000"
+      },
+      "original_value": "",
+      "basis": "assumed_protocol_continuity",
+      "scope": "Same-day afternoon and next dry-release session; nominal dose only."
+    },
+    {
+      "rule_id": "dose_solution_20250805",
+      "table": "trials.csv",
+      "source_record_id": "NISQ-20250805-T02",
+      "sourcebook_reference": "Document_261007_113237.pdf#page=7;side=left;block=a_07_am_solution",
+      "target_record_ids": [
+        "NISQ-20250805-T04",
+        "NISQ-20250903-T02",
+        "NISQ-20250917-T02",
+        "NISQ-20250917-T04"
+      ],
+      "inherited_values": {
+        "salt_mass_g": "4000"
+      },
+      "original_value": "",
+      "basis": "assumed_protocol_continuity",
+      "scope": "Forward within the 2025 solution-release sequence; nominal dose only; September spill/delivery uncertainty is unchanged."
+    },
+    {
+      "rule_id": "dose_mass_20260918",
+      "table": "trials.csv",
+      "source_record_id": "NISQ-20260918-T01",
+      "sourcebook_reference": "Document_261007_160953.pdf#page=9;side=right;block=c_09_mass_dump",
+      "target_record_ids": [
+        "NISQ-20261002-T01",
+        "NISQ-20261002-T02",
+        "NISQ-20261004-T01",
+        "NISQ-20261004-T02",
+        "NISQ-20261004-T03",
+        "NISQ-20261004-T04",
+        "NISQ-20261005-T01",
+        "NISQ-20261005-T02",
+        "NISQ-20261005-T03"
+      ],
+      "inherited_values": {
+        "salt_mass_g": "4000"
+      },
+      "original_value": "",
+      "basis": "assumed_protocol_continuity",
+      "scope": "Current Nisqually mass-based sequence through October 5 only; dose continuity is independent of calibration-stock recipe changes; physical delivery form is not inferred."
+    },
+    {
+      "rule_id": "dry_recipe_20250731",
+      "table": "calibrations.csv",
+      "source_record_id": "NISQ-20250731-C02",
+      "sourcebook_reference": "Document_261007_113237.pdf#page=6;side=right;block=a_06_dry",
+      "target_record_ids": [
+        "NISQ-20250805-C01",
+        "NISQ-20250805-C03",
+        "NISQ-20250808-C01",
+        "NISQ-20250903-C01",
+        "NISQ-20250917-C01",
+        "NISQ-20250917-C03"
+      ],
+      "inherited_values": {
+        "procedure_id": "mass_stock_river",
+        "stock_water_source": "river",
+        "stock_salt_mass_g": "2",
+        "stock_water_initial_ml": "1000"
+      },
+      "original_value": "",
+      "basis": "assumed_protocol_continuity",
+      "scope": "2025 dry-calibration lane only, July 31 through September 17; not the concurrent solution-secondary lane or the changed 2026 recipes."
+    },
+    {
+      "rule_id": "solution_recipe_20250805",
+      "table": "calibrations.csv",
+      "source_record_id": "NISQ-20250805-C02",
+      "sourcebook_reference": "Document_261007_113237.pdf#page=7;side=right;block=a_07_am_solution_cal",
+      "target_record_ids": [
+        "NISQ-20250805-C04"
+      ],
+      "inherited_values": {
+        "stock_water_source": "river",
+        "injectate_aliquot_ml": "10",
+        "secondary_water_initial_ml": "1000"
+      },
+      "original_value": "",
+      "basis": "assumed_protocol_continuity",
+      "scope": "Same-day afternoon solution-secondary calibration."
+    },
+    {
+      "rule_id": "solution_recipe_20250917",
+      "table": "calibrations.csv",
+      "source_record_id": "NISQ-20250917-C02",
+      "sourcebook_reference": "Document_261007_113641.pdf#page=2;side=right;block=b_02_am_solution_cal",
+      "target_record_ids": [
+        "NISQ-20250917-C04"
+      ],
+      "inherited_values": {
+        "stock_water_source": "river",
+        "injectate_aliquot_ml": "10",
+        "secondary_water_initial_ml": "1000"
+      },
+      "original_value": "",
+      "basis": "assumed_protocol_continuity",
+      "scope": "Same-day afternoon solution-secondary calibration."
+    },
+    {
+      "rule_id": "solution_recipe_20260716_volume",
+      "table": "calibrations.csv",
+      "source_record_id": "NISQ-20260716-C01",
+      "sourcebook_reference": "Document_261007_113641.pdf#page=4;side=left;block=b_04_jul16_cal",
+      "target_record_ids": [
+        "NISQ-20260721-C01"
+      ],
+      "inherited_values": {
+        "secondary_water_initial_ml": "1000"
+      },
+      "original_value": "",
+      "basis": "assumed_protocol_continuity",
+      "scope": "July 2026 solution-secondary sequence; other explicit settings remain unchanged."
+    },
+    {
+      "rule_id": "solution_recipe_20260716_preparation",
+      "table": "calibrations.csv",
+      "source_record_id": "NISQ-20260716-C01",
+      "sourcebook_reference": "Document_261007_113641.pdf#page=4;side=left;block=b_04_jul16_cal",
+      "target_record_ids": [
+        "NISQ-20260806-C01"
+      ],
+      "inherited_values": {
+        "stock_water_source": "river",
+        "injectate_aliquot_ml": "10",
+        "secondary_water_initial_ml": "1000"
+      },
+      "original_value": "",
+      "basis": "assumed_protocol_continuity",
+      "scope": "Solution-secondary sequence through August 6; July 21 corroborates the aliquot and water source, while July 16 is the original complete donor."
+    },
+    {
+      "rule_id": "river_stock_recipe_20261002",
+      "table": "calibrations.csv",
+      "source_record_id": "NISQ-20261002-C02",
+      "sourcebook_reference": "Document_261007_160953.pdf#page=14;side=left;block=c_14_oct02_cal_02",
+      "target_record_ids": [
+        "NISQ-20261004-C01",
+        "NISQ-20261004-C02",
+        "NISQ-20261004-C03",
+        "NISQ-20261004-C04",
+        "NISQ-20261005-C01",
+        "NISQ-20261005-C02",
+        "NISQ-20261005-C03"
+      ],
+      "inherited_values": {
+        "procedure_id": "mass_stock_river",
+        "stock_water_source": "river",
+        "stock_salt_mass_g": "1",
+        "stock_water_initial_ml": "1000"
+      },
+      "original_value": "",
+      "basis": "assumed_protocol_continuity",
+      "scope": "October 4-5 direct river-stock calibrations; use the changed October 2 recipe, not September 18; retain October 4 incomplete-mixing and addition warnings."
+    }
+  ],
+  "unchanged_or_unresolved": [
+    "Two July 3 practice releases precede the first supported dose and are not backward-filled.",
+    "Paradise and unresolved-site records are unchanged; no cross-site recipe assumptions.",
+    "Missing delivered solution volumes and final stock volumes remain blank; initial water is not treated as final solution.",
+    "Missing physical injection forms, probe/channel identities, UTC times, paths, and associations are not inferred.",
+    "All calibration_points.csv and trial_inputs.csv bytes remain unchanged.",
+    "September 3, 2025 solution-spill warning remains; only nominal salt mass is inherited.",
+    "September 18, 2026 abandoned extra-dilution attempt remains unchanged.",
+    "October 4, 2026 first calibration retains incomplete-mixing and written-volume warnings; later unequal additions remain unchanged.",
+    "The original PDFs and ignored local stream data were not newly inspected or analyzed during this update."
+  ]
+}
