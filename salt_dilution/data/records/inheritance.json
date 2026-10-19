@@ -3,28 +3,39 @@
   "source_commit": "18cc1061d157ffab400815b3f3976b1257047965",
   "status": "Protocol-continuity assumptions applied to missing settings; no scientific acceptance implied.",
   "authority": "User-directed interpretation: unchanged settings may carry forward within the applicable experimental sequence until a recorded change or exception.",
-  "provenance_policy": "provenance.json remains the unchanged original transcription evidence. This file is the field-resolution overlay for exactly the target cells enumerated below; its inherited_values do not alter source_record/raw tokens, delivered-quantity evidence, QA warnings, or analysis_ready. All changed cells were empty at source_commit. Each grouped entry expands to one audit entry per target_record_id and inherited field.",
+  "provenance_policy": "provenance.json is unchanged original transcription evidence. Applications are the current field-resolution overlay for their enumerated target cells only. Original source_record/raw tokens, delivered-quantity evidence, QA warnings and analysis_ready are not altered. Applications without source_commit were applied relative to the top-level source_commit; later applications state their own pre-edit source_commit. Each group expands to one audit entry per target_record_id and field. Retained-note and method-period assumptions may resolve fields absent from the donor CSV; their evidence and basis are explicit.",
   "application_policy": [
-    "Manually selected finite target lists, not an automatic date-only fill for future records.",
-    "Explicit values override defaults; only blank protocol-setting cells are filled.",
-    "Keep sites and concurrent dry, solution-secondary, and later direct-stock sequences separate.",
-    "Source donors contain directly recorded values at source_commit; no recursive inferred-value chains.",
-    "Salt mass in trials is an assumed nominal dose, not verified delivered mass.",
-    "Recipe reuse does not imply reuse of physical stock, probe identity, observed calibration points, or a fitted K.",
-    "All scientific review states and delivery/mixing exceptions remain in force."
+    "Use finite reviewed target lists within named delivery/method periods or a documented calibration-series continuation; no automatic fill for future records.",
+    "Explicit values and exceptions take precedence; change only blank setting cells.",
+    "Separate physical delivery form, calculation method, stock solvent, receiving water and observed/fitted quantities.",
+    "Dose continuity can outlast a calibration-recipe change. A mass-based calculation does not imply dry physical delivery.",
+    "Method-period classification may use a later corroborating recipe, explicitly labelled retrospective; it is not direct observation or forward-only inheritance.",
+    "A shared standard may extend across samples in one documented calibration series without changing site or probe identity or reusing a fitted factor.",
+    "Nominal stock-water volume may be resolved from retained volume wording; never silently convert water mass to volume or initial water to final solution.",
+    "Preserve all scientific review states, delivery/mixing exceptions, source evidence and measurements."
   ],
   "summary": {
-    "filled_cells": 79,
-    "trial_cells_filled": 17,
-    "calibration_cells_filled": 62,
-    "trial_rows_changed": 17,
-    "calibration_rows_changed": 17,
+    "filled_cells": 123,
+    "trial_cells_filled": 27,
+    "calibration_cells_filled": 96,
+    "trial_rows_changed": 18,
+    "calibration_rows_changed": 28,
     "nisqually_mass_populated_before": 13,
     "nisqually_mass_populated_after": 30,
     "nisqually_release_count": 32,
     "calibration_procedure_populated_before": 16,
-    "calibration_procedure_populated_after": 29,
-    "calibration_count": 43
+    "calibration_procedure_populated_after": 38,
+    "calibration_count": 43,
+    "second_pass_filled_cells": 44,
+    "second_pass_trial_cells": 10,
+    "second_pass_calibration_cells": 34,
+    "second_pass_trial_rows": 10,
+    "second_pass_calibration_rows": 11,
+    "injection_form_populated_before": 26,
+    "injection_form_populated_after": 36,
+    "trial_count": 38,
+    "calibration_water_source_populated_before_second_pass": 30,
+    "calibration_water_source_populated_after": 39
   },
   "applications": [
     {
@@ -226,17 +237,149 @@
       "original_value": "",
       "basis": "assumed_protocol_continuity",
       "scope": "October 4-5 direct river-stock calibrations; use the changed October 2 recipe, not September 18; retain October 4 incomplete-mixing and addition warnings."
+    },
+    {
+      "rule_id": "solution_form_2026_nisqually",
+      "table": "trials.csv",
+      "source_record_id": "NISQ-20260806-T01",
+      "sourcebook_reference": "Document_261007_160953.pdf#page=1;side=left;block=c_01_nisqually",
+      "target_record_ids": [
+        "NISQ-20260918-T01",
+        "NISQ-20261002-T01",
+        "NISQ-20261002-T02",
+        "NISQ-20261004-T01",
+        "NISQ-20261004-T02",
+        "NISQ-20261004-T03",
+        "NISQ-20261004-T04",
+        "NISQ-20261005-T01",
+        "NISQ-20261005-T02",
+        "NISQ-20261005-T03"
+      ],
+      "inherited_values": {
+        "injection_form": "solution"
+      },
+      "original_value": "",
+      "basis": "assumed_delivery_period_continuity",
+      "scope": "Nisqually dissolved-slug delivery from the recorded August 6 solution release through October 5; changing the concentration/discharge method does not by itself change physical delivery. Do not apply to the concurrent 2025 dry trials or the July 3 practice releases.",
+      "source_commit": "d1f7a015ca80d55fcbdac931076d4dc802c47a92",
+      "period_start": "2026-08-06",
+      "period_end": "2026-10-05",
+      "evidence": "trials.csv records solution on July 16, July 21 and August 6, 2026. Later source records use mass_based, not an explicit change to dry delivery. The October 2 field-work context records dissolved salt released as a slug. The filled forms are period inferences, not newly transcribed observations."
+    },
+    {
+      "rule_id": "dry_stock_water_2025_period",
+      "table": "calibrations.csv",
+      "source_record_id": "NISQ-20250731-C02",
+      "sourcebook_reference": "Document_261007_113237.pdf#page=6;side=right;block=a_06_dry",
+      "target_record_ids": [
+        "NISQ-20250717-C01",
+        "NISQ-20250717-C02"
+      ],
+      "inherited_values": {
+        "procedure_id": "mass_stock_river",
+        "stock_water_source": "river"
+      },
+      "original_value": "",
+      "basis": "assumed_method_period_classification",
+      "scope": "Classify the two July 17 mass-stock preparations within the same 2025 dry-calibration recipe period; preserve their different 2000/3000 mL receiver volumes.",
+      "source_commit": "d1f7a015ca80d55fcbdac931076d4dc802c47a92",
+      "period_start": "2025-07-17",
+      "period_end": "2025-09-17",
+      "evidence": "Original July 17 stock a_05_dry_stock records 2 g salt, 1000 mL starting water and solvent H2O/water_unspecified. July 31 explicitly records river water with that same recipe. River is a retrospective within-period assumption under the expanded user rule, not a directly recorded July 17 water source or a strictly forward-only fill."
+    },
+    {
+      "rule_id": "di_standard_20260903_continuation",
+      "table": "calibrations.csv",
+      "source_record_id": "UNK-20260903-C02",
+      "sourcebook_reference": "Document_261007_160953.pdf#page=6;side=right;block=c_06_test_right",
+      "target_record_ids": [
+        "UNK-20260903-C03",
+        "PAR-20260903-C01",
+        "PAR-20260903-C02",
+        "PAR-20260903-C03",
+        "PAR-20260903-C04",
+        "PAR-20260903-C05",
+        "UNK-20260903-C04"
+      ],
+      "inherited_values": {
+        "procedure_id": "mass_stock_deionized",
+        "stock_water_source": "deionized",
+        "stock_salt_mass_g": "2.5"
+      },
+      "original_value": "",
+      "basis": "assumed_same_calibration_series",
+      "scope": "September 3 calibration series, source C pages 6-8. Carry the standard preparation across the explicitly described continuation series, not across unrelated same-day field sites.",
+      "source_commit": "d1f7a015ca80d55fcbdac931076d4dc802c47a92",
+      "period_start": "2026-09-03",
+      "period_end": "2026-09-03",
+      "evidence": "Source stock c_06_di_standard specifies 2.5 g salt and deionized water. Each target source_record describes continuation of the September 3 calibration notes for earlier site tests. The site_alias remains unchanged or unknown; inherited stock solvent is not a claim that receiving field water was deionized or that a fit/probe applies across sites."
+    },
+    {
+      "rule_id": "di_standard_nominal_water_volume",
+      "table": "calibrations.csv",
+      "source_record_id": "UNK-20260903-C02",
+      "sourcebook_reference": "Document_261007_160953.pdf#page=6;side=right;block=c_06_test_right",
+      "target_record_ids": [
+        "UNK-20260903-C01",
+        "UNK-20260903-C02",
+        "UNK-20260903-C03",
+        "PAR-20260903-C01",
+        "PAR-20260903-C02",
+        "PAR-20260903-C03",
+        "PAR-20260903-C04",
+        "PAR-20260903-C05",
+        "UNK-20260903-C04"
+      ],
+      "inherited_values": {
+        "stock_water_initial_ml": "500"
+      },
+      "original_value": "",
+      "basis": "assumed_nominal_recipe_from_retained_note",
+      "scope": "Nominal starting-water amount for the same September 3 standard; do not populate stock_solution_final_ml or ambiguous receiving-water volumes.",
+      "source_commit": "d1f7a015ca80d55fcbdac931076d4dc802c47a92",
+      "period_start": "2026-09-03",
+      "period_end": "2026-09-03",
+      "source_field": "provenance.json / calibrations / UNK-20260903-C02 / stock_stages / c_06_di_standard / notes",
+      "evidence": "Retained note says: Recipe written 2.5g salt in 500g DI water; elsewhere 0.5L and 5g/L. Measured final solution volume not supplied. Resolve the written 0.5 L recipe amount to nominal 500 mL starting water. This is not a density conversion of 500 g and not a measured final stock volume; the differing mass/volume notation remains a review caveat."
     }
   ],
   "unchanged_or_unresolved": [
-    "Two July 3 practice releases precede the first supported dose and are not backward-filled.",
-    "Paradise and unresolved-site records are unchanged; no cross-site recipe assumptions.",
-    "Missing delivered solution volumes and final stock volumes remain blank; initial water is not treated as final solution.",
-    "Missing physical injection forms, probe/channel identities, UTC times, paths, and associations are not inferred.",
-    "All calibration_points.csv and trial_inputs.csv bytes remain unchanged.",
-    "September 3, 2025 solution-spill warning remains; only nominal salt mass is inherited.",
-    "September 18, 2026 abandoned extra-dilution attempt remains unchanged.",
-    "October 4, 2026 first calibration retains incomplete-mixing and written-volume warnings; later unequal additions remain unchanged.",
-    "The original PDFs and ignored local stream data were not newly inspected or analyzed during this update."
+    "July 3, 2025 practice releases lack an established earlier dose/delivery regime; both mass and form remain blank.",
+    "No additional salt_mass_g blanks beyond those two practice releases remain. Previously filled masses and all variable Paradise doses are unchanged.",
+    "Four July 9 exploratory calibrations lack a securely classified preparation; their procedure and stock-water source remain unresolved.",
+    "The abandoned September 18, 2026 extra-dilution attempt is not flattened into a direct-stock profile.",
+    "The nine September 3 DI-series rows use an assumed nominal 500 mL starting-water recipe, not measured final stock volume; original 500 g and receiver mass/volume caveats remain in provenance.",
+    "All final stock volumes, delivery volumes, receiving-water volumes, local/UTC times, identities, paths and associations are unchanged.",
+    "All calibration_points.csv and trial_inputs.csv bytes are unchanged. No readings, aliquot steps, temperatures or fitted K values are filled.",
+    "Spills, incomplete mixing, conflicting written volumes, source-order caveats and scientific review requirements remain active.",
+    "Source scans and local stream tables were not re-read; this update uses the current CSVs, retained transcription notes and user-authorized assumptions."
+  ],
+  "latest_source_commit": "d1f7a015ca80d55fcbdac931076d4dc802c47a92",
+  "revision": 2,
+  "first_pass_summary": {
+    "filled_cells": 79,
+    "trial_cells_filled": 17,
+    "calibration_cells_filled": 62,
+    "trial_rows_changed": 17,
+    "calibration_rows_changed": 17,
+    "nisqually_mass_populated_before": 13,
+    "nisqually_mass_populated_after": 30,
+    "nisqually_release_count": 32,
+    "calibration_procedure_populated_before": 16,
+    "calibration_procedure_populated_after": 29,
+    "calibration_count": 43
+  },
+  "history": [
+    {
+      "source_commit": "18cc1061d157ffab400815b3f3976b1257047965",
+      "result_commit": "d1f7a015ca80d55fcbdac931076d4dc802c47a92",
+      "filled_cells": 79,
+      "note": "Original first-pass scopes remain attached to their applications; the second pass expands only the fields enumerated in its new applications."
+    },
+    {
+      "source_commit": "d1f7a015ca80d55fcbdac931076d4dc802c47a92",
+      "filled_cells": 44,
+      "note": "Expanded user-directed method-period, physical-form and standard-preparation resolution."
+    }
   ]
 }

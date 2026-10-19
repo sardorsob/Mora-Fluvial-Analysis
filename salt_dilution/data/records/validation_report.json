@@ -1,135 +1,113 @@
 {
   "checked_on": "2026-10-19",
-  "status": "inheritance_table_checks_passed; scientific_review_pending",
-  "scope": "Manual protocol-setting resolution only. No source PDF, waveform, stream-response or discharge reanalysis. Historical validation is preserved separately below.",
-  "source_commit": "18cc1061d157ffab400815b3f3976b1257047965",
+  "status": "local_structural_and_inheritance_checks_passed; scientific_review_pending",
+  "source_commit": "d1f7a015ca80d55fcbdac931076d4dc802c47a92",
+  "scope": "Second manual inheritance pass; checks below executed on staged UTF-8 content. No raw/PDF/stream reanalysis or scientific-code test suite run. Remote blob/commit readback is checked separately before updating main.",
   "row_counts": {
     "trials": 38,
     "calibrations": 43,
     "calibration_points": 262,
     "trial_inputs": 42
   },
-  "study_site_release_counts": {
-    "NISQ": 32,
-    "PAR": 6
+  "unchanged_table_count_basis": "Calibration-point and association counts retained from the previous report; those files are not rewritten.",
+  "second_pass_cells_filled": 44,
+  "cumulative_cells_filled": 123,
+  "changed_rows": {
+    "trials": 10,
+    "calibrations": 11
+  },
+  "filled_cells_by_field": {
+    "injection_form": 10,
+    "procedure_id": 9,
+    "stock_water_source": 9,
+    "stock_salt_mass_g": 7,
+    "stock_water_initial_ml": 9
+  },
+  "coverage": {
+    "trial_injection_form": {
+      "populated": 36,
+      "total": 38
+    },
+    "trial_salt_mass": {
+      "populated": 36,
+      "total": 38
+    },
+    "nisqually_salt_mass": {
+      "populated": 30,
+      "total": 32
+    },
+    "calibration_procedure": {
+      "populated": 38,
+      "total": 43
+    },
+    "calibration_stock_water_source": {
+      "populated": 39,
+      "total": 43
+    },
+    "calibration_stock_salt_mass": {
+      "populated": 28,
+      "total": 43
+    },
+    "calibration_stock_water_initial": {
+      "populated": 28,
+      "total": 43
+    }
   },
   "procedure_counts": {
-    "unresolved": 14,
+    "unresolved": 5,
+    "mass_stock_river": 19,
     "solution_secondary": 10,
-    "mass_stock_river": 17,
-    "mass_stock_deionized": 2
+    "mass_stock_deionized": 9
   },
-  "inheritance_summary": {
-    "filled_cells": 79,
-    "trial_cells_filled": 17,
-    "calibration_cells_filled": 62,
-    "trial_rows_changed": 17,
-    "calibration_rows_changed": 17,
-    "nisqually_mass_populated_before": 13,
-    "nisqually_mass_populated_after": 30,
-    "nisqually_release_count": 32,
-    "calibration_procedure_populated_before": 16,
-    "calibration_procedure_populated_after": 29,
-    "calibration_count": 43
-  },
-  "recording_candidate_rows": 8,
-  "unresolved_recording_rows": 34,
-  "distinct_electronic_datasets": 7,
   "accepted_discharge_ready_rows": 0,
+  "checks_passed": 21,
   "checks": [
-    "Original trials.csv and calibrations.csv bytes match fetched Git blob SHAs before editing.",
-    "Original manifest.json and validation_report.json objects match fetched Git blobs when serialized in their existing format.",
-    "Exactly 79 previously blank cells changed; every change is covered once by inheritance.json.",
-    "All previously populated CSV cells are unchanged.",
-    "Headers, row counts, row order, primary keys and sourcebook references are unchanged.",
-    "All donor values are populated in the original tables; donor and target sites match and donor dates are not later.",
-    "No cross-site inheritance; all Paradise and unresolved-site rows are unchanged.",
-    "All nonempty quantity fields in changed tables are finite and positive.",
-    "Calibration review_status remains needs_review throughout; no analysis-ready promotion.",
-    "UTC fields, physical injection forms, delivered-volume fields and final stock volumes are unchanged.",
-    "September spill volume remains blank and abandoned extra-dilution row is unchanged.",
-    "September 18 explicit 0.5 g recipe is preserved; October 4-5 inherit October 2 1 g recipe.",
-    "Updated CSVs round-trip exactly; JSON parses; current changed-table hashes match manifest.",
-    "calibration_points.csv, trial_inputs.csv, original provenance.json, procedure profiles, raw data and scientific code are not included in the change set."
+    "Base CSV copies and original inheritance/manifest JSON reproduce the fetched Git blob SHAs.",
+    "trials.csv: headers, row count, unique IDs, row order and source references preserved.",
+    "trials.csv: CSV readback has the exact expected values and widths.",
+    "trials.csv: all populated numeric quantities are finite and positive.",
+    "trials.csv: current SHA-256 equals manifest.",
+    "calibrations.csv: headers, row count, unique IDs, row order and source references preserved.",
+    "calibrations.csv: CSV readback has the exact expected values and widths.",
+    "calibrations.csv: all populated numeric quantities are finite and positive.",
+    "calibrations.csv: current SHA-256 equals manifest.",
+    "Exactly 44 prior-blank cells changed, matching the reviewed delta; every existing value preserved.",
+    "The cumulative 123-cell ledger has no duplicate target fields and agrees with every resolved CSV value.",
+    "All 10 newly populated physical forms are solution, exclusively in the bounded 2026 Nisqually sequence.",
+    "Trial salt masses, all delivery/final-solution volumes, timestamps, receiving volumes, IDs and review states are unchanged.",
+    "July 3 practice rows, July 9 exploratory calibrations, and the abandoned September 18 calibration are unchanged.",
+    "Water-source values agree with each resolved mass-stock method; no stock solvent substituted for receiving-water fields.",
+    "The 500 mL DI resolution is limited to nine standard-series rows; their final volumes remain blank.",
+    "All first-pass application entries remain semantically unchanged.",
+    "inheritance.json: valid JSON and deterministic UTF-8 readback.",
+    "manifest.json: valid JSON and deterministic UTF-8 readback.",
+    "Inheritance SHA-256 agrees with manifest.",
+    "Coverage totals agree with the documented summary."
+  ],
+  "preserved_by_change_scope": [
+    "calibration_points.csv",
+    "trial_inputs.csv",
+    "provenance.json",
+    "salt_dilution/config/procedure_versions.json",
+    "raw exports, inventories and scientific code"
   ],
   "limitations": [
-    "Inherited quantities are assumptions, not newly observed or verified delivered values.",
-    "Incomplete mixing, ambiguous handwriting, missing final stock volumes, clocks and associations remain unresolved.",
-    "Unchanged-file row counts and earlier source/stream validations are retained from the previous report, not new executions."
+    "Resolved settings remain user-authorized assumptions, not newly observed or scientifically accepted values.",
+    "July 17 river-water classification is retrospective within a matching method period, not direct source transcription.",
+    "The September 3 shared-standard assumption spans explicitly described continuation samples; it does not establish common field water, site, probe or fit.",
+    "500 mL is nominal starting water from retained 0.5 L wording; 500 g and other unit/receiver caveats remain unresolved.",
+    "Spills, incomplete mixing, final solution volumes, clocks and electronic associations remain outside this fill."
   ],
-  "previous_validation": {
-    "checked_on": "2026-10-16",
-    "status": "structural_checks_passed; scientific_review_pending",
-    "row_counts": {
-      "trials": 38,
-      "calibrations": 43,
-      "calibration_points": 262,
-      "trial_inputs": 42
+  "previous_reports": [
+    {
+      "commit": "d1f7a015ca80d55fcbdac931076d4dc802c47a92",
+      "path": "salt_dilution/data/records/validation_report.json",
+      "description": "First inheritance pass and embedded original October 16 validation; preserved exactly in Git history."
     },
-    "study_site_release_counts": {
-      "NISQ": 32,
-      "PAR": 6
-    },
-    "procedure_counts": {
-      "unresolved": 27,
-      "solution_secondary": 10,
-      "mass_stock_river": 4,
-      "mass_stock_deionized": 2
-    },
-    "recording_candidate_rows": 8,
-    "unresolved_recording_rows": 34,
-    "distinct_electronic_datasets": 7,
-    "accepted_discharge_ready_rows": 0,
-    "excluded_source_rows": {
-      "trials": 1,
-      "calibrations": 2,
-      "calibration_points": 29
-    },
-    "checks": [
-      "exact compact headers and CSV/JSON readback",
-      "unique primary/composite keys and foreign keys",
-      "all included releases represented in trial_inputs",
-      "controlled values and nullable finite numbers",
-      "original PDF hashes equal transcription evidence",
-      "stream candidate source/probe/path/hash checks",
-      "same dataset ID always points to one file",
-      "legacy dataset IDs reused only after full signal comparison",
-      "no date-only links promoted automatically",
-      "unequal October 4 additions preserved and total 46 mL",
-      "spill volume withheld",
-      "extra-diluted abandoned stock not flattened",
-      "stock final volume not inferred",
-      "no assumed UTC or unknown dry/solution forms",
-      "crossed-out or conductivity-empty rows excluded with provenance",
-      "independent readback of every point value against retained source tokens",
-      "all prior data/script file hashes checked; only the intended data README changed",
-      "October 16 CSV/provenance checksums and exact-header readback repeated before versioning"
-    ],
-    "source_inputs_unchanged": true,
-    "preservation_check": {
-      "previous_files_checked": 535,
-      "unchanged_previous_files": 534,
-      "intentional_documentation_changes": [
-        "salt_dilution/data/README.md"
-      ],
-      "all_existing_raw_processed_examples_inventory_and_scripts_unchanged": true,
-      "checked_on": "2026-10-14"
-    },
-    "original_transcription_validation_on": "2026-10-14",
-    "versioning_policy": {
-      "curated_records": "Version the four small CSV tables, provenance, manifest and validation report at the user's direction.",
-      "processed_stream_readings": "Remain local and Git-ignored; README is versioned."
-    },
-    "local_parser_run": {
-      "run_id": "2026-10-16_parser_ingestion",
-      "retained_csv_metadata_pairs": 143,
-      "retained_rows": 345642,
-      "unsupported_failed_or_empty_candidates": 28,
-      "quarantined_pairs": 2,
-      "unit_tests_passed": 22,
-      "raw_files_unchanged": true,
-      "generated_readings_git_ignored": true,
-      "note": "Normalization only; scientific review remains pending. The older transcription inventory retains the August duplicate's former path; current relocation is recorded in the parser run manifest."
+    {
+      "commit": "18cc1061d157ffab400815b3f3976b1257047965",
+      "path": "salt_dilution/data/records/validation_report.json",
+      "description": "Original curated-record validation."
     }
-  }
+  ]
 }

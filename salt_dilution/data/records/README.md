@@ -1,6 +1,6 @@
 # Curated salt records
 
-These four CSVs implement the compact salt-data schema agreed October 13. They were populated October 14 from the saved [October 12 notebook transcription](../processed/field_notes/2026-10-12/README.md), with targeted checks against the original scans. The [schema guide](../../../docs/field_data_schema.md) describes their columns and joins.
+These four CSVs implement the compact salt-data schema agreed October 13. They were populated October 14 from the saved [October 12 notebook transcription](../processed/field_notes/2026-10-12/README.md), with targeted checks against the original scans. The [schema guide](../../../docs/field_data_schema.md) describes their columns and joins; its original population discussion predates the inheritance resolutions below.
 
 | File | Records | One row represents |
 | --- | ---: | --- |
@@ -9,58 +9,56 @@ These four CSVs implement the compact salt-data schema agreed October 13. They w
 | `calibration_points.csv` | 262 | One recorded conductivity observation, including uncertain readings |
 | `trial_inputs.csv` | 42 | One candidate association or an explicit placeholder awaiting a recording |
 
-The association table has **eight recording candidates across seven files** and **34 rows with unresolved recording paths**. Every release is represented. A populated path is a candidate for review, not approval to use that recording or calibration in a calculation. Multiple rows can represent separate files, repeated calibrations, or successive releases in one recording.
+The association table retains eight recording candidates across seven files and 34 rows with unresolved recording paths. Every release is represented. A populated path remains a candidate, not scientific approval. Multiple rows can represent separate files, repeated calibrations, or successive releases in one recording.
 
-## October 19: explicit protocol-setting inheritance
+## October 19: expanded protocol-setting inheritance
 
-Missing protocol settings now carry forward within the applicable experimental sequence under the user-directed continuity assumption: settings remain unchanged until a recorded change or exception. Explicit values always take precedence. The four table headers, IDs, row order and row counts are unchanged.
+The CSVs contain the resolved settings directly. Under the user-directed interpretation, unreported settings can inherit the applicable delivery/method period or a documented calibration-series recipe until a recorded change or exception. Explicit observations always take precedence. Dates alone do not determine an unrelated trial, probe, fit or recording association.
 
-This manual update fills **79 cells**: 17 nominal release masses and 62 calibration-setting fields, affecting 17 trial rows and 17 calibration rows. Nisqually salt-mass coverage increases from 13/32 to 30/32 releases. Calibration procedure coverage increases from 16/43 to 29/43 attempts. These are resolved assumptions, not additional measurements.
+The first pass in commit `d1f7a015ca80d55fcbdac931076d4dc802c47a92` filled 79 cells: 17 nominal release masses and 62 calibration settings. The second pass adds 44 cells: 10 injection forms, nine calibration procedures, nine stock-water sources, seven stock salt masses and nine nominal starting-stock-water volumes. Across both passes, 123 cells are resolved assumptions, not new measurements. All table headers, IDs, row order and row counts remain unchanged.
 
-[inheritance.json](inheritance.json) centralizes each applied recipe/dose rule, its original source record and page reference, exact target IDs, inherited fields and values, and limitations. Each group expands to one provenance entry per target and field. The target lists are deliberately finite; this is not an automatic rule for future records or a blind date-only fill.
+| Field | After first pass | After second pass |
+| --- | ---: | ---: |
+| Trial injection form | 26/38 | 36/38 |
+| Trial salt mass | 36/38 | 36/38 |
+| Calibration procedure | 29/43 | 38/43 |
+| Calibration stock-water source | 30/43 | 39/43 |
+| Calibration stock salt mass | 21/43 | 28/43 |
+| Calibration starting-stock-water volume | 19/43 | 28/43 |
 
-The applications distinguish the concurrent 2025 dry and solution-secondary workflows. The October 4-5 direct-stock calibrations inherit the October 2 recipe (1 g salt, 1,000 mL starting river water), not the September 18 recipe (0.5 g). Existing receiving-water volumes and all handwritten additions remain unchanged. Reusing a recipe does not assert that the same physical stock, probe, measurements or fitted K were reused.
+Nisqually salt mass remains populated for 30/32 releases; all six Paradise release masses remain as recorded. The two July 3 practice releases predate the first supported dose/delivery regime and remain unresolved.
 
-`provenance.json` remains unchanged original transcription evidence. For exactly the cells enumerated in `inheritance.json`, read that companion as the current field-resolution overlay: an older `unknown` or no-inheritance note is the historical source state, while the CSV contains the explicitly assumed setting. Do not rewrite the original source tokens or interpret an inherited value as newly observed. The older schema/staging discussion of not inheriting recipes is superseded only for these enumerated protocol settings, not for measurements, clocks, links or scientific acceptance.
+### What was extended
 
-## What the remaining blanks and populated values mean
+- **Physical delivery:** ten Nisqually releases from September 18 through October 5, 2026 inherit `solution` from the documented 2026 dissolved-slug sequence. A change to mass-based discharge calculation is not itself a change to dry physical delivery. The 2025 dry releases remain dry.
+- **Early dry-calibration method:** the two July 17, 2025 attempts are classified as `mass_stock_river` with river stock water within the matching 2025 dry-stock method period. Their 2 g salt and 1000 mL starting water were already recorded. This is explicitly a retrospective period assumption corroborated by July 31, not a claim that the July 17 H2O label specified river water. Their distinct 2000/3000 mL receiving volumes are preserved.
+- **September standard series:** seven continuation calibrations on September 3, 2026 inherit `mass_stock_deionized`, deionized stock water and 2.5 g stock salt from the standard described on source C page 6. This applies to the documented pages 6-8 calibration series, not every same-day field site. Site aliases, receiving-water identity, probes and fitted factors are not shared by this rule.
+- **Nominal stock-water recipe:** the same nine standard-series rows use 500 mL nominal starting water, resolved from the retained note's separate 0.5 L wording. The original 500 g notation remains in provenance. This is not a density conversion and not a measured final stock-solution volume.
 
-Unknown and inapplicable values stay empty unless explicitly resolved by the inheritance overlay. All review-status fields remain `needs_review`; the trial table's original review details live in `provenance.json` because its agreed header has no status column. No association is discharge-ready.
+The earlier applications still separate concurrent 2025 dry and solution-secondary workflows. October 4-5 direct-stock calibrations retain the October 2 recipe (1 g salt, 1000 mL starting river water), not September 18's 0.5 g recipe. Reusing a recipe never establishes reuse of physical stock, measurements or fitted K.
 
-- UTC dump times and windows await reconciliation of notebook and instrument clocks. Original local times and written zone labels remain in provenance.
-- A reported or inherited nominal salt mass is not proof of delivered mass. For inherited `salt_mass_g`, the quantity basis is **assumed nominal dose; delivery unverified**. The spilled September solution still has no accepted delivered-volume value.
-- Starting water and final stock-solution volume remain distinct. No final stock volumes were established or inherited, and grams of water have not been converted to milliliters.
-- `mass_based` does not identify the physical delivery form. The Paradise page explicitly describes dissolved salt, so those releases remain `solution`; later ambiguous delivery forms remain blank.
-- Missing probe identity, conductivity basis or channel values remain unresolved. Numeric column names do not establish that abbreviated source units were verified.
-- `trial_inputs.csv` rows without a dataset remain placeholders. Known cross-probe pairings remain withheld from the applicable-calibration field and documented as notebook candidates in original provenance.
-- July 3 practice releases precede the first recorded dose and are not backward-filled. Paradise and unresolved-site records are unchanged.
-- The abandoned September 18 extra-dilution attempt remains unchanged. October 4's incomplete-mixing and written-volume warnings remain active even where the intended recipe is inherited.
+## Provenance and remaining unknowns
 
-The original 226 date-only recording candidates remain unselected in staging. No nearest-date calibration was assigned. The July 24 legacy configuration remains lineage evidence; its background interval extends beyond the written dump time and has not been adopted.
+[inheritance.json](inheritance.json) records each rule, pre-edit source commit, original source record/page, finite target list, resolved fields, evidence and assumption basis. It supersedes historical unknown/no-inheritance annotations only for the enumerated cells. `provenance.json` remains unchanged original transcription evidence, including raw tokens, stock stages, source positions, quantity bases, exclusions and scientific warnings.
 
-## Identity and provenance
+All calibration review states remain `needs_review`; trial review details remain in provenance. No association is discharge-ready. An inherited nominal salt mass is not verified delivered mass. Stock solvent is not automatically the receiving water. Initial water is not final solution volume. A smooth or complete table does not establish mixing or tracer recovery.
 
-`NISQ-YYYYMMDD-T01` and `PAR-YYYYMMDD-T01` identify separate physical releases. A dry and solution release in one field round have different IDs. Existing IDs are preserved; source ordering and chronology caveats remain in provenance rather than being resolved by the ID suffix.
+Four July 9 exploratory calibrations still lack a classified preparation and stock-water source. The abandoned September 18 extra-dilution attempt remains distinct and is not flattened into a direct-stock profile. All final stock volumes, delivered-volume gaps, receiving-water quantities and their mass/volume conflicts remain unchanged. September 3's solution spill, October 4's incomplete mixing and written-volume warnings, unequal aliquot additions, uncertain handwriting and field QA remain active.
 
-Calibration IDs use the corresponding `C01` pattern in source order, not necessarily clock order. Four supporting calibration sessions retain empty study-site aliases and provisional `UNK` IDs. Bench, Edith and unlabelled source sites have not been relabelled as study sites. The abandoned extra-dilution attempt must not be treated as an accepted direct-stock preparation.
+UTC dump times/windows still require notebook/instrument clock reconciliation. Missing probes, selected conductivity basis, recording paths and calibration applicability are not inferred from a method period. The original 226 date-only recording candidates remain unselected in staging. The July 24 legacy configuration is lineage evidence, not an adopted window; its background interval extends beyond the written dump time.
 
-`step_no` preserves source-row position and gaps. Pipette additions remain incremental, cumulative or unconfirmed; no calculated concentration or fitted K is stored. The unequal October 4 additions remain unchanged and total 46 mL.
+## Identity and companions
 
-Three recording identities reuse historical `inventory.csv` IDs after the original full-series comparisons. Four additional identities remain frozen in the provenance registry. The same dataset ID references one processed file; historical examples and their inventory are unchanged.
+`NISQ-YYYYMMDD-T01` and `PAR-YYYYMMDD-T01` identify physical releases. Dry and solution releases in one round retain separate IDs. Calibration C-sequences identify preparations/attempts, not guaranteed clock order. Four supporting sessions retain provisional UNK IDs and empty site aliases; assigning a standard recipe does not resolve their location. Source-order and chronology caveats remain in provenance.
 
-Companion files are versioned with the CSVs:
+Point `step_no` preserves source-row positions and gaps. Written additions and conductivity observations are unchanged; no concentration or K has been inserted. The unequal October 4 additions still total 46 mL. Historical dataset identities, inventory and original source references are preserved.
 
-- `provenance.json`: unchanged original transcription rows/tokens, stock stages, page/block references, probe and dataset identities, exclusions and scientific warnings.
-- `inheritance.json`: applied protocol-setting assumptions and exact source-to-target field lineage; use alongside, not instead of, original provenance.
-- `manifest.json`: current CSV headers, counts and checksums, original input hashes, procedure-profile hash and inheritance checksum.
-- `validation_report.json`: current inheritance-table checks plus the preserved previous validation report. Structural success does not validate field assumptions or discharge.
-
-Tahoma remains in the full transcription outside this subset. Crossed-out empty templates and rows without conductivity observations remain in provenance/staging, not promoted as measurements. Sediment, seismic and cross-section data remain in the broader transcription bundle.
+Versioned companions are `provenance.json` (original evidence), `inheritance.json` (current assumptions), `manifest.json` (headers, counts and checksums), and `validation_report.json` (current checks and references to previous reports). Previous reports remain retrievable at their recorded Git commits rather than being mistaken for fresh validation. Tahoma, excluded empty/crossed-out material, and sediment/seismic/cross-section data remain in the original broader transcription or its provenance.
 
 ## Using the tables
 
-Join points to preparations by `calibration_id`, then use reviewed `trial_inputs.csv` rows to associate releases with recordings, probes, channels and calibrations. `processed_path` is relative to the project root. Do not concatenate calibration points with stream readings or treat placeholders as selected inputs.
+Join points to preparations by `calibration_id`, then use reviewed `trial_inputs.csv` associations to connect releases, recordings, probes, channels and calibrations. `processed_path` is project-relative. Do not concatenate calibration points with stream readings or treat placeholders as selected inputs.
 
-The CSVs display the inherited settings directly; consumers must also retain their assumption status from `inheritance.json`. Before a discharge calculation, resolve a complete release/calibration/probe combination, applicable quantities, units, clocks, background, complete tracer response and field QA. Retain or test inherited settings as explicit analysis assumptions. No K, concentration, discharge or scientific acceptance was produced by this update.
+Read the assumption overlay alongside the populated CSVs. Before a discharge calculation, check applicable quantities, units, clocks, background, full tracer response and field QA, and retain inherited settings as explicit analysis assumptions. No K, concentration, discharge or scientific acceptance is produced by this update.
 
-Large generated stream tables and metadata remain ignored under `processed/`. Original source evidence, raw exports, historical inventory and scientific scripts are preserved. Original scans and the older staging bundle require local source files and were not newly inspected during the inheritance update.
+Large generated stream tables remain local/ignored. Raw exports, historical inventory, original transcription provenance, calibration points, associations and scientific code are unchanged. Original scans and ignored local datasets were not re-read during this update; the review used the current repository tables and retained transcription notes.
