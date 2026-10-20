@@ -13,6 +13,7 @@ This repository brings two existing research codebases into one self-contained p
 - [Provenance](docs/provenance.md) and [source manifest](docs/source_manifest.csv): source revisions and every original-to-new filename.
 - [Validation](docs/validation.md): what was checked and what remains unverified.
 - [October 16 local parser run](docs/parser_run_2026_10_16.md): saved stream readings, source checks and quarantined clock-only exports.
+- [October 19 processing](docs/parser_run_2026_10_19.md) and [October 20 record reconciliation](docs/salt_record_reconciliation_2026_10_20.md): new normalized recordings, repaired calibration identities and confirmed file links with scientific review still pending.
 - [References](docs/references/README.md): salt-dilution methodology references.
 
 ## Layout

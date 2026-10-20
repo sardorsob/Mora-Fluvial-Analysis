@@ -56,22 +56,22 @@
   "tables": {
     "trials.csv": {
       "rows": 38,
-      "sha256": "4f57b0ba3d551ef0b8fa6e8820e043d545b0222b49bc0646b449dede27acfb54"
+      "sha256": "eee5d4378dddac50ee8d836acc340d970f58196c6e286190b756bc664286d99b"
     },
     "calibrations.csv": {
       "rows": 43,
-      "sha256": "0f07b4992a85ed140e9d1cd4a1ec9f64fbdb7cf57ce8b4dd7dc01adbb1d8839d"
+      "sha256": "a0ed9dd5ecf394d5e16775b6a632379862d60a8bd2726f4e61dd207d4b0f8826"
     },
     "calibration_points.csv": {
       "rows": 262,
-      "sha256": "c336bd1e1ae0785d5c08a812ff6383d6b4a3ace22cd4ccf9bf32010bfe6d3e94"
+      "sha256": "d90c7aed21d1a07a970990b9d4b9e5ad27da35662e290451588d51b81d68cdc3"
     },
     "trial_inputs.csv": {
-      "rows": 42,
-      "sha256": "8e4f869785649da4e2a22b91d10e3b9957b2bbfe0b82f0a186d993e4344fe9f1"
+      "rows": 59,
+      "sha256": "63520222eb137796c9ae2b342b9190a70dd4a27a77307c02f5009b6c55d919e1"
     }
   },
-  "provenance_sha256": "881891165383f0a9e372d6a0dce1a134292330a91d187a7661c8751e0740e24d",
+  "provenance_sha256": "852ce9bb626ddc790f458866e2f3fa2c93ba4a9db3ad2d68bb104636825c18e1",
   "input_sha256": {
     "salt_dilution/data/processed/field_notes/2026-10-12/sessions.csv": "e61dd0dae5f0b4554af078374bcdb2fe1da42bd1bedb8e0ee10ebfb9616304d3",
     "salt_dilution/data/processed/field_notes/2026-10-12/source_files.csv": "89a71f282d822aa8f4048a5ab64674e064cbbfaa683a724625c464e916175827",
@@ -91,5 +91,7 @@
     "C": "ae85881ef5339438985b9b3528ebbc4c3263d16dd83cd9bd1ee94064d4c9dbff"
   },
   "procedure_profiles_sha256": "3c19a83554c7dae85e956b9d97e1efa55281a8bc603353ef734a8dec44a7d154",
-  "source_code_git_commit": "50301f70363cb3cda9e617595628b89ca3cf56f6"
+  "source_code_git_commit": "50301f70363cb3cda9e617595628b89ca3cf56f6",
+  "updated_on": "2026-10-20",
+  "record_revision_base_git_commit": "5cd3f5e443bba6b0e379f735fa241601d837cad3"
 }

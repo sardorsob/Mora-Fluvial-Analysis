@@ -19,6 +19,8 @@ Historical notebooks are preserved for provenance, but they are no longer the ma
 
 The [four curated salt tables](data/records/README.md) hold physical releases, calibration preparations, observed points and candidate recording associations. The [field-data schema](../docs/field_data_schema.md) defines that compact interface and the preserved [broader transcription bundles](data/processed/field_notes/README.md), which also contain sediment and controlled seismic-source records. The populated tables need scientific review; file associations, units, clocks and calibration inputs must be checked before calculations.
 
+The [October 20 reconciliation](../docs/salt_record_reconciliation_2026_10_20.md) repairs four duplicate preparation IDs and 16 point references while preserving reviewed values. There are now 48 linked rows across 31 recordings; 11 placeholders remain unresolved. Known files and probes are distinct from accepted calibration fits and integration windows. All inputs remain `needs_review`.
+
 The parser layer has one public entry point:
 
 ```python

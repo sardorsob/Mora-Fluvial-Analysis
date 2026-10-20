@@ -1,8 +1,8 @@
 # Field-data schema
 
-## Current compact salt interface: October 14
+## Current compact salt interface: October 20
 
-The maintained input layout is four UTF-8 CSVs under `salt_dilution/data/records/`. The [records guide](../salt_dilution/data/records/README.md) describes the populated local dataset, provenance and remaining review. It currently contains 38 physical releases, 43 calibration attempts, 262 observed point rows and 42 association/placeholder rows. The broader October 12 transcription below remains intact as staging evidence.
+The maintained input layout is four UTF-8 CSVs under `salt_dilution/data/records/`. The [records guide](../salt_dilution/data/records/README.md) describes the populated dataset, provenance and remaining review. It currently contains 38 physical releases, 43 distinct calibration attempts, 262 observed point rows and 59 association/placeholder rows. The [October 20 reconciliation](salt_record_reconciliation_2026_10_20.md) preserves reviewed quantities and repairs duplicate identities. The broader October 12 transcription below remains intact as staging evidence.
 
 | Table | Grain | Key |
 | --- | --- | --- |
@@ -27,13 +27,17 @@ trial_inputs.csv
 trial_id,dataset_id,processed_path,calibration_id,probe_alias,recording_role,window_start_utc,window_end_utc,conductivity_basis,review_status
 ```
 
-Field dates are local ISO dates. All UTC event/window fields currently remain blank. `site_alias` is `NISQ` or `PAR`, with an empty alias for unresolved supporting calibrations. `injection_form` is `dry` or `solution` when established. `addition_kind` is `incremental`, `cumulative` or `unconfirmed`. `stock_water_source` is `river` or `deionized` when established; otherwise blank. `conductivity_basis` is `actual` or `specific` when selected. Review states are `unreviewed`, `needs_review` or `verified`; the initial population uses `needs_review` throughout.
+Current compact field dates retain the user's `M/D/YYYY` spelling; parse with `%m/%d/%Y` before comparing to ISO logger dates. All UTC event/window fields currently remain blank. Current `site_alias` values are `NISQ` or `PAR`, including the user's supporting-preparation assignments. `injection_form` is `dry` or `solution`; these reviewed nominal delivery settings do not establish delivered quantities. `addition_kind` is `incremental`, `cumulative` or `unconfirmed`. `stock_water_source` is `river` or `deionized` when established; otherwise blank. `conductivity_basis` is `actual` or `specific` when selected. Review states are `unreviewed`, `needs_review` or `verified`; the current records use `needs_review` throughout.
 
 Use the existing [procedure profiles](../salt_dilution/config/procedure_versions.json): `solution_secondary`, `mass_stock_river` and `mass_stock_deionized`. Unknown or unsupported preparations keep a blank procedure; a date cannot select it. Initial water is not final stock volume, mass of water is not volume, and nominal salt mass is not an accepted delivered mass. Full preparation stages and quantity bases remain in the local companion provenance.
 
+Reviewed recipe and procedure edits are preserved. Select preparation stages from `procedure_id`; a populated secondary-water field does not add a secondary dilution to a direct-stock method. Original transcription uncertainties and abandoned/restarted attempts remain evidence to review, even where nominal settings are now filled.
+
 Written additions are stored without replacing them by a calculated cumulative series. Uncertain handwritten tokens retain blank numeric values and their original text in provenance. Do not promote crossed-out/empty rows or an abandoned preparation into an accepted fit. Keep original source positions in `step_no`, including gaps.
 
-`trial_inputs.csv` contains eight evidence-backed recording candidates across seven files, with 34 unresolved-path rows. Every release has at least one row. A blank path preserves an unresolved notebook association; it is not a selected dataset. A populated path still needs scientific checks. Three historical dataset IDs were retained after exact timestamp/EC-series comparison, and four new identities are frozen in provenance. Same-day matching alone does not establish a link. Known cross-probe calibration candidates are documented in provenance rather than silently applied to another probe.
+`trial_inputs.csv` contains 48 linked rows across 31 files for 28 releases, with 11 unresolved-path rows for ten other releases. Every release has at least one row. A blank path preserves an unresolved notebook association; it is not a selected dataset. A populated path identifies a real recording and measured probe; it still needs scientific checks. All seven earlier dataset identities are retained, and 24 additional identities are frozen in provenance. Same-day matching alone does not establish a link. Known cross-probe calibration candidates are retained in provenance and withheld from the applicability field. Other calibration references are pending notebook candidates, not accepted fitted coefficients.
+
+The four formerly colliding supporting preparations use PAR C06-C09, with their historical UNK aliases retained; PAR C01-C05 remain distinct. Points join to preparations many-to-one without dropping or multiplying observations. Per-link provenance separates confirmed recording identity, calibration applicability, measurement clock and analysis window. Source-local file bounds and export dates must not become UTC integration windows automatically. Shared datasets and paired probes are intentional; never aggregate repeated files across releases before selecting separate event windows.
 
 The four compact field tables, source provenance, manifest and validation report are versioned together. Large generated stream tables and metadata remain Git-ignored under `processed/`. The following section describes the older local staging layout; it is not an additional set of tables required by a future compact runner.
 
