@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+<head><meta name="format-detection" content="telephone=no">
+<meta charset="UTF-8" />
+<style>
+* {
+  font-family: sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+  margin-bottom:1em;
+}
+
+td {
+  white-space: nowrap;
+  padding-left:1em;
+  padding-right:1em;
+  padding-top: 0px;
+  padding-bottom:0px;
+}
+
+div table:first-child caption {
+  display: none;
+}
+
+div table:not(:first-child) caption.header {
+  font-weight: bold;
+}
+
+div table:not(:first-child) caption {
+  border-bottom: 1px solid;
+  caption-side: top;
+  padding-left:1em;
+  padding-right:1em;
+  text-align: left;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+div table:first-child tr:first-child td {
+  background-color: black;
+  color: white;
+}
+
+div table:first-child td:last-child {
+  width: 100%;
+}
+
+div table:first-child tr:first-child td:last-child {
+  font-weight:bold;
+}
+
+div table:not(:first-child) {
+  margin-left:2em;
+}
+
+@media print {
+  div {
+    page-break-inside: avoid;
+  }
+
+  div table:first-child tr:first-child td {
+    border-bottom: solid 2px #aaa;
+    color: black;
+  }
+}
+</style>
+</head>
+<body dir=ltr> 
+    <h2>Calibration Report</h2>
+    <table>
+        <tr>
+            <td>Instrument</td>
+            <td>Aqua TROLL 200</td>
+        </tr>
+        <tr>
+            <td>Serial Number</td>
+            <td>790478</td>
+        </tr>
+        <tr>
+            <td>Created</td>
+            <td>10/2/2026</td>
+        </tr>
+    </table>
+        <div>
+            <table>
+                <caption>Sensor</caption>
+                <tr>
+                    <td>Sensor</td>
+                    <td>Pressure with Conductivity</td>
+                </tr>
+                <tr>
+                    <td>Serial Number</td>
+                    <td>790478</td>
+                </tr>
+                <tr>
+                    <td>Last Calibrated</td>
+                    <td>10/2/2026</td>
+                </tr>
+            </table>
+<TABLE /><TABLE><CAPTION>Calibration Details</CAPTION></TABLE><TABLE><CAPTION>Pressure / Level</CAPTION><TR><TD>Zero Offset</TD><TD>-41.79 psi</TD></TR><TR><TD>Reference Depth</TD><TD>0.000 ft</TD></TR><TR><TD>Reference Offset</TD><TD>0.000 psi</TD></TR></TABLE><TABLE><CAPTION>Conductivity</CAPTION><TR><TD>Offset</TD><TD>0.000 µS/cm</TD></TR><TR><TD>Cell Constant</TD><TD>1</TD></TR><TR><TD>Reference Temperature</TD><TD>25.00 °C</TD></TR><TR><TD>TDS Conversion Factor (ppm)</TD><TD>0.65</TD></TR></TABLE>        </div>
+</body>
+</html>

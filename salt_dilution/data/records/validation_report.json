@@ -1,75 +1,60 @@
 {
-  "checked_on": "2026-10-16",
-  "status": "structural_checks_passed; scientific_review_pending",
-  "row_counts": {
-    "trials": 38,
-    "calibrations": 43,
-    "calibration_points": 262,
-    "trial_inputs": 42
+  "checked_on": "2026-10-20",
+  "status": "local_snapshot_reconciled; scientific_review_pending",
+  "scope": "Integrate user-reviewed stock masses from ff6c085 with the repaired identities, recording links and parser already on main. No new scientific calculations or local ignored-recording revalidation.",
+  "source_commits": {
+    "main": "54598c9a5e7d13f51fa44086fb45a53a2deb1b89",
+    "local": "ff6c08597eab24253f22f47e846e6d1b40ff7372"
   },
-  "study_site_release_counts": {
-    "NISQ": 32,
-    "PAR": 6
-  },
-  "procedure_counts": {
-    "unresolved": 27,
-    "solution_secondary": 10,
-    "mass_stock_river": 4,
-    "mass_stock_deionized": 2
-  },
-  "recording_candidate_rows": 8,
-  "unresolved_recording_rows": 34,
-  "distinct_electronic_datasets": 7,
+  "row_counts": {"trials": 38, "calibrations": 43, "calibration_points": 262, "trial_inputs": 59},
+  "study_site_release_counts": {"NISQ": 32, "PAR": 6},
+  "procedure_counts": {"solution_secondary": 22, "mass_stock_river": 12, "mass_stock_deionized": 9},
+  "recording_candidate_rows": 48,
+  "unresolved_recording_rows": 11,
+  "distinct_electronic_datasets": 31,
+  "linked_releases": 28,
   "accepted_discharge_ready_rows": 0,
-  "excluded_source_rows": {
-    "trials": 1,
-    "calibrations": 2,
-    "calibration_points": 29
+  "missing_trial_input_fields": {
+    "trial_id": 0, "dataset_id": 11, "processed_path": 11, "calibration_id": 33,
+    "probe_alias": 11, "recording_role": 22, "window_start_utc": 59,
+    "window_end_utc": 59, "conductivity_basis": 11, "review_status": 0
+  },
+  "current_table_sha256": {
+    "trials.csv": "eee5d4378dddac50ee8d836acc340d970f58196c6e286190b756bc664286d99b",
+    "calibrations.csv": "becc8fcd3860b0c9fd3c5186f8653990141730eb08e007c96e4a690ac314a177",
+    "calibration_points.csv": "d90c7aed21d1a07a970990b9d4b9e5ad27da35662e290451588d51b81d68cdc3",
+    "trial_inputs.csv": "63520222eb137796c9ae2b342b9190a70dd4a27a77307c02f5009b6c55d919e1"
+  },
+  "local_reconciliation": {
+    "stock_mass_cells_imported": 35,
+    "stock_mass_values_populated": 43,
+    "unique_calibration_ids": 43,
+    "manifest_restored": true,
+    "all_uploaded_calibration_values_preserved_except_four_source_block_id_repairs": true,
+    "provenance_policy": "Original provenance snapshot unchanged; finite stock-mass overrides in manifest.json reviewed_setting_overrides resolve its older current_csv_values."
   },
   "checks": [
-    "exact compact headers and CSV/JSON readback",
-    "unique primary/composite keys and foreign keys",
-    "all included releases represented in trial_inputs",
-    "controlled values and nullable finite numbers",
-    "original PDF hashes equal transcription evidence",
-    "stream candidate source/probe/path/hash checks",
-    "same dataset ID always points to one file",
-    "legacy dataset IDs reused only after full signal comparison",
-    "no date-only links promoted automatically",
-    "unequal October 4 additions preserved and total 46 mL",
-    "spill volume withheld",
-    "extra-diluted abandoned stock not flattened",
-    "stock final volume not inferred",
-    "no assumed UTC or unknown dry/solution forms",
-    "crossed-out or conductivity-empty rows excluded with provenance",
-    "independent readback of every point value against retained source tokens",
-    "all prior data/script file hashes checked; only the intended data README changed",
-    "October 16 CSV/provenance checksums and exact-header readback repeated before versioning"
+    "Uploaded calibration table reconstructed byte-for-byte after reversing exactly four source-block ID repairs; Git blob matches adcf64ef7717bdfc0180c37f7013a5a924aa1112.",
+    "Exactly 35 formerly empty stock salt masses updated relative to main; other preparation fields unchanged.",
+    "43 unique calibration parents, unique point keys and a lossless 262-point join.",
+    "Trial, point, recording-link, raw-data and parser blobs retained from main.",
+    "Manifest hashes refreshed; effective preparation provenance must equal current CSVs."
   ],
-  "source_inputs_unchanged": true,
-  "preservation_check": {
-    "previous_files_checked": 535,
-    "unchanged_previous_files": 534,
-    "intentional_documentation_changes": [
-      "salt_dilution/data/README.md"
-    ],
-    "all_existing_raw_processed_examples_inventory_and_scripts_unchanged": true,
-    "checked_on": "2026-10-14"
+  "verification": {
+    "command": "python -m unittest discover -s tests -v",
+    "result_source": "https://github.com/sardorsob/Mora-Fluvial-Analysis/pull/2/checks",
+    "note": "Use the CI result for the exact PR revision; no historical test count is represented as a fresh run.",
+    "local_ignored_recordings_rechecked": false
   },
-  "original_transcription_validation_on": "2026-10-14",
-  "versioning_policy": {
-    "curated_records": "Version the four small CSV tables, provenance, manifest and validation report at the user's direction.",
-    "processed_stream_readings": "Remain local and Git-ignored; README is versioned."
+  "previous_validation": {
+    "commit": "7d7647e2fc289147d007035731eba96db89ada0d",
+    "path": "salt_dilution/data/records/validation_report.json",
+    "reported_tests_passed": 32,
+    "note": "Historical local reconciliation evidence, including 31 source/output/metadata sets and the October 19 parser run. Not rerun during this merge."
   },
-  "local_parser_run": {
-    "run_id": "2026-10-16_parser_ingestion",
-    "retained_csv_metadata_pairs": 143,
-    "retained_rows": 345642,
-    "unsupported_failed_or_empty_candidates": 28,
-    "quarantined_pairs": 2,
-    "unit_tests_passed": 22,
-    "raw_files_unchanged": true,
-    "generated_readings_git_ignored": true,
-    "note": "Normalization only; scientific review remains pending. The older transcription inventory retains the August duplicate's former path; current relocation is recorded in the parser run manifest."
-  }
+  "limitations": [
+    "Stock masses are reviewed nominal preparation settings, not proof of complete delivery or mixing.",
+    "Final stock volumes, abandoned/restarted attempts, point-level exceptions and selected-channel gaps remain scientific review items.",
+    "UTC event and integration windows remain unselected; no calibration or discharge result is accepted."
+  ]
 }
