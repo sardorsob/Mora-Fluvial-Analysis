@@ -1,173 +1,60 @@
 {
   "checked_on": "2026-10-20",
-  "status": "structural_checks_passed; recording_identity_checked; scientific_review_pending",
-  "row_counts": {
-    "trials": 38,
-    "calibrations": 43,
-    "calibration_points": 262,
-    "trial_inputs": 59
+  "status": "local_snapshot_reconciled; scientific_review_pending",
+  "scope": "Integrate user-reviewed stock masses from ff6c085 with the repaired identities, recording links and parser already on main. No new scientific calculations or local ignored-recording revalidation.",
+  "source_commits": {
+    "main": "54598c9a5e7d13f51fa44086fb45a53a2deb1b89",
+    "local": "ff6c08597eab24253f22f47e846e6d1b40ff7372"
   },
-  "study_site_release_counts": {
-    "NISQ": 32,
-    "PAR": 6
-  },
-  "procedure_counts": {
-    "solution_secondary": 22,
-    "mass_stock_river": 12,
-    "mass_stock_deionized": 9
-  },
+  "row_counts": {"trials": 38, "calibrations": 43, "calibration_points": 262, "trial_inputs": 59},
+  "study_site_release_counts": {"NISQ": 32, "PAR": 6},
+  "procedure_counts": {"solution_secondary": 22, "mass_stock_river": 12, "mass_stock_deionized": 9},
   "recording_candidate_rows": 48,
   "unresolved_recording_rows": 11,
   "distinct_electronic_datasets": 31,
   "linked_releases": 28,
   "accepted_discharge_ready_rows": 0,
   "missing_trial_input_fields": {
-    "trial_id": 0,
-    "dataset_id": 11,
-    "processed_path": 11,
-    "calibration_id": 33,
-    "probe_alias": 11,
-    "recording_role": 22,
-    "window_start_utc": 59,
-    "window_end_utc": 59,
-    "conductivity_basis": 11,
-    "review_status": 0
+    "trial_id": 0, "dataset_id": 11, "processed_path": 11, "calibration_id": 33,
+    "probe_alias": 11, "recording_role": 22, "window_start_utc": 59,
+    "window_end_utc": 59, "conductivity_basis": 11, "review_status": 0
   },
-  "excluded_source_rows": {
-    "trials": 1,
-    "calibrations": 2,
-    "calibration_points": 29
+  "current_table_sha256": {
+    "trials.csv": "eee5d4378dddac50ee8d836acc340d970f58196c6e286190b756bc664286d99b",
+    "calibrations.csv": "becc8fcd3860b0c9fd3c5186f8653990141730eb08e007c96e4a690ac314a177",
+    "calibration_points.csv": "d90c7aed21d1a07a970990b9d4b9e5ad27da35662e290451588d51b81d68cdc3",
+    "trial_inputs.csv": "63520222eb137796c9ae2b342b9190a70dd4a27a77307c02f5009b6c55d919e1"
+  },
+  "local_reconciliation": {
+    "stock_mass_cells_imported": 35,
+    "stock_mass_values_populated": 43,
+    "unique_calibration_ids": 43,
+    "manifest_restored": true,
+    "all_uploaded_calibration_values_preserved_except_four_source_block_id_repairs": true,
+    "provenance_policy": "Original provenance snapshot unchanged; finite stock-mass overrides in manifest.json reviewed_setting_overrides resolve its older current_csv_values."
   },
   "checks": [
-    "exact compact headers, CSV/JSON readback and current manifest hashes",
-    "43 unique preparation identities; no point or input-table foreign-key orphans",
-    "many-to-one point/preparation join preserves all 262 observations",
-    "all 38 releases represented, including unresolved placeholders",
-    "all reviewed numerical settings, dates and source references preserved; trials.csv bytes unchanged",
-    "four source-block preparation IDs and sixteen point-parent IDs repaired with historical aliases",
-    "all eight previous populated links and seven dataset identities retained",
-    "31 linked files: source/output/metadata hashes, row counts, measurement sensor identity and selected channel availability",
-    "specific-first selection with explicit historical actual-only route preserved",
-    "cross-probe calibration candidates retained in provenance and withheld from applicability field",
-    "paired probes, split logs, shared recordings and July-versus-August measurement/export dates checked",
-    "August 8 original HTML clock retained instead of minute-rounded CSV copy",
-    "pending calibration/window states retained; no guessed UTC/integration bounds",
-    "October 4 unequal addition sequence preserved and totals 46 mL"
+    "Uploaded calibration table reconstructed byte-for-byte after reversing exactly four source-block ID repairs; Git blob matches adcf64ef7717bdfc0180c37f7013a5a924aa1112.",
+    "Exactly 35 formerly empty stock salt masses updated relative to main; other preparation fields unchanged.",
+    "43 unique calibration parents, unique point keys and a lossless 262-point join.",
+    "Trial, point, recording-link, raw-data and parser blobs retained from main.",
+    "Manifest hashes refreshed; effective preparation provenance must equal current CSVs."
   ],
-  "source_inputs_unchanged": true,
-  "original_transcription_validation_on": "2026-10-14",
-  "historical_validation": {
-    "checked_on": "2026-10-16",
-    "checks": [
-      "exact compact headers and CSV/JSON readback",
-      "unique primary/composite keys and foreign keys",
-      "all included releases represented in trial_inputs",
-      "controlled values and nullable finite numbers",
-      "original PDF hashes equal transcription evidence",
-      "stream candidate source/probe/path/hash checks",
-      "same dataset ID always points to one file",
-      "legacy dataset IDs reused only after full signal comparison",
-      "no date-only links promoted automatically",
-      "unequal October 4 additions preserved and total 46 mL",
-      "spill volume withheld",
-      "extra-diluted abandoned stock not flattened",
-      "stock final volume not inferred",
-      "no assumed UTC or unknown dry/solution forms",
-      "crossed-out or conductivity-empty rows excluded with provenance",
-      "independent readback of every point value against retained source tokens",
-      "all prior data/script file hashes checked; only the intended data README changed",
-      "October 16 CSV/provenance checksums and exact-header readback repeated before versioning"
-    ],
-    "preservation_check": {
-      "previous_files_checked": 535,
-      "unchanged_previous_files": 534,
-      "intentional_documentation_changes": [
-        "salt_dilution/data/README.md"
-      ],
-      "all_existing_raw_processed_examples_inventory_and_scripts_unchanged": true,
-      "checked_on": "2026-10-14"
-    }
-  },
-  "versioning_policy": {
-    "curated_records": "Version the four small CSV tables, provenance, manifest and validation report at the user's direction.",
-    "processed_stream_readings": "Remain local and Git-ignored; README is versioned."
-  },
-  "local_parser_run": {
-    "run_id": "2026-10-19_parser_ingestion",
-    "retained_csv_metadata_pairs": 153,
-    "retained_rows": 349543,
-    "prior_unsupported_failed_or_empty_candidates": 28,
-    "new_supporting_reports_without_measurement_table": 4,
-    "quarantined_pairs": 2,
-    "retained_timestamp_flagged_tables": 11,
-    "raw_files_unchanged": true,
-    "generated_readings_git_ignored": true,
-    "note": "Reconciliation did not reprocess or modify any observations. Parser normalization does not validate scientific use."
-  },
-  "reconciliation": {
-    "updated_on": "2026-10-20",
-    "row_counts": {
-      "trials": 38,
-      "calibrations": 43,
-      "calibration_points": 262,
-      "trial_inputs": 59
-    },
-    "linked_rows": 48,
-    "unresolved_rows": 11,
-    "distinct_linked_datasets": 31,
-    "linked_releases": 28,
-    "missing_counts": {
-      "trial_id": 0,
-      "dataset_id": 11,
-      "processed_path": 11,
-      "calibration_id": 33,
-      "probe_alias": 11,
-      "recording_role": 22,
-      "window_start_utc": 59,
-      "window_end_utc": 59,
-      "conductivity_basis": 11,
-      "review_status": 0
-    },
-    "repaired_preparations": 4,
-    "repaired_point_references": 16,
-    "reviewed_values_preserved": true,
-    "existing_link_identities_preserved": 8,
-    "trials_csv_bytes_unchanged": true,
-    "baseline_table_sha256": {
-      "trials.csv": "eee5d4378dddac50ee8d836acc340d970f58196c6e286190b756bc664286d99b",
-      "calibrations.csv": "b0e4ba3591c796ca8471d01032306cd64a0b27138ae8129f173feed46eea29a2",
-      "calibration_points.csv": "c336bd1e1ae0785d5c08a812ff6383d6b4a3ace22cd4ccf9bf32010bfe6d3e94",
-      "trial_inputs.csv": "8e4f869785649da4e2a22b91d10e3b9957b2bbfe0b82f0a186d993e4344fe9f1"
-    },
-    "current_table_sha256": {
-      "trials.csv": "eee5d4378dddac50ee8d836acc340d970f58196c6e286190b756bc664286d99b",
-      "calibrations.csv": "a0ed9dd5ecf394d5e16775b6a632379862d60a8bd2726f4e61dd207d4b0f8826",
-      "calibration_points.csv": "d90c7aed21d1a07a970990b9d4b9e5ad27da35662e290451588d51b81d68cdc3",
-      "trial_inputs.csv": "63520222eb137796c9ae2b342b9190a70dd4a27a77307c02f5009b6c55d919e1"
-    },
-    "accepted_discharge_ready_rows": 0
-  },
   "verification": {
-    "command": "MORA_CHECK_LOCAL_RECORDINGS=1 python -m unittest discover -s tests -v",
-    "tests_passed": 32,
-    "tests_skipped": 0,
-    "clone_safe_default": "31 tests pass; one ignored-data check skipped unless MORA_CHECK_LOCAL_RECORDINGS=1."
+    "command": "python -m unittest discover -s tests -v",
+    "result_source": "https://github.com/sardorsob/Mora-Fluvial-Analysis/pull/2/checks",
+    "note": "Use the CI result for the exact PR revision; no historical test count is represented as a fresh run.",
+    "local_ignored_recordings_rechecked": false
   },
-  "preservation_check": {
-    "checked_on": "2026-10-20",
-    "previous_files_checked": 592,
-    "unchanged_previous_files": 585,
-    "intentional_record_changes": [
-      "salt_dilution/data/records/README.md",
-      "salt_dilution/data/records/calibration_points.csv",
-      "salt_dilution/data/records/calibrations.csv",
-      "salt_dilution/data/records/manifest.json",
-      "salt_dilution/data/records/provenance.json",
-      "salt_dilution/data/records/trial_inputs.csv",
-      "salt_dilution/data/records/validation_report.json"
-    ],
-    "all_original_raw_processed_examples_inventory_and_scripts_unchanged": true,
-    "raw_files_checked": 208,
-    "trials_csv_unchanged": true
-  }
+  "previous_validation": {
+    "commit": "7d7647e2fc289147d007035731eba96db89ada0d",
+    "path": "salt_dilution/data/records/validation_report.json",
+    "reported_tests_passed": 32,
+    "note": "Historical local reconciliation evidence, including 31 source/output/metadata sets and the October 19 parser run. Not rerun during this merge."
+  },
+  "limitations": [
+    "Stock masses are reviewed nominal preparation settings, not proof of complete delivery or mixing.",
+    "Final stock volumes, abandoned/restarted attempts, point-level exceptions and selected-channel gaps remain scientific review items.",
+    "UTC event and integration windows remain unselected; no calibration or discharge result is accepted."
+  ]
 }

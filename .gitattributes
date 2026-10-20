@@ -4,3 +4,7 @@
 # Preserve archived instrument exports and historical source notes exactly.
 salt_dilution/data/examples/*.csv -text -whitespace
 docs/source_notes/*.txt -text -whitespace
+
+# Curated record checksums must not depend on the checkout platform.
+salt_dilution/data/records/*.csv text eol=lf
+salt_dilution/data/records/*.json text eol=lf

@@ -1,6 +1,20 @@
 # Salt-record reconciliation: October 20, 2026
 
-The reviewed tables at `5cd3f5e443bba6b0e379f735fa241601d837cad3` contained four duplicate calibration IDs and 16 orphan point references. The repair uses source blocks, preserving every reviewed quantity, source reference, date and point observation. `trials.csv` is byte-for-byte unchanged. No parser, notebook, scientific calculation or raw/processed observation was changed.
+## Latest integration of the local stock-mass corrections
+
+[PR #2](https://github.com/sardorsob/Mora-Fluvial-Analysis/pull/2) reconciles the uploaded local commit `ff6c08597eab24253f22f47e846e6d1b40ff7372` with `main` at `54598c9a5e7d13f51fa44086fb45a53a2deb1b89`. The main branch already contains the repaired recording links and the reusable batch parser. Those changes are retained rather than replaced by the older local snapshot.
+
+The combined calibration table preserves every uploaded quantity, date, method and source reference. Only the four old, colliding preparation IDs are mapped by source block to the established PAR C06-C09 IDs listed below. This fills 35 previously blank `stock_salt_mass_g` cells relative to main; all 43 preparations now have a nominal stock mass. The 262 observed calibration points and 59 recording-link/placeholder rows remain byte-for-byte unchanged from main, as do raw observations and parser code.
+
+The locally deleted `manifest.json` is restored and its calibration checksum refreshed. Its finite `reviewed_setting_overrides` entry records the uploaded source commit, original calibration blob, the 35 field updates and the four source-block ID mappings. `provenance.json` is preserved as the earlier evidence snapshot: for those explicitly enumerated stock-mass cells only, the manifest overrides its older `current_csv_values`. Original `source_record` tokens, warnings, preparation stages, historical aliases and recording identities are not rewritten. Current CSV values are the calculation inputs; the override records their lineage, not another set of measurements.
+
+The added regression tests reconstruct the uploaded calibration CSV after reversing exactly those four ID repairs and check its original Git blob hash. They also require every preparation to equal its provenance snapshot plus the finite review overlay, and require the validation summary to match the current tables and manifest. The existing parser, raw-export integration and record tests run on the combined pull request in Linux/Windows CI. See the [checks for the exact revision](https://github.com/sardorsob/Mora-Fluvial-Analysis/pull/2/checks); historical test totals below are not fresh results for this merge. The opt-in ignored local-recording check is not rerun by normal CI.
+
+This integration does not fit K, compute discharge, change dilution stages, invent final stock volumes, select integration windows or accept abandoned/restarted preparations. A filled nominal salt mass does not remove an existing scientific warning.
+
+## Earlier reconciliation at 7d7647e
+
+The reviewed tables at `5cd3f5e443bba6b0e379f735fa241601d837cad3` contained four duplicate calibration IDs and 16 orphan point references. The repair uses source blocks, preserving every reviewed quantity, source reference, date and point observation. `trials.csv` is byte-for-byte unchanged. No parser, notebook, scientific calculation or raw/processed observation was changed by that earlier reconciliation.
 
 | Source block | Historical point parent | Repaired ID |
 | --- | --- | --- |
@@ -35,10 +49,10 @@ All 59 rows remain `needs_review`, and no UTC event/integration windows were inv
 
 The user's recipe/quantity edits remain current. Original transcription fields, raw tokens, stock stages and historical issues are preserved separately from the dated review overlay. Select dilution stages by procedure, not by whether a secondary-water cell is filled. Nominal salt mass is not established delivered mass; spills, incomplete mixing, restarts and unequal additions remain relevant. The October 4 round-2 increments still total 46 mL.
 
-Before K or Q, select one complete probe/channel/calibration/release case, establish the stock concentration and delivered input, reconcile clocks, and review baseline/full rise/tail. July 21 explicitly names Pacific Daylight Time; this alone does not select an integration interval. October export-creation offsets are not measurement-clock evidence. File bounds remain observations rather than analysis windows. Calibration fitting and discharge modules remain unimplemented.
+Before K or Q, select one complete probe/channel/calibration/release case, establish the stock concentration and delivered input, reconcile clocks, and review baseline/full rise/tail. July 21 explicitly names Pacific Daylight Time; this alone does not select an integration interval. At the earlier reconciliation, October export-creation offsets were not used as measurement-clock evidence. The subsequently merged parser can retain explicit measurement-report offsets; its newly generated UTC values still require event alignment. File bounds remain observations rather than analysis windows. Calibration fitting and discharge modules remain unimplemented.
 
-## Verification
+## Historical verification at 7d7647e
 
-The 32 tests pass with local recording checks enabled: 22 existing parser/portability tests, nine table checks and one opt-in file check. They cover unique keys, foreign keys, a lossless point join, manifest hashes, aliases, paired/split/shared recordings, source/export dates, original timestamp selection, channel/probe consistency and explicit pending states. The file check reads all 31 registered source/output/metadata sets and confirms measurement serials, row counts and available selected channels.
+The earlier reconciliation reported 32 passing tests with local recording checks enabled: 22 existing parser/portability tests, nine table checks and one opt-in file check. They covered unique keys, foreign keys, a lossless point join, manifest hashes, aliases, paired/split/shared recordings, source/export dates, original timestamp selection, channel/probe consistency and explicit pending states. The file check read all 31 registered source/output/metadata sets and confirmed measurement serials, row counts and available selected channels. The complete historical report remains at `7d7647e2fc289147d007035731eba96db89ada0d:salt_dilution/data/records/validation_report.json`.
 
 Run the default clone-safe suite with `python -m unittest discover -s tests -v`. Set `MORA_CHECK_LOCAL_RECORDINGS=1` to include ignored local outputs. The [local audit bundle](../salt_dilution/results/2026-10-20_record_reconciliation/README.md) retains the migration driver, baseline snapshot, reconciliation summary and preservation verification. Generated observations and audit artifacts remain Git-ignored. No K or Q result is claimed.

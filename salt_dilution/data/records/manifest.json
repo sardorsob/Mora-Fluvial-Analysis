@@ -1,75 +1,16 @@
 {
   "created_on": "2026-10-14",
   "schema_columns": {
-    "trials": [
-      "trial_id",
-      "site_alias",
-      "field_date",
-      "trial_label",
-      "sourcebook_reference",
-      "injection_form",
-      "salt_mass_g",
-      "injection_solution_volume_ml",
-      "dump_timestamp_utc"
-    ],
-    "calibrations": [
-      "calibration_id",
-      "field_date",
-      "site_alias",
-      "procedure_id",
-      "stock_water_source",
-      "stock_salt_mass_g",
-      "stock_water_initial_ml",
-      "stock_solution_final_ml",
-      "injectate_aliquot_ml",
-      "secondary_water_initial_ml",
-      "calibration_water_initial_ml",
-      "sourcebook_reference",
-      "review_status"
-    ],
-    "calibration_points": [
-      "calibration_id",
-      "step_no",
-      "probe_alias",
-      "recorded_added_volume_ml",
-      "addition_kind",
-      "recorded_vessel_volume_ml",
-      "actual_conductivity_us_cm",
-      "specific_conductivity_us_cm",
-      "temperature_c",
-      "sourcebook_reference",
-      "review_status"
-    ],
-    "trial_inputs": [
-      "trial_id",
-      "dataset_id",
-      "processed_path",
-      "calibration_id",
-      "probe_alias",
-      "recording_role",
-      "window_start_utc",
-      "window_end_utc",
-      "conductivity_basis",
-      "review_status"
-    ]
+    "trials": ["trial_id", "site_alias", "field_date", "trial_label", "sourcebook_reference", "injection_form", "salt_mass_g", "injection_solution_volume_ml", "dump_timestamp_utc"],
+    "calibrations": ["calibration_id", "field_date", "site_alias", "procedure_id", "stock_water_source", "stock_salt_mass_g", "stock_water_initial_ml", "stock_solution_final_ml", "injectate_aliquot_ml", "secondary_water_initial_ml", "calibration_water_initial_ml", "sourcebook_reference", "review_status"],
+    "calibration_points": ["calibration_id", "step_no", "probe_alias", "recorded_added_volume_ml", "addition_kind", "recorded_vessel_volume_ml", "actual_conductivity_us_cm", "specific_conductivity_us_cm", "temperature_c", "sourcebook_reference", "review_status"],
+    "trial_inputs": ["trial_id", "dataset_id", "processed_path", "calibration_id", "probe_alias", "recording_role", "window_start_utc", "window_end_utc", "conductivity_basis", "review_status"]
   },
   "tables": {
-    "trials.csv": {
-      "rows": 38,
-      "sha256": "eee5d4378dddac50ee8d836acc340d970f58196c6e286190b756bc664286d99b"
-    },
-    "calibrations.csv": {
-      "rows": 43,
-      "sha256": "a0ed9dd5ecf394d5e16775b6a632379862d60a8bd2726f4e61dd207d4b0f8826"
-    },
-    "calibration_points.csv": {
-      "rows": 262,
-      "sha256": "d90c7aed21d1a07a970990b9d4b9e5ad27da35662e290451588d51b81d68cdc3"
-    },
-    "trial_inputs.csv": {
-      "rows": 59,
-      "sha256": "63520222eb137796c9ae2b342b9190a70dd4a27a77307c02f5009b6c55d919e1"
-    }
+    "trials.csv": {"rows": 38, "sha256": "eee5d4378dddac50ee8d836acc340d970f58196c6e286190b756bc664286d99b"},
+    "calibrations.csv": {"rows": 43, "sha256": "becc8fcd3860b0c9fd3c5186f8653990141730eb08e007c96e4a690ac314a177"},
+    "calibration_points.csv": {"rows": 262, "sha256": "d90c7aed21d1a07a970990b9d4b9e5ad27da35662e290451588d51b81d68cdc3"},
+    "trial_inputs.csv": {"rows": 59, "sha256": "63520222eb137796c9ae2b342b9190a70dd4a27a77307c02f5009b6c55d919e1"}
   },
   "provenance_sha256": "852ce9bb626ddc790f458866e2f3fa2c93ba4a9db3ad2d68bb104636825c18e1",
   "input_sha256": {
@@ -93,5 +34,34 @@
   "procedure_profiles_sha256": "3c19a83554c7dae85e956b9d97e1efa55281a8bc603353ef734a8dec44a7d154",
   "source_code_git_commit": "50301f70363cb3cda9e617595628b89ca3cf56f6",
   "updated_on": "2026-10-20",
-  "record_revision_base_git_commit": "5cd3f5e443bba6b0e379f735fa241601d837cad3"
+  "record_revision_base_git_commit": "54598c9a5e7d13f51fa44086fb45a53a2deb1b89",
+  "reviewed_setting_overrides": {
+    "recorded_on": "2026-10-20",
+    "source_commit": "ff6c08597eab24253f22f47e846e6d1b40ff7372",
+    "source_calibrations_git_blob": "adcf64ef7717bdfc0180c37f7013a5a924aa1112",
+    "provenance_snapshot_commit": "7d7647e2fc289147d007035731eba96db89ada0d",
+    "basis": "User-reviewed nominal stock salt masses; not new observations or scientific acceptance.",
+    "scope": "For these calibration IDs only, override the named field in provenance.json current_csv_values. Preserve original source_record and all other evidence. Current CSVs remain the calculation inputs.",
+    "field": "stock_salt_mass_g",
+    "previous_value": "",
+    "values": {
+      "NISQ-20250709-C01": "2", "NISQ-20250709-C02": "2", "NISQ-20250709-C03": "2", "NISQ-20250709-C04": "2",
+      "NISQ-20250724-C01": "2", "NISQ-20250731-C01": "2",
+      "NISQ-20250805-C01": "2", "NISQ-20250805-C02": "2", "NISQ-20250805-C03": "2", "NISQ-20250805-C04": "2",
+      "NISQ-20250808-C01": "2", "NISQ-20250903-C01": "2", "NISQ-20250903-C02": "2",
+      "NISQ-20250917-C01": "2", "NISQ-20250917-C02": "2", "NISQ-20250917-C03": "2", "NISQ-20250917-C04": "2",
+      "NISQ-20260716-C01": "2", "NISQ-20260721-C01": "2", "NISQ-20260806-C01": "2",
+      "PAR-20260903-C08": "2.5", "PAR-20260903-C01": "2.5", "PAR-20260903-C02": "2.5", "PAR-20260903-C03": "2.5", "PAR-20260903-C04": "2.5", "PAR-20260903-C05": "2.5", "PAR-20260903-C09": "2.5",
+      "NISQ-20260918-C01": "0.5",
+      "NISQ-20261004-C01": "1", "NISQ-20261004-C02": "1", "NISQ-20261004-C03": "1", "NISQ-20261004-C04": "1",
+      "NISQ-20261005-C01": "1", "NISQ-20261005-C02": "1", "NISQ-20261005-C03": "1"
+    },
+    "local_to_current_id_by_source_block": {
+      "c_06_test_left": {"local": "PAR-20260903-C01", "current": "PAR-20260903-C06"},
+      "c_06_test_right": {"local": "PAR-20260903-C02", "current": "PAR-20260903-C07"},
+      "c_07_pr02": {"local": "PAR-20260903-C03", "current": "PAR-20260903-C08"},
+      "c_08_p_unknown": {"local": "PAR-20260903-C04", "current": "PAR-20260903-C09"}
+    },
+    "changed_cells": 35
+  }
 }
