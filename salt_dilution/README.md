@@ -21,7 +21,7 @@ The [four curated salt tables](data/records/README.md) hold physical releases, c
 
 The [October 20 reconciliation](../docs/salt_record_reconciliation_2026_10_20.md) repairs four duplicate preparation IDs and 16 point references while preserving reviewed values. There are now 48 linked rows across 31 recordings; 11 placeholders remain unresolved. Known files and probes are distinct from accepted calibration fits and integration windows. All inputs remain `needs_review`.
 
-The user's October 20 clarification permits shared calibration across the numbered probes of the same device class. Twenty-three notebook-supported calibration links were restored. Linked rows use 16 specific- and 32 actual-conductivity routes, matching the available calibration observations without converting between channels. The unresolved event links and windows do not prevent calibration fitting. See the [saved calibration run](results/2026-10-20_calibration/README.md).
+The user's October 20 clarification permits shared calibration across the numbered probes of the same device class. Twenty-three notebook-supported calibration links were restored. Linked rows use 16 specific- and 32 actual-conductivity routes, matching the available calibration observations without converting between channels. The unresolved event links and windows do not prevent calibration fitting. See the [saved calibration run](results/calibrations/README.md).
 
 The parser layer has one public entry point:
 

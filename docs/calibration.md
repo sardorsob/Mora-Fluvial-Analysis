@@ -8,7 +8,7 @@ Run from the repository root using Python with NumPy and Matplotlib installed:
 python -m salt_dilution.scripts.processing.calibration --basis both --output salt_dilution/results/new_calibration_run
 ```
 
-Choose `specific`, `actual` or `both`; the default is `specific`. Use a new output directory: an existing run is never overwritten. A clone can fit the tracked tables without the large local stream recordings. The [October 20 result bundle](../salt_dilution/results/2026-10-20_calibration/README.md) is the first saved run.
+Choose `specific`, `actual` or `both`; the default is `specific`. Use a new output directory: an existing run is never overwritten. A clone can fit the tracked tables without the large local stream recordings. The [October 20 result bundle](../salt_dilution/results/calibrations/README.md) is the first saved run.
 
 ## From a preparation to concentration
 

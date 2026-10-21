@@ -33,5 +33,5 @@ __pycache__/
 !/salt_dilution/results/_template/**
 
 # Small calibration coefficients, point calculations and diagnostic figures.
-!/salt_dilution/results/2026-10-20_calibration/
-!/salt_dilution/results/2026-10-20_calibration/**
+!/salt_dilution/results/calibrations/
+!/salt_dilution/results/calibrations/**
