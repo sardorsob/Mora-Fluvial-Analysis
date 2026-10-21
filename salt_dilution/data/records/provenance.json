@@ -17099,11 +17099,12 @@
         "electronic measurement probe identity",
         "source-local coverage checked",
         "source page/device-role context",
-        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked."
+        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17123,11 +17124,12 @@
         "NISQ-20250709-C04"
       ],
       "evidence": [
-        "A p.3 RR-by-bridge assignment 840058; original RR log covers this literal dump and its later response. Minute cadence requires capture review."
+        "A p.3 RR-by-bridge assignment 840058; original RR log covers this literal dump and its later response. Minute cadence requires capture review.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidates_only; no_applicable_fit_selected",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17146,11 +17148,12 @@
         "NISQ-20250717-C02"
       ],
       "evidence": [
-        "A pp.4-5 dump 16:50:30; raw mixing-river-left CSV and original live export have identical timestamps and conductivity channels, identifying sensor 790481."
+        "A pp.4-5 dump 16:50:30; raw mixing-river-left CSV and original live export have identical timestamps and conductivity channels, identifying sensor 790481.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17169,11 +17172,12 @@
         "NISQ-20250717-C02"
       ],
       "evidence": [
-        "A pp.4-5 dump 16:50:30; raw mixing-river-left CSV and original live export have identical timestamps and conductivity channels, identifying sensor 790481."
+        "A pp.4-5 dump 16:50:30; raw mixing-river-left CSV and original live export have identical timestamps and conductivity channels, identifying sensor 790481.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17192,11 +17196,12 @@
         "NISQ-20250717-C02"
       ],
       "evidence": [
-        "Original RR-labelled log identifies 840058 and covers the 16:50:30 dump; its one-minute cadence is not a complete-wave acceptance."
+        "Original RR-labelled log identifies 840058 and covers the 16:50:30 dump; its one-minute cadence is not a complete-wave acceptance.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17218,11 +17223,12 @@
         "electronic measurement probe identity",
         "source-local coverage checked",
         "legacy INI pairing",
-        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked."
+        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidates_only; no_applicable_fit_selected",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17231,10 +17237,12 @@
         "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
         "UTC and background/tail windows not established",
         "candidate association only; not accepted for calculation",
-        "Notebook calibration uses another probe; its ID is withheld from the applicable-calibration field pending scientific review.",
         "Legacy July 24 INI pairs these sources and uses actual EC; its background interval extends beyond the notebook dump time and is not adopted."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration uses another probe; its ID is withheld from the applicable-calibration field pending scientific review."
+      ]
     },
     {
       "csv_row_number": 12,
@@ -17248,11 +17256,12 @@
         "electronic measurement probe identity",
         "source-local coverage checked",
         "source page/device-role context",
-        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked."
+        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidates_only; no_applicable_fit_selected",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17261,11 +17270,13 @@
         "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
         "UTC and background/tail windows not established",
         "candidate association only; not accepted for calculation",
-        "Notebook calibration uses another probe; its ID is withheld from the applicable-calibration field pending scientific review.",
         "July 31 app crash and split recording: second segment can contain dry tail and later solution wave; select distinct windows after clock review.",
         "The saved CSV counterpart of the second segment has shifted timestamps; original HTML-derived segment selected as a candidate, not merged."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration uses another probe; its ID is withheld from the applicable-calibration field pending scientific review."
+      ]
     },
     {
       "csv_row_number": 13,
@@ -17279,11 +17290,12 @@
         "electronic measurement probe identity",
         "source-local coverage checked",
         "source page/device-role context",
-        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked."
+        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidates_only; no_applicable_fit_selected",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17292,11 +17304,13 @@
         "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
         "UTC and background/tail windows not established",
         "candidate association only; not accepted for calculation",
-        "Notebook calibration uses another probe; its ID is withheld from the applicable-calibration field pending scientific review.",
         "July 31 app crash and split recording: second segment can contain dry tail and later solution wave; select distinct windows after clock review.",
         "The saved CSV counterpart of the second segment has shifted timestamps; original HTML-derived segment selected as a candidate, not merged."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration uses another probe; its ID is withheld from the applicable-calibration field pending scientific review."
+      ]
     },
     {
       "csv_row_number": 14,
@@ -17306,11 +17320,12 @@
         "NISQ-20250731-C02"
       ],
       "evidence": [
-        "Original Longmire July 31 log identifies sensor 790481 and covers both written releases with separate responses; bank not established from the ambiguous notebook adapter ID 670831?."
+        "Original Longmire July 31 log identifies sensor 790481 and covers both written releases with separate responses; bank not established from the ambiguous notebook adapter ID 670831?.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidates_only; no_applicable_fit_selected",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17333,11 +17348,12 @@
         "electronic measurement probe identity",
         "source-local coverage checked",
         "source page/device-role context",
-        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked."
+        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidates_only; no_applicable_fit_selected",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17346,11 +17362,13 @@
         "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
         "UTC and background/tail windows not established",
         "candidate association only; not accepted for calculation",
-        "Notebook calibration uses another probe; its ID is withheld from the applicable-calibration field pending scientific review.",
         "July 31 app crash and split recording: second segment can contain dry tail and later solution wave; select distinct windows after clock review.",
         "The saved CSV counterpart of the second segment has shifted timestamps; original HTML-derived segment selected as a candidate, not merged."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration uses another probe; its ID is withheld from the applicable-calibration field pending scientific review."
+      ]
     },
     {
       "csv_row_number": 16,
@@ -17360,11 +17378,12 @@
         "NISQ-20250731-C01"
       ],
       "evidence": [
-        "Original Longmire July 31 log identifies sensor 790481 and covers both written releases with separate responses; bank not established from the ambiguous notebook adapter ID 670831?."
+        "Original Longmire July 31 log identifies sensor 790481 and covers both written releases with separate responses; bank not established from the ambiguous notebook adapter ID 670831?.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidates_only; no_applicable_fit_selected",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17383,20 +17402,23 @@
         "NISQ-20250805-C01"
       ],
       "evidence": [
-        "A p.7 RR stilling-well assignment 840058; original AM/PM live log covers the corresponding written dry/solution dump. Shared recording requires separate event windows."
+        "A p.7 RR stilling-well assignment 840058; original AM/PM live log covers the corresponding written dry/solution dump. Shared recording requires separate event windows.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250805-C01 identifies probe_01, unlike recording probe_04; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250805-C01 identifies probe_01, unlike recording probe_04; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 18,
@@ -17406,20 +17428,23 @@
         "NISQ-20250805-C01"
       ],
       "evidence": [
-        "A p.7 RL mixing assignment 790481 agrees with original mixing-log channel serial; continuous log covers this literal dump. Sparse sampling needs scientific review."
+        "A p.7 RL mixing assignment 790481 agrees with original mixing-log channel serial; continuous log covers this literal dump. Sparse sampling needs scientific review.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250805-C01 identifies probe_01, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250805-C01 identifies probe_01, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 19,
@@ -17429,20 +17454,23 @@
         "NISQ-20250805-C02"
       ],
       "evidence": [
-        "A p.7 RR stilling-well assignment 840058; original AM/PM live log covers the corresponding written dry/solution dump. Shared recording requires separate event windows."
+        "A p.7 RR stilling-well assignment 840058; original AM/PM live log covers the corresponding written dry/solution dump. Shared recording requires separate event windows.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250805-C02 identifies probe_01, unlike recording probe_04; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250805-C02 identifies probe_01, unlike recording probe_04; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 20,
@@ -17452,20 +17480,23 @@
         "NISQ-20250805-C02"
       ],
       "evidence": [
-        "A p.7 RL mixing assignment 790481 agrees with original mixing-log channel serial; continuous log covers this literal dump. Sparse sampling needs scientific review."
+        "A p.7 RL mixing assignment 790481 agrees with original mixing-log channel serial; continuous log covers this literal dump. Sparse sampling needs scientific review.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250805-C02 identifies probe_01, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250805-C02 identifies probe_01, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 21,
@@ -17475,20 +17506,23 @@
         "NISQ-20250805-C03"
       ],
       "evidence": [
-        "A p.7 RR stilling-well assignment 840058; original AM/PM live log covers the corresponding written dry/solution dump. Shared recording requires separate event windows."
+        "A p.7 RR stilling-well assignment 840058; original AM/PM live log covers the corresponding written dry/solution dump. Shared recording requires separate event windows.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250805-C03 identifies probe_01, unlike recording probe_04; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250805-C03 identifies probe_01, unlike recording probe_04; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 22,
@@ -17498,20 +17532,23 @@
         "NISQ-20250805-C03"
       ],
       "evidence": [
-        "A p.7 RL mixing assignment 790481 agrees with original mixing-log channel serial; continuous log covers this literal dump. Sparse sampling needs scientific review."
+        "A p.7 RL mixing assignment 790481 agrees with original mixing-log channel serial; continuous log covers this literal dump. Sparse sampling needs scientific review.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250805-C03 identifies probe_01, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250805-C03 identifies probe_01, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 23,
@@ -17521,20 +17558,23 @@
         "NISQ-20250805-C04"
       ],
       "evidence": [
-        "A p.7 RR stilling-well assignment 840058; original AM/PM live log covers the corresponding written dry/solution dump. Shared recording requires separate event windows."
+        "A p.7 RR stilling-well assignment 840058; original AM/PM live log covers the corresponding written dry/solution dump. Shared recording requires separate event windows.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250805-C04 identifies probe_01, unlike recording probe_04; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250805-C04 identifies probe_01, unlike recording probe_04; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 24,
@@ -17544,20 +17584,23 @@
         "NISQ-20250805-C04"
       ],
       "evidence": [
-        "A p.7 RL mixing assignment 790481 agrees with original mixing-log channel serial; continuous log covers this literal dump. Sparse sampling needs scientific review."
+        "A p.7 RL mixing assignment 790481 agrees with original mixing-log channel serial; continuous log covers this literal dump. Sparse sampling needs scientific review.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250805-C04 identifies probe_01, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250805-C04 identifies probe_01, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 25,
@@ -17567,11 +17610,12 @@
         "NISQ-20250808-C01"
       ],
       "evidence": [
-        "Raw dry-mixing-riverRight CSV has identical EC observations but floors timestamps to whole minutes; use original live HTML timestamps. Measured 840058 and 09:45:58 dump are covered. Earlier 09:20 file does not cover this release."
+        "Raw dry-mixing-riverRight CSV has identical EC observations but floors timestamps to whole minutes; use original live HTML timestamps. Measured 840058 and 09:45:58 dump are covered. Earlier 09:20 file does not cover this release.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17589,11 +17633,12 @@
         "NISQ-20250808-C01"
       ],
       "evidence": [
-        "A p.8 RL mixing assignment 790481 agrees with the original mixingRL log and 09:45:58 dump coverage; one-minute cadence needs review."
+        "A p.8 RL mixing assignment 790481 agrees with the original mixingRL log and 09:45:58 dump coverage; one-minute cadence needs review.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17611,20 +17656,23 @@
         "NISQ-20250903-C01"
       ],
       "evidence": [
-        "A p.9 RL mixing assignment 680530 and B p.1 duplicate dump context; original NaCl log covers both literal dry/solution times. This is not the 790478 calibration probe."
+        "A p.9 RL mixing assignment 680530 and B p.1 duplicate dump context; original NaCl log covers both literal dry/solution times. This is not the 790478 calibration probe.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250903-C01 identifies probe_02, unlike recording probe_01; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250903-C01 identifies probe_02, unlike recording probe_01; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 28,
@@ -17634,20 +17682,23 @@
         "NISQ-20250903-C01"
       ],
       "evidence": [
-        "A p.9 RR mixing assignment 790481 and B p.1 duplicate dump context; original NaCl log covers both literal dry/solution times. Overlapping spreadsheet slices are not added."
+        "A p.9 RR mixing assignment 790481 and B p.1 duplicate dump context; original NaCl log covers both literal dry/solution times. Overlapping spreadsheet slices are not added.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250903-C01 identifies probe_02, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250903-C01 identifies probe_02, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 29,
@@ -17657,20 +17708,23 @@
         "NISQ-20250903-C02"
       ],
       "evidence": [
-        "A p.9 RL mixing assignment 680530 and B p.1 duplicate dump context; original NaCl log covers both literal dry/solution times. This is not the 790478 calibration probe."
+        "A p.9 RL mixing assignment 680530 and B p.1 duplicate dump context; original NaCl log covers both literal dry/solution times. This is not the 790478 calibration probe.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250903-C02 identifies probe_02, unlike recording probe_01; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250903-C02 identifies probe_02, unlike recording probe_01; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 30,
@@ -17680,20 +17734,23 @@
         "NISQ-20250903-C02"
       ],
       "evidence": [
-        "A p.9 RR mixing assignment 790481 and B p.1 duplicate dump context; original NaCl log covers both literal dry/solution times. Overlapping spreadsheet slices are not added."
+        "A p.9 RR mixing assignment 790481 and B p.1 duplicate dump context; original NaCl log covers both literal dry/solution times. Overlapping spreadsheet slices are not added.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250903-C02 identifies probe_02, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250903-C02 identifies probe_02, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 31,
@@ -17703,20 +17760,23 @@
         "NISQ-20250917-C01"
       ],
       "evidence": [
-        "B pp.2-3 RL assignment 680530 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM."
+        "B pp.2-3 RL assignment 680530 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250917-C01 identifies probe_02, unlike recording probe_01; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250917-C01 identifies probe_02, unlike recording probe_01; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 32,
@@ -17726,20 +17786,23 @@
         "NISQ-20250917-C01"
       ],
       "evidence": [
-        "B pp.2-3 RR assignment 790481 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM."
+        "B pp.2-3 RR assignment 790481 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250917-C01 identifies probe_02, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250917-C01 identifies probe_02, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 33,
@@ -17749,20 +17812,23 @@
         "NISQ-20250917-C02"
       ],
       "evidence": [
-        "B pp.2-3 RL assignment 680530 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM."
+        "B pp.2-3 RL assignment 680530 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250917-C02 identifies probe_02, unlike recording probe_01; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250917-C02 identifies probe_02, unlike recording probe_01; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 34,
@@ -17772,20 +17838,23 @@
         "NISQ-20250917-C02"
       ],
       "evidence": [
-        "B pp.2-3 RR assignment 790481 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM."
+        "B pp.2-3 RR assignment 790481 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "known_cross_probe_candidate_withheld",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
       "open_checks": [
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
-        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
-        "Notebook calibration NISQ-20250917-C02 identifies probe_02, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+        "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q."
       ],
-      "analysis_ready": false
+      "analysis_ready": false,
+      "superseded_probe_checks": [
+        "Notebook calibration NISQ-20250917-C02 identifies probe_02, unlike recording probe_03; retained as a candidate in provenance, withheld from CSV applicability field."
+      ]
     },
     {
       "csv_row_number": 35,
@@ -17795,11 +17864,12 @@
         "NISQ-20250917-C03"
       ],
       "evidence": [
-        "B pp.2-3 RL assignment 680530 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM."
+        "B pp.2-3 RL assignment 680530 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17817,11 +17887,12 @@
         "NISQ-20250917-C03"
       ],
       "evidence": [
-        "B pp.2-3 RR assignment 790481 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM."
+        "B pp.2-3 RR assignment 790481 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17839,11 +17910,12 @@
         "NISQ-20250917-C04"
       ],
       "evidence": [
-        "B pp.2-3 RL assignment 680530 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM."
+        "B pp.2-3 RL assignment 680530 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17861,11 +17933,12 @@
         "NISQ-20250917-C04"
       ],
       "evidence": [
-        "B pp.2-3 RR assignment 790481 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM."
+        "B pp.2-3 RR assignment 790481 agrees with original continuous NaCl log and this literal dump time. AM/PM source slices overlap it; PM bank is farther downstream than AM.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -17887,11 +17960,12 @@
         "electronic measurement probe identity",
         "source-local coverage checked",
         "source page/device-role context",
-        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked."
+        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "explicit_source_zone; notebook_alignment_pending",
         "analysis_window": "unresolved"
       },
@@ -17917,11 +17991,12 @@
         "electronic measurement probe identity",
         "source-local coverage checked",
         "source page/device-role context",
-        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked."
+        "October 20 readback: existing dataset identity/path retained; source, metadata and measured-probe hashes rechecked.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "explicit_source_zone; notebook_alignment_pending",
         "analysis_window": "unresolved"
       },
@@ -17942,11 +18017,12 @@
         "NISQ-20260721-C01"
       ],
       "evidence": [
-        "B p.4 literal dump 11:10:10 lies within July 21 WinSitu measurement times; source RL label and device 790481. August 19 is an export date, not the field date."
+        "B p.4 literal dump 11:10:10 lies within July 21 WinSitu measurement times; source RL label and device 790481. August 19 is an export date, not the field date.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "explicit_source_zone; notebook_alignment_pending",
         "analysis_window": "unresolved"
       },
@@ -17965,11 +18041,12 @@
         "NISQ-20260721-C01"
       ],
       "evidence": [
-        "B p.4 literal dump 11:10:10 lies within July 21 WinSitu measurement times; source RR label and device 680530. August 14 is an export date, not the field date."
+        "B p.4 literal dump 11:10:10 lies within July 21 WinSitu measurement times; source RR label and device 680530. August 14 is an export date, not the field date.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "explicit_source_zone; notebook_alignment_pending",
         "analysis_window": "unresolved"
       },
@@ -17988,7 +18065,8 @@
       ],
       "evidence": [
         "explicit source-transcription trial/calibration association",
-        "October 20 evidence review: recording association remains unresolved."
+        "October 20 evidence review: recording association remains unresolved.",
+        "October 20 local source/event trace: available August 6 files may belong to Tahoma; proximity of peaks is supporting evidence, not a selected association."
       ],
       "field_status": {
         "recording_identity": "unresolved",
@@ -17997,7 +18075,7 @@
         "analysis_window": "unresolved"
       },
       "open_checks": [
-        "Written dump 14:09 precedes retained RL/RR logs starting 14:24 by about 15 minutes; source page lists 1250803/1251669 but those logs measure 790481/680530. Establish event, sensor roles and clock relationship before linking.",
+        "Written NISQ dump 14:09 precedes RL/RR logs starting 14:24. Their specific-conductivity peaks occur at 14:56:04/14:56:05, close to the separately recorded Tahoma release at 14:54:52 (excluded source C p1 right). Different probe numbers are permitted by the shared-probe protocol; establish event/site and clock identity before linking.",
         "Reconcile notebook and measurement clocks, then select background, event segment and complete tail.",
         "Verify preparation, delivered quantity, probe/channel calibration applicability and units before K or Q.",
         "placeholder for an unresolved recording association; not a confirmed file link",
@@ -18211,11 +18289,12 @@
         "NISQ-20261002-C02"
       ],
       "evidence": [
-        "C source block c_14_oct02_dump_02: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window."
+        "C source block c_14_oct02_dump_02: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -18235,11 +18314,12 @@
         "NISQ-20261002-C01"
       ],
       "evidence": [
-        "C source block c_12_oct02_dump_01: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window. C p.12 explicitly assigns 790481 to RL/depth; no later bank assignment is inferred."
+        "C source block c_12_oct02_dump_01: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window. C p.12 explicitly assigns 790481 to RL/depth; no later bank assignment is inferred.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -18258,11 +18338,12 @@
         "NISQ-20261004-C01"
       ],
       "evidence": [
-        "C source block c_14_oct04_dump_01: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window."
+        "C source block c_14_oct04_dump_01: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -18282,11 +18363,12 @@
         "NISQ-20261004-C02"
       ],
       "evidence": [
-        "C source block c_16_oct04_dump_02: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window."
+        "C source block c_16_oct04_dump_02: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -18305,11 +18387,12 @@
         "NISQ-20261004-C04"
       ],
       "evidence": [
-        "C source block c_18_oct04_dump_04: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window."
+        "C source block c_18_oct04_dump_04: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -18328,11 +18411,12 @@
         "NISQ-20261004-C03"
       ],
       "evidence": [
-        "C source block c_17_oct04_dump_03: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window."
+        "C source block c_17_oct04_dump_03: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -18352,11 +18436,12 @@
         "NISQ-20261005-C01"
       ],
       "evidence": [
-        "C source block c_19_oct05_dump_01: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window."
+        "C source block c_19_oct05_dump_01: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -18375,11 +18460,12 @@
         "NISQ-20261005-C02"
       ],
       "evidence": [
-        "C source block c_20_oct05_dump_02: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window."
+        "C source block c_20_oct05_dump_02: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -18398,11 +18484,12 @@
         "NISQ-20261005-C03"
       ],
       "evidence": [
-        "C source block c_21_oct05_dump_03: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window."
+        "C source block c_21_oct05_dump_03: written clock agrees with this live-recording event; measured conductivity serial 790481; specific EC rises to a distinct peak and returns toward initial values. This identifies a recording, not an accepted integration window.",
+        "October 20 direct user clarification permits the notebook calibration across probe aliases of the same device class; selected conductivity channel must still match."
       ],
       "field_status": {
         "recording_identity": "confirmed_file_and_probe; scientific_use_pending",
-        "calibration_applicability": "notebook_candidate; fit_and_probe_applicability_pending",
+        "calibration_applicability": "notebook_link; shared_probe_protocol; conductivity_match_required",
         "measurement_clock": "source_local_offset_unresolved",
         "analysis_window": "unresolved"
       },
@@ -20459,5 +20546,465 @@
       "PAR-20260901-T05": "No confirmed release-specific electronic export; six source releases have no individual dump clocks. September 3 supporting calibrations are not September 1 stream recordings.",
       "PAR-20260901-T06": "No confirmed release-specific electronic export; six source releases have no individual dump clocks. September 3 supporting calibrations are not September 1 stream recordings."
     }
+  },
+  "calibration_application_policy": {
+    "recorded_on": "2026-10-20",
+    "shared_across_probe_aliases": true,
+    "basis": "Direct user clarification: these are the same device class with different identifiers; the available probe on the day does not require a separate calibration.",
+    "conductivity_basis_must_match": true,
+    "scope": "Preserve the original measured probe identities and source relationships. Device-number differences alone do not withhold notebook calibration links. Event/window and data-quality checks remain separate."
+  },
+  "shared_probe_link_updates": {
+    "recorded_on": "2026-10-20",
+    "updates": [
+      {
+        "csv_row_number": 7,
+        "trial_id": "NISQ-20250709-T02",
+        "dataset_id": "DS-50afb0da6bda6119",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250709-C04"
+          }
+        }
+      },
+      {
+        "csv_row_number": 11,
+        "trial_id": "NISQ-20250724-T01",
+        "dataset_id": "20250724_162611_840058",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250724-C01"
+          }
+        }
+      },
+      {
+        "csv_row_number": 12,
+        "trial_id": "NISQ-20250731-T01",
+        "dataset_id": "DS-eee7a6956cb43efb",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250731-C02"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 13,
+        "trial_id": "NISQ-20250731-T01",
+        "dataset_id": "DS-29adef3dee0af3e7",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250731-C02"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 14,
+        "trial_id": "NISQ-20250731-T01",
+        "dataset_id": "DS-7443b8676432bfb3",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250731-C02"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 15,
+        "trial_id": "NISQ-20250731-T02",
+        "dataset_id": "DS-29adef3dee0af3e7",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250731-C01"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 16,
+        "trial_id": "NISQ-20250731-T02",
+        "dataset_id": "DS-7443b8676432bfb3",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250731-C01"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 17,
+        "trial_id": "NISQ-20250805-T01",
+        "dataset_id": "DS-f2f9138310b019b3",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250805-C01"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 18,
+        "trial_id": "NISQ-20250805-T01",
+        "dataset_id": "DS-ddf2fa341ab1df22",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250805-C01"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 19,
+        "trial_id": "NISQ-20250805-T02",
+        "dataset_id": "DS-f2f9138310b019b3",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250805-C02"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 20,
+        "trial_id": "NISQ-20250805-T02",
+        "dataset_id": "DS-ddf2fa341ab1df22",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250805-C02"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 21,
+        "trial_id": "NISQ-20250805-T03",
+        "dataset_id": "DS-b2743c5d6a8940fb",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250805-C03"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 22,
+        "trial_id": "NISQ-20250805-T03",
+        "dataset_id": "DS-ddf2fa341ab1df22",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250805-C03"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 23,
+        "trial_id": "NISQ-20250805-T04",
+        "dataset_id": "DS-b2743c5d6a8940fb",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250805-C04"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 24,
+        "trial_id": "NISQ-20250805-T04",
+        "dataset_id": "DS-ddf2fa341ab1df22",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250805-C04"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 25,
+        "trial_id": "NISQ-20250808-T01",
+        "dataset_id": "DS-5c4de99acc710aa8",
+        "changes": {
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 26,
+        "trial_id": "NISQ-20250808-T01",
+        "dataset_id": "DS-b45d1e423d8c1249",
+        "changes": {
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 27,
+        "trial_id": "NISQ-20250903-T01",
+        "dataset_id": "DS-bd3f4366f5aa3a24",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250903-C01"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 28,
+        "trial_id": "NISQ-20250903-T01",
+        "dataset_id": "DS-543c42ea808420bd",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250903-C01"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 29,
+        "trial_id": "NISQ-20250903-T02",
+        "dataset_id": "DS-bd3f4366f5aa3a24",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250903-C02"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 30,
+        "trial_id": "NISQ-20250903-T02",
+        "dataset_id": "DS-543c42ea808420bd",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250903-C02"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 31,
+        "trial_id": "NISQ-20250917-T01",
+        "dataset_id": "DS-00e092dc32027f11",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250917-C01"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 32,
+        "trial_id": "NISQ-20250917-T01",
+        "dataset_id": "DS-39ae160575c33d4d",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250917-C01"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 33,
+        "trial_id": "NISQ-20250917-T02",
+        "dataset_id": "DS-00e092dc32027f11",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250917-C02"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 34,
+        "trial_id": "NISQ-20250917-T02",
+        "dataset_id": "DS-39ae160575c33d4d",
+        "changes": {
+          "calibration_id": {
+            "before": "",
+            "after": "NISQ-20250917-C02"
+          },
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 35,
+        "trial_id": "NISQ-20250917-T03",
+        "dataset_id": "DS-00e092dc32027f11",
+        "changes": {
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 36,
+        "trial_id": "NISQ-20250917-T03",
+        "dataset_id": "DS-39ae160575c33d4d",
+        "changes": {
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 37,
+        "trial_id": "NISQ-20250917-T04",
+        "dataset_id": "DS-00e092dc32027f11",
+        "changes": {
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 38,
+        "trial_id": "NISQ-20250917-T04",
+        "dataset_id": "DS-39ae160575c33d4d",
+        "changes": {
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 39,
+        "trial_id": "NISQ-20260716-T01",
+        "dataset_id": "DS-8c0ee4d06e55bade",
+        "changes": {
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 40,
+        "trial_id": "NISQ-20260716-T01",
+        "dataset_id": "DS-c71bcd378f197d0d",
+        "changes": {
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 41,
+        "trial_id": "NISQ-20260721-T01",
+        "dataset_id": "DS-8b972b04e4560ee5",
+        "changes": {
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      },
+      {
+        "csv_row_number": 42,
+        "trial_id": "NISQ-20260721-T01",
+        "dataset_id": "DS-f4eab318c56b69a2",
+        "changes": {
+          "conductivity_basis": {
+            "before": "specific",
+            "after": "actual"
+          }
+        }
+      }
+    ],
+    "stock_volume_policy": "Final stock volume is optional; use recorded preparation-water volume when not measured. Source quantities remain unchanged."
   }
 }

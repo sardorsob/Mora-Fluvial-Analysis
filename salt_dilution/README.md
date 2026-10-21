@@ -1,6 +1,6 @@
 # Salt-dilution discharge analysis
 
-Historical notebooks are preserved for provenance, but they are no longer the maintained processing path and may reference retired helper functions. New work starts with the normalized parser output and will move through `scripts/processing/calibration.py` and `scripts/processing/mass_slug.py` as those modules are implemented and validated.
+Historical notebooks are preserved for provenance, but they are no longer the maintained processing path and may reference retired helper functions. The maintained [calibration runner](../docs/calibration.md) fits the curated notebook tables and saves coefficients, derived points, diagnostics and explicit skip reasons. Stream discharge processing remains separate.
 
 ## Workflows
 
@@ -9,7 +9,7 @@ Historical notebooks are preserved for provenance, but they are no longer the ma
 | `notebooks/salt_dilution_discharge.ipynb` | Historical July 24 example; preserved for provenance and not expected to run against the retired helper API. |
 | `notebooks/exploratory/explore_salt_dilution.ipynb` | Historical interactive investigation with older calibration assumptions and index-based selection. |
 | `notebooks/exploratory/check_dilution_calculations.ipynb` | Historical checks using older helper interfaces and incomplete source inputs. |
-| `scripts/processing/calibration.py` | Reserved for the maintained calibration implementation; intentionally not implemented yet. |
+| `scripts/processing/calibration.py` | Maintained provisional concentration-on-conductivity fits from the curated calibration tables. |
 | `scripts/processing/mass_slug.py` | Reserved for the maintained mass-based slug-discharge implementation; intentionally not implemented yet. |
 | `scripts/parsers/` | Source readers for Aqua TROLL, General logger, calibration tables, filename metadata, and the single parser CLI. |
 | `scripts/experimental/` | Unfinished class-based dilution implementation and its example launcher. |
@@ -20,6 +20,8 @@ Historical notebooks are preserved for provenance, but they are no longer the ma
 The [four curated salt tables](data/records/README.md) hold physical releases, calibration preparations, observed points and candidate recording associations. The [field-data schema](../docs/field_data_schema.md) defines that compact interface and the preserved [broader transcription bundles](data/processed/field_notes/README.md), which also contain sediment and controlled seismic-source records. The populated tables need scientific review; file associations, units, clocks and calibration inputs must be checked before calculations.
 
 The [October 20 reconciliation](../docs/salt_record_reconciliation_2026_10_20.md) repairs four duplicate preparation IDs and 16 point references while preserving reviewed values. There are now 48 linked rows across 31 recordings; 11 placeholders remain unresolved. Known files and probes are distinct from accepted calibration fits and integration windows. All inputs remain `needs_review`.
+
+The user's October 20 clarification permits shared calibration across the numbered probes of the same device class. Twenty-three notebook-supported calibration links were restored. Linked rows use 16 specific- and 32 actual-conductivity routes, matching the available calibration observations without converting between channels. The unresolved event links and windows do not prevent calibration fitting. See the [saved calibration run](results/2026-10-20_calibration/README.md).
 
 The parser layer has one public entry point:
 

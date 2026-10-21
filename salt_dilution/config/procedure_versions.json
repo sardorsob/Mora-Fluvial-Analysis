@@ -13,7 +13,7 @@
     "stock_water_source": "river",
     "required_calibration_fields": [
       "stock_salt_mass_g",
-      "stock_solution_final_ml",
+      "stock_water_initial_ml",
       "calibration_water_initial_ml"
     ],
     "discharge_input": "salt_mass_g"
@@ -23,7 +23,7 @@
     "stock_water_source": "deionized",
     "required_calibration_fields": [
       "stock_salt_mass_g",
-      "stock_solution_final_ml",
+      "stock_water_initial_ml",
       "calibration_water_initial_ml"
     ],
     "discharge_input": "salt_mass_g"

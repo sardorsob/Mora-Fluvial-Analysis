@@ -105,8 +105,9 @@ class SaltRecordTests(unittest.TestCase):
             self.assertEqual(paths.setdefault(row['processed_path'], row['dataset_id']), row['dataset_id'])
             if row['calibration_id']:
                 cal_probe = self.provenance['calibrations'][row['calibration_id']]['probe_alias']
-                if cal_probe:
-                    self.assertEqual(cal_probe, row['probe_alias'])
+                if cal_probe and cal_probe != row['probe_alias']:
+                    self.assertTrue(self.provenance.get('calibration_application_policy', {})
+                                    .get('shared_across_probe_aliases'))
 
     def test_confirmed_october_links_follow_source_blocks_not_id_order(self):
         expected = {'NISQ-20261002-T01': '2026-10-02_17-48-22',
@@ -147,7 +148,7 @@ class SaltRecordTests(unittest.TestCase):
         self.assertEqual(len(set(first)), 2)
         self.assertTrue(set(first) & set(second))
 
-    def test_original_timestamps_and_cross_probe_calibration_cautions(self):
+    def test_original_timestamps_and_shared_probe_calibration_links(self):
         rows = self.tables['trial_inputs']
         august = [r for r in rows if r['trial_id'] == 'NISQ-20250808-T01'
                   and r['probe_alias'] == 'probe_04']
@@ -156,10 +157,18 @@ class SaltRecordTests(unittest.TestCase):
         self.assertIn('09-45-13', august[0]['processed_path'])
         for row, evidence in zip(rows, self.provenance['trial_inputs']):
             if row['trial_id'].startswith('NISQ-20250805-') or row['trial_id'].startswith('NISQ-20250903-'):
-                self.assertFalse(row['calibration_id'])
-                self.assertTrue(evidence['notebook_calibration_candidates'])
+                self.assertIn(row['calibration_id'], evidence['notebook_calibration_candidates'])
                 self.assertEqual(evidence['field_status']['calibration_applicability'],
-                                 'known_cross_probe_candidate_withheld')
+                                 'notebook_link; shared_probe_protocol; conductivity_match_required')
+
+    def test_linked_calibration_has_observations_on_selected_channel(self):
+        for row in self.tables['trial_inputs']:
+            if row['dataset_id'] and row['calibration_id']:
+                column = row['conductivity_basis'] + '_conductivity_us_cm'
+                points = [p for p in self.tables['calibration_points']
+                          if p['calibration_id'] == row['calibration_id'] and p[column]
+                          and p['recorded_added_volume_ml']]
+                self.assertGreaterEqual(len(points), 3, row)
 
     def test_uncertain_september_event_stays_unlinked(self):
         rows = [r for r in self.tables['trial_inputs'] if r['trial_id'] == 'NISQ-20260918-T01']

@@ -20,8 +20,10 @@
 ## Calculations
 
 - **Secondary solution:** Find the original-injectate fraction in the secondary solution from its aliquot and water volumes. Use cumulative secondary-solution additions and calibration-vessel volume to calculate relative concentration at each point. Fit that against conductivity; slug discharge uses the delivered injectate-solution volume.
-- **Mass stock:** Find stock concentration from salt mass and **final stock-solution volume**. Use cumulative stock additions and calibration-vessel volume to calculate added salt concentration at each point. Fit that against conductivity; slug discharge uses delivered salt mass.
+- **Mass stock:** Find nominal stock concentration from salt mass and the recorded preparation-water volume under the user's working protocol. A separately measured `stock_solution_final_ml` is optional and takes precedence when supplied; it is not a required observation. Save which volume was used without filling or changing the source CSV. Use cumulative stock additions and the changing calibration-vessel volume to calculate added salt concentration at each point. Fit that against conductivity; slug discharge uses delivered salt mass.
 
 These methods use different concentration units and corresponding discharge calculations. Record actual session quantities in the notebook-derived tables. The procedure IDs carry no inferred date ranges or default preparation volumes.
 
-Existing historical `.ini` files remain available as source examples. `calibration.py` and `mass_slug.py` are not implemented yet.
+Probe aliases identify the available instruments, not distinct calibration methods. The user confirmed shared calibration across these probes on October 20. Preserve the aliases for QA, while requiring the same conductivity channel in the fitted coefficient and its application. The receiver's initial EC is not a stream-event background window.
+
+Existing historical `.ini` files remain source examples. `calibration.py` fits each supported preparation and channel with a free-intercept regression of concentration on EC, and saves K, its units, residuals, source hashes and skip reasons. `mass_slug.py` remains separate future work.

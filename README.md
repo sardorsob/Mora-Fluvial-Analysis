@@ -14,6 +14,7 @@ This repository brings two existing research codebases into one self-contained p
 - [Validation](docs/validation.md): what was checked and what remains unverified.
 - [October 16 local parser run](docs/parser_run_2026_10_16.md): saved stream readings, source checks and quarantined clock-only exports.
 - [October 19 processing](docs/parser_run_2026_10_19.md) and [October 20 record reconciliation](docs/salt_record_reconciliation_2026_10_20.md): new normalized recordings, repaired calibration identities and confirmed file links with scientific review still pending.
+- [Calibration method and runner](docs/calibration.md): provisional K factors, separate conductivity channels and reproducible saved results.
 - [References](docs/references/README.md): salt-dilution methodology references.
 
 ## Layout
@@ -62,6 +63,6 @@ mora-fluvial-analysis/
         └── _template/
 ```
 
-Each run keeps its figures, tables, and `run_info.json` together. The small curated salt records, their provenance and historical examples/inventory are tracked. Salt raw exports already present in Git retain their original instrument filenames. Large normalized stream readings and generated runs stay local and ignored; fluvial-seismology field inputs also retain their existing ignore rules.
+Each run keeps its figures, tables, and `run_info.json` together. The small curated salt records, their provenance, historical examples/inventory and the selected October 20 calibration results are tracked. Salt raw exports already present in Git retain their original instrument filenames. Large normalized stream readings and other generated runs stay local and ignored; fluvial-seismology field inputs also retain their existing ignore rules.
 
 The archived source repositories remain independent and unchanged. See [LICENSE](LICENSE) for the scope of retained source notices; this import does not assign a new blanket license to the combined work.

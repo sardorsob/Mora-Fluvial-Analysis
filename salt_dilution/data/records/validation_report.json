@@ -1,29 +1,48 @@
 {
   "checked_on": "2026-10-20",
-  "status": "local_snapshot_reconciled; scientific_review_pending",
-  "scope": "Integrate user-reviewed stock masses from ff6c085 with the repaired identities, recording links and parser already on main. No new scientific calculations or local ignored-recording revalidation.",
+  "status": "source_links_reconciled_under_shared_probe_protocol; event_window_review_pending",
+  "scope": "Current shared-probe notebook links and matching conductivity routes, preserved observations, structural checks and local recording identity checks. Provisional calibration results are recorded separately in the named result bundle; discharge remains uncomputed.",
   "source_commits": {
     "main": "54598c9a5e7d13f51fa44086fb45a53a2deb1b89",
     "local": "ff6c08597eab24253f22f47e846e6d1b40ff7372"
   },
-  "row_counts": {"trials": 38, "calibrations": 43, "calibration_points": 262, "trial_inputs": 59},
-  "study_site_release_counts": {"NISQ": 32, "PAR": 6},
-  "procedure_counts": {"solution_secondary": 22, "mass_stock_river": 12, "mass_stock_deionized": 9},
+  "row_counts": {
+    "trials": 38,
+    "calibrations": 43,
+    "calibration_points": 262,
+    "trial_inputs": 59
+  },
+  "study_site_release_counts": {
+    "NISQ": 32,
+    "PAR": 6
+  },
+  "procedure_counts": {
+    "solution_secondary": 22,
+    "mass_stock_river": 12,
+    "mass_stock_deionized": 9
+  },
   "recording_candidate_rows": 48,
   "unresolved_recording_rows": 11,
   "distinct_electronic_datasets": 31,
   "linked_releases": 28,
   "accepted_discharge_ready_rows": 0,
   "missing_trial_input_fields": {
-    "trial_id": 0, "dataset_id": 11, "processed_path": 11, "calibration_id": 33,
-    "probe_alias": 11, "recording_role": 22, "window_start_utc": 59,
-    "window_end_utc": 59, "conductivity_basis": 11, "review_status": 0
+    "trial_id": 0,
+    "dataset_id": 11,
+    "processed_path": 11,
+    "calibration_id": 10,
+    "probe_alias": 11,
+    "recording_role": 22,
+    "window_start_utc": 59,
+    "window_end_utc": 59,
+    "conductivity_basis": 11,
+    "review_status": 0
   },
   "current_table_sha256": {
     "trials.csv": "eee5d4378dddac50ee8d836acc340d970f58196c6e286190b756bc664286d99b",
     "calibrations.csv": "becc8fcd3860b0c9fd3c5186f8653990141730eb08e007c96e4a690ac314a177",
     "calibration_points.csv": "d90c7aed21d1a07a970990b9d4b9e5ad27da35662e290451588d51b81d68cdc3",
-    "trial_inputs.csv": "63520222eb137796c9ae2b342b9190a70dd4a27a77307c02f5009b6c55d919e1"
+    "trial_inputs.csv": "d1430c9cc5424aa7cbb150cd03974b4b726e3d7150b20b962b5d9f08ebd1e71c"
   },
   "local_reconciliation": {
     "stock_mass_cells_imported": 35,
@@ -34,17 +53,18 @@
     "provenance_policy": "Original provenance snapshot unchanged; finite stock-mass overrides in manifest.json reviewed_setting_overrides resolve its older current_csv_values."
   },
   "checks": [
-    "Uploaded calibration table reconstructed byte-for-byte after reversing exactly four source-block ID repairs; Git blob matches adcf64ef7717bdfc0180c37f7013a5a924aa1112.",
-    "Exactly 35 formerly empty stock salt masses updated relative to main; other preparation fields unchanged.",
     "43 unique calibration parents, unique point keys and a lossless 262-point join.",
-    "Trial, point, recording-link, raw-data and parser blobs retained from main.",
-    "Manifest hashes refreshed; effective preparation provenance must equal current CSVs."
+    "23 notebook-supported calibration links restored under explicit shared-probe protocol; no observation values changed.",
+    "16 specific and 32 actual routes match available calibration point channels; 11 recording placeholders remain unresolved.",
+    "All 31 registered source/output/metadata sets pass hashes, measured probe, row count and selected-channel checks.",
+    "Manifest, procedure profiles and current table hashes agree."
   ],
   "verification": {
-    "command": "python -m unittest discover -s tests -v",
-    "result_source": "https://github.com/sardorsob/Mora-Fluvial-Analysis/pull/2/checks",
-    "note": "Use the CI result for the exact PR revision; no historical test count is represented as a fresh run.",
-    "local_ignored_recordings_rechecked": false
+    "command": "MORA_CHECK_LOCAL_RECORDINGS=1 python -m unittest discover -s tests -v",
+    "tests_passed": 74,
+    "local_ignored_recordings_rechecked": true,
+    "environment": "work Python 3.13.9; bundled pure-Python openpyxl/et_xmlfile exposed temporarily for Excel tests",
+    "note": "Existing NumPy timedelta deprecation warnings in recent-VuSitu tests; no failures."
   },
   "previous_validation": {
     "commit": "7d7647e2fc289147d007035731eba96db89ada0d",
@@ -54,7 +74,32 @@
   },
   "limitations": [
     "Stock masses are reviewed nominal preparation settings, not proof of complete delivery or mixing.",
-    "Final stock volumes, abandoned/restarted attempts, point-level exceptions and selected-channel gaps remain scientific review items.",
+    "Measured final stock volume is optional under the user-confirmed working protocol; abandoned attempts, point-level exceptions and preparation uncertainty remain visible in calibration results.",
     "UTC event and integration windows remain unselected; no calibration or discharge result is accepted."
+  ],
+  "calibration_application_policy": {
+    "recorded_on": "2026-10-20",
+    "shared_across_probe_aliases": true,
+    "basis": "Direct user clarification: these are the same device class with different identifiers; the available probe on the day does not require a separate calibration.",
+    "conductivity_basis_must_match": true,
+    "scope": "Preserve the original measured probe identities and source relationships. Device-number differences alone do not withhold notebook calibration links. Event/window and data-quality checks remain separate."
+  },
+  "shared_probe_update": {
+    "calibration_ids_restored": 23,
+    "conductivity_basis_changes": 31,
+    "original_observations_unchanged": true
+  },
+  "previous_merge_verification": {
+    "command": "python -m unittest discover -s tests -v",
+    "result_source": "https://github.com/sardorsob/Mora-Fluvial-Analysis/pull/2/checks",
+    "note": "Use the CI result for the exact PR revision; no historical test count is represented as a fresh run.",
+    "local_ignored_recordings_rechecked": false
+  },
+  "previous_merge_checks": [
+    "Uploaded calibration table reconstructed byte-for-byte after reversing exactly four source-block ID repairs; Git blob matches adcf64ef7717bdfc0180c37f7013a5a924aa1112.",
+    "Exactly 35 formerly empty stock salt masses updated relative to main; other preparation fields unchanged.",
+    "43 unique calibration parents, unique point keys and a lossless 262-point join.",
+    "Trial, point, recording-link, raw-data and parser blobs retained from main.",
+    "Manifest hashes refreshed; effective preparation provenance must equal current CSVs."
   ]
 }
