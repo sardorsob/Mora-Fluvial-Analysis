@@ -15,6 +15,7 @@ This repository brings two existing research codebases into one self-contained p
 - [October 16 local parser run](docs/parser_run_2026_10_16.md): saved stream readings, source checks and quarantined clock-only exports.
 - [October 19 processing](docs/parser_run_2026_10_19.md) and [October 20 record reconciliation](docs/salt_record_reconciliation_2026_10_20.md): new normalized recordings, repaired calibration identities and confirmed file links with scientific review still pending.
 - [Calibration method and runner](docs/calibration.md): provisional K factors, separate conductivity channels and reproducible saved results.
+- [Salt-discharge instruments and procedure history](docs/salt_dilution_instruments.md): confirmed equipment, legacy-meter candidates, manual links, dated changes and calibration-transfer limits.
 - [References](docs/references/README.md): salt-dilution methodology references.
 
 ## Layout

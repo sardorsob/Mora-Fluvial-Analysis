@@ -24,6 +24,6 @@
 
 These methods use different concentration units and corresponding discharge calculations. Record actual session quantities in the notebook-derived tables. The procedure IDs carry no inferred date ranges or default preparation volumes.
 
-Probe aliases identify the available instruments, not distinct calibration methods. The user confirmed shared calibration across these probes on October 20. Preserve the aliases for QA, while requiring the same conductivity channel in the fitted coefficient and its application. The receiver's initial EC is not a stream-event background window.
+Probe aliases identify instruments, not distinct concentration methods. The October 24 clarification distinguishes legacy General meters from the TROLL used for calibration, limiting the earlier shared-probe assumption. Establish the calibration and downstream device identities, compatible conductivity/temperature treatment and any supported transfer comparison; see the [instrument catalog](../../docs/salt_dilution_instruments.md). Matching a channel or a model name alone does not establish interchangeability. The receiver's initial EC is not a stream-event background window.
 
 Existing historical `.ini` files remain source examples. `calibration.py` fits each supported preparation and channel with a free-intercept regression of concentration on EC, and saves K, its units, residuals, source hashes and skip reasons. `mass_slug.py` remains separate future work.

@@ -1,5 +1,7 @@
 # Salt-dilution discharge analysis
 
+Read the [instrument catalog and procedure timeline](../docs/salt_dilution_instruments.md) before applying a fitted K to stream data. The October 24 clarification distinguishes the meter used for pipette calibration from a separate legacy downstream system; the earlier shared-probe permission does not establish a cross-instrument transfer.
+
 Historical notebooks are preserved for provenance, but they are no longer the maintained processing path and may reference retired helper functions. The maintained [calibration runner](../docs/calibration.md) fits the curated notebook tables and saves coefficients, derived points, diagnostics and explicit skip reasons. Stream discharge processing remains separate.
 
 ## Workflows

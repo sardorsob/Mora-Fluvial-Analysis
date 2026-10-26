@@ -11,6 +11,8 @@ These four CSVs implement the compact salt-data schema agreed October 13. They w
 
 The association table has **48 linked rows across 31 files**, covering 28 releases, and **11 rows with unresolved recording paths**, covering ten releases. Every release is represented. File and measurement-probe identities are established for the populated paths; calibration applicability and integration windows still require review. Multiple rows can represent paired probes, repeated calibration attempts, split logs, or successive releases in one recording. July 17 retains two notebook calibration candidates for the same RL recording; those are alternatives, not two observations to count twice.
 
+**October 24 instrument clarification:** legacy General meter labels and Aqua TROLL sensor aliases must remain distinct. A numbered-probe link or matching channel does not establish that a calibration transfers between different instruments. Read the [instrument catalog and dated procedure evidence](../../../docs/salt_dilution_instruments.md) before using these associations for Q; the numerical tables and earlier source links are preserved.
+
 ## What the blanks mean
 
 Unknown and inapplicable values stay empty. All review-status fields are `needs_review`; the trial table's review details live in `provenance.json` because its agreed header has no status column. No association is discharge-ready.
