@@ -1,0 +1,186 @@
+{
+  "status": "complete_with_skips",
+  "created_at_utc": "2026-10-27T01:50:10.487467+00:00",
+  "git_commit": "2531e4ce317ac99c6ddcef2187d5e1e64bcf6cb2",
+  "code_sha256": "d1ab876028e22f07e0481358521b40009dd958e89b6c7cf1eac2acbbe71a3638",
+  "python_version": "3.13.9",
+  "numpy_version": "2.5.0",
+  "conductivity_basis": "both",
+  "fits": 49,
+  "skipped_series": 37,
+  "inputs": [
+    {
+      "path": "salt_dilution/data/records/calibrations.csv",
+      "sha256": "becc8fcd3860b0c9fd3c5186f8653990141730eb08e007c96e4a690ac314a177"
+    },
+    {
+      "path": "salt_dilution/data/records/calibration_points.csv",
+      "sha256": "894c560e193baa2ac5bb4ce0fbd16707217680d021381bf3936e332fac913875"
+    },
+    {
+      "path": "salt_dilution/config/procedure_versions.json",
+      "sha256": "636f681f6cb5e469e70be73d06ab364964987854a39b8eb34870b002f9b898f1"
+    },
+    {
+      "path": "salt_dilution/data/records/provenance.json",
+      "sha256": "1f1a70c2cc755e742c1c7fb0aeca969ffcff674395b29ea69e6912584089cd6b"
+    }
+  ],
+  "scope": "Provisional calibration fits only. No stream-window selection, discharge, or staff acceptance.",
+  "stock_volume_policy": "Measured final volume when supplied; otherwise recorded preparation-water volume under the user-confirmed working protocol. No CSV values inferred.",
+  "fit_definition": "Concentration = k * conductivity + intercept. K is the free-intercept OLS slope; units and channel are saved per fit.",
+  "outputs": [
+    {
+      "path": "calibration_fits.csv",
+      "sha256": "83f2794b6ad0b91c1d8d2b6d7dad3777722d84a44b532ad86d64dbdf5303c7bd"
+    },
+    {
+      "path": "calibration_points.csv",
+      "sha256": "edad2b062094eca515b621c7572aeb1726c179f4db3611cdbbca652909e352b0"
+    },
+    {
+      "path": "calibration_skips.csv",
+      "sha256": "4fd79e65948ad929fa081beff5571d4940f5aa5687754a6bd84f93b7cdba9bfd"
+    },
+    {
+      "path": "figures/NISQ-20250709-C04_probe_02.png",
+      "sha256": "7c5f21c2ca939b9fc06a761654445caad5acfb6a7a0940927ae795f176a7c9b7"
+    },
+    {
+      "path": "figures/NISQ-20250717-C01_probe_03.png",
+      "sha256": "86bcb907c3d6d22741d8fbd0b6f0c1a3c84e4e1affcd11304a292e6a0c9ac0b3"
+    },
+    {
+      "path": "figures/NISQ-20250717-C02_probe_03.png",
+      "sha256": "5a1f45cef4759e009da105cf8176276fce4e6f2a1dbe65103c0672484ebd8a66"
+    },
+    {
+      "path": "figures/NISQ-20250724-C01_probe_01.png",
+      "sha256": "217ca6e6dddeeb8c0d155c29c6d21ef24ef9f4ccd133277caac406423b95d2a8"
+    },
+    {
+      "path": "figures/NISQ-20250731-C01_probe_01.png",
+      "sha256": "800f696e83ad8648a5d42ec7fb3686a17717e9181b4f49d7db3d067469f9853b"
+    },
+    {
+      "path": "figures/NISQ-20250731-C02_probe_01.png",
+      "sha256": "26d1b61fad3db7de15528be30f9536147f4b335e31e3f6c7c3b4b6998d091007"
+    },
+    {
+      "path": "figures/NISQ-20250805-C01_probe_01.png",
+      "sha256": "8328217367cfd3ebaec075dfe6162d31045ec9e2069b67f5bd086c46daf7ce87"
+    },
+    {
+      "path": "figures/NISQ-20250805-C02_probe_01.png",
+      "sha256": "526fb25b02051a467ad2e983f0ca3f7221e4cb650198170bba776b3219bde085"
+    },
+    {
+      "path": "figures/NISQ-20250805-C03_probe_01.png",
+      "sha256": "c21b45c7491014a0ddc8042b5974cb500a8922ece0a4f7ffd8e4d9f18989eeec"
+    },
+    {
+      "path": "figures/NISQ-20250805-C04_probe_01.png",
+      "sha256": "445e51057c846cda8db84d20c9f7b6c06ab374bd0538be9d2837e86cd39f19f9"
+    },
+    {
+      "path": "figures/NISQ-20250808-C01_probe_01.png",
+      "sha256": "43a390981f64ea867f5969fd34eba296a6663a60e680991958eb9629a3953a24"
+    },
+    {
+      "path": "figures/NISQ-20250903-C01_probe_02.png",
+      "sha256": "c42b4dc7ed06696d86c1e10106487c0107473b15847ec6cd08aeaa490cc2aa5e"
+    },
+    {
+      "path": "figures/NISQ-20250903-C02_probe_02.png",
+      "sha256": "b30f5ad4639384d56d7c63b0acfd9f1fad36feb7c2cf5996e224b1f738622100"
+    },
+    {
+      "path": "figures/NISQ-20250917-C01_probe_02.png",
+      "sha256": "a9e0bbad59509b22a91bd4aae843dc68ca941f5c2fe6219a6af99180036fe979"
+    },
+    {
+      "path": "figures/NISQ-20250917-C02_probe_02.png",
+      "sha256": "385d4a0a06768d0e70974c62f9bac2c8973e10daaa836c710312328ef13ac656"
+    },
+    {
+      "path": "figures/NISQ-20250917-C03.png",
+      "sha256": "326acf3c6263b6b7f777f82135416ddf74da96e1f1dc2763d1a64474d72429ad"
+    },
+    {
+      "path": "figures/NISQ-20250917-C04.png",
+      "sha256": "6f18c61bc69f112fb78181e469d97ef198ba2cd6e6faa6a2f006edabfe52834d"
+    },
+    {
+      "path": "figures/NISQ-20260716-C01.png",
+      "sha256": "46bdfdeac9112edf55d71fef008352b509a34acacdb48bb7167dbaaf77403036"
+    },
+    {
+      "path": "figures/NISQ-20260721-C01.png",
+      "sha256": "79b94a447aca1019ede9a803809fae1863d14a501e42509e4b5ce36c36dfd78a"
+    },
+    {
+      "path": "figures/NISQ-20260806-C01.png",
+      "sha256": "0a29c14a44f1785100ae31b1e47a3f14973842716b72ead3fb757543532a69e3"
+    },
+    {
+      "path": "figures/NISQ-20260918-C02.png",
+      "sha256": "926310e2a2f586aa9f9f205f258ea403d1c079dd7adaf01953a368f08465bf46"
+    },
+    {
+      "path": "figures/NISQ-20261002-C01_probe_03.png",
+      "sha256": "1dde9dc28afa2be0648dde8ee2caa1dee5b1098d139f4fadd44cc285d8c50dae"
+    },
+    {
+      "path": "figures/NISQ-20261002-C02_probe_03.png",
+      "sha256": "c17dbffaa6860574be85936b8c6ead69ee67e00c0447339acd02180e60d0e1c7"
+    },
+    {
+      "path": "figures/NISQ-20261004-C01_probe_03.png",
+      "sha256": "6056377eab47508beba1f714cce2f3a5927080d713f090d14bf3ec4821803206"
+    },
+    {
+      "path": "figures/NISQ-20261004-C02_probe_03.png",
+      "sha256": "b42ca06eeb210e4e6ddb8aa4072ebc6c48565d626a9d26f17dd58e56831093a1"
+    },
+    {
+      "path": "figures/NISQ-20261004-C03_probe_03.png",
+      "sha256": "6de090d5a31ad61e45910efe69f7f19438e0929d57ab7323a33ab5ab32a45693"
+    },
+    {
+      "path": "figures/NISQ-20261004-C04_probe_03.png",
+      "sha256": "34c98ed951407e530ec2c9284b634cd4bbae3e9e27c3300b51b107a74eff3c4a"
+    },
+    {
+      "path": "figures/NISQ-20261005-C01_probe_03.png",
+      "sha256": "1ce8ec879627fa5105fd856e308aca17e4b2b35f97d4770a7c05aadf86163e91"
+    },
+    {
+      "path": "figures/NISQ-20261005-C02_probe_03.png",
+      "sha256": "a1e7e158964f932ec2643406545f882e7391a555a8e3b4bb9c6339587ce8dd22"
+    },
+    {
+      "path": "figures/NISQ-20261005-C03_probe_03.png",
+      "sha256": "d69a423d90152e2cfb37b081653c826284a442104ec6b702dd736867231665de"
+    },
+    {
+      "path": "figures/PAR-20260903-C01.png",
+      "sha256": "5ee12ef50dcf88be6ed1586147556adfd288f5958306407a6ba7e3f785a77a95"
+    },
+    {
+      "path": "figures/PAR-20260903-C02.png",
+      "sha256": "dbf98cca92b862ab75384e5567a27192acd492c43914188c90ab8df0cecf26ff"
+    },
+    {
+      "path": "figures/PAR-20260903-C03.png",
+      "sha256": "b19ef6077d356b35684b0d557c1b0fa53c3dfb2d3739e7253517768b73d633c4"
+    },
+    {
+      "path": "figures/PAR-20260903-C04.png",
+      "sha256": "dd84ace270bdba6aee5a34fd00140495f728db7ee4a9258555bca27c21e6e0ae"
+    },
+    {
+      "path": "figures/PAR-20260903-C05.png",
+      "sha256": "0ee565476f9014de5885e534d9b584ede13630f0688b99f06595532bf3667da0"
+    }
+  ]
+}

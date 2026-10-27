@@ -1,0 +1,358 @@
+{
+  "checked_on": "2026-10-26",
+  "independent_method": "numpy.linalg.lstsq on concentrations independently rebuilt from current preparation/addition records",
+  "fits_verified": 49,
+  "fits_with_new_probe_identity": 25,
+  "fits_without_probe_identity": 12,
+  "all_numerical_fit_fields_unchanged": true,
+  "source_observation_fields_unchanged": true,
+  "preparation_trial_and_link_csv_bytes_unchanged": true,
+  "calibration_code_unchanged": true,
+  "run_input_and_output_hashes_verified": true,
+  "limitations": "Provisional fits. Probe association is not scientific acceptance; unresolved identities, stock/preparation and DI-background issues, clocks/windows and delivered quantities remain outside this numerical check.",
+  "series": [
+    {
+      "calibration_id": "NISQ-20250709-C04",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_02",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250709-C04",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_02",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250717-C01",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_03",
+      "n_points": 3,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250717-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_03",
+      "n_points": 3,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250717-C02",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_03",
+      "n_points": 4,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250717-C02",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_03",
+      "n_points": 4,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250724-C01",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_01",
+      "n_points": 14,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250724-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_01",
+      "n_points": 14,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250731-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_01",
+      "n_points": 7,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250731-C02",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_01",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250805-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_01",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250805-C02",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_01",
+      "n_points": 5,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250805-C03",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_01",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250805-C04",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_01",
+      "n_points": 5,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250808-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_01",
+      "n_points": 5,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250903-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_02",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250903-C02",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_02",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250917-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_02",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250917-C02",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_02",
+      "n_points": 5,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250917-C03",
+      "conductivity_basis": "actual",
+      "probe_alias": "",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20250917-C04",
+      "conductivity_basis": "actual",
+      "probe_alias": "",
+      "n_points": 5,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20260716-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "",
+      "n_points": 7,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20260721-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20260806-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "PAR-20260903-C01",
+      "conductivity_basis": "specific",
+      "probe_alias": "",
+      "n_points": 4,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "PAR-20260903-C02",
+      "conductivity_basis": "specific",
+      "probe_alias": "",
+      "n_points": 4,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "PAR-20260903-C03",
+      "conductivity_basis": "specific",
+      "probe_alias": "",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "PAR-20260903-C04",
+      "conductivity_basis": "specific",
+      "probe_alias": "",
+      "n_points": 7,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "PAR-20260903-C05",
+      "conductivity_basis": "specific",
+      "probe_alias": "",
+      "n_points": 3,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20260918-C02",
+      "conductivity_basis": "specific",
+      "probe_alias": "",
+      "n_points": 7,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20260918-C02",
+      "conductivity_basis": "actual",
+      "probe_alias": "",
+      "n_points": 6,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261002-C01",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_03",
+      "n_points": 11,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261002-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_03",
+      "n_points": 11,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261002-C02",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_03",
+      "n_points": 9,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261002-C02",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_03",
+      "n_points": 9,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261004-C01",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_03",
+      "n_points": 10,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261004-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_03",
+      "n_points": 10,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261004-C02",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_03",
+      "n_points": 10,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261004-C02",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_03",
+      "n_points": 9,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261004-C03",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_03",
+      "n_points": 8,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261004-C03",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_03",
+      "n_points": 8,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261004-C04",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_03",
+      "n_points": 7,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261004-C04",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_03",
+      "n_points": 7,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261005-C01",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_03",
+      "n_points": 9,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261005-C01",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_03",
+      "n_points": 10,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261005-C02",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_03",
+      "n_points": 9,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261005-C02",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_03",
+      "n_points": 9,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261005-C03",
+      "conductivity_basis": "specific",
+      "probe_alias": "probe_03",
+      "n_points": 8,
+      "numerical_fit_unchanged": true
+    },
+    {
+      "calibration_id": "NISQ-20261005-C03",
+      "conductivity_basis": "actual",
+      "probe_alias": "probe_03",
+      "n_points": 8,
+      "numerical_fit_unchanged": true
+    }
+  ]
+}

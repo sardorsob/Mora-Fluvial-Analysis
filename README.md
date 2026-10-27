@@ -6,6 +6,7 @@ This repository brings two existing research codebases into one self-contained p
 
 ## Start here
 
+- Local agent work starts at the primary checkout's [ignored context index](context/README.md), when available. See [agent instructions](AGENTS.md) for storage routing; context is local and is not included in a fresh clone.
 - [Getting started](docs/getting_started.md): dependencies, launching notebooks, and saving runs.
 - [Salt dilution](salt_dilution/README.md): the July 24, 2025 discharge example, parsers, and exploratory alternatives.
 - [Fluvial seismology](fluvial_seismology/README.md): waveform preparation, calibration, spectra, and Python/R models.

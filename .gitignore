@@ -1,4 +1,7 @@
 # Local environments and generated development files.
+# Live agent working context; archive copies require a separate explicit request.
+/context/
+
 .DS_Store
 __pycache__/
 *.py[cod]

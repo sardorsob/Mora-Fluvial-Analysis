@@ -2,6 +2,8 @@
 
 Reviewed October 24, 2026. This catalog separates confirmed equipment, plausible legacy-meter candidates, recording software and experimental procedure changes. It is a research reference, not an approved field SOP or proof that an instrument was calibrated.
 
+**October 26 role/identity update:** the user identified the older conductivity meter as General Tools DCT430SD and clarified its farther-downstream attenuation role. This is user-reported model identification, not a nameplate inspection of every General unit. The main Q workflow uses Aqua TROLL records and the associated calibration; General-to-TROLL transfer is not the default missing step. The within-trial rule carries an identified Aqua TROLL through its associated calibration, with paired roles kept separate. The [record audit and rerun](../salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) resolves 13 missing preparation identities and documents the addition-semantic checks. The October 24 guesses and transfer discussion below remain dated background, with transfer mathematics conditional on an actual cross-instrument pairing.
+
 **The main finding:** Aqua TROLL equipment appears in the available July 2025 records. A September 18, 2026 notebook entry specifically changes the calibration approach to use the river TROLL instruments rather than the General instruments. These are different milestones. A calibration fitted on one instrument is not automatically applicable to another downstream instrument, even when both report conductivity.
 
 ## Instrument catalog
@@ -19,9 +21,9 @@ Reviewed October 24, 2026. This catalog separates confirmed equipment, plausible
 
 The water sensor measures conductivity. A communications adapter, software connection, marked file or stirred sample does not by itself calibrate another sensor. Distinguish the deployed water-temperature channel from an adapter's air-temperature/barometric channels. Wireless TROLL Com instructions explicitly describe data transfer rather than internal storage. [Manufacturer instructions](https://in-situ.com/pub/media/support/documents/0031242.pdf)
 
-### Ranked guesses for the legacy General system
+### Historical model guesses — October 24
 
-These are leads, not confirmed inventory entries. No correction or manufacturer-specific acceptance limit should be selected from them yet.
+These were leads before the October 26 user-reported DCT430SD identification above. They remain historical research evidence; neither the closed-case photograph nor these candidates establish the exact General1/2 units or their field settings. No model-specific numerical correction was applied.
 
 1. **General Tools DCT430SD: moderate-confidence candidate.** The General name, conductivity/temperature pairing and Excel/SD-card workflow fit the recording labels. General's original catalog describes this model with a separate probe and adjustable temperature compensation. The exact model is not readable in the photo. [Manufacturer catalog, printed I-108; owner-hosted archived/indexed source](https://generaltools.com/pub/media/wysiwyg/ICAT_14_INSTRUMENTS_CATALOG_04_03_14_op2.pdf)
 2. **Lutron/MRC CD-4307SD family: moderate-confidence candidate.** The model's original manual explicitly describes `CDA01/CDA01001.XLS`, matching the retained worksheet/export pattern. Shared file naming does not prove which brand, hardware revision or firmware was used. [Original operation manual, printed pp. 18–20](https://www.mrclab.co.il/Media/Uploads/CD-4307SD_OPR.pdf)

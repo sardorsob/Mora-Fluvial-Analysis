@@ -1,0 +1,7 @@
+{
+  "experiment_name": "salt_calibration",
+  "run_id": "32c600b20fd04dd5b20835f8450fc94a",
+  "tracking_store": "salt_dilution/results/.mlflow/calibrations.db",
+  "decision_status": "provisional_retained",
+  "portable_fallback": "This file bundle plus tracked input tables and hashes; no MLflow server required."
+}

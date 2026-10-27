@@ -1,7 +1,7 @@
 {
-  "checked_on": "2026-10-20",
-  "status": "source_links_reconciled_under_shared_probe_protocol; event_window_review_pending",
-  "scope": "Current shared-probe notebook links and matching conductivity routes, preserved observations, structural checks and local recording identity checks. Provisional calibration results are recorded separately in the named result bundle; discharge remains uncomputed.",
+  "checked_on": "2026-10-26",
+  "status": "calibration_probe_audit_complete_with_unresolved_cases; event_window_review_pending",
+  "scope": "All 43 preparation blocks; finite probe fills only. No observed values, addition semantics, preparation recipes or recording links changed.",
   "source_commits": {
     "main": "54598c9a5e7d13f51fa44086fb45a53a2deb1b89",
     "local": "ff6c08597eab24253f22f47e846e6d1b40ff7372"
@@ -41,7 +41,7 @@
   "current_table_sha256": {
     "trials.csv": "eee5d4378dddac50ee8d836acc340d970f58196c6e286190b756bc664286d99b",
     "calibrations.csv": "becc8fcd3860b0c9fd3c5186f8653990141730eb08e007c96e4a690ac314a177",
-    "calibration_points.csv": "d90c7aed21d1a07a970990b9d4b9e5ad27da35662e290451588d51b81d68cdc3",
+    "calibration_points.csv": "894c560e193baa2ac5bb4ce0fbd16707217680d021381bf3936e332fac913875",
     "trial_inputs.csv": "d1430c9cc5424aa7cbb150cd03974b4b726e3d7150b20b962b5d9f08ebd1e71c"
   },
   "local_reconciliation": {
@@ -53,19 +53,11 @@
     "provenance_policy": "Original provenance snapshot unchanged; finite stock-mass overrides in manifest.json reviewed_setting_overrides resolve its older current_csv_values."
   },
   "checks": [
-    "43 unique calibration parents, unique point keys and a lossless 262-point join.",
-    "23 notebook-supported calibration links restored under explicit shared-probe protocol; no observation values changed.",
-    "16 specific and 32 actual routes match available calibration point channels; 11 recording placeholders remain unresolved.",
-    "All 31 registered source/output/metadata sets pass hashes, measured probe, row count and selected-channel checks.",
-    "Manifest, procedure profiles and current table hashes agree."
+    "All 43 preparation blocks; finite probe fills only. No observed values, addition semantics, preparation recipes or recording links changed.",
+    "All 262 point rows and their non-probe fields preserved; unique rekeyed provenance identities.",
+    "All 59 recording links and all 43 user-edited preparations preserved byte-for-byte.",
+    "Supported aliases come from measured electronic sensor identities plus sequence or trial evidence."
   ],
-  "verification": {
-    "command": "MORA_CHECK_LOCAL_RECORDINGS=1 python -m unittest discover -s tests -v",
-    "tests_passed": 74,
-    "local_ignored_recordings_rechecked": true,
-    "environment": "work Python 3.13.9; bundled pure-Python openpyxl/et_xmlfile exposed temporarily for Excel tests",
-    "note": "Existing NumPy timedelta deprecation warnings in recent-VuSitu tests; no failures."
-  },
   "previous_validation": {
     "commit": "7d7647e2fc289147d007035731eba96db89ada0d",
     "path": "salt_dilution/data/records/validation_report.json",
@@ -78,11 +70,19 @@
     "UTC event and integration windows remain unselected; no calibration or discharge result is accepted."
   ],
   "calibration_application_policy": {
-    "recorded_on": "2026-10-20",
-    "shared_across_probe_aliases": true,
-    "basis": "Direct user clarification: these are the same device class with different identifiers; the available probe on the day does not require a separate calibration.",
+    "recorded_on": "2026-10-26",
+    "shared_across_probe_aliases": false,
+    "retain_notebook_associations": true,
     "conductivity_basis_must_match": true,
-    "scope": "Preserve the original measured probe identities and source relationships. Device-number differences alone do not withhold notebook calibration links. Event/window and data-quality checks remain separate."
+    "basis": "Updated user protocol: identify the Aqua TROLL within each physical trial/role and carry it through associated calibration. General attenuation is a separate role. Different-probe associations require explicit applicability review.",
+    "scope": "Existing recording links are preserved as notebook associations, not automatically approved transfers. No windows or discharge results accepted.",
+    "previous_policy": {
+      "recorded_on": "2026-10-20",
+      "shared_across_probe_aliases": true,
+      "basis": "Direct user clarification: these are the same device class with different identifiers; the available probe on the day does not require a separate calibration.",
+      "conductivity_basis_must_match": true,
+      "scope": "Preserve the original measured probe identities and source relationships. Device-number differences alone do not withhold notebook calibration links. Event/window and data-quality checks remain separate."
+    }
   },
   "shared_probe_update": {
     "calibration_ids_restored": 23,
@@ -101,5 +101,41 @@
     "43 unique calibration parents, unique point keys and a lossless 262-point join.",
     "Trial, point, recording-link, raw-data and parser blobs retained from main.",
     "Manifest hashes refreshed; effective preparation provenance must equal current CSVs."
-  ]
+  ],
+  "previous_calibration_application_policy": {
+    "recorded_on": "2026-10-20",
+    "shared_across_probe_aliases": true,
+    "basis": "Direct user clarification: these are the same device class with different identifiers; the available probe on the day does not require a separate calibration.",
+    "conductivity_basis_must_match": true,
+    "scope": "Preserve the original measured probe identities and source relationships. Device-number differences alone do not withhold notebook calibration links. Event/window and data-quality checks remain separate."
+  },
+  "calibration_record_audit": {
+    "probe_preparations_filled": 13,
+    "probe_point_cells_filled": 100,
+    "unresolved_preparation_probe_identities": 19,
+    "addition_semantics_status_counts": {
+      "insufficient_volume_evidence": 5,
+      "unconfirmed_water_changes": 2,
+      "supported_by_written_volume_progression": 34,
+      "abandoned_attempt_with_missing_addition_retained": 1,
+      "written_volume_conflict_retained": 1
+    },
+    "addition_kind_cells_changed": 0,
+    "source_access_limit": "Original A/B/C PDF Downloads paths no longer exist. Retained raw transcription tokens and electronic exports were available. One written volume conflict and incompletely described bench/abandoned attempts remain explicit."
+  },
+  "previous_verification": {
+    "command": "MORA_CHECK_LOCAL_RECORDINGS=1 python -m unittest discover -s tests -v",
+    "tests_passed": 74,
+    "local_ignored_recordings_rechecked": true,
+    "environment": "work Python 3.13.9; bundled pure-Python openpyxl/et_xmlfile exposed temporarily for Excel tests",
+    "note": "Existing NumPy timedelta deprecation warnings in recent-VuSitu tests; no failures."
+  },
+  "verification": {
+    "command": "MORA_CHECK_LOCAL_RECORDINGS=1 python -m unittest discover -s tests -v",
+    "tests_passed": 78,
+    "local_ignored_recordings_rechecked": true,
+    "calibration_identity_evidence_files_rechecked": 39,
+    "environment": "work Python 3.13.9; bundled pure-Python openpyxl/et_xmlfile exposed temporarily for Excel tests",
+    "note": "All tests passed. Existing NumPy timedelta deprecation warnings remain unrelated."
+  }
 }

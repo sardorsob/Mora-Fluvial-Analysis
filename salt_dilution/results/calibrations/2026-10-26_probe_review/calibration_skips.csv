@@ -1,0 +1,38 @@
+calibration_id,conductivity_basis,probe_alias,reason
+NISQ-20250709-C01,specific,,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250709-C01,actual,,Fewer than three usable actual conductivity/addition pairs
+NISQ-20250709-C02,specific,,Addition interpretation is unconfirmed
+NISQ-20250709-C02,actual,,Addition interpretation is unconfirmed
+NISQ-20250709-C03,specific,,Addition interpretation is unconfirmed
+NISQ-20250709-C03,actual,,Addition interpretation is unconfirmed
+NISQ-20250731-C01,specific,probe_01,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250731-C02,specific,probe_01,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250805-C01,specific,probe_01,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250805-C02,specific,probe_01,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250805-C03,specific,probe_01,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250805-C04,specific,probe_01,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250808-C01,specific,probe_01,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250903-C01,specific,probe_02,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250903-C02,specific,probe_02,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250917-C01,specific,probe_02,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250917-C02,specific,probe_02,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250917-C03,specific,,Fewer than three usable specific conductivity/addition pairs
+NISQ-20250917-C04,specific,,Fewer than three usable specific conductivity/addition pairs
+NISQ-20260716-C01,specific,,Fewer than three usable specific conductivity/addition pairs
+NISQ-20260721-C01,specific,,Fewer than three usable specific conductivity/addition pairs
+NISQ-20260806-C01,specific,,Fewer than three usable specific conductivity/addition pairs
+PAR-20260903-C06,specific,,calibration_water_initial_ml is missing or not numeric
+PAR-20260903-C06,actual,,calibration_water_initial_ml is missing or not numeric
+PAR-20260903-C07,specific,,calibration_water_initial_ml is missing or not numeric
+PAR-20260903-C07,actual,,calibration_water_initial_ml is missing or not numeric
+PAR-20260903-C08,specific,,calibration_water_initial_ml is missing or not numeric
+PAR-20260903-C08,actual,,calibration_water_initial_ml is missing or not numeric
+PAR-20260903-C01,actual,,Fewer than three usable actual conductivity/addition pairs
+PAR-20260903-C02,actual,,Fewer than three usable actual conductivity/addition pairs
+PAR-20260903-C03,actual,,Fewer than three usable actual conductivity/addition pairs
+PAR-20260903-C04,actual,,Fewer than three usable actual conductivity/addition pairs
+PAR-20260903-C05,actual,,Fewer than three usable actual conductivity/addition pairs
+PAR-20260903-C09,specific,,calibration_water_initial_ml is missing or not numeric
+PAR-20260903-C09,actual,,calibration_water_initial_ml is missing or not numeric
+NISQ-20260918-C01,specific,,Abandoned preparation; original staged attempt retained as evidence
+NISQ-20260918-C01,actual,,Abandoned preparation; original staged attempt retained as evidence

@@ -78,7 +78,7 @@ class SaltRecordTests(unittest.TestCase):
     def test_dataset_identity_probe_channel_and_pending_states(self):
         datasets = self.provenance['datasets']
         paths = {}
-        for row in self.tables['trial_inputs']:
+        for number, row in enumerate(self.tables['trial_inputs'], 2):
             self.assertEqual(bool(row['dataset_id']), bool(row['processed_path']))
             self.assertIn(row['conductivity_basis'], ('', 'actual', 'specific'))
             self.assertIn(row['review_status'], ('unreviewed', 'needs_review', 'verified'))
@@ -106,8 +106,10 @@ class SaltRecordTests(unittest.TestCase):
             if row['calibration_id']:
                 cal_probe = self.provenance['calibrations'][row['calibration_id']]['probe_alias']
                 if cal_probe and cal_probe != row['probe_alias']:
-                    self.assertTrue(self.provenance.get('calibration_application_policy', {})
-                                    .get('shared_across_probe_aliases'))
+                    evidence = self.provenance['trial_inputs'][number - 2]
+                    self.assertEqual(evidence['field_status']['calibration_applicability'],
+                                     'different_probe_requires_applicability_review')
+                    self.assertFalse(evidence['analysis_ready'])
 
     def test_confirmed_october_links_follow_source_blocks_not_id_order(self):
         expected = {'NISQ-20261002-T01': '2026-10-02_17-48-22',
@@ -159,7 +161,51 @@ class SaltRecordTests(unittest.TestCase):
             if row['trial_id'].startswith('NISQ-20250805-') or row['trial_id'].startswith('NISQ-20250903-'):
                 self.assertIn(row['calibration_id'], evidence['notebook_calibration_candidates'])
                 self.assertEqual(evidence['field_status']['calibration_applicability'],
-                                 'notebook_link; shared_probe_protocol; conductivity_match_required')
+                                 'different_probe_requires_applicability_review')
+
+    def test_probe_audit_preserves_all_nonidentity_point_fields(self):
+        audit = self.provenance['calibration_record_audit']
+        projection = [{key: value for key, value in row.items() if key != 'probe_alias'}
+                      for row in self.tables['calibration_points']]
+        digest = hashlib.sha256(json.dumps(projection, sort_keys=True,
+                                          separators=(',', ':')).encode()).hexdigest()
+        self.assertEqual(digest, audit['observation_projection']['sha256'])
+        self.assertEqual(set(audit['calibrations']), set(self.provenance['calibrations']))
+        reviewed = [row for row in self.tables['calibration_points']
+                    if 'probe_identity_review' in self.provenance['calibration_points'][
+                        f"{row['calibration_id']}|{row['probe_alias']}|{row['step_no']}"]]
+        self.assertEqual(len(reviewed), audit['probe_point_cells_filled'])
+        for row in reviewed:
+            evidence = audit['calibrations'][row['calibration_id']]['probe_identity_review']
+            self.assertEqual(row['probe_alias'], evidence['probe_alias'])
+            self.assertIn(evidence['basis'], ('electronic_calibration_sequence_and_measured_sensor_identity',
+                          'confirmed_trial_association_and_user_confirmed_within_trial_probe_continuity'))
+
+    def test_within_trial_identity_does_not_override_paired_or_missing_evidence(self):
+        audit = self.provenance['calibration_record_audit']['calibrations']
+        for identity, evidence in audit.items():
+            review = self.provenance['calibrations'][identity].get('probe_identity_review',
+                                                                  evidence['probe_identity_review'])
+            if review['basis'] == 'confirmed_trial_association_and_user_confirmed_within_trial_probe_continuity':
+                rows = [row for row in self.tables['trial_inputs'] if row['calibration_id'] == identity]
+                self.assertEqual({row['trial_id'] for row in rows}, {review['trial_id']})
+                self.assertEqual({row['probe_alias'] for row in rows}, {review['probe_alias']})
+                self.assertEqual({row['dataset_id'] for row in rows}, {review['dataset_id']})
+        # Paired older river logs do not identify which sensor made the calibration.
+        for identity in ('NISQ-20260716-C01', 'NISQ-20260721-C01', 'NISQ-20250917-C03'):
+            self.assertFalse(self.provenance['calibrations'][identity]['probe_alias'])
+        self.assertFalse(self.provenance['calibration_application_policy']['shared_across_probe_aliases'])
+
+    def test_addition_review_retains_increments_ambiguity_and_written_conflict(self):
+        audit = self.provenance['calibration_record_audit']['calibrations']
+        for identity, total in [('NISQ-20260918-C02', 26), ('NISQ-20261004-C02', 46)]:
+            points = [row for row in self.tables['calibration_points'] if row['calibration_id'] == identity]
+            self.assertEqual({row['addition_kind'] for row in points}, {'incremental'})
+            self.assertEqual(sum(float(row['recorded_added_volume_ml']) for row in points), total)
+        for identity in ('NISQ-20250709-C02', 'NISQ-20250709-C03'):
+            self.assertEqual(audit[identity]['addition_semantics_review']['status'], 'unconfirmed_water_changes')
+        conflict = audit['NISQ-20261004-C01']['addition_semantics_review']['conflicts']
+        self.assertEqual(conflict, [{'step_no': '2', 'difference_ml': -1.0}])
 
     def test_linked_calibration_has_observations_on_selected_channel(self):
         for row in self.tables['trial_inputs']:
@@ -189,6 +235,23 @@ class SaltRecordTests(unittest.TestCase):
 @unittest.skipUnless(os.environ.get('MORA_CHECK_LOCAL_RECORDINGS') == '1',
                      'Set MORA_CHECK_LOCAL_RECORDINGS=1 to check ignored parser outputs')
 class LocalRecordingTests(unittest.TestCase):
+    def test_calibration_identity_evidence_hashes_and_measured_sensor(self):
+        provenance = json.loads((RECORDS / 'provenance.json').read_text())
+        for identity, calibration in provenance['calibrations'].items():
+            review = calibration.get('probe_identity_review')
+            if not review:
+                continue
+            with self.subTest(calibration=identity):
+                for item in review['files']:
+                    self.assertEqual(hashlib.sha256((ROOT / item['path']).read_bytes()).hexdigest(),
+                                     item['sha256'])
+                metadata = next(item for item in review['files'] if item['path'].endswith('_metadata.json'))
+                meta = json.loads((ROOT / metadata['path']).read_text())
+                serials = {serial for original, canonical in meta.get('column_map', {}).items()
+                           if canonical in ('actual_conductivity_us_cm', 'specific_conductivity_us_cm')
+                           for serial in re.findall(r'\((\d{6,7})\)', original)}
+                self.assertEqual(serials, {provenance['probe_registry'][review['probe_alias']]})
+
     def test_registered_files_hashes_measurement_probes_and_channels(self):
         provenance = json.loads((RECORDS / 'provenance.json').read_text())
         rows = read_table('trial_inputs')

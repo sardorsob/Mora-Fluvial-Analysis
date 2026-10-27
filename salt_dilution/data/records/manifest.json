@@ -64,14 +64,14 @@
     },
     "calibration_points.csv": {
       "rows": 262,
-      "sha256": "d90c7aed21d1a07a970990b9d4b9e5ad27da35662e290451588d51b81d68cdc3"
+      "sha256": "894c560e193baa2ac5bb4ce0fbd16707217680d021381bf3936e332fac913875"
     },
     "trial_inputs.csv": {
       "rows": 59,
       "sha256": "d1430c9cc5424aa7cbb150cd03974b4b726e3d7150b20b962b5d9f08ebd1e71c"
     }
   },
-  "provenance_sha256": "b9eecc97abd811e3f9ae67bae362916126453675c8f6078702e75e619bede4a9",
+  "provenance_sha256": "1f1a70c2cc755e742c1c7fb0aeca969ffcff674395b29ea69e6912584089cd6b",
   "input_sha256": {
     "salt_dilution/data/processed/field_notes/2026-10-12/sessions.csv": "e61dd0dae5f0b4554af078374bcdb2fe1da42bd1bedb8e0ee10ebfb9616304d3",
     "salt_dilution/data/processed/field_notes/2026-10-12/source_files.csv": "89a71f282d822aa8f4048a5ab64674e064cbbfaa683a724625c464e916175827",
@@ -92,7 +92,7 @@
   },
   "procedure_profiles_sha256": "636f681f6cb5e469e70be73d06ab364964987854a39b8eb34870b002f9b898f1",
   "source_code_git_commit": "50301f70363cb3cda9e617595628b89ca3cf56f6",
-  "updated_on": "2026-10-20",
+  "updated_on": "2026-10-26",
   "record_revision_base_git_commit": "54598c9a5e7d13f51fa44086fb45a53a2deb1b89",
   "reviewed_setting_overrides": {
     "recorded_on": "2026-10-20",
@@ -161,10 +161,24 @@
     "changed_cells": 35
   },
   "calibration_application_policy": {
-    "recorded_on": "2026-10-20",
-    "shared_across_probe_aliases": true,
-    "basis": "Direct user clarification: these are the same device class with different identifiers; the available probe on the day does not require a separate calibration.",
+    "recorded_on": "2026-10-26",
+    "shared_across_probe_aliases": false,
+    "retain_notebook_associations": true,
     "conductivity_basis_must_match": true,
-    "scope": "Preserve the original measured probe identities and source relationships. Device-number differences alone do not withhold notebook calibration links. Event/window and data-quality checks remain separate."
+    "basis": "Updated user protocol: identify the Aqua TROLL within each physical trial/role and carry it through associated calibration. General attenuation is a separate role. Different-probe associations require explicit applicability review.",
+    "scope": "Existing recording links are preserved as notebook associations, not automatically approved transfers. No windows or discharge results accepted.",
+    "previous_policy": {
+      "recorded_on": "2026-10-20",
+      "shared_across_probe_aliases": true,
+      "basis": "Direct user clarification: these are the same device class with different identifiers; the available probe on the day does not require a separate calibration.",
+      "conductivity_basis_must_match": true,
+      "scope": "Preserve the original measured probe identities and source relationships. Device-number differences alone do not withhold notebook calibration links. Event/window and data-quality checks remain separate."
+    }
+  },
+  "calibration_audit": {
+    "recorded_on": "2026-10-26",
+    "probe_preparations_filled": 13,
+    "probe_point_cells_filled": 100,
+    "addition_kind_cells_changed": 0
   }
 }
