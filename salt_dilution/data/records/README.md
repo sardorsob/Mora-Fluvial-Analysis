@@ -57,23 +57,27 @@ Tahoma, controlled seismic-source and cross-section observations remain in the b
 
 [sediment/rock_observations.csv](sediment/rock_observations.csv) contains 331 tethered-rock observations from September 18 and October 2, 4 and 5, 2026. It is separate from the four salt-calibration tables. Each row is one recorded test or qualitative observation.
 
-`rock_number` orders the five rocks from smallest to largest:
+`rock_category` replaces the former numbered `rock_number` field. The user clarified the five experimental categories on October 28, 2026. Use this exact category order in tables and plots, not alphabetical order:
 
-| Number | Source labels |
+| Category | Source labels |
 | --- | --- |
-| 1 | `smallest`, `littlest`, and `small` in the first size position |
-| 2 | `54`, `54.5`, and `second_smallest` |
-| 3 | `D50` |
-| 4 | `second_biggest`, `one_bigger_than_D50` |
-| 5 | `biggest` |
+| `38.5mm` | `smallest`, `littlest`, and `small` in the first size position |
+| `54.5mm` | `54`, `54.5`, and `second_smallest` |
+| `D50 (a/b/c ~ X/X/X)` | `D50` |
+| `79mm` | `second_biggest`, `one_bigger_than_D50`, and explicit `79` |
+| `119mm` | `biggest` and explicit `119` |
 
-Repeat-label suffixes keep the same rock number. The number is a size rank, not a measured diameter or proof of the same physical specimen across dates. Original labels and recorded sizes remain separate. The three September 18 labels (`79`, `119`, and `one_size_less_than_79_before119`) describe only part of the set, with a relative-size annotation outside the saved row sequence. Their absolute positions among five rocks remain unresolved; the general smallest-to-largest rule alone cannot fill those gaps.
+The previous ranks 1 through 5 map to these categories in the listed order. Repeat-label suffixes keep the same category. D50's `X/X/X` values are placeholders for dimensions not yet supplied; they are not measured numbers, and D50 is not assigned a 50 mm size. Category names do not establish the same physical specimen across dates.
 
-`trial_block` preserves the source grouping; it is not a salt-release ID. `repeat_no=2` separates the repeated October 4 round-2 block. The two round-4 blocks remain distinct; `left`/`right` identify source-page blocks, not confirmed river banks. `test_number` counts observations within each session/block/repeat/rock series in source order, including continuation across pages. Most series have five tests; longer, shorter and lost-rock series are retained without padding or splitting them by an assumed five-test rule.
+Original `rock_label_source`, `rock_label_raw`, and `rock_size_mm` values remain unchanged. For example, a source-recorded `54.0` mm value is retained alongside the user-confirmed `54.5mm` category rather than silently rewriting the source. Use `rock_category` for the standardized grouping; `rock_size_mm` remains the source-derived numeric size, not a complete category-size lookup. Observation IDs, row order, times, distances, durations, source references, notes and review states are also unchanged by this category update.
+
+The September 18 entries explicitly labelled `79` and `119` now map to `79mm` and `119mm`. The remaining relative label, `one_size_less_than_79_before119`, stays unassigned because its precise category is not established by the saved row context. This leaves 330 categorized observations and one unresolved category; do not infer D50 for that row solely from the relative wording.
+
+`trial_block` preserves the source grouping; it is not a salt-release ID. `repeat_no=2` separates the repeated October 4 round-2 block. The two round-4 blocks remain distinct; `left`/`right` identify source-page blocks, not confirmed river banks. `test_number` counts observations within each session/block/repeat/rock series in source order, including continuation across pages. Most series have five tests; longer, shorter and lost-rock series are retained without padding or splitting them by an assumed five-test rule. Code that previously grouped by `rock_number` should now group by `rock_category` and explicitly use the category order above; CSV does not store an ordered categorical type.
 
 Raw times, durations, distance tokens, zeros and notes are preserved. Seven written “nothing” entries remain distinct from 84 numeric zeros; ten distances are unresolved. `apparatus_distance_m` retains the provisional tether/reel measurement definition, not free-particle travel or velocity. UTC and discharge links remain blank, and observations remain `unreviewed`.
 
-The source is the retained October 12 [rock transcription](../processed/field_notes/2026-10-12/sediment/rock_observations.csv), SHA-256 `173ad501878803885cb8cbbfe2f701b1af07ea6dbe501b7bfef1989a49b39216`. Original observation IDs are retained; `sourcebook_reference` identifies the scan, page, side and source row. The export uses that transcription rather than a fresh handwriting check: the original scan is unavailable at its recorded Downloads path.
+The source is the retained October 12 [rock transcription](../processed/field_notes/2026-10-12/sediment/rock_observations.csv), SHA-256 `173ad501878803885cb8cbbfe2f701b1af07ea6dbe501b7bfef1989a49b39216`. Original observation IDs are retained; `sourcebook_reference` identifies the scan, page, side and source row. The export uses that transcription rather than a fresh handwriting check: the original scan is unavailable at its recorded Downloads path. The category replacement is based on the user's later explicit category list, not a new reading of the scans. The numbered version remains in Git history at commit `83f4c191777f732236e663f9db99b07b723a85b7`.
 
 ## Using the tables
 
