@@ -21,6 +21,12 @@ Distinguish water-temperature channels from adapter air-temperature/barometric c
 
 `general_logger` in parser metadata is an ingestion route, not a manufacturer identification: an Aqua TROLL workbook also uses the Excel reader. `probe_01`–`probe_06` are aliases for registered measured sensor identities. Similar numbers in General labels do not establish equivalence.
 
+## Farther-downstream monitoring
+
+The General Tools DCT430SD was sometimes placed farther downstream than the Aqua TROLL recording the discharge pulse. The team's stated purpose was to examine how the salt signal changed downstream and support an assessment of exposure from the test releases. Natural mineral background and water–sediment interactions were part of that research rationale; their contributions have not been quantified here.
+
+The additional monitoring dataset described for this purpose has not been supplied or identified in this repository. Existing General-labelled exports do not by themselves establish which recordings belong to it. Future analysis would need the relevant sensor locations, clocks, channels, background and release associations to distinguish the pulse from other conductivity changes. Conductivity is not specific to injected NaCl, and a small or undetectable pulse alone does not demonstrate ecological harmlessness. No environmental-safety result is established by the current calibration fits.
+
 ## What the available timeline establishes
 
 Dates distinguish acquisition/field headings from later exports. Notebook locators below refer to `Document_261007_160953.pdf` unless another scan is named. The retained transcription/provenance preserves these locators; original scans are unavailable at their recorded Downloads paths for a fresh check.
