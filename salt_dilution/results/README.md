@@ -1,13 +1,13 @@
 # Analysis results
 
-Keep each run in its own named directory. `_template/` describes the structure and contains no scientific result.
+The [reviewed calibration bundle](calibrations/2026-10-26_probe_review/README.md) contains 49 provisional fits, 37 skipped series and diagnostic figures. Its supported identity fills leave all numerical fit fields unchanged from the [earlier bundle](calibrations/README.md). Both bundles are retained; neither contains accepted discharge estimates.
 
-- `figures/`: exported graphs and diagnostics.
-- `tables/`: numerical outputs and summaries.
-- `run_info.json`: run ID, status, input references, configuration reference, Git revision, and notes.
+## Reproducing a calibration run
 
-The historical Python `result_path` helper creates a run location using `MORA_RUN_ID` or a UTC timestamp. Its initial record has status `started`; complete the inputs, configuration and outcome when the run finishes. Historical notebooks are retained as provenance, not the maintained runner.
+Use the [calibration runner](../../docs/calibration.md) with a fresh output directory. It writes fit/point/skip CSVs directly in that directory, with `figures/` and `run_info.json`. The run record includes input/output and code hashes, software versions and Git revision. The reviewed bundle also has an independent numerical verification; local MLflow is supplementary and is not required to reproduce the fit.
 
-The maintained [calibration runner](../../docs/calibration.md) writes its small fit/point/skip CSVs directly in the run directory alongside `figures/` and `run_info.json`. The selected [October 20 calibration bundle](calibrations/README.md) is tracked at the user's request. Other generated runs and local MLflow tracking remain ignored. Large normalized stream readings stay in the ignored processed-data folder.
+## Other runs
 
-The [October 26 probe-identity review](calibrations/2026-10-26_probe_review/README.md) is a second retained calibration bundle. It preserves the earlier run, documents supported identity fills and addition-semantic checks, and verifies unchanged numerical coefficients independently. Both runs remain provisional calibration results, not discharge estimates.
+Keep each analysis in a named directory. `_template/` provides `figures/`, `tables/` and `run_info.json`; it contains no scientific result. The historical `result_path` helper uses `MORA_RUN_ID` or a UTC timestamp and starts a run record with status `started`. Complete input references, configuration, Git revision and outcome when the run finishes.
+
+Selected calibration bundles are tracked. Other generated runs and local MLflow stay ignored; large normalized readings belong in the local processed-data folder. Historical notebooks use retired processing interfaces and are not the maintained runner.

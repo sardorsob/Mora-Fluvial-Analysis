@@ -11,6 +11,8 @@ The [source manifest](source_manifest.csv) records all 53 imported source files,
 
 ## Changes
 
+The initial import made the following changes. Later parser and calibration development is described in the [salt guide](../salt_dilution/README.md); the manifest is the original migration map, not a list of current supported interfaces.
+
 - Normalized internal names to snake_case and organized files by method and purpose.
 - Updated Python imports while retaining original local aliases and function interfaces.
 - Replaced machine-specific Windows paths with project-relative inputs or per-run output paths.

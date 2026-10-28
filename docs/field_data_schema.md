@@ -1,8 +1,8 @@
 # Field-data schema
 
-## Current compact salt interface: October 20
+## Current compact salt interface
 
-The maintained input layout is four UTF-8 CSVs under `salt_dilution/data/records/`. The [records guide](../salt_dilution/data/records/README.md) describes the populated dataset, provenance and remaining review. It currently contains 38 physical releases, 43 distinct calibration attempts, 262 observed point rows and 59 association/placeholder rows. The [October 20 reconciliation](salt_record_reconciliation_2026_10_20.md) preserves reviewed quantities and repairs duplicate identities. The broader October 12 transcription below remains intact as staging evidence.
+Four UTF-8 CSVs under `salt_dilution/data/records/` are the maintained calibration and release interface. They contain 38 physical releases, 43 calibration attempts, 262 observations and 59 recording associations/placeholders. The [records guide](../salt_dilution/data/records/README.md) describes coverage, missing values and current evidence. The older local transcription below also covers sediment and controlled seismic sources; it is staging evidence, not an additional input requirement for calibration fitting.
 
 | Table | Grain | Key |
 | --- | --- | --- |
@@ -11,7 +11,7 @@ The maintained input layout is four UTF-8 CSVs under `salt_dilution/data/records
 | `calibration_points.csv` | One reading in a calibration/probe series | `calibration_id`, `probe_alias`, `step_no` |
 | `trial_inputs.csv` | One candidate release/recording/probe/channel/window/calibration association; unresolved placeholders explicitly marked | References `trial_id` and optional `calibration_id`; direct `dataset_id`/`processed_path` |
 
-Keep the agreed compact headers:
+Headers:
 
 ```text
 trials.csv
@@ -29,21 +29,23 @@ trial_id,dataset_id,processed_path,calibration_id,probe_alias,recording_role,win
 
 Current compact field dates retain the user's `M/D/YYYY` spelling; parse with `%m/%d/%Y` before comparing to ISO logger dates. All UTC event/window fields currently remain blank. Current `site_alias` values are `NISQ` or `PAR`, including the user's supporting-preparation assignments. `injection_form` is `dry` or `solution`; these reviewed nominal delivery settings do not establish delivered quantities. `addition_kind` is `incremental`, `cumulative` or `unconfirmed`. `stock_water_source` is `river` or `deionized` when established; otherwise blank. `conductivity_basis` is `actual` or `specific` when selected. Review states are `unreviewed`, `needs_review` or `verified`; the current records use `needs_review` throughout.
 
-Use the existing [procedure profiles](../salt_dilution/config/procedure_versions.json): `solution_secondary`, `mass_stock_river` and `mass_stock_deionized`. Unknown or unsupported preparations keep a blank procedure; a date cannot select it. Initial water is not final stock volume, mass of water is not volume, and nominal salt mass is not an accepted delivered mass. Under the user-confirmed working protocol, mass-stock calibration uses recorded preparation-water volume when measured final solution volume is absent. `stock_solution_final_ml` is optional and stays blank unless measured; the result records which volume was used. Full preparation stages and quantity bases remain in the local companion provenance.
+Use the existing [procedure profiles](../salt_dilution/config/procedure_versions.json): `solution_secondary`, `mass_stock_river` and `mass_stock_deionized`. Unknown or unsupported preparations keep a blank procedure; a date cannot select it. Initial water is not final stock volume, mass of water is not volume, and nominal salt mass is not an accepted delivered mass. Under the user-confirmed working protocol, mass-stock calibration uses recorded preparation-water volume when measured final solution volume is absent. `stock_solution_final_ml` is optional and stays blank unless measured; the result records which volume was used. Full preparation stages and quantity bases remain in the tracked companion provenance.
 
 Reviewed recipe and procedure edits are preserved. Select preparation stages from `procedure_id`; a populated secondary-water field does not add a secondary dilution to a direct-stock method. Original transcription uncertainties and abandoned/restarted attempts remain evidence to review, even where nominal settings are now filled.
 
 Written additions are stored without replacing them by a calculated cumulative series. Uncertain handwritten tokens retain blank numeric values and their original text in provenance. Do not promote crossed-out/empty rows or an abandoned preparation into an accepted fit. Keep original source positions in `step_no`, including gaps.
 
-`trial_inputs.csv` contains 48 linked rows across 31 files for 28 releases, with 11 unresolved-path rows for ten other releases. Every release has at least one row. A blank path preserves an unresolved notebook association; it is not a selected dataset. A populated path identifies a real recording and measured probe; it still needs scientific checks. All seven earlier dataset identities are retained, and 24 additional identities are frozen in provenance. Same-day matching alone does not establish a link. The October 20 user clarification permits calibration across numbered probes of the same device class: 23 notebook links were restored rather than withheld solely for probe-number differences. Probe aliases remain traceable, and selected conductivity channels must match. The table now has 16 specific and 32 actual routes; ten calibration IDs remain blank. These references identify notebook associations, not accepted discharge results.
+`trial_inputs.csv` has 48 linked rows across 31 files for 28 releases and 11 unresolved-path rows for ten releases. All releases are represented. These are notebook associations, not accepted discharge inputs: windows remain blank, ten calibration IDs are missing, and selected channels comprise 16 specific, 32 actual and 11 unresolved routes. The [records guide](../salt_dilution/data/records/README.md) explains the unresolved cases and identity registry.
 
-The four formerly colliding supporting preparations use PAR C06-C09, with their historical UNK aliases retained; PAR C01-C05 remain distinct. Points join to preparations many-to-one without dropping or multiplying observations. Per-link provenance separates confirmed recording identity, calibration applicability, measurement clock and analysis window. Source-local file bounds and export dates must not become UTC integration windows automatically. Shared datasets and paired probes are intentional; never aggregate repeated files across releases before selecting separate event windows.
+Current applicability policy identifies the Aqua TROLL within each physical trial/role and carries it through its associated calibration where supported. General meters served separate attenuation monitoring. Earlier shared-probe permission retained notebook links, but different-probe associations now require explicit review. Preserve aliases and channel distinctions; same-day or same-model matching does not establish identity or transfer validity.
 
-The four compact field tables, source provenance, manifest and validation report are versioned together. The [calibration runner](calibration.md) consumes preparations and points without requiring stream windows or `trial_inputs.csv`. Small fitted results are saved separately from observations. Large generated stream tables and metadata remain Git-ignored under `processed/`. The following section describes the older local staging layout; it is not an additional set of tables required by the compact runner.
+Points join to preparations many-to-one. Keep stable release/preparation IDs, paired probes, split logs and alternative calibration candidates distinct. Source-local bounds and export dates must not become UTC integration windows. See the [October 20 reconciliation](salt_record_reconciliation_2026_10_20.md) for historical ID repairs and the [October 26 review](../salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) for supported probe fills and addition checks.
+
+The four tables, provenance, manifest and validation report are versioned together. The [calibration runner](calibration.md) consumes preparations and points independently of stream windows. Derived concentrations and fits belong in results; large normalized readings remain ignored under `processed/`.
 
 ## Preserved October 12 transcription
 
-Use UTF-8 CSV tables with lowercase `snake_case` columns, stable text IDs, ISO field dates, and units in numeric column names. This schema connects handwritten calibration/injection records to normalized instrument exports and supporting sediment observations. It preserves the existing `raw/ -> processed/ -> results/` boundary.
+This local staging schema uses UTF-8 CSV tables, lowercase `snake_case` columns, stable text IDs, ISO field dates and units in numeric column names. It connects handwritten calibration/injection records to normalized instrument exports and supporting sediment observations. It preserves the existing `raw/ -> processed/ -> results/` boundary.
 
 The first local transcription is at `salt_dilution/data/processed/field_notes/2026-10-12/`. Its `README.md`, `table_schema.json`, `manifest.json` and `review_issues.csv` describe its actual coverage. It contains unreviewed measurements, not accepted calibration fits or computed discharge. Field-data bundles stay local under the existing processed-data ignore rule.
 
@@ -167,7 +169,7 @@ The `method_family` values describe the intended calculation context: `relative_
 
 ## Loading alongside current exports
 
-The new bundle is already structured data. Load its CSVs directly; `read_data()` remains the reader for original instrument/legacy calibration formats and does not dispatch these relational tables.
+The staging bundle is structured data. Load its CSVs directly; `read_data()` remains the reader for original instrument/legacy calibration formats and does not dispatch these relational tables.
 
 ```python
 from pathlib import Path
@@ -190,6 +192,6 @@ Do not concatenate this bundle with every logger CSV: points, releases, depth ob
 
 ## Review and calculation readiness
 
-The initial transcription has `review_status=unreviewed` and `analysis_ready=false`. Structural checks verify keys, source references, row counts, critical addition bookkeeping and preservation hashes. They do not verify every handwritten digit.
+The staging transcription has `review_status=unreviewed` and `analysis_ready=false`; the compact records have their own later review overlays. Structural checks verify keys, source references, row counts, critical addition bookkeeping and preservation hashes. They do not verify every handwritten digit.
 
-Review a complete calibration/release pair first: check the handwriting, units, stock stages, receiving volume, addition semantics, instrument/channel, injected quantity and clocks. Resolve relevant entries in `review_issues.csv`, recording the correction and reviewer without deleting the original token. Only then promote the accepted records for a calculation. Calibration and mass-slug processing remain separate work in `scripts/processing/`.
+Review a complete calibration/release pair first: check the handwriting, units, stock stages, receiving volume, addition semantics, instrument/channel, injected quantity and clocks. Resolve relevant entries in `review_issues.csv`, recording the correction and reviewer without deleting the original token. Only then promote the accepted records for a calculation. The maintained calibration runner fits the compact tables. Mass-slug discharge processing remains unimplemented.

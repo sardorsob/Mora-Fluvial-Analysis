@@ -1,30 +1,43 @@
-# Migration validation
+# Validation and limits
 
-Checked locally on 2026-09-29 with Python 3.13. This checks the repository reorganization against the pinned sources in [provenance](provenance.md); it does not validate the scientific methods or field results.
+The checks below establish source preservation, software behavior and numerical consistency. They do not establish accepted field discharge, instrument equivalence or a complete measurement-uncertainty budget.
 
-## Checks completed
+## Current salt workflow
 
-- All 53 source files have an existing destination and a matching original SHA-256 in the [source manifest](source_manifest.csv).
-- All eleven example CSVs match the source bytes. The five R files preserve source content apart from trailing whitespace.
-- Python files parse successfully. All twelve notebooks validate as nbformat 4.5, their Python cells compile after IPython transformation, and saved outputs and execution counts are cleared.
-- Four portability tests pass: configuration inputs from a different working directory, both parser CLI entry points, contained result paths and run records, and acquisition setup without embedded credentials.
-- Local checks found no retained source credential literals or new literal credential assignments in executable Python cells or scripts.
-- Local Markdown links resolve. Source environment records parse as YAML and retain their original dependency lists.
-
-Run the portability checks from the repository root:
+Run from the repository root with the project dependencies installed:
 
 ```sh
 python -m unittest discover -s tests -v
 ```
 
+The suite covers parser dispatch, metadata/units, source timestamps and explicit UTC offsets, batch discovery and output safety, calibration equations and skip rules, record keys/joins, provenance hashes and portable paths. The raw-export integration tests compare every measurement cell in ten tracked live-reading exports and exercise four supporting reports. Missing raw files cause explicit skips unless `MORA_REQUIRE_RAW_TESTS=1` is set. The [CI configuration](../.github/workflows/salt-parser-tests.yml) targets Python 3.13 on Linux and Windows; configuration alone is not evidence that a particular revision passed.
+
+Set `MORA_CHECK_LOCAL_RECORDINGS=1` to also verify the ignored local recordings/metadata against curated provenance. Those checks need the referenced source, output and metadata files. The [record validation report](../salt_dilution/data/records/validation_report.json) records 78 passing tests for the October 26 calibration review, including local-recording checks and 39 identity-evidence files. That is a recorded run, not a test result for every future checkout.
+
+The [reviewed calibration bundle](../salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) contains an independent `numpy.linalg.lstsq` verification of all 49 fits from rebuilt concentrations. K, intercept, R², RMSE and point counts match the earlier bundle. The identity changes did not alter observed quantities or addition labels. See its `numerical_verification.json` and `run_info.json` for scope, software versions and exact hashes.
+
+These checks leave 19 preparation identities unresolved, including 12 fitted series. They do not resolve handwritten units, preparation/delivery uncertainty, the DI-stock ionic-background correction, clock alignment, event windows, mixing or tracer recovery. A high R² is not a calibration-acceptance test.
+
+## Migration checks
+
+The September 29, 2026 check used Python 3.13 to compare the initial reorganization with the pinned [source revisions](provenance.md). Its recorded scope was:
+
+- All 53 imported files had a destination and original SHA-256 entry in the [source manifest](source_manifest.csv).
+- All eleven example CSVs matched source bytes; five R files differed only in trailing whitespace.
+- Python files parsed; all twelve notebooks validated as nbformat 4.5, and their Python cells compiled after IPython transformation. Saved outputs and execution counts were cleared.
+- Four portability tests covered configuration-relative inputs, parser entry points, contained result paths/run records and acquisition setup without embedded credentials.
+- Credential-literal, local Markdown-link and environment-YAML checks passed; source environment dependency lists were retained.
+
+These are historical migration checks. Later helper retirement means the original file destinations and notebook interfaces are not a current execution guarantee.
+
 ## Dilution regression
 
-The code cells of `salt_dilution/notebooks/salt_dilution_discharge.ipynb` were executed in sequence from the notebook's directory using the included July 24 inputs. The migrated `RC_ss`, `slope_k`, `Q`, and `bg_value` equal the original notebook's calculation exactly. The run produced three PNG figures, a discharge table, a configuration snapshot, and a completed run record under the ignored `salt_dilution/results/migration_verification/` directory.
+At migration, the July 24 notebook's code cells ran with the included inputs. Migrated `RC_ss`, `slope_k`, `Q` and `bg_value` exactly matched the source calculation. Three PNGs, a discharge table, configuration snapshot and run record were saved under the local ignored `salt_dilution/results/migration_verification/` directory.
 
-That agreement establishes fidelity to the historical calculation. It does not resolve the source's conductivity labels, calibration choices, injection bounds, or other scientific limitations listed in the [salt-dilution README](../salt_dilution/README.md).
+That comparison demonstrated fidelity to the historical calculation, not scientific validity. Its conductivity labels, calibration choices and injection bounds were not resolved. The notebook now imports a retired helper and is not the maintained discharge workflow; see the [salt guide](../salt_dilution/README.md#known-source-limitations).
 
-## Limits
+## Seismic and environment limits
 
-The seismic workflows and R models were not executed end to end: ObsPy, rpy2, R, and the required waveform/instrument inputs were unavailable in the checking environment. Acquisition was checked with an empty time interval and a network-boundary stand-in; live service access was not tested. Source environment exports are historical records, not verified installation recipes.
+The seismic workflows and R models have not been executed end to end here. The migration environment lacked ObsPy, rpy2, R and the required waveform/instrument inputs. Acquisition used an empty interval and a stand-in at the network boundary, not a live-service test.
 
-Exploratory notebooks and prototypes retain their documented missing inputs and source errors. See the method READMEs before running them. No new scientific result or field-ready workflow is claimed by this import.
+Historical Conda exports and current unpinned Python requirements are not verified cross-platform lockfiles. Exploratory notebooks retain missing inputs and inherited errors. Review the [seismic guide](../fluvial_seismology/README.md) before running selected workflows; no validated seismic finding is claimed by the import.

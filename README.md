@@ -1,70 +1,48 @@
 # Mount Rainier Fluvial Analysis
 
-Tools and notebooks for salt-dilution discharge measurements and fluvial seismology at Mount Rainier National Park.
+Tools for studying river flow and sediment movement at Mount Rainier National Park using salt-dilution measurements and fluvial seismology.
 
-This repository brings two existing research codebases into one self-contained project. Scientific calculations are preserved; filenames, notebook titles, imports, input locations, and saved-result paths have been organized consistently. Some source workflows remain exploratory or incomplete.
+The maintained salt workflow reads instrument exports and fits calibration curves that relate electrical conductivity to added salt concentration. The seismic workflows provide waveform preparation, spectra, and exploratory turbulence and bedload models. They came from two research repositories; [provenance](docs/provenance.md) identifies the source revisions and retained licenses.
+
+## What works now
+
+| Work | Current capability | Important limit |
+| --- | --- | --- |
+| Salt-data extraction | Read Aqua TROLL HTML/CSV, General logger spreadsheets and recognized calibration CSVs; save normalized readings and metadata. | Parsing does not resolve field clocks, choose an event or establish measurement quality. |
+| Salt calibration | Fit the curated preparation/point tables separately by probe and conductivity channel; save coefficients, residuals, figures and skip reasons. | Fits are provisional. Discharge processing is not implemented in the maintained workflow. |
+| Fluvial seismology | Imported Python/R scripts and notebooks for preparation, instrument comparisons, spectra and models. | No waveform data are bundled; these workflows have not been validated end to end here. |
+
+The [reviewed calibration bundle](salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) contains **49 provisional fits and 37 skipped series**. It resolves probe identities for 13 preparations without changing the earlier numerical fits. Twelve fitted series still lack probe identities. No accepted discharge estimate, Q, has been produced by the maintained workflow.
 
 ## Start here
 
-- Local agent work starts at the primary checkout's [ignored context index](context/README.md), when available. See [agent instructions](AGENTS.md) for storage routing; context is local and is not included in a fresh clone.
-- [Getting started](docs/getting_started.md): dependencies, launching notebooks, and saving runs.
-- [Salt dilution](salt_dilution/README.md): the July 24, 2025 discharge example, parsers, and exploratory alternatives.
-- [Fluvial seismology](fluvial_seismology/README.md): waveform preparation, calibration, spectra, and Python/R models.
-- [Naming conventions](docs/naming_conventions.md): rules for naming files.
-- [Provenance](docs/provenance.md) and [source manifest](docs/source_manifest.csv): source revisions and every original-to-new filename.
-- [Validation](docs/validation.md): what was checked and what remains unverified.
-- [October 16 local parser run](docs/parser_run_2026_10_16.md): saved stream readings, source checks and quarantined clock-only exports.
-- [October 19 processing](docs/parser_run_2026_10_19.md) and [October 20 record reconciliation](docs/salt_record_reconciliation_2026_10_20.md): new normalized recordings, repaired calibration identities and confirmed file links with scientific review still pending.
-- [Calibration method and runner](docs/calibration.md): provisional K factors, separate conductivity channels and reproducible saved results.
-- [Salt-discharge instruments and procedure history](docs/salt_dilution_instruments.md): confirmed equipment, legacy-meter candidates, manual links, dated changes and calibration-transfer limits.
-- [References](docs/references/README.md): salt-dilution methodology references.
+1. Follow [getting started](docs/getting_started.md) to install dependencies and run the parser or calibration script.
+2. Read the [calibration method](docs/calibration.md), [curated records guide](salt_dilution/data/records/README.md) and [instrument catalog](docs/salt_dilution_instruments.md) before applying a coefficient to stream data.
+3. Use the [salt-dilution guide](salt_dilution/README.md) or [seismic guide](fluvial_seismology/README.md) to choose a workflow. Historical dilution notebooks use retired helpers and are reference material.
+
+For the scientific background, see [research methods](docs/research_methods.md) and [references](docs/references/README.md). [Validation](docs/validation.md) distinguishes numerical checks from scientific acceptance. [Naming conventions](docs/naming_conventions.md) and the [source manifest](docs/source_manifest.csv) describe file organization and original names.
 
 ## Layout
 
 ```text
 mora-fluvial-analysis/
-├── README.md
-├── LICENSE
-├── CITATION.cff
-├── project_paths.py                  Shared input and run-output paths
-├── licenses/                         Preserved source license text
-├── docs/                             Setup, methods, naming, and provenance
-├── tests/                            Import and path checks
+├── docs/                    Setup, methods, data schema and provenance
+├── project_paths.py         Shared input and run-output paths
+├── tests/                   Parser, calibration, records and portability checks
 ├── salt_dilution/
-│   ├── notebooks/
-│   │   └── exploratory/
-│   ├── scripts/
-│   │   ├── processing/
-│   │   ├── parsers/
-│   │   └── experimental/
-│   ├── config/
-│   ├── data/
-│   │   ├── examples/
-│   │   ├── raw/
-│   │   ├── records/                  Curated notebook tables and provenance
-│   │   └── processed/                Local normalized stream readings
-│   └── results/
-│       └── _template/
+│   ├── scripts/             parsers/, processing/ and experimental/
+│   ├── notebooks/           Historical dilution calculations
+│   ├── config/              Procedure definitions and historical settings
+│   ├── data/                examples/, raw/, records/ and processed/
+│   └── results/             Calibration bundles and local runs
 └── fluvial_seismology/
-    ├── notebooks/
-    │   ├── preparation/
-    │   ├── instrument_calibration/
-    │   ├── spectral_analysis/
-    │   ├── modelling/
-    │   └── exploratory/
-    ├── scripts/
-    │   ├── processing/
-    │   └── models/
-    ├── config/
-    │   └── source_environments/
-    ├── data/
-    │   ├── examples/
-    │   ├── raw/
-    │   └── processed/
-    └── results/
-        └── _template/
+    ├── scripts/             processing/ and models/
+    ├── notebooks/           Preparation, calibration, spectra and modelling
+    ├── config/              Historical source environments
+    ├── data/                Local waveform inputs and working copies
+    └── results/             Local analysis runs
 ```
 
-Each run keeps its figures, tables, and `run_info.json` together. The small curated salt records, their provenance, historical examples/inventory and the selected October 20 calibration results are tracked. Salt raw exports already present in Git retain their original instrument filenames. Large normalized stream readings and other generated runs stay local and ignored; fluvial-seismology field inputs also retain their existing ignore rules.
+Small curated salt records, their provenance, historical examples and selected calibration bundles are versioned. Original salt exports already in Git retain their instrument filenames. Large normalized readings, other generated runs and seismic field inputs stay local under the existing ignore rules. Local field-note staging and parser-run links require those files on the reader's machine; calibration fitting works from the tracked tables alone.
 
-The archived source repositories remain independent and unchanged. See [LICENSE](LICENSE) for the scope of retained source notices; this import does not assign a new blanket license to the combined work.
+See [LICENSE](LICENSE) for the retained source notices. The combined repository has no new blanket license. Cite the methods and original authors, and record the revision used as described in [CITATION.cff](CITATION.cff).

@@ -1,6 +1,6 @@
 # Salt-dilution calibration procedures
 
-`procedure_versions.json` lists calibration methods selected by `procedure_id` in the planned `data/records/calibrations.csv`. The file defines method inputs and calculation basis; each calibration session supplies its measured quantities.
+`procedure_versions.json` lists calibration methods selected by `procedure_id` in `data/records/calibrations.csv`. The file defines method inputs and calculation basis; each calibration session supplies its measured quantities.
 
 | Procedure ID | Calibration method |
 | --- | --- |
@@ -15,7 +15,7 @@
 - `stock_water_source`: water used to prepare a known-mass salt stock.
 - `discharge_input`: injected quantity expected in `data/records/trials.csv`.
 
-`data/records/calibration_points.csv` will hold the recorded addition volumes, incremental/cumulative interpretation, and conductivity observations. Calculate cumulative additions from these points and fit using a consistent probe and conductivity channel.
+`data/records/calibration_points.csv` holds the recorded addition volumes, incremental/cumulative interpretation, and conductivity observations. Calculate cumulative additions from these points and fit using a consistent probe and conductivity channel.
 
 ## Calculations
 
@@ -24,6 +24,6 @@
 
 These methods use different concentration units and corresponding discharge calculations. Record actual session quantities in the notebook-derived tables. The procedure IDs carry no inferred date ranges or default preparation volumes.
 
-Probe aliases identify instruments, not distinct concentration methods. The October 24 clarification distinguishes legacy General meters from the TROLL used for calibration, limiting the earlier shared-probe assumption. Establish the calibration and downstream device identities, compatible conductivity/temperature treatment and any supported transfer comparison; see the [instrument catalog](../../docs/salt_dilution_instruments.md). Matching a channel or a model name alone does not establish interchangeability. The receiver's initial EC is not a stream-event background window.
+Probe aliases identify instruments, not concentration methods. For the main discharge work, identify the Aqua TROLL associated with the calibration and river recording within each physical trial/role. General meters served a separate attenuation role. Different-probe associations need applicability review; matching a model or channel does not establish interchangeability. See the [instrument catalog](../../docs/salt_dilution_instruments.md). The receiver's initial EC is not a stream-event background window.
 
 Existing historical `.ini` files remain source examples. `calibration.py` fits each supported preparation and channel with a free-intercept regression of concentration on EC, and saves K, its units, residuals, source hashes and skip reasons. `mass_slug.py` remains separate future work.

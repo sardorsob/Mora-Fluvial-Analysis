@@ -2,12 +2,12 @@
 
 Run commands from the repository root in your project Python environment.
 For the parser/test suite alone, install `pandas`, `openpyxl` (XLSX) and `xlrd`
-(legacy XLS). No new calibration or discharge calculation is performed here.
+(legacy XLS). Extraction does not fit calibration curves or calculate discharge.
 
 ## Inspect first, then write
 
-The existing single-file interface remains available. Without `--output` it is
-read-only; it now prints an inspection manifest and summary.
+Without `--output`, the CLI is read-only and prints an inspection manifest and
+summary.
 
 ```sh
 python -m salt_dilution.scripts.parsers.parse_data path/to/source.html
@@ -24,7 +24,7 @@ python -m salt_dilution.scripts.parsers.parse_data salt_dilution/data/raw --recu
 python -m salt_dilution.scripts.parsers.parse_data salt_dilution/data/raw --recursive --output salt_dilution/data/processed/new_run
 ```
 
-To process only the four recently added field dates (ten live-reading exports
+To select September 18 and October 2, 4 and 5, 2026 (ten live-reading exports
 and four supporting reports), use these input-relative filters. The quotes and
 forward slashes work in PowerShell, Command Prompt, Bash and Zsh. This is an
 example selection, not a hard-coded date list inside the parser.
@@ -128,4 +128,4 @@ all source measurement cells, verify explicit offsets/counts and exercise a
 batch with the four supporting reports. No field values are copied to fixtures.
 A source-only checkout explicitly skips those integration tests if raw files
 are absent; `MORA_REQUIRE_RAW_TESTS=1` makes absence fail instead. The repository
-workflow runs the complete suite with that requirement on Linux and Windows.
+workflow is configured to run the suite with that requirement on Linux and Windows.

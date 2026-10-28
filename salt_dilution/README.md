@@ -1,31 +1,32 @@
 # Salt-dilution discharge analysis
 
-Read the [instrument catalog and procedure timeline](../docs/salt_dilution_instruments.md) before applying a fitted K to stream data. The October 24 clarification distinguishes the meter used for pipette calibration from a separate legacy downstream system; the earlier shared-probe permission does not establish a cross-instrument transfer.
-
-Historical notebooks are preserved for provenance, but they are no longer the maintained processing path and may reference retired helper functions. The maintained [calibration runner](../docs/calibration.md) fits the curated notebook tables and saves coefficients, derived points, diagnostics and explicit skip reasons. Stream discharge processing remains separate.
+This workflow prepares conductivity recordings and calibration curves for slug-injection discharge measurements. The maintained scripts normalize instrument exports and fit provisional concentration-per-conductivity factors, K. Stream-event selection and discharge calculation remain unimplemented.
 
 ## Workflows
 
 | Location | Purpose and status |
 | --- | --- |
-| `notebooks/salt_dilution_discharge.ipynb` | Historical July 24 example; preserved for provenance and not expected to run against the retired helper API. |
-| `notebooks/exploratory/explore_salt_dilution.ipynb` | Historical interactive investigation with older calibration assumptions and index-based selection. |
-| `notebooks/exploratory/check_dilution_calculations.ipynb` | Historical checks using older helper interfaces and incomplete source inputs. |
-| `scripts/processing/calibration.py` | Maintained provisional concentration-on-conductivity fits from the curated calibration tables. |
-| `scripts/processing/mass_slug.py` | Reserved for the maintained mass-based slug-discharge implementation; intentionally not implemented yet. |
-| `scripts/parsers/` | Source readers for Aqua TROLL, General logger, calibration tables, filename metadata, and the single parser CLI. |
-| `scripts/experimental/` | Unfinished class-based dilution implementation and its example launcher. |
-| `config/dilution_draft.ini` | Incomplete historical configuration; not the primary example's settings. |
+| `scripts/parsers/parse_data.py` | Maintained single-file and batch extraction for supported instrument exports and calibration CSVs. |
+| `scripts/processing/calibration.py` | Maintained concentration-on-conductivity fits from curated preparation and point tables. |
+| `scripts/processing/mass_slug.py` | Empty placeholder for future mass-based slug-discharge processing. |
+| `notebooks/salt_dilution_discharge.ipynb` | Historical July 24, 2025 example using a retired helper API. |
+| `notebooks/exploratory/` | Historical interactive calculations with older assumptions and incomplete inputs. |
+| `scripts/experimental/` | Unfinished class-based dilution implementation and launcher. |
+| `config/dilution_draft.ini` | Incomplete historical configuration. |
+
+Follow [getting started](../docs/getting_started.md) for dependencies and commands, then [calibration](../docs/calibration.md) for equations and output interpretation. The [reviewed calibration bundle](results/calibrations/2026-10-26_probe_review/README.md) contains 49 provisional fits and 37 skipped series, with coefficients, diagnostics and reasons for exclusion.
+
+## Data and calibration applicability
+
+The [curated records](data/records/README.md) separate 38 physical releases, 43 calibration attempts, 262 observations and 59 candidate recording associations/placeholders. The [schema](../docs/field_data_schema.md) defines joins, units and the broader local transcription containing sediment and seismic-source observations. Calibration fitting needs preparations and points; unresolved stream links do not prevent those fits.
+
+Before applying K, identify the instrument, conductivity channel and preparation associated with the selected release. The main discharge work uses Aqua TROLL river recordings and their associated calibration. General meters served farther-downstream attenuation monitoring. Within a supported physical trial/role, an identified Aqua TROLL can carry through its calibration; different probes require applicability review. Existing notebook links do not automatically approve transfer. See the [instrument catalog and procedure history](../docs/salt_dilution_instruments.md).
+
+All association rows remain `needs_review`, with no accepted integration windows. Paired probes, split logs and alternative calibrations must remain separate; repeated file links are not additional physical releases.
 
 ## Parsers
 
-The [four curated salt tables](data/records/README.md) hold physical releases, calibration preparations, observed points and candidate recording associations. The [field-data schema](../docs/field_data_schema.md) defines that compact interface and the preserved [broader transcription bundles](data/processed/field_notes/README.md), which also contain sediment and controlled seismic-source records. The populated tables need scientific review; file associations, units, clocks and calibration inputs must be checked before calculations.
-
-The [October 20 reconciliation](../docs/salt_record_reconciliation_2026_10_20.md) repairs four duplicate preparation IDs and 16 point references while preserving reviewed values. There are now 48 linked rows across 31 recordings; 11 placeholders remain unresolved. Known files and probes are distinct from accepted calibration fits and integration windows. All inputs remain `needs_review`.
-
-The user's October 20 clarification permits shared calibration across the numbered probes of the same device class. Twenty-three notebook-supported calibration links were restored. Linked rows use 16 specific- and 32 actual-conductivity routes, matching the available calibration observations without converting between channels. The unresolved event links and windows do not prevent calibration fitting. See the [saved calibration run](results/calibrations/README.md).
-
-The parser layer has one public entry point:
+The public Python entry point reads without modifying its source:
 
 ```python
 from salt_dilution.scripts.parsers.parse_data import read_data
@@ -33,39 +34,20 @@ from salt_dilution.scripts.parsers.parse_data import read_data
 df, metadata = read_data(path)
 ```
 
-The focused readers are:
-
-- `aquatroll.py`: Aqua TROLL/VuSitu HTML and metadata-prefixed CSV exports;
-- `general_logger.py`: General logger XLS/XLSX files;
-- `calibration_table.py`: known solution-injection and mass/stock calibration-table schemas; and
-- `filename_metadata.py`: provisional hints from known filename patterns.
-
-`read_data()` is read-only. The CLI writes normalized CSV plus metadata JSON only when `--output` is supplied, and those files belong under `data/processed/`. The parser preserves full timestamps, keeps actual and specific conductivity distinct, retains extra source columns, and does not perform calibration or discharge calculations.
-
-For single-file and recursive folder commands, filters, metadata/UTC behavior,
-overwrite protection and the per-file manifest, see [reusable salt-data extraction](../docs/parser_ingestion.md).
-The same CLI now accepts directories; no separate PowerShell wrapper is required.
+Focused readers handle Aqua TROLL/VuSitu HTML and metadata-prefixed CSV, General logger XLS/XLSX, and recognized legacy calibration tables. Filename metadata supplies provisional hints, not trial identity. The CLI supports recursive discovery, input-relative filters and a per-file manifest:
 
 ```sh
 python -m salt_dilution.scripts.parsers.parse_data salt_dilution/data/raw --recursive --output salt_dilution/data/processed/new_run
 ```
 
-Use a fresh output directory. Supporting deployment/instrument reports are
-identified and logged as skips, while malformed measurements are failures.
-The new inline VuSitu metadata layout is supported. Source clocks are retained;
-UTC is added only from explicit offsets. Source-only time values without dates
-are rejected, and separate temperature sensors remain separate channels.
-
-The three historical Aqua TROLL parser variants were replaced after their required source-reading behavior was covered by the focused readers and tests. Raw HTML/Excel source files remain unchanged.
+Choose a fresh directory. Source timestamps, extra columns and distinct actual/specific conductivity channels are retained. UTC requires explicit offset evidence. Duplicate or nonmonotonic times are flagged; clock-only Aqua TROLL records are rejected. Supporting deployment/instrument reports are skips, while malformed measurements are failures. See [parser ingestion](../docs/parser_ingestion.md) for the complete behavior and audit manifest.
 
 ## Known source limitations
 
-These remain visible for scientific review; organizing files does not resolve them.
+- Historical notebooks call retired helper functions and select event intervals by hard-coded indices. They are reference material rather than the maintained workflow.
+- Earlier helpers assumed equal calibration increments in places and used inconsistent definitions of the calibration relationship. The maintained runner instead uses recorded addition semantics and fits concentration on EC with a free intercept.
+- Historical conductivity labels did not consistently distinguish actual and temperature-compensated measurements. Current parsers keep identified channels separate; ambiguous legacy channels still need review.
+- The class-based prototype marks its discharge formula as unfinished and omits time integration. It is not a validated alternative method.
+- Provisional fits do not establish delivered salt quantity, complete tracer recovery, mixing, clock alignment, background/tail windows or calibration uncertainty. The DI-stock ionic-background correction has not been implemented.
 
-- The historical primary notebook uses hard-coded sample indices for the injection interval and calls helper functions that have now been retired.
-- The retired processing code assumed equal calibration increments in places and used inconsistent definitions of the calibration relationship; those assumptions must not be carried into the maintained implementation.
-- Actual and temperature-compensated conductivity labels were not consistently distinguished in the historical workflow; the parser now keeps those channels separate.
-- The exploratory notebooks refer to older helper interfaces and incomplete or missing source inputs, so they should be read as provenance rather than executed as the maintained workflow.
-- The class-based prototype explicitly marks its discharge formula as unfinished and omits the required time integration. It is not a second validated method.
-
-Future maintained processing should consume normalized parser tables rather than reopen source files or recreate timestamp/file-selection helpers. Preserve raw observations, units, calibration records, time zones, and the reasoning behind any scientific calculation.
+Future discharge processing should consume normalized readings and reviewed associations while preserving raw observations, units, preparation evidence and source clocks. Keep derived calculations separate from the observation tables.

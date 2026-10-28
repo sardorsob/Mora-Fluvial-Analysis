@@ -28,11 +28,11 @@ See [getting started](../docs/getting_started.md), [source environments](config/
 
 These are research workflows with historical station/date settings. They have not been validated end to end in this repository.
 
-- ObsPy, R, rpy2, and the field recordings are not available in the migration-check environment.
-- The R notebook contains alternative experiments, repeated velocity scaling, an inherited `fml_inv` spelling, and cells that depend on previous manually selected state. Two R-only cells now have `%%R` for language dispatch; scientific expressions remain unchanged.
+- End-to-end migration checks lacked ObsPy, R, rpy2 and field recordings; installation and data availability must be established for a new run.
+- The R notebook contains alternative experiments, repeated velocity scaling, an inherited `fml_inv` spelling, and cells that depend on previous manually selected state. R-only cells use `%%R` for language dispatch.
 - Model water depth (`h_w`) and sediment flux (`q_s`) are different quantities from salt-dilution water discharge. Document the intended comparison and units for each analysis.
 - Some optional waveform helpers import `amp`, `ampCorrect`, and `intensityLocate`, which are absent from the source snapshot.
-- The formatting notebook includes move and rollback operations. Its input paths now point to working copies under `data/processed/staging/`; copy source data there before choosing the relevant cells. Do not run all formatting alternatives sequentially.
+- The formatting notebook includes move and rollback operations. Its input paths point to working copies under `data/processed/staging/`; copy source data there before choosing the relevant cells. Do not run all formatting alternatives sequentially.
 - Renamed package modules are launched from the repository root with `python -m ...`. Functions and parameter names retain the source interfaces.
 
 Existing explicit file saves use portable paths; plotting functions that only display figures still only display figures. To export a selected Python figure, pass `result_path("fluvial_seismology", "figures/descriptive_name.png")` to its save method. The shared helper creates the run directory and its initial record. Complete inputs, settings, and outcome in that record.
