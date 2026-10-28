@@ -11,7 +11,7 @@ Four UTF-8 CSVs connect notebook preparations and conductivity observations to p
 
 The association table has **48 linked rows across 31 files for 28 releases**, plus **11 rows with unresolved recording paths for ten releases**. Every release is represented. Multiple rows can describe paired probes, split logs, successive releases in one recording or alternative calibration attempts. July 17 has two calibration candidates for the same RL recording; they are alternatives, not two stream observations.
 
-All review-status fields remain `needs_review`; trial review details are in provenance because `trials.csv` has no status column. All UTC event and integration-window fields are blank. No association is discharge-ready.
+All salt-table review-status fields remain `needs_review`; trial review details are in provenance because `trials.csv` has no status column. All UTC event and integration-window fields are blank. No association is discharge-ready.
 
 ## What the blanks mean
 
@@ -51,7 +51,29 @@ Companion files are versioned with the CSVs:
 - `manifest.json`: exact headers, counts, checksums, input hashes, procedure-profile hash and enumerated reviewed-setting overrides.
 - `validation_report.json`: structural checks and scientific-review limits. Passing these checks does not verify every handwritten digit.
 
-Tahoma, sediment, controlled seismic-source and cross-section observations remain in the broader local [transcription bundle](../processed/field_notes/README.md). Empty/crossed-out templates and rows without conductivity observations remain in staging/provenance rather than becoming measurements.
+Tahoma, controlled seismic-source and cross-section observations remain in the broader local [transcription bundle](../processed/field_notes/README.md). The rock observations also have the separate CSV described below. Empty/crossed-out templates and rows without conductivity observations remain in staging/provenance rather than becoming measurements.
+
+## Rock observations
+
+[sediment/rock_observations.csv](sediment/rock_observations.csv) contains 331 tethered-rock observations from September 18 and October 2, 4 and 5, 2026. It is separate from the four salt-calibration tables. Each row is one recorded test or qualitative observation.
+
+`rock_number` orders the five rocks from smallest to largest:
+
+| Number | Source labels |
+| --- | --- |
+| 1 | `smallest`, `littlest`, and `small` in the first size position |
+| 2 | `54`, `54.5`, and `second_smallest` |
+| 3 | `D50` |
+| 4 | `second_biggest`, `one_bigger_than_D50` |
+| 5 | `biggest` |
+
+Repeat-label suffixes keep the same rock number. The number is a size rank, not a measured diameter or proof of the same physical specimen across dates. Original labels and recorded sizes remain separate. The three September 18 labels (`79`, `119`, and `one_size_less_than_79_before119`) describe only part of the set, with a relative-size annotation outside the saved row sequence. Their absolute positions among five rocks remain unresolved; the general smallest-to-largest rule alone cannot fill those gaps.
+
+`trial_block` preserves the source grouping; it is not a salt-release ID. `repeat_no=2` separates the repeated October 4 round-2 block. The two round-4 blocks remain distinct; `left`/`right` identify source-page blocks, not confirmed river banks. `test_number` counts observations within each session/block/repeat/rock series in source order, including continuation across pages. Most series have five tests; longer, shorter and lost-rock series are retained without padding or splitting them by an assumed five-test rule.
+
+Raw times, durations, distance tokens, zeros and notes are preserved. Seven written “nothing” entries remain distinct from 84 numeric zeros; ten distances are unresolved. `apparatus_distance_m` retains the provisional tether/reel measurement definition, not free-particle travel or velocity. UTC and discharge links remain blank, and observations remain `unreviewed`.
+
+The source is the retained October 12 [rock transcription](../processed/field_notes/2026-10-12/sediment/rock_observations.csv), SHA-256 `173ad501878803885cb8cbbfe2f701b1af07ea6dbe501b7bfef1989a49b39216`. Original observation IDs are retained; `sourcebook_reference` identifies the scan, page, side and source row. The export uses that transcription rather than a fresh handwriting check: the original scan is unavailable at its recorded Downloads path.
 
 ## Using the tables
 
