@@ -1,6 +1,8 @@
 # Local environments and generated development files.
 # Live agent working context; archive copies require a separate explicit request.
 /context/
+# Local Serena agent configuration and references.
+/.serena/
 
 .DS_Store
 __pycache__/
