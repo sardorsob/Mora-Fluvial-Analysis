@@ -55,6 +55,6 @@ Clock-only or missing-date Aqua TROLL readings are rejected. Duplicate/non-monot
 
 Use a new output directory. Existing CSVs, sidecars and manifests are refused unless `--overwrite` is explicit. Even then, sources cannot be replaced, colliding names are not resolved automatically, and batch outputs cannot be placed inside the scanned source tree. Symbolic-link directories are not traversed, and output links cannot escape the output root. Each CSV/metadata pair is staged before writing; this is not a filesystem-wide transaction.
 
-Raw exports and curated records are never rewritten. Large processed readings and manifests remain local under the existing ignore rules. Historical corpus counts and clock-only quarantines are recorded for [October 16](parser_run_2026_10_16.md) and [October 19](parser_run_2026_10_19.md).
+Raw exports and curated records are never rewritten. Large processed readings and manifests remain local under the existing ignore rules.
 
 Run `python -m unittest discover -s tests -v` for parser, batch and calibration checks. Raw-export tests compare source cells in ten tracked measurement exports and exercise four supporting reports. `MORA_REQUIRE_RAW_TESTS=1` makes missing inputs fail rather than skip; CI uses that setting on Linux and Windows. See [validation](validation.md) for scope and limits.

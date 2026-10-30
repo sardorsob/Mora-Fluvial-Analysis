@@ -36,7 +36,7 @@ The [saved review](../../results/calibrations/2026-10-26_probe_review/README.md)
 
 Release IDs use `NISQ-YYYYMMDD-T01` or `PAR-YYYYMMDD-T01`; calibration IDs use `C01`. They are stable identifiers, not clock order: October 2 T01 follows T02, and October 4 T03 follows T04. Use source times/blocks for chronology.
 
-Four distinct supporting preparations use `PAR-20260903-C06`–`C09`; historical UNK aliases and source descriptions remain in provenance. The [reconciliation record](../../../docs/salt_record_reconciliation_2026_10_20.md) gives the source-block mappings and 16 repaired point references. `step_no` preserves source position, including gaps.
+Supporting preparations `PAR-20260903-C06`–`C09` retain their historical UNK aliases, source-block mappings and descriptions in `provenance.json`. `step_no` preserves source position, including gaps.
 
 A `dataset_id` identifies one processed file, which can serve several releases. Prefer original electronic exports over overlapping spreadsheet slices. August 8's mixing CSV rounds times to minutes; the linked live HTML retains seconds. Keep the selected actual/specific channel consistent with the calibration. A matching-channel fit alone does not accept the instrument pair or event window.
 
