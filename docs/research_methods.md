@@ -1,19 +1,34 @@
 # Research methods
 
-The project brings salt-dilution flow measurements and fluvial seismology into one analysis repository. The intended comparison is between measured river conditions and seismic signals/models of water flow and sediment movement. Each analysis still needs a documented site, time interval, units and comparison method; the repository does not yet establish a validated discharge–seismic relationship.
+The project compares physical river measurements with seismic signals to study water flow and sediment movement. Salt dilution measures the water passing through a reach. Rock trials provide observations of particle movement. Seismic recordings offer a way to investigate both processes from outside the river.
 
-## Salt dilution
+## Salt dilution: measuring water discharge
 
-A slug measurement releases a known tracer quantity and records the downstream conductivity pulse. Calibration relates added tracer concentration to electrical conductivity. Discharge then depends on the delivered quantity and the time integral of excess tracer concentration, subject to mixing, tracer recovery, background and timing assumptions.
+A slug test releases a known amount of salt and records the downstream conductivity pulse. Calibration converts the conductivity rise above river background into added salt concentration.
 
-Two calibration bases are retained: relative concentration of the original injectate solution and salt mass concentration. They have different K units and require different delivered-input quantities. The maintained [calibration runner](calibration.md) implements preparation concentrations and separate actual/specific EC fits. Stream-event selection and discharge integration remain unimplemented. Constant-rate injection is background methodology, not an implemented workflow here.
+For a mass-based test, conservation of salt gives:
 
-The supplied background papers are Moore's 2004 constant-rate introduction and 2005 solution-slug method. Richardson's 2015 thesis and the 2017 calibration paper add mass-stock calibration and uncertainty context. See the [reference index](references/README.md) for citations and the [instrument guide](salt_dilution_instruments.md) for channel, temperature and same-instrument requirements. Published error ranges are not an uncertainty estimate for these field records.
+```text
+Delta_C(t) = K × (EC(t) − EC_background(t))
+Q = M_delivered / integral(Delta_C(t) dt)
+```
 
-## Fluvial seismology
+`EC` is conductivity in µS/cm, `K` converts conductivity to concentration, and `Delta_C` is excess salt concentration in mg/L. `M_delivered` is the salt mass that entered the river, in mg. Integrating concentration over elapsed seconds gives mg·s/L, so `Q` is water discharge in L/s.
 
-The imported workflows cover waveform acquisition/preparation, instrument comparisons, spectral analysis, turbulence/bedload models and inversion. Python notebooks use ObsPy and, for the R experiments, installed `eseis` through rpy2. Checked-in R functions do not automatically replace the installed package's functions.
+For the same salt mass, a higher discharge produces a smaller concentration–time integral. This calculation assumes sufficiently steady discharge during passage, adequate mixing, tracer recovery and a suitable river background. It requires the full pulse, including its tail; peak height alone is insufficient.
 
-Model water depth (`h_w`), sediment flux (`q_s`) and salt-dilution water discharge are distinct quantities. A comparison must state how they relate, their units, temporal coverage and model assumptions. The [seismic guide](../fluvial_seismology/README.md) describes inherited limitations and missing inputs; these exploratory workflows have not been validated end to end here.
+The maintained code extracts recordings and [fits calibration curves](calibration.md). Event matching, reviewed integration windows and discharge calculation are still unfinished. Historical solution-slug calibrations use relative injectate concentration and require the corresponding injectate quantity; their coefficients cannot be substituted into the mass equation above.
 
-See [source provenance](provenance.md) for the original code repositories and licensing.
+Moore (2004) covers constant-rate injection; Moore (2005) covers solution-slug injection. Richardson (2015) and Richardson et al. (2017) develop mass-stock calibration and uncertainty. See [references](references/README.md) and the [instrument guide](salt_dilution_instruments.md). Constant-rate injection is background methodology, not an implemented workflow here.
+
+## Rock trials: observing particle movement
+
+The tethered trials repeat releases across five ordered categories: `38.5mm`, `54.5mm`, `D50`, `79mm` and `119mm`. Individual tests are grouped into rounds, often following a salt measurement. Repeats capture variation within a category and under changing river conditions.
+
+The [rock table](../salt_dilution/data/records/README.md#rock-observations) preserves measured apparatus distances and field notes. Its 60-second working duration is a stated protocol convention. Tether tension, snags and release position affect the observations; the distance definition still needs confirmation before calculating physical particle speed. These tests do not directly measure natural bedload flux. Associating a round with Q also requires timing and reach checks.
+
+## Fluvial seismology: relating signals to the river
+
+Water turbulence and moving sediment contribute to ground vibration. The imported workflows prepare waveforms, inspect spectra and explore turbulence, bedload and inversion models. Physical flow and sediment observations are needed to evaluate those models; no validated discharge–seismic relationship has been established here.
+
+Model water depth (`h_w`), sediment flux (`q_s`) and water discharge (`Q`) are different quantities. Comparisons must state their units, time coverage and assumptions. The R experiments use installed `eseis` through rpy2; local R files are not loaded automatically. See the [seismic guide](../fluvial_seismology/README.md) for inputs and inherited limitations, and [source provenance](provenance.md) for authorship and licensing.

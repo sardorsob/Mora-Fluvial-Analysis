@@ -1,40 +1,28 @@
-# Local raw-data processing: October 16, 2026
+# Parser corpus record: October 16, 2026
 
-The existing salt parser was run again on this laptop at source commit `50301f70363cb3cda9e617595628b89ca3cf56f6`. No scientific or parser code was changed. Fresh outputs were compared with the existing files before being installed in `salt_dilution/data/processed/`, preserving the raw directory layout and source filenames.
+Historical run at source commit `50301f70363cb3cda9e617595628b89ca3cf56f6`.
 
-| Check | Result |
+| Measure | Result |
 | --- | ---: |
-| Current unit tests | 22 passed |
-| Raw source files hashed | 194 |
-| CSV/HTML/XLS/XLSX inputs attempted | 173 |
-| Retained normalized CSV/metadata pairs | 143 |
-| Rows across retained tables | 345,642 |
+| Tests in this run | 22 passed |
+| Raw files hashed | 194 |
+| Reader candidates attempted | 173 |
+| Retained CSV/metadata pairs | 143 |
+| Rows retained | 345,642 |
 | Unsupported, failed or empty candidates | 28 |
-| Quarantined output pairs | 2 |
+| Quarantined pairs | 2 |
 | Retained tables with timestamp flags | 11 |
 
-All 286 installed CSV/metadata files matched their previous bytes. Raw source hashes are unchanged. CSV row counts/headers, metadata source paths and output checksums were checked after installation. These totals include stream observations and electronic calibration tables, and are not independent trial counts. Overlapping exports have not been deduplicated.
+All 286 installed output/metadata files matched their prior bytes; raw hashes were unchanged. Totals include stream and electronic-calibration tables, with overlapping exports not deduplicated. They are not physical-trial counts.
 
 ## Clock-only files
 
-The July 3 clock-only export remains quarantined. The rerun exposed a second affected export, `20250805_083343_mixing_riverLeft_DUPLICATE.csv`: its 2,202 conductivity rows reproduced, but its timestamps changed from the October 6 execution date to the October 16 execution date. Its measurement column supplies clock times without full dates. Report metadata contains a 2025 start date, but date reconstruction has not been implemented or validated.
+The July 3 clock-only export remains quarantined. The second affected source, `20250805_083343_mixing_riverLeft_DUPLICATE.csv`, reproduced 2,202 conductivity rows but acquired the execution date instead of a verified measurement date. Its report has a 2025 start date; reconstruction was not validated. The previous invalid output is preserved under `previous_processed/`, and the new pair is quarantined outside the normal processed tree.
 
-The previous invalid August output and metadata were preserved under the new run's `previous_processed/` directory. The new pair was quarantined and removed from the ordinary processed tree. This explains the change from the earlier run's 144 retained pairs to 143; no raw data or conductivity observations were discarded. The older transcription inventory remains a historical snapshot, so its reference to this duplicate's former processed path requires the new run's relocation record.
+This explains the change from 144 to 143 retained pairs. The historical transcription inventory still points to the duplicate's former location; use the run's relocation record. No raw data or conductivity observations were discarded. Other failures/warnings are listed individually in the manifest. Time/temperature handling, instrument applicability and event windows still need review; no K or Q was calculated by this run.
 
-The other 28 unsupported/failed/empty candidates and all warnings are individually listed in the local run manifest. They include metadata sidecars/templates and genuine reader/schema gaps. Time-zone conversion, Fahrenheit handling, missing/duplicate/non-monotonic timestamps, probe/calibration applicability and full-wave selection still require review. No K factor, background correction, integration or discharge was computed.
+## Reproduction and evidence
 
-## Files and environment
+The local [run report](../salt_dilution/results/2026-10-16_parser_ingestion/README.md) and [manifest](../salt_dilution/results/2026-10-16_parser_ingestion/run_info.json) retain paths, errors, hashes, quarantine/relocation details and the execution scripts `reproduce.py`, `finalize.py`, `promote.py`. These generated files are Git-ignored and require the original local run bundle. Preserve earlier runs and use a new staging/run directory for a rerun.
 
-- [Processed-data index](../salt_dilution/data/processed/README.md): versioned navigation to locally generated readings.
-- [Local run report](../salt_dilution/results/2026-10-16_parser_ingestion/README.md) and [run manifest](../salt_dilution/results/2026-10-16_parser_ingestion/run_info.json): exact sources, errors, warnings, hashes, counts, quarantine and relocation details; generated and Git-ignored.
-- [Curated records](../salt_dilution/data/records/README.md): the small notebook tables and their provenance are versioned separately from large processed readings.
-
-Environment: Python 3.13.9, pandas 2.3.3, numpy 2.5.0, openpyxl 3.1.5 and xlrd 2.0.2. The Excel readers were installed into `/private/tmp/mora-parser-deps-2026-10-16` for this run without altering the shared work environment. The project requirements list the needed readers for future environments.
-
-Run the existing CLI from the project root for a supported source file:
-
-```sh
-python -m salt_dilution.scripts.parsers.parse_data <source-file> --output <processed-directory>
-```
-
-The local run bundle retains the exact `reproduce.py`, `finalize.py` and `promote.py` used for corpus execution, quarantine and verified installation. They record this particular run's paths and observed exceptions; a fresh rerun needs a new run ID and staging directory. Preserve previous runs and confirm quarantine/clock issues before using generated timestamps.
+Recorded environment: Python 3.13.9, pandas 2.3.3, NumPy 2.5.0, openpyxl 3.1.5, xlrd 2.0.2. See [parser ingestion](parser_ingestion.md) for current commands and [processed data](../salt_dilution/data/processed/README.md) for local outputs.

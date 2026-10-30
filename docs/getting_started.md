@@ -1,69 +1,63 @@
 # Getting started
 
-Run commands from the repository root. The project-level [requirements.txt](../requirements.txt) targets the team's Python 3.12 workflow and includes salt, seismic and geospatial packages. It is an unpinned package list, not a tested cross-platform lockfile. Saved calibration runs record their own Python and NumPy versions.
+Run commands from the repository root. Use an approved Python environment; the root requirements target Python 3.12, while saved runs record the versions actually used. The package lists are unpinned.
 
-## Environment
+## Install dependencies
 
 Where virtual environments are permitted:
 
 ```sh
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install -r requirements.txt
+python -m pip install -r salt_dilution/requirements.txt openpyxl xlrd
 ```
 
-On Windows, activate with `.venv\Scripts\activate`. On managed systems, use the approved interpreter and installation method; the requirements file also describes a user-install option for environments where policy permits it.
+On Windows, activate with `.venv\Scripts\activate`. This installs the salt and notebook dependencies, including readers for XLSX and legacy XLS files. For the broader seismic, statistical and geospatial stack, use `python -m pip install -r requirements.txt`. On managed systems, follow the approved installation method.
 
-For salt-only work, [salt_dilution/requirements.txt](../salt_dilution/requirements.txt) supplies the numerical and notebook packages. Add `openpyxl` for XLSX and `xlrd` for legacy XLS inputs; those readers are included in the root requirements.
+## Fit calibration curves
 
-## Salt-dilution example
-
-Start with the maintained calibration runner. It uses the tracked preparation and point tables, so large stream recordings are not needed:
+The runner uses the tracked preparation and point tables; stream recordings are not required.
 
 ```sh
 python -m salt_dilution.scripts.processing.calibration --basis both --output salt_dilution/results/new_calibration_run
 ```
 
-Use a new output directory. `--basis` accepts `specific`, `actual` or `both`; its default is `specific`. The run saves fit/point/skip CSVs, figures and input/code hashes. Read [calibration](calibration.md) before interpreting K. The [reviewed saved run](../salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) is an example of these outputs, not an accepted discharge calculation.
+Choose a new output directory. `--basis` accepts `specific`, `actual` or `both` and defaults to `specific`. Outputs include coefficients, derived points, skipped series, figures and a run record. Read [calibration](calibration.md) to interpret them; they are provisional fits, not discharge estimates.
 
-The historical [July 24 notebook](../salt_dilution/notebooks/salt_dilution_discharge.ipynb) and its [configuration](../salt_dilution/config/2025-07-24_trial_01.ini) retain the earlier calculation. The notebook imports a retired helper and is not expected to run against the current processing modules. Its original index-based event selection and scientific limitations remain documented in the [salt guide](../salt_dilution/README.md#known-source-limitations).
+## Read instrument files
 
-## Salt-dilution parser
-
-Inspect one supported Aqua TROLL HTML/CSV, General logger XLS/XLSX, or calibration CSV without writing files:
+Inspect a supported file without writing outputs:
 
 ```sh
 python -m salt_dilution.scripts.parsers.parse_data path/to/source.html
 ```
 
-Normalize a reviewed folder selection into a fresh processed-data directory:
+Process a folder into a new directory:
 
 ```sh
 python -m salt_dilution.scripts.parsers.parse_data salt_dilution/data/raw --recursive --output salt_dilution/data/processed/new_run
 ```
 
-The CLI saves normalized CSVs, metadata JSON and a per-file manifest while preserving raw files. Read [parser ingestion](parser_ingestion.md) for filters, supporting-report skips, timestamp rules and overwrite protection. Check failures and warnings before using a recording; extraction does not select a release, integration window or calibration.
+The parser writes CSVs, metadata and a per-file manifest. Review its errors and warnings before analysis. [Parser ingestion](parser_ingestion.md) explains supported formats, file selection, clocks and output protection.
 
-## Fluvial seismology
+## Work with seismic recordings
 
-The seismic notebooks use ObsPy, NumPy, SciPy and Matplotlib. The Python/R notebook additionally needs R, rpy2, and the R packages `eseis` and `fields`; the supplied clipping routine can use `caTools` for optional smoothing. R/rpy2 setup is separate from the Python requirements. The four [source Conda exports](../fluvial_seismology/config/source_environments/README.md) are historical records, not a verified portable environment.
-
-Supply the inputs in the [seismic data guide](../fluvial_seismology/data/README.md), then launch Jupyter:
+Supply the inputs described in the [seismic data guide](../fluvial_seismology/data/README.md), then start Jupyter:
 
 ```sh
 python -m jupyterlab
 ```
 
-Select the environment's Python kernel. Notebook setup cells discover the repository root when Jupyter starts within it. Review station/date settings and the [workflow limitations](../fluvial_seismology/README.md) before running acquisition, file-management or model cells. The formatting notebook contains alternative move/copy/rollback operations; use working copies and select the intended cells.
+Choose the environment's Python kernel and review each notebook's station, date and path settings. The [seismic guide](../fluvial_seismology/README.md) lists the workflows and limitations. Run formatting operations on working copies; its move/copy/rollback cells are alternatives, not a sequence to execute together.
 
-Launch package scripts from the repository root, for example `python -m fluvial_seismology.scripts.processing.screen_waveforms`, after reviewing their settings. Authenticated acquisition uses both `MORA_IRIS_USERNAME` and `MORA_IRIS_PASSWORD` in the environment; leave both unset for public access.
+The Python/R notebook additionally needs R, rpy2, and the R packages `eseis` and `fields`; `caTools` supports optional smoothing. These are separate from the Python requirements. The [source Conda exports](../fluvial_seismology/config/source_environments/README.md) are historical references, not verified installation recipes.
 
-Existing Python figure saves use the shared path helper. Set `MORA_RUN_ID` to name a run, or allow a UTC timestamp; complete its `run_info.json` with inputs, settings and outcome. Functions that only display figures do not automatically export them.
+Launch package scripts from the root with `python -m ...`, such as `python -m fluvial_seismology.scripts.processing.screen_waveforms`. Authenticated acquisition reads both `MORA_IRIS_USERNAME` and `MORA_IRIS_PASSWORD`; leave both unset for public access. Existing Python figure saves use the shared path helper and `MORA_RUN_ID` or a UTC run name. Complete each run's `run_info.json` with inputs, settings and outcome; display-only plots are not automatically exported.
 
-## Checks
+## Run checks
 
 ```sh
 python -m unittest discover -s tests -v
 ```
 
-The suite covers parsers, calibration calculations, curated-table integrity and portable paths. Optional local-recording checks need generated files. See [validation](validation.md) for the check boundaries; a passing suite does not establish scientific acceptance.
+See [validation](validation.md) for test coverage and optional local-data checks. The [historical July 24 notebook](../salt_dilution/notebooks/salt_dilution_discharge.ipynb) uses retired helpers; use the maintained scripts above for current salt work.
