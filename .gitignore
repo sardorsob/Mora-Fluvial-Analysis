@@ -40,3 +40,8 @@ __pycache__/
 # Small calibration coefficients, point calculations and diagnostic figures.
 !/salt_dilution/results/calibrations/
 !/salt_dilution/results/calibrations/**
+
+# Selected compact pairing evidence; exploratory runs and MLflow remain local.
+!/salt_dilution/results/matching/
+/salt_dilution/results/matching/*
+!/salt_dilution/results/matching/2026-10-31_final_pairings/

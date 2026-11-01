@@ -40,6 +40,48 @@ python -m salt_dilution.scripts.parsers.parse_data salt_dilution/data/raw --recu
 
 The parser writes CSVs, metadata and a per-file manifest. Review its errors and warnings before analysis. [Parser ingestion](parser_ingestion.md) explains supported formats, file selection, clocks and output protection.
 
+## Pair releases, recordings and K fits
+
+After parsing the field recordings and fitting calibration curves, run:
+
+```sh
+python -m salt_dilution.scripts.processing.matching --calibrations salt_dilution/results/calibrations/2026-10-26_probe_review --output salt_dilution/results/matching/new_run
+```
+
+Use a new output directory. `--records` and `--processed` select other input directories. The matcher checks saved calibration hashes, inventories local recordings and writes `recording_candidates.csv`, `calibration_candidates.csv`, `pairing_summary.csv`, `trial_associations.csv` and `run_info.json`. Read the summary first, then follow its edge IDs to the evidence and alternatives. Structured CSV cells contain JSON.
+
+The default follows the reported field protocol: group by field date, compare written release times with Aqua TROLL acquisition sessions, and use substantial recording breaks as candidate session boundaries. Shared local clocks are an explicit matching assumption; absolute UTC and a bank name are not required for these proposals. Recording breaks are not pulse-integration windows. Distinct releases can refer to the same continuous log.
+
+An `inferred` edge follows this protocol; a `supported` edge has explicit reviewed evidence. `selected_recording_edge_ids` and `selected_calibration_edge_ids` identify the proposed links; the full edge lists retain alternatives. `inferred_proposal` means the selected recording links have compatible K fits under the stated assumptions. `partial` can mean the recording is identified but K is missing or incompatible. None of these statuses is scientific acceptance.
+
+The default candidate break exceeds both 60 seconds and ten median sampling intervals. A release may fall up to 120 seconds outside acquisition coverage to allow rounded field times and delayed logging. These are working association settings, not measured travel times or instrument corrections. Change them with `--session-gap-seconds`, `--session-gap-factor` and `--association-tolerance-seconds`; examine changes in the selected links. `--no-protocol-inference` restores the explicit-review-only comparison.
+
+An existing notebook-to-file relationship can identify a recording even when the release clock is uncertain. The matcher rechecks its registered file hashes, native probe identity, date and current CSV path before using it. This does not create an exact timestamp or choose between acquisition segments within that file. Competing sessions and source contradictions remain visible. Reviewed clock corrections and known missing recording roles take precedence over the default assumptions. Multiple sites on a day prevent automatic site inference for an unlabelled recording. Both conductivity channels and mass/relative concentration fits retain their own units. Numeric trial/calibration suffixes and fit quality do not establish associations.
+
+`trial_associations.csv` audits each current `trial_inputs.csv` row. It reports the recording relationship, notebook calibration relationship and K applicability separately, with both probe identities and the original calibration ID retained. Missing conductivity cells remain measurement-quality issues in a known file and block its automatic selection. A source-linked calibration on a different probe remains identifiable but requires an applicability review; the matcher applies no transfer factor. Alternative preparations remain alternatives.
+
+The matcher compares proposals with current curated links and preserves disagreements. It leaves those links unchanged. It does not choose background or integration windows, apply K, calculate discharge or link rock trials to Q. Those are later analysis steps. Older processed files are checked against raw exports before metadata are recovered in memory; normalized files are not overwritten.
+
+### Supply reviewed association evidence
+
+`--overrides path/to/evidence.json` accepts `schema_version: 1` and the optional lists below. Every entry requires nonempty `evidence` and `source_ref` strings. Use dataset IDs from provenance, or the run-local `FILE-…` references in the inventory, as `content_ref`.
+
+| List | Entry fields, in addition to evidence/source_ref |
+| --- | --- |
+| `recordings` | `content_ref`; optionally `site_alias`, `role`, `activity`, `clock_correction_seconds`, `clock_basis` |
+| `recording_links` | `trial_id`, `content_ref` |
+| `calibration_links` | `trial_id`, `calibration_id`, `probe_alias` |
+| `trial_clocks` | `trial_id`, `utc_offset_seconds`, for a notebook local clock |
+| `expected_roles` | `trial_id`, `roles` (a nonempty list of main-discharge roles) |
+
+For example, a reviewed link has this shape; replace the illustrative IDs and source reference with verified records:
+
+```json
+{"schema_version": 1, "recording_links": [{"trial_id": "TRIAL_ID", "content_ref": "DATASET_ID", "evidence": "Release identified in the field record", "source_ref": "notebook-page-reference"}]}
+```
+
+A recording correction shifts its existing UTC series by the stated seconds and requires `clock_basis`; it cannot create UTC for an unresolved local series. Notebook offsets must agree within a site/day, and recording corrections within a physical device/day. Supported numeric report offsets and source timestamps with offsets are recognized automatically. Overrides cannot remove source hash or physical-device conflicts. Keep evidence for a real protocol change rather than adjusting clocks or choosing K until the answer looks plausible.
+
 ## Work with seismic recordings
 
 Supply the inputs described in the [seismic data guide](../fluvial_seismology/data/README.md), then start Jupyter:

@@ -14,7 +14,7 @@ The salt workflow reads conductivity recordings and fits calibration curves that
 
 | Workflow | Available work |
 | --- | --- |
-| Salt dilution | Instrument-file extraction and provisional calibration fits, with diagnostics and skip reasons. |
+| Salt dilution | Instrument-file extraction, provisional calibration fits and release/recording/K pairing proposals with evidence and unresolved cases. |
 | Rock trials | 331 tethered-rock observations, grouped by session, round, category and individual test. |
 | Fluvial seismology | Imported Python/R scripts and notebooks for waveform preparation, spectra, turbulence and bedload models. |
 

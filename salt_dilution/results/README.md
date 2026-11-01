@@ -8,6 +8,8 @@ Use the [calibration runner](../../docs/calibration.md) with a fresh output dire
 
 ## Other runs
 
+The [saved pairing summary](matching/2026-10-31_final_pairings/pairing_summary.csv) covers 38 releases: 9 have complete inferred recording/K proposals, 16 are partial and 13 remain ambiguous. Recording proposals cover 26 releases; this is not 26 complete K pairings. The [association table](matching/2026-10-31_final_pairings/trial_associations.csv) separates existing recording and calibration relationships from K applicability for all 59 input rows. It retains both source relationships for 27 releases, including files whose missing measurements still need review. Neither file contains Q estimates or accepted integration windows. See [setup](../../docs/getting_started.md#pair-releases-recordings-and-k-fits) for reproduction and status meanings.
+
 Keep each analysis in a named directory. `_template/` provides `figures/`, `tables/` and `run_info.json`; it contains no scientific result. The historical `result_path` helper uses `MORA_RUN_ID` or a UTC timestamp and starts a run record with status `started`. Complete input references, configuration, Git revision and outcome when the run finishes.
 
-Selected calibration bundles are tracked. Other generated runs and local MLflow stay ignored; large normalized readings belong in the local processed-data folder. Historical notebooks use retired processing interfaces and are not the maintained runner.
+Selected calibration bundles and the referenced pairing bundle are tracked. Other generated runs and local MLflow stay ignored; large normalized readings belong in the local processed-data folder. Historical notebooks use retired processing interfaces and are not the maintained runner.

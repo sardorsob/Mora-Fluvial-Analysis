@@ -10,13 +10,21 @@ Run from the repository root with the project dependencies installed:
 python -m unittest discover -s tests -v
 ```
 
-The suite covers parser dispatch, metadata/units, source timestamps and explicit UTC offsets, batch discovery and output safety, calibration equations and skip rules, record keys/joins, provenance hashes and portable paths. The raw-export integration tests compare every measurement cell in ten tracked live-reading exports and exercise four supporting reports. Missing raw files cause explicit skips unless `MORA_REQUIRE_RAW_TESTS=1` is set. The [CI configuration](../.github/workflows/salt-parser-tests.yml) targets Python 3.13 on Linux and Windows; configuration alone is not evidence that a particular revision passed.
+The suite covers parser dispatch, metadata/units, source timestamps and explicit UTC offsets, batch discovery and output safety, calibration equations and skip rules, recording/K pairing and unresolved-case handling, record keys/joins, provenance hashes and portable paths. The raw-export integration tests compare every measurement cell in ten tracked live-reading exports and exercise four supporting reports. Missing raw files cause explicit skips unless `MORA_REQUIRE_RAW_TESTS=1` is set. The [CI configuration](../.github/workflows/salt-parser-tests.yml) targets Python 3.13 on Linux and Windows; configuration alone is not evidence that a particular revision passed.
 
 Set `MORA_CHECK_LOCAL_RECORDINGS=1` to also verify the ignored local recordings/metadata against curated provenance. Those checks need the referenced source, output and metadata files. The [record validation report](../salt_dilution/data/records/validation_report.json) records 78 passing tests for the October 26 calibration review, including local-recording checks and 39 identity-evidence files. That is a recorded run, not a test result for every future checkout.
 
 The [reviewed calibration bundle](../salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) contains an independent `numpy.linalg.lstsq` verification of all 49 fits from rebuilt concentrations. K, intercept, R², RMSE and point counts match the earlier bundle. The identity changes did not alter observed quantities or addition labels. See its `numerical_verification.json` and `run_info.json` for scope, software versions and exact hashes.
 
 These checks leave 19 preparation identities unresolved, including 12 fitted series. They do not resolve handwritten units, preparation/delivery uncertainty, the DI-stock ionic-background correction, clock alignment, event windows, mixing or tracer recovery. A high R² is not a calibration-acceptance test.
+
+## Pairing proposals
+
+The matcher proposes release/recording and recording/calibration links separately. Tests cover duplicate and split exports, conflicting samples and sensor identities, uncertain clocks, actual/specific channel compatibility, mass/relative units, exact fit references, current curated claims and output protection. Source metadata and reviewed labels remain distinguishable.
+
+Protocol-based pairing uses field dates, written release times and acquisition breaks under the reported local-clock assumption. Tests include missing trials without sequence shifts, several releases in one log, split sessions, competing recordings, reviewed clock corrections, current-link disagreements and documented missing roles. Existing source relationships are checked against file hashes and native device identity. Tests distinguish a known calibration relationship from cross-probe applicability and reject stale paths, conflicting hashes and unsupported preparation choices. Approximate question-marked clocks are not silently made exact. Test association settings against reasonable alternatives before promoting inferred links.
+
+A candidate K link does not settle the release-to-recording association. Review the generated `pairing_summary.csv`, selected edge references and retained alternatives; no pairing output is scientific acceptance or a discharge result. The runner reproduces pinned electronic calibration observations where available, rather than searching river curves for convenient calibration values.
 
 ## Migration checks
 
