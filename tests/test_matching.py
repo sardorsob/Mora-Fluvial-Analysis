@@ -69,7 +69,7 @@ class InventoryTests(FileFixtures, unittest.TestCase):
         self.provenance['datasets']['D1'] = dict(processed_path='processed/a.csv', processed_sha256='bad', probe_alias='probe_02')
         rec = self.inventory()[0]
         self.assertIn('processed_hash_mismatch', rec['issues'])
-        self.assertIn('probe_identity_conflict', rec['issues'])
+        self.assertIn('recorded_probe_alias_disagrees_with_native_label', rec['alias_qualifications'])
         self.assertEqual(rec['probe_alias'], 'probe_01')
 
     def test_missing_raw_does_not_claim_recovered_metadata(self):
@@ -111,6 +111,14 @@ class InventoryTests(FileFixtures, unittest.TestCase):
         self.assertEqual(len(groups), 1)
         self.assertEqual(len(groups[0]['samples']), 2)
 
+    def test_native_equal_duplicates_merge_without_registry_aliases(self):
+        self.provenance['probe_registry'] = {}
+        self.recording()
+        self.recording('b')
+        groups = matching.reconcile_recordings(self.inventory())
+        self.assertEqual(len(groups), 1)
+        self.assertEqual(len(groups[0]['members']), 2)
+
 
 class AssociationFixtures(FileFixtures):
     def setUp(self):
@@ -134,6 +142,15 @@ class AssociationFixtures(FileFixtures):
         return matching.match_records(self.trials,self.preps,self.fits,self.provenance,
                                        matching.reconcile_recordings(self.inventory()),
                                        self.overrides if overrides else None)
+
+    def native_calibration(self, serial):
+        path=self.recording('calibration',serial=serial,times=('11:00:00','11:00:01'))
+        rec=next(r for r in self.inventory() if Path(r['path']).name==path.name)
+        evidence=self.provenance['calibrations']['C01']
+        evidence['_matching_sequence']=dict(status='reproduced',counts={'actual_conductivity_us_cm':2})
+        evidence['probe_identity_review']=dict(matches={'actual_conductivity_us_cm':[{}, {}]},
+            files=list(rec['files'].values()),basis='electronic_calibration_sequence_and_measured_sensor_identity')
+
 
 
 class AssociationTests(AssociationFixtures, unittest.TestCase):
@@ -165,6 +182,7 @@ class AssociationTests(AssociationFixtures, unittest.TestCase):
         self.assertEqual(result['pairing_summary'][0]['status'],'ambiguous')
 
     def test_wrong_probe_k_is_not_transferred(self):
+        self.native_calibration('222')
         self.fits[0]['probe_alias']='probe_02'
         result=self.match()
         self.assertEqual(result['calibration_candidates'][0]['status'],'conflicting')
@@ -337,6 +355,7 @@ class SafetyTests(AssociationFixtures, unittest.TestCase):
         self.assertEqual(self.match()['recording_candidates'][0]['status'],'conflicting')
 
     def test_paired_devices_do_not_borrow_a_single_probes_fit(self):
+        self.native_calibration('111')
         self.recording('b',serial='222')
         rec=next(r for r in self.inventory() if r['probe_alias']=='probe_02')
         self.overrides['recordings'].append(dict(self.overrides['recordings'][0],content_ref=rec['content_ref'],role='downstream_right'))
@@ -345,6 +364,7 @@ class SafetyTests(AssociationFixtures, unittest.TestCase):
         result=self.match()
         self.assertNotEqual(result['pairing_summary'][0]['status'],'complete_proposal')
         self.assertTrue(any(c['status']=='conflicting' for c in result['calibration_candidates']))
+        self.assertTrue(result['pairing_summary'][0]['identity_review_required'])
 
 
 class MetadataRegressionTests(FileFixtures, unittest.TestCase):
@@ -487,7 +507,7 @@ class ChronologyTests(ChronologyFixtures, unittest.TestCase):
         self.fits[0]['probe_alias']='probe_02'
         result=self.match(False)
         self.assertEqual(result['recording_candidates'][0]['status'],'inferred')
-        self.assertEqual(result['pairing_summary'][0]['status'],'partial')
+        self.assertEqual(result['pairing_summary'][0]['status'],'inferred_proposal')
 
     def test_uncertain_written_clock_is_not_made_exact(self):
         self.provenance['trials']['T01']['source_record']['injection_time_local']=''
@@ -569,7 +589,7 @@ class ExistingSourceLinkTests(AssociationFixtures, unittest.TestCase):
         row=result['trial_associations'][0]
         self.assertEqual(row['recording_link_status'],'source_confirmed')
         self.assertEqual(row['calibration_link_status'],'source_linked')
-        self.assertEqual(row['applicability_status'],'same_probe_and_channel')
+        self.assertEqual(row['applicability_status'],'source_linked_identity_unverified')
         self.assertEqual(result['pairing_summary'][0]['status'],'inferred_proposal')
         selected=[e for e in result['recording_candidates'] if e['selected_for_pairing']]
         self.assertEqual(len(selected),1)
@@ -596,7 +616,7 @@ class ExistingSourceLinkTests(AssociationFixtures, unittest.TestCase):
         self.assertEqual(row['calibration_probe_alias'],'probe_02')
         self.assertEqual(row['recording_probe_alias'],'probe_01')
         self.assertEqual(row['k'],'0.25')
-        self.assertEqual(row['applicability_status'],'different_probe_requires_review')
+        self.assertEqual(row['applicability_status'],'source_linked_identity_unverified')
 
     def test_no_source_relationship_cannot_be_created_from_same_day(self):
         self.provenance['calibrations']['C01']['source_trial_id']='other'
@@ -659,3 +679,87 @@ class ExistingSourceLinkTests(AssociationFixtures, unittest.TestCase):
         self.assertEqual(row['applicability_status'],'evidence_requires_review')
         self.assertIn('nonfinite_conductivity',row['reasons'])
         self.assertFalse(any(e['selected_for_pairing'] for e in result['recording_candidates']))
+
+
+    def test_guessed_current_recording_alias_does_not_break_confirmed_file_link(self):
+        self.claim['probe_alias']='probe_02'
+        result=self.reconcile()
+        self.assertEqual(result['trial_associations'][0]['recording_link_status'],'source_confirmed')
+        self.assertEqual(result['pairing_summary'][0]['status'],'inferred_proposal')
+
+    def test_native_serial_does_not_require_a_registry_alias(self):
+        self.provenance['probe_registry']={}
+        result=self.reconcile()
+        self.assertEqual(result['trial_associations'][0]['recording_device_serial'],'111')
+        self.assertEqual(result['pairing_summary'][0]['status'],'inferred_proposal')
+
+
+class PlaceholderAliasTests(AssociationFixtures, unittest.TestCase):
+    def river_k(self):
+        result=self.match()
+        return result,next(c for c in result['calibration_candidates'] if c['recording_edge_id'].endswith(result['recording_candidates'][0]['logical_recording_id']))
+
+    def test_placeholder_difference_does_not_block_source_linked_k(self):
+        self.fits[0]['probe_alias']='probe_02'
+        self.provenance['calibrations']['C01']['probe_alias']='probe_02'
+        result,edge=self.river_k()
+        self.assertEqual(edge['status'],'supported')
+        self.assertEqual(edge['identity_status'],'unverified')
+        self.assertEqual(result['pairing_summary'][0]['status'],'complete_proposal')
+        self.assertTrue(result['pairing_summary'][0]['identity_review_required'])
+        self.assertFalse(result['pairing_summary'][0]['scientifically_accepted'])
+
+    def test_blank_fit_alias_still_pairs_by_preparation_and_channel(self):
+        self.fits[0]['probe_alias']=''
+        self.provenance['calibrations']['C01']['probe_alias']=''
+        _,edge=self.river_k()
+        self.assertEqual(edge['status'],'supported')
+        self.assertEqual(edge['identity_status'],'unverified')
+
+    def test_equal_placeholder_aliases_do_not_establish_physical_identity(self):
+        _,edge=self.river_k()
+        self.assertEqual(edge.get('identity_status'),'unverified')
+        self.assertEqual(edge.get('calibration_device_serial'),'')
+
+    def test_empty_sequence_does_not_establish_native_identity(self):
+        self.native_calibration('111')
+        evidence = self.provenance['calibrations']['C01']
+        evidence['probe_identity_review']['matches'] = {'actual_conductivity_us_cm': []}
+        evidence['_matching_sequence']['counts'] = {'actual_conductivity_us_cm': 0}
+        result, edge = self.river_k()
+        self.assertEqual(edge['identity_status'], 'unverified')
+        self.assertTrue(result['pairing_summary'][0]['identity_review_required'])
+        evidence['probe_identity_review']['tolerance_us_cm'] = 0
+        checked = matching._sequence_evidence('C01', evidence, [], self.root)
+        self.assertEqual(checked['status'], 'unavailable')
+
+    def test_native_calibration_conflict_is_preserved_even_when_aliases_agree(self):
+        self.native_calibration('222')
+        result,edge=self.river_k()
+        self.assertEqual(edge['status'],'conflicting')
+        self.assertEqual(edge['identity_status'],'native_conflict')
+        self.assertEqual(edge['calibration_device_serial'],'222')
+        self.assertEqual(edge['recording_device_serial'],'111')
+        self.assertNotEqual(result['pairing_summary'][0]['status'],'complete_proposal')
+
+    def test_native_calibration_agreement_survives_disagreeing_placeholders(self):
+        self.native_calibration('111')
+        self.fits[0]['probe_alias']='probe_02'
+        self.provenance['calibrations']['C01']['probe_alias']='probe_02'
+        _,edge=self.river_k()
+        self.assertEqual(edge['status'],'supported')
+        self.assertEqual(edge['identity_status'],'native_match')
+        self.assertEqual(edge['calibration_device_serial'],'111')
+
+    def test_stale_native_identity_pin_is_not_downgraded_to_placeholder(self):
+        self.native_calibration('111')
+        self.provenance['calibrations']['C01']['probe_identity_review']['files'][0]['sha256']='bad'
+        _,edge=self.river_k()
+        self.assertEqual(edge['status'],'conflicting')
+        self.assertIn('native_identity_evidence_conflict',edge['reasons'])
+
+    def test_same_preparation_multiple_alias_series_is_ambiguous(self):
+        self.fits.append(dict(self.fits[0],probe_alias='probe_02',k='0.3'))
+        result=self.match()
+        self.assertTrue(all(c['status']=='ambiguous' for c in result['calibration_candidates']))
+        self.assertTrue(all('competing_calibration_series' in c['reasons'] for c in result['calibration_candidates']))

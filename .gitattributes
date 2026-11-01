@@ -11,3 +11,4 @@ salt_dilution/data/records/*.json text eol=lf
 
 # Saved pairing checksums describe exact output bytes on every platform.
 salt_dilution/results/matching/2026-10-31_final_pairings/* -text -whitespace
+salt_dilution/results/matching/2026-11-01_source_linked_pairings/* -text -whitespace

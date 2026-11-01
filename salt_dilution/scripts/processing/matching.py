@@ -89,6 +89,7 @@ def inventory_recordings(processed_dir, provenance, root=ROOT):
         meta_path = path.with_name(path.stem + '_metadata.json')
         rec = dict(dataset_id=identity, path=_ref(path, root), files={}, issues=[],
                    evidence=evidence, members=[], conductivity_bases=[], probe_alias='',
+                   recorded_probe_alias=evidence.get('probe_alias',''), alias_qualifications=[],
                    device_serial='', role='', site_alias='', activity='unknown',
                    clock_basis='', samples=pd.DataFrame(), metadata={})
         issues = rec['issues']
@@ -176,7 +177,7 @@ def inventory_recordings(processed_dir, provenance, root=ROOT):
         elif len(serials) > 1:
             issues.extend(('multiple_conductivity_devices','physical_device_identity_conflict'))
         if rec['device_serial'] and evidence.get('probe_alias') and str(registry.get(evidence['probe_alias'], '')) != rec['device_serial']:
-            issues.append('probe_identity_conflict')
+            rec['alias_qualifications'].append('recorded_probe_alias_disagrees_with_native_label')
         if not rec['probe_alias']:
             issues.append('unknown_probe_identity')
         rec['site_alias'] = meta.get('site_alias', '')
@@ -259,7 +260,10 @@ def reconcile_recordings(recordings):
                 continue
             if rec['site_alias'] != group['site_alias'] or rec['activity'] != group['activity']:
                 continue
-            if rec['issues'] or group['issues'] or rec['conductivity_bases'] != group['conductivity_bases']:
+            # Equal native serials establish device identity without a registry
+            # nickname. Other source and measurement issues still prevent merging.
+            blockers = (set(rec['issues']) | set(group['issues'])) - {'unknown_probe_identity'}
+            if blockers or rec['conductivity_bases'] != group['conductivity_bases']:
                 continue
             if rec['clock_basis'] != group['clock_basis'] or rec.get('source_offset_seconds') != group.get('source_offset_seconds'):
                 continue
@@ -279,6 +283,7 @@ def reconcile_recordings(recordings):
             if len(common) or (rec['clock_basis'] and 0 < distance <= cadence):
                 group['members'].extend(rec['members'])
                 group['member_files'].update(rec['member_files'])
+                group['alias_qualifications'] = sorted(set(group.get('alias_qualifications',[]) + rec.get('alias_qualifications',[])))
                 group['samples'] = pd.concat([left, right]).drop_duplicates('timestamp').sort_values('timestamp').reset_index(drop=True)
                 group['dates'] = sorted(set(group.get('dates', []) + rec.get('dates', [])))
                 combined = True
@@ -403,7 +408,7 @@ def _sequence_evidence(calibration_id, evidence, points, root):
     """Recheck pinned electronic sequence rows; no free search across river data."""
     review = evidence.get('probe_identity_review', {})
     matches = review.get('matches', {})
-    if not matches:
+    if not any(channel in CHANNELS.values() and len(rows) >= 2 for channel, rows in matches.items()):
         return dict(status='unavailable', reason='no_pinned_electronic_sequence')
     files = review.get('files', [])
     for item in files:
@@ -425,8 +430,7 @@ def _sequence_evidence(calibration_id, evidence, points, root):
             return dict(status='conflicting', reason='invalid_sequence_order_or_channel')
         for row, index in zip(rows, indices):
             notebook = [p for p in points if p['calibration_id'] == calibration_id
-                        and str(p['step_no']) == str(row['step_no'])
-                        and (not p.get('probe_alias') or p['probe_alias'] == review.get('probe_alias'))]
+                        and str(p['step_no']) == str(row['step_no'])]
             if (len(notebook) != 1 or not notebook[0].get(channel) or index < 0 or index >= len(frame)
                     or channel not in frame):
                 return dict(status='conflicting', reason='sequence_point_not_found')
@@ -479,6 +483,56 @@ def _local_release_clock(trial, provenance):
         return None
 
 
+def _calibration_device(evidence, recordings):
+    """Resolve native identity from pinned evidence, never from a guessed alias."""
+    review = evidence.get('probe_identity_review',{})
+    sequence = evidence.get('_matching_sequence',{})
+    electronic = (sequence.get('status')=='reproduced' and any(
+        channel in CHANNELS.values() and len(rows) >= 2 and sequence.get('counts',{}).get(channel,0) >= 2
+        for channel,rows in review.get('matches',{}).items()))
+    continuity = (review.get('basis')=='confirmed_trial_association_and_user_confirmed_within_trial_probe_continuity'
+                  and review.get('trial_id')==evidence.get('source_trial_id') and bool(review.get('dataset_id')))
+    result = dict(status='unverified',device_serial='',basis='placeholder_alias_not_identity',files=[])
+    if not (electronic or continuity):
+        return result
+    pins = review.get('files',[])
+    if not pins:
+        return result
+    # Match the exact processed/raw/metadata bundle whose observations were
+    # reproduced. A path or registry alias alone cannot identify a sensor.
+    candidates = []
+    for rec in recordings:
+        for ref, files in rec['member_files'].items():
+            if continuity and ref != review['dataset_id']:
+                continue
+            processed = files.get('processed',{})
+            if any(Path(pin['path'])==Path(processed.get('path','')) for pin in pins):
+                candidates.append((rec,files))
+    if not candidates:
+        return dict(result,basis='native_identity_sources_unavailable')
+    serials = set()
+    for rec,files in candidates:
+        if any('conflict' in i or 'mismatch' in i for i in rec['issues']):
+            return dict(result,status='conflicting',basis='native_identity_source_conflict')
+        for pin in pins:
+            found = [f for f in files.values() if Path(f['path'])==Path(pin['path'])]
+            if not found:
+                return dict(result,basis='native_identity_sources_unavailable')
+            if any(f['sha256']!=pin.get('sha256') for f in found):
+                return dict(result,status='conflicting',basis='native_identity_hash_mismatch')
+        if not all(kind in files and any(Path(pin['path'])==Path(files[kind]['path']) for pin in pins)
+                   for kind in ('processed','metadata','raw')):
+            return dict(result,basis='native_identity_bundle_incomplete')
+        if rec.get('device_serial'):
+            serials.add(rec['device_serial'])
+    if len(serials)>1:
+        return dict(result,status='conflicting',basis='multiple_native_calibration_devices')
+    if len(serials)==1:
+        return dict(status='verified',device_serial=next(iter(serials)),
+                    basis='electronic_sequence' if electronic else 'within_trial_continuity',files=pins)
+    return dict(result,basis='native_calibration_serial_unavailable')
+
+
 def _reconcile_existing_links(result, trials, preparations, provenance, recordings, associations):
     """Audit current CSV links separately from whether a fitted K can be used.
 
@@ -505,18 +559,14 @@ def _reconcile_existing_links(result, trials, preparations, provenance, recordin
         for rec in matching:
             # Missing EC cells affect use of a known file, not its identity.
             reasons.extend(i for i in rec['issues'] if i not in ('unknown_probe_identity','nonfinite_conductivity'))
-            if not rec.get('probe_alias') or not rec.get('device_serial'):
+            if not rec.get('device_serial'):
                 reasons.append('native_probe_identity_unresolved')
-            elif registered.get('probe_alias') != rec['probe_alias']:
-                reasons.append('registered_probe_identity_conflict')
             if _date(trial['field_date']) not in rec.get('dates',[]):
                 reasons.append('recording_date_conflict')
             if rec.get('site_alias') and rec['site_alias'] != trial['site_alias']:
                 reasons.append('recording_site_conflict')
             if rec['activity'] in ('calibration','background','attenuation'):
                 reasons.append('nonriver_activity')
-            if claim.get('probe_alias') and claim['probe_alias'] != rec.get('probe_alias'):
-                reasons.append('current_probe_identity_conflict')
             files = rec['member_files'].get(dataset,{})
             for kind, pin in (('processed','processed_sha256'),('metadata','metadata_sha256'),('raw','source_sha256')):
                 if not registered.get(pin) or files.get(kind,{}).get('sha256') != registered.get(pin):
@@ -534,17 +584,18 @@ def _reconcile_existing_links(result, trials, preparations, provenance, recordin
         calibration_probe = provenance.get('calibrations',{}).get(calibration_id,{}).get('probe_alias','')
         basis = claim.get('conductivity_basis','')
         fits = [c for c in result['calibration_candidates'] if c['trial_id']==trial_id and c['calibration_id']==calibration_id
-                and c['probe_alias']==calibration_probe and c['conductivity_basis']==basis
+                and c['conductivity_basis']==basis
                 and any(c['recording_edge_id']==trial_id+':'+r['logical_recording_id'] for r in matching)]
-        fit = fits[0] if fits else {}
+        options = {(c['calibration_id'],c['probe_alias'],c['conductivity_basis']):c for c in fits}
+        fit = next(iter(options.values())) if len(options)==1 else {}
         if calibration_status != 'source_linked':
             applicability = 'calibration_relationship_unresolved'
+        elif len(options)>1:
+            applicability = 'competing_calibration_series'
         elif not fit:
             applicability = 'missing_fit_or_channel'
-        elif not recording_probe or not calibration_probe:
-            applicability = 'missing_probe_identity'
-        elif recording_probe != calibration_probe:
-            applicability = 'different_probe_requires_review'
+        elif fit['identity_status']=='native_conflict':
+            applicability = 'native_device_conflict'
         elif 'conductivity_channel_unavailable' in fit['reasons']:
             applicability = 'unavailable_channel'
         elif 'competing_calibration_preparations' in fit['reasons']:
@@ -552,7 +603,9 @@ def _reconcile_existing_links(result, trials, preparations, provenance, recordin
         elif fit['status']!='supported' or recording_status!='source_confirmed' or measurement_issues:
             applicability = 'evidence_requires_review'
         else:
-            applicability = 'same_probe_and_channel'
+            applicability = {'native_match':'native_identity_and_channel_supported',
+                             'source_protocol_match':'source_linked_within_trial_protocol'}.get(
+                                 fit['identity_status'],'source_linked_identity_unverified')
         # A confirmed whole-file relationship is not enough to choose between
         # acquisition segments. A clear clock may still resolve these below.
         if len(matching)>1:
@@ -567,6 +620,11 @@ def _reconcile_existing_links(result, trials, preparations, provenance, recordin
             processed_path=claim.get('processed_path',''),original_calibration_id=claim.get('calibration_id',''),
             calibration_id=calibration_id,source_calibration_candidates=source_calibrations,
             recording_probe_alias=recording_probe,calibration_probe_alias=calibration_probe,
+            recorded_probe_alias=claim.get('probe_alias',''),
+            recording_device_serial=matching[0].get('device_serial','') if matching else '',
+            calibration_device_serial=fit.get('calibration_device_serial',''),
+            identity_status=fit.get('identity_status','unverified'),identity_evidence=fit.get('identity_evidence',{}),
+            fit_candidate_references=[c.get('fit_reference',{}) for c in options.values()],
             conductivity_basis=basis,k=fit.get('k',''),calibration_basis=fit.get('calibration_basis',''),
             concentration_unit=fit.get('concentration_unit',''),coefficient_unit=fit.get('coefficient_unit',''),
             fit_reference=fit.get('fit_reference',{}),recording_link_status=recording_status,
@@ -636,7 +694,7 @@ def _infer_chronology(result, trials, provenance, recordings, tolerance_seconds,
         if separation > tolerance_seconds:
             continue
         edge['chronology_evidence']['within_association_tolerance'] = True
-        edge['qualifications'] = list(edge['reasons'])
+        edge['qualifications'] = list(edge['reasons']) + edge.get('alias_qualifications',[])
         if basis == 'reported_local_field_clock':
             edge['qualifications'].append('local_clock_alignment_assumed_not_utc_conversion')
         if not rec['site_alias']:
@@ -653,7 +711,7 @@ def _infer_chronology(result, trials, provenance, recordings, tolerance_seconds,
         selected, competing = [], []
         by_device = {}
         for edge in possible:
-            key = edge['probe_alias'] or 'unidentified_device'
+            key = edge['device_serial'] or 'unidentified_device'
             by_device.setdefault(key, []).append(edge)
         for device_edges in by_device.values():
             reviewed = [e for e in device_edges if e['status']=='supported']
@@ -705,7 +763,7 @@ def _infer_chronology(result, trials, provenance, recordings, tolerance_seconds,
         reasons.extend(substantive)
         if any('conflict' in r for r in substantive):
             status='conflicting'
-        elif competing or any('competing_calibration_preparations' in c['reasons'] for c in result['calibration_candidates']
+        elif competing or any(any(reason in c['reasons'] for reason in ('competing_calibration_preparations','competing_calibration_series')) for c in result['calibration_candidates']
                               if c['recording_edge_id'] in summary['selected_recording_edge_ids']):
             status='ambiguous'
         elif reasons:
@@ -728,6 +786,8 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
     fit_keys = [(f['calibration_id'],f.get('probe_alias',''),f['conductivity_basis']) for f in fits]
     if len(set(fit_keys)) != len(fit_keys):
         raise ValueError('Duplicate calibration fit key')
+    native_calibrations = {c['calibration_id']:_calibration_device(provenance.get('calibrations',{}).get(c['calibration_id'],{}),recordings)
+                           for c in calibrations}
     record_edges, cal_edges, summaries, exclusions = [], [], [], []
     for trial in sorted(trials, key=lambda t: t['trial_id']):
         trial_id, day = trial['trial_id'], _date(trial['field_date'])
@@ -795,6 +855,7 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
             edge_id = trial_id + ':' + rec['logical_recording_id']
             edge = dict(recording_edge_id=edge_id,trial_id=trial_id,logical_recording_id=rec['logical_recording_id'],
                         member_refs=rec['members'],probe_alias=rec.get('probe_alias',''),role=rec.get('role',''),
+                        device_serial=rec.get('device_serial',''),alias_qualifications=rec.get('alias_qualifications',[]),
                         activity=rec['activity'],status=status,reasons=sorted(set(reasons)),time_evidence=time_evidence,
                         reviewed_evidence=links,existing_associations=existing,
                         source_link_evidence=[],
@@ -818,12 +879,17 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
                 cal_reasons = []
                 if not explicit_relationship:
                     cal_reasons.append('no_trial_calibration_source_relationship')
-                if not fit.get('probe_alias') or not rec.get('probe_alias'):
-                    cal_reasons.append('probe_identity_unresolved')
-                elif fit['probe_alias'] != rec['probe_alias']:
-                    cal_reasons.append('different_physical_probe')
-                if evidence.get('probe_alias') and evidence['probe_alias'] != fit.get('probe_alias'):
-                    cal_reasons.append('fit_identity_conflict')
+                native = native_calibrations[cal_id]
+                identity_status = 'unverified'
+                if native['status']=='conflicting':
+                    cal_reasons.append('native_identity_evidence_conflict')
+                    identity_status='evidence_conflict'
+                elif native['device_serial'] and rec.get('device_serial'):
+                    if native['device_serial']!=rec['device_serial']:
+                        cal_reasons.append('native_calibration_device_conflict')
+                        identity_status='native_conflict'
+                    else:
+                        identity_status='native_match' if native['basis']=='electronic_sequence' else 'source_protocol_match'
                 if any('mismatch' in i or 'conflict' in i for i in rec['issues']):
                     cal_reasons.append('recording_evidence_conflict')
                 if fit['conductivity_basis'] not in rec['conductivity_bases']:
@@ -842,7 +908,7 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
                 if sequence['status'] == 'conflicting':
                     cal_reasons.append('electronic_sequence_conflict')
                 cal_status = 'supported' if not cal_reasons else 'ambiguous'
-                if any(r in cal_reasons for r in ('different_physical_probe','fit_identity_conflict','recording_evidence_conflict',
+                if any(r in cal_reasons for r in ('native_calibration_device_conflict','native_identity_evidence_conflict','recording_evidence_conflict',
                                                  'incompatible_fit_units','invalid_k','electronic_sequence_conflict')):
                     cal_status = 'conflicting'
                 elif 'conductivity_channel_unavailable' in cal_reasons:
@@ -851,6 +917,9 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
                     recording_edge_id=edge_id,trial_id=trial_id,calibration_id=cal_id,probe_alias=fit.get('probe_alias',''),
                     conductivity_basis=fit['conductivity_basis'],calibration_basis=fit.get('calibration_basis',''),
                     concentration_unit=fit.get('concentration_unit',''),coefficient_unit=fit.get('coefficient_unit',''),k=fit.get('k'),
+                    recording_device_serial=rec.get('device_serial',''),calibration_device_serial=native['device_serial'],
+                    identity_status=identity_status,identity_evidence=native,
+                    alias_qualification='record_aliases_are_placeholders_not_physical_evidence',
                     fit_reference=fit.get('_fit_reference',{}),status=cal_status,reasons=cal_reasons,
                     mass_route_eligible=expected_unit=='mg/L' and cal_status=='supported',
                     source_relationship=source_trial or '',reviewed_evidence=reviewed,electronic_sequence=sequence))
@@ -862,7 +931,8 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
             if len(choices) > 1:
                 for candidate in choices:
                     candidate['status']='ambiguous';candidate['mass_route_eligible']=False
-                    candidate['reasons'].append('competing_calibration_preparations')
+                    candidate['reasons'].append('competing_calibration_preparations' if len({c['calibration_id'] for c in choices})>1
+                                                else 'competing_calibration_series')
     for trial in sorted(trials, key=lambda t: t['trial_id']):
         identity=trial['trial_id']
         edges=[e for e in record_edges if e['trial_id']==identity]
@@ -887,7 +957,7 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
                     supported=[e for e in main if e['role']==role and e['status']=='supported']
                     if not supported:
                         status='partial';reasons.append('missing_role:'+role)
-                    if len({e['probe_alias'] for e in supported}) > 1:
+                    if len({e['device_serial'] for e in supported}) > 1:
                         status='ambiguous';reasons.append('competing_devices_for_role:'+role)
                     for e in supported:
                         compatible=[c for c in calibrations_for_trial if c['recording_edge_id']==e['recording_edge_id'] and c['status']=='supported']
@@ -915,8 +985,6 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
             if dataset_matches and path_matches and {r['logical_recording_id'] for r in dataset_matches} != {r['logical_recording_id'] for r in path_matches}:
                 problems.append('curated_dataset_path_conflict')
             for recording in candidates:
-                if claim.get('probe_alias') and recording.get('probe_alias') and claim['probe_alias'] != recording['probe_alias']:
-                    problems.append('curated_probe_conflict')
                 associated=[e for e in edges if e['logical_recording_id']==recording['logical_recording_id']]
                 if not associated:
                     problems.append('curated_recording_excluded_by_independent_evidence')
@@ -925,8 +993,7 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
                         problems.append('curated_role_conflict')
                     if claim.get('calibration_id'):
                         comparisons=[c for c in calibrations_for_trial if c['recording_edge_id']==edge['recording_edge_id'] and c['calibration_id']==claim['calibration_id']
-                            and (not claim.get('conductivity_basis') or c['conductivity_basis']==claim['conductivity_basis'])
-                            and (not claim.get('probe_alias') or c['probe_alias']==claim['probe_alias'])]
+                            and (not claim.get('conductivity_basis') or c['conductivity_basis']==claim['conductivity_basis'])]
                         if not comparisons:
                             problems.append('curated_calibration_fit_unavailable')
                         elif all(c['status']=='conflicting' for c in comparisons):
@@ -948,6 +1015,16 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
     _reconcile_existing_links(result,trials,preparations,provenance,recordings,associations)
     if protocol:
         _infer_chronology(result,trials,provenance,recordings,tolerance_seconds,overrides)
+    for summary in summaries:
+        selected = summary.get('selected_calibration_edge_ids',[]) if protocol else [
+            c['calibration_edge_id'] for c in cal_edges if c['trial_id']==summary['trial_id'] and c['status']=='supported']
+        summary['identity_review_required'] = not selected or any(c['identity_status']!='native_match' for c in cal_edges
+                                                                  if c['calibration_edge_id'] in selected) or any(
+            c['identity_status'] in ('native_conflict','evidence_conflict') and
+            c['recording_edge_id'] in summary.get('selected_recording_edge_ids',summary['recording_edge_ids']) and
+            (c['source_relationship']==summary['trial_id'] or c['reviewed_evidence']) for c in cal_edges)
+        summary['identity_policy'] = 'Source links establish pairings; placeholder aliases do not establish physical identity.'
+    result['calibration_device_checks'] = native_calibrations
     result['recording_segments'] = [dict(logical_recording_id=r['logical_recording_id'],
         source_logical_recording_id=r.get('source_logical_recording_id',r['logical_recording_id']),
         members=r['members'],sample_count=len(r['samples']),
@@ -1055,7 +1132,7 @@ def run_matching(records_dir, processed_dir, calibration_dir, output_dir, *, roo
     except (OSError,subprocess.CalledProcessError):
         revision=None
     from collections import Counter
-    info=dict(schema_version=1,created_at_utc=datetime.now(timezone.utc).isoformat(),git_commit=revision,
+    info=dict(schema_version=2,created_at_utc=datetime.now(timezone.utc).isoformat(),git_commit=revision,
               code_sha256=_hash(Path(__file__)),python_version=__import__('platform').python_version(),
               numpy_version=np.__version__,pandas_version=pd.__version__,
               scope='Pairing proposals only; no background/window selection, concentration conversion or Q.',
@@ -1071,7 +1148,10 @@ def run_matching(records_dir, processed_dir, calibration_dir, output_dir, *, roo
                                        member_files=r['member_files'],issues=r['issues'],sample_count=len(r['samples'])) for r in logical],
               exclusions=result['exclusions'],
               electronic_sequence_checks={k:e['_matching_sequence'] for k,e in provenance.get('calibrations',{}).items()},
+              calibration_device_checks=result['calibration_device_checks'],
               options=dict(protocol_inference=protocol,session_gap_seconds=gap_seconds,session_gap_factor=gap_factor,association_tolerance_seconds=tolerance_seconds,
+                           probe_identity_policy='Record-table aliases are placeholders; source relationships establish K pairing, independently pinned native evidence establishes physical identity.',
+                           mass_route_eligible='Compatible concentration units and a supported K link only; not discharge readiness or scientific acceptance.',
                            candidate_generation='all local date/site-compatible recordings; reviewed relationships required for support',
                            chronology='Reported field-local clocks under explicit protocol; association tolerance is operational, not a travel-time estimate or UTC correction',
                            gap_diagnostic='delta > 1.5 * median positive cadence; not an event boundary',

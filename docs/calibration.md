@@ -44,6 +44,8 @@ A missing EC reading leaves known additions in the volume total. A missing incre
 
 Ordinary least squares fits each recorded probe and conductivity channel separately:
 
+The saved probe aliases label the recorded series; many were placeholders. They do not prove which physical sensor made a reading. Pairing uses the source preparation and conductivity channel, with native serial evidence reported separately. The existing series and numerical fits are retained.
+
 ```text
 C_i = k × EC_i + b + residual_i
 ```
