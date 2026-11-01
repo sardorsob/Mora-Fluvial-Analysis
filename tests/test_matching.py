@@ -410,7 +410,7 @@ class ClockRegressionTests(AssociationFixtures, unittest.TestCase):
 
     def test_clock_corrections_cannot_be_tuned_independently_per_event_file(self):
         self.recording('b',times=('12:00:00','12:00:01'))
-        rec=next(r for r in self.inventory() if r['path'].endswith('/b.csv'))
+        rec=next(r for r in self.inventory() if Path(r['path']).name=='b.csv')
         self.overrides['recordings'][0].update(clock_correction_seconds=60,clock_basis='reviewed_clock')
         self.overrides['recordings'].append(dict(self.overrides['recordings'][0],content_ref=rec['content_ref'],clock_correction_seconds=120))
         with self.assertRaisesRegex(ValueError,'[Cc]lock'):
@@ -510,7 +510,7 @@ class ChronologyReviewTests(ChronologyFixtures, unittest.TestCase):
 
     def test_curated_claim_is_compared_with_selected_session(self):
         self.recording('b',times=('12:00:00','12:00:01'))
-        late=next(r for r in self.inventory() if r['path'].endswith('/b.csv'))
+        late=next(r for r in self.inventory() if Path(r['path']).name=='b.csv')
         claims=[dict(trial_id='T01',dataset_id=late['content_ref'],processed_path=late['path'])]
         result=matching.match_records(self.trials,self.preps,self.fits,self.provenance,matching.reconcile_recordings(self.inventory()),associations=claims)
         self.assertNotEqual(result['pairing_summary'][0]['status'],'inferred_proposal')
