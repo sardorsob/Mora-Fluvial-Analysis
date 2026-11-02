@@ -64,6 +64,30 @@ def _date(value):
     return '' if pd.isna(time) else time.date().isoformat()
 
 
+def _folder_date(path):
+    """Use a dated parent folder as session evidence, never as a clock."""
+    for part in reversed(Path(path).parent.parts):
+        if re.fullmatch(r'20\d{6}', part):
+            value = _date(part[:4] + '-' + part[4:6] + '-' + part[6:])
+            if value:
+                return value
+    return ''
+
+
+def _measurement_quality(samples):
+    """Describe missing cells without deleting or filling source observations."""
+    quality = {}
+    for basis, column in CHANNELS.items():
+        if column not in samples:
+            continue
+        finite = np.isfinite(pd.to_numeric(samples[column], errors='coerce'))
+        rows = np.flatnonzero(~finite.to_numpy()).tolist()
+        refs = samples['sample_source'].iloc[rows].tolist() if 'sample_source' in samples else []
+        quality[basis] = dict(finite_count=int(finite.sum()), nonfinite_count=len(rows),
+                              nonfinite_rows=rows, nonfinite_sample_refs=refs)
+    return quality
+
+
 def inventory_recordings(processed_dir, provenance, root=ROOT):
     """Inspect every local CSV/metadata pair, recovering old metadata read-only."""
     root, processed_dir = Path(root).resolve(), Path(processed_dir).resolve()
@@ -244,6 +268,13 @@ def inventory_recordings(processed_dir, provenance, root=ROOT):
                     rec['signal_summary'][basis] = dict(min_us_cm=float(finite.min()), max_us_cm=float(finite.max()),
                         maximum_sample_timestamp=str(local.loc[finite.idxmax()]))
         rec['issues'] = sorted(set(issues))
+        rec['measurement_quality'] = _measurement_quality(rec['samples'])
+        folder_date = _folder_date(path)
+        measured_dates = rec.get('dates', [])
+        rec['date_evidence'] = dict(folder_date=folder_date, measurement_dates=measured_dates,
+            status=('agrees_with_measurement_date' if folder_date in measured_dates else
+                    'disagrees_with_measurement_date' if folder_date and measured_dates else
+                    'folder_only' if folder_date else 'no_dated_parent_folder'))
         recordings.append(rec)
     return recordings
 
@@ -254,6 +285,8 @@ def reconcile_recordings(recordings):
     for rec in recordings:
         rec = dict(rec, members=list(rec['members']), issues=list(rec['issues']))
         rec['member_files'] = dict(rec.get('member_files', {rec['content_ref']: rec['files']}))
+        rec['date_evidence_by_member'] = dict(rec.get('date_evidence_by_member',
+            {rec['content_ref']:rec.get('date_evidence',{})}))
         combined = False
         for group in groups:
             if not rec['device_serial'] or rec['device_serial'] != group['device_serial']:
@@ -262,7 +295,7 @@ def reconcile_recordings(recordings):
                 continue
             # Equal native serials establish device identity without a registry
             # nickname. Other source and measurement issues still prevent merging.
-            blockers = (set(rec['issues']) | set(group['issues'])) - {'unknown_probe_identity'}
+            blockers = (set(rec['issues']) | set(group['issues'])) - {'unknown_probe_identity', 'nonfinite_conductivity'}
             if blockers or rec['conductivity_bases'] != group['conductivity_bases']:
                 continue
             if rec['clock_basis'] != group['clock_basis'] or rec.get('source_offset_seconds') != group.get('source_offset_seconds'):
@@ -283,6 +316,7 @@ def reconcile_recordings(recordings):
             if len(common) or (rec['clock_basis'] and 0 < distance <= cadence):
                 group['members'].extend(rec['members'])
                 group['member_files'].update(rec['member_files'])
+                group['date_evidence_by_member'].update(rec['date_evidence_by_member'])
                 group['alias_qualifications'] = sorted(set(group.get('alias_qualifications',[]) + rec.get('alias_qualifications',[])))
                 group['samples'] = pd.concat([left, right]).drop_duplicates('timestamp').sort_values('timestamp').reset_index(drop=True)
                 group['dates'] = sorted(set(group.get('dates', []) + rec.get('dates', [])))
@@ -304,6 +338,7 @@ def reconcile_recordings(recordings):
                     group['signal_summary'][basis] = dict(min_us_cm=float(finite.min()), max_us_cm=float(finite.max()),
                         maximum_sample_timestamp=str(samples.loc[finite.idxmax(), 'timestamp']))
         group['members'] = sorted(set(group['members']))
+        group['measurement_quality'] = _measurement_quality(group['samples'])
         group['logical_recording_id'] = 'REC-' + hashlib.sha256(_json(group['members']).encode()).hexdigest()[:16]
     return sorted(groups, key=lambda r: r['logical_recording_id'])
 
@@ -311,9 +346,10 @@ def reconcile_recordings(recordings):
 OVERRIDE_FIELDS = {
     'recordings': {'content_ref', 'site_alias', 'role', 'activity', 'clock_correction_seconds', 'clock_basis'},
     'trial_clocks': {'trial_id', 'utc_offset_seconds'},
-    'recording_links': {'trial_id', 'content_ref'},
+    'recording_links': {'trial_id', 'content_ref', 'scope', 'continuation_of', 'association_basis'},
     'calibration_links': {'trial_id', 'calibration_id', 'probe_alias'},
     'expected_roles': {'trial_id', 'roles'},
+    'trial_dispositions': {'trial_id', 'disposition'},
 }
 
 
@@ -322,8 +358,15 @@ def _validate_overrides(overrides, trials, calibrations, recordings):
         return {key: [] for key in OVERRIDE_FIELDS}
     if not isinstance(overrides, dict) or overrides.get('schema_version') != 1:
         raise ValueError('Overrides require schema_version 1')
-    if set(overrides) - {'schema_version', *OVERRIDE_FIELDS}:
+    if set(overrides) - {'schema_version', 'evidence_files', *OVERRIDE_FIELDS}:
         raise ValueError('Unknown override section')
+    files=overrides.get('evidence_files',[])
+    if not isinstance(files,list) or any(not isinstance(f,dict) or set(f)!={'path','sha256'}
+            or not isinstance(f['path'],str) or not f['path']
+            or not isinstance(f['sha256'],str) or not re.fullmatch(r'[0-9a-f]{64}',f['sha256']) for f in files):
+        raise ValueError('Invalid evidence file pins')
+    if len({f['path'] for f in files})!=len(files):
+        raise ValueError('Duplicate evidence file pin')
     trial_ids = {t['trial_id'] for t in trials}
     cal_ids = {c['calibration_id'] for c in calibrations}
     refs = {m for r in recordings for m in r['members']}
@@ -341,7 +384,7 @@ def _validate_overrides(overrides, trials, calibrations, recordings):
             required = {'recordings': ('content_ref',), 'trial_clocks': ('trial_id','utc_offset_seconds'),
                         'recording_links': ('trial_id','content_ref'),
                         'calibration_links': ('trial_id','calibration_id','probe_alias'),
-                        'expected_roles': ('trial_id','roles')}[kind]
+                        'expected_roles': ('trial_id','roles'), 'trial_dispositions': ('trial_id','disposition')}[kind]
             if any(k not in entry for k in required):
                 raise ValueError(f'Missing required fields in {kind}')
             if 'trial_id' in entry and entry['trial_id'] not in trial_ids:
@@ -350,6 +393,23 @@ def _validate_overrides(overrides, trials, calibrations, recordings):
                 raise ValueError('Unknown override calibration_id')
             if 'content_ref' in entry and entry['content_ref'] not in refs:
                 raise ValueError('Unknown override content_ref')
+            if kind=='trial_dispositions' and entry['disposition']!='practice_no_detection':
+                raise ValueError('Unknown trial disposition')
+            if kind=='recording_links':
+                if entry.get('scope') not in (None,'whole_file'):
+                    raise ValueError('Unknown recording link scope')
+                if entry.get('association_basis') not in (None,'source_documented','session_inferred','dose_sequence_inferred'):
+                    raise ValueError('Unknown recording association basis')
+                parent=entry.get('continuation_of')
+                if parent:
+                    child=next(r for r in recordings if entry['content_ref'] in r['members'])
+                    previous=next((r for r in recordings if parent in r['members']),None)
+                    if (entry.get('scope')!='whole_file' or previous is None or previous is child
+                            or not child['device_serial'] or child['device_serial']!=previous['device_serial']
+                            or not set(child.get('dates',[])) & set(previous.get('dates',[]))
+                            or child['samples'].empty or previous['samples'].empty
+                            or child['samples'].timestamp.min() <= previous['samples'].timestamp.max()):
+                        raise ValueError('Invalid recording continuation: require ordered same-device/date pieces')
             for key in ('utc_offset_seconds', 'clock_correction_seconds'):
                 if key in entry and (isinstance(entry[key], bool) or not isinstance(entry[key], (int,float)) or
                                      not math.isfinite(entry[key]) or abs(entry[key]) > 86400):
@@ -367,6 +427,10 @@ def _validate_overrides(overrides, trials, calibrations, recordings):
                 raise ValueError(f'Duplicate override in {kind}')
             seen.add(identity)
         result[kind] = entries
+    # Continuations form a chain, not several competing takes after one file.
+    parents=[(link['trial_id'],link['continuation_of']) for link in result['recording_links'] if link.get('continuation_of')]
+    if len(parents)!=len(set(parents)):
+        raise ValueError('Branching recording continuation is not a single ordered chain')
     # A source session cannot be corrected differently merely to fit each release.
     sessions = {}
     for entry in result['trial_clocks']:
@@ -463,6 +527,7 @@ def _split_sessions(recordings, gap_seconds=60.0, gap_factor=10.0):
                            acquisition_start_local=str(piece.timestamp.min()),
                            acquisition_end_local=str(piece.timestamp.max()),
                            acquisition_gap_threshold_seconds=float(threshold))
+            segment['measurement_quality'] = _measurement_quality(piece)
             if len(boundaries) > 2:
                 segment['logical_recording_id'] = rec['logical_recording_id'] + f':S{number:02}'
             segment['dates'] = sorted(set(piece.timestamp.dropna().dt.date.astype(str)))
@@ -600,7 +665,7 @@ def _reconcile_existing_links(result, trials, preparations, provenance, recordin
             applicability = 'unavailable_channel'
         elif 'competing_calibration_preparations' in fit['reasons']:
             applicability = 'competing_calibrations'
-        elif fit['status']!='supported' or recording_status!='source_confirmed' or measurement_issues:
+        elif fit['status']!='supported' or recording_status!='source_confirmed':
             applicability = 'evidence_requires_review'
         else:
             applicability = {'native_match':'native_identity_and_channel_supported',
@@ -624,6 +689,7 @@ def _reconcile_existing_links(result, trials, preparations, provenance, recordin
             recording_device_serial=matching[0].get('device_serial','') if matching else '',
             calibration_device_serial=fit.get('calibration_device_serial',''),
             identity_status=fit.get('identity_status','unverified'),identity_evidence=fit.get('identity_evidence',{}),
+            measurement_status='missing_readings' if measurement_issues else 'not_flagged' if matching else 'not_assessed',
             fit_candidate_references=[c.get('fit_reference',{}) for c in options.values()],
             conductivity_basis=basis,k=fit.get('k',''),calibration_basis=fit.get('calibration_basis',''),
             concentration_unit=fit.get('concentration_unit',''),coefficient_unit=fit.get('coefficient_unit',''),
@@ -649,11 +715,23 @@ def _infer_chronology(result, trials, provenance, recordings, tolerance_seconds,
         trial = trials_by_id[edge['trial_id']]
         local = _local_release_clock(trial, provenance)
         samples = rec['samples']
-        technical = [i for i in rec['issues'] if i != 'unknown_probe_identity']
+        technical = [i for i in rec['issues'] if i not in ('unknown_probe_identity','nonfinite_conductivity')]
         eligible = (rec.get('instrument_family') == 'aquatroll' and rec['conductivity_bases']
                     and rec['activity'] not in ('calibration','background','attenuation')
-                    and not technical and not samples.empty and edge['status'] != 'conflicting')
+                    and not technical and not samples.empty and edge['status'] != 'conflicting'
+                    and any(q['finite_count'] for q in _measurement_quality(samples).values()))
         if not eligible:
+            continue
+        whole_file=[link for link in edge['reviewed_evidence'] if link.get('scope')=='whole_file'
+                    and sum(link['content_ref'] in r['members'] for r in recordings)==1]
+        if whole_file:
+            # A reviewed file relationship can survive an unknown event clock.
+            # It does not recover that clock or select a pulse within the file.
+            edge['chronology_evidence']=dict(clock_basis='reviewed_whole_file_relationship',
+                eligible_for_protocol_pairing=True,source_link_evidence=whole_file,
+                association_bases=sorted({link.get('association_basis','source_documented') for link in whole_file}),
+                release_clock_alignment='not_established_by_file_relationship')
+            edge['qualifications']=list(edge['reasons'])+['reviewed_file_pairing_event_clock_not_established']
             continue
         # Prefer explicit UTC when both sides have it. Otherwise compare the
         # written civil clocks under the reported field protocol; do not create UTC.
@@ -716,7 +794,18 @@ def _infer_chronology(result, trials, provenance, recordings, tolerance_seconds,
         for device_edges in by_device.values():
             reviewed = [e for e in device_edges if e['status']=='supported']
             sourced = [e for e in device_edges if e.get('source_link_evidence')]
-            if len(reviewed)==1:
+            whole=[e for e in device_edges if e['chronology_evidence'].get('clock_basis')=='reviewed_whole_file_relationship']
+            refs={ref for e in whole for ref in e['member_refs']}
+            links=[link for e in whole for link in e['reviewed_evidence'] if link.get('scope')=='whole_file']
+            roots=[e for e in whole if not any(link.get('continuation_of') for link in e['reviewed_evidence'])]
+            chain=(len(whole)>1 and len(roots)==1 and all(
+                not link.get('continuation_of') or link['continuation_of'] in refs for link in links))
+            parents_resolved=all(not link.get('continuation_of') or link['continuation_of'] in refs for link in links)
+            if (len(whole)==1 or chain) and parents_resolved:
+                selected.extend(whole)
+            elif whole:
+                competing.extend(e['recording_edge_id'] for e in whole)
+            elif len(reviewed)==1:
                 selected.extend(reviewed)
             elif len(sourced)==1:
                 selected.extend(sourced)
@@ -809,11 +898,12 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
             reject = []
             if rec.get('site_alias') and rec['site_alias'] != trial['site_alias']:
                 reject.append('different_site')
-            if rec.get('dates') and day not in rec['dates']:
+            candidate_dates=rec.get('dates') or [rec.get('date_evidence',{}).get('folder_date','')]
+            if any(candidate_dates) and day not in candidate_dates:
                 # UTC-midnight releases may share a recording on a different local date.
                 times = rec['samples'].get('timestamp_utc', pd.Series(dtype='datetime64[ns, UTC]'))
                 if release_time is None or times.empty or not (times.min() <= release_time <= times.max()):
-                    reject.append('different_date' if rec.get('dates') else 'measurement_date_unavailable')
+                    reject.append('different_date')
             if rec.get('activity') in ('calibration','background'):
                 reject.append('nonriver_activity')
             if reject:
@@ -856,6 +946,8 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
             edge = dict(recording_edge_id=edge_id,trial_id=trial_id,logical_recording_id=rec['logical_recording_id'],
                         member_refs=rec['members'],probe_alias=rec.get('probe_alias',''),role=rec.get('role',''),
                         device_serial=rec.get('device_serial',''),alias_qualifications=rec.get('alias_qualifications',[]),
+                        measurement_quality=rec.get('measurement_quality',{}),date_evidence=rec.get('date_evidence',{}),
+                        date_evidence_by_member=rec.get('date_evidence_by_member',{}),
                         activity=rec['activity'],status=status,reasons=sorted(set(reasons)),time_evidence=time_evidence,
                         reviewed_evidence=links,existing_associations=existing,
                         source_link_evidence=[],
@@ -877,6 +969,11 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
                                                   or prep.get('site_alias') != trial['site_alias']):
                     continue
                 cal_reasons = []
+                disposition=evidence.get('source_table_status') or evidence.get('source_record',{}).get('source_table_status','')
+                source_method=evidence.get('source_record',{}).get('method_family','')
+                method_review=(source_method=='mass_stock' and fit.get('calibration_basis')=='relative_concentration')
+                if disposition in ('abandoned','crossed_out'):
+                    cal_reasons.append('preparation_'+disposition)
                 if not explicit_relationship:
                     cal_reasons.append('no_trial_calibration_source_relationship')
                 native = native_calibrations[cal_id]
@@ -913,12 +1010,22 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
                     cal_status = 'conflicting'
                 elif 'conductivity_channel_unavailable' in cal_reasons:
                     cal_status = 'unavailable'
+                elif disposition in ('abandoned','crossed_out'):
+                    cal_status = 'unavailable'
                 cal_edges.append(dict(calibration_edge_id=edge_id + ':' + ':'.join((cal_id,fit.get('probe_alias',''),fit['conductivity_basis'])),
                     recording_edge_id=edge_id,trial_id=trial_id,calibration_id=cal_id,probe_alias=fit.get('probe_alias',''),
                     conductivity_basis=fit['conductivity_basis'],calibration_basis=fit.get('calibration_basis',''),
                     concentration_unit=fit.get('concentration_unit',''),coefficient_unit=fit.get('coefficient_unit',''),k=fit.get('k'),
                     recording_device_serial=rec.get('device_serial',''),calibration_device_serial=native['device_serial'],
                     identity_status=identity_status,identity_evidence=native,
+                    procedure_id=prep.get('procedure_id',''),preparation_disposition=disposition,
+                    preparation_method_review_required=method_review,
+                    preparation_history=dict(source_record=evidence.get('source_record',{}).get('record_id',''),
+                        source_method_family=source_method,
+                        method_review_reason='Source mass-stock label differs from saved relative-concentration calculation; no refit or automatic method correction.' if method_review else '',
+                        notes=evidence.get('source_record',{}).get('notes',''),
+                        stock_stages=[{k:s.get(k,'') for k in ('stock_id','parent_stock_id','parent_aliquot_ml','notes')}
+                                      for s in evidence.get('stock_stages',[])]),
                     alias_qualification='record_aliases_are_placeholders_not_physical_evidence',
                     fit_reference=fit.get('_fit_reference',{}),status=cal_status,reasons=cal_reasons,
                     mass_route_eligible=expected_unit=='mg/L' and cal_status=='supported',
@@ -1016,6 +1123,16 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
     if protocol:
         _infer_chronology(result,trials,provenance,recordings,tolerance_seconds,overrides)
     for summary in summaries:
+        disposition=next((d for d in overrides['trial_dispositions'] if d['trial_id']==summary['trial_id']),None)
+        if disposition:
+            source=provenance.get('trials',{}).get(summary['trial_id'],{}).get('source_record',{})
+            if source.get('treatment_label')!='practice':
+                raise ValueError('Practice exclusion requires a source-labelled practice trial')
+            summary.update(status='excluded_practice',reasons=['documented_no_downstream_detection'],
+                selected_recording_edge_ids=[],selected_calibration_edge_ids=[],disposition_evidence=disposition)
+            for edge in record_edges:
+                if edge['trial_id']==summary['trial_id']:
+                    edge['selected_for_pairing']=False
         selected = summary.get('selected_calibration_edge_ids',[]) if protocol else [
             c['calibration_edge_id'] for c in cal_edges if c['trial_id']==summary['trial_id'] and c['status']=='supported']
         summary['identity_review_required'] = not selected or any(c['identity_status']!='native_match' for c in cal_edges
@@ -1024,6 +1141,18 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
             c['recording_edge_id'] in summary.get('selected_recording_edge_ids',summary['recording_edge_ids']) and
             (c['source_relationship']==summary['trial_id'] or c['reviewed_evidence']) for c in cal_edges)
         summary['identity_policy'] = 'Source links establish pairings; placeholder aliases do not establish physical identity.'
+        summary['preparation_method_review_required']=any(c['preparation_method_review_required'] for c in cal_edges
+            if c['calibration_edge_id'] in selected)
+        summary['measurement_review_required'] = any(
+            q['nonfinite_count'] for e in record_edges if e['recording_edge_id'] in summary.get('selected_recording_edge_ids',[])
+            for q in e['measurement_quality'].values()) or any(
+            a['measurement_status']=='missing_readings' and a['recording_link_status']=='source_confirmed'
+            for a in result['trial_associations'] if a['trial_id']==summary['trial_id'])
+        chosen=[e for e in record_edges if e['recording_edge_id'] in summary.get('selected_recording_edge_ids',[])]
+        summary['pairing_evidence_bases']=sorted({basis for e in chosen for basis in
+            e.get('chronology_evidence',{}).get('association_bases',[e.get('chronology_evidence',{}).get('clock_basis','explicit_review')])})
+        summary['event_alignment_review_required']=any(e.get('chronology_evidence',{}).get('clock_basis')==
+            'reviewed_whole_file_relationship' for e in chosen)
     result['calibration_device_checks'] = native_calibrations
     result['recording_segments'] = [dict(logical_recording_id=r['logical_recording_id'],
         source_logical_recording_id=r.get('source_logical_recording_id',r['logical_recording_id']),
@@ -1108,6 +1237,11 @@ def run_matching(records_dir, processed_dir, calibration_dir, output_dir, *, roo
     if overrides_path is not None:
         overrides_path=Path(overrides_path).resolve()
         overrides=json.loads(overrides_path.read_text());inputs.add(overrides_path)
+        for pin in overrides.get('evidence_files',[]):
+            path=_path(pin['path'],root).resolve()
+            if not path.is_relative_to(root) or not path.is_file() or _hash(path)!=pin['sha256']:
+                raise ValueError(f'Reviewed evidence file hash mismatch or unavailable: {pin["path"]}')
+            inputs.add(path)
     for evidence in provenance.get('calibrations',{}).values():
         for file in evidence.get('probe_identity_review',{}).get('files',[]):
             path=_path(file['path'],root)
@@ -1132,7 +1266,7 @@ def run_matching(records_dir, processed_dir, calibration_dir, output_dir, *, roo
     except (OSError,subprocess.CalledProcessError):
         revision=None
     from collections import Counter
-    info=dict(schema_version=2,created_at_utc=datetime.now(timezone.utc).isoformat(),git_commit=revision,
+    info=dict(schema_version=3,created_at_utc=datetime.now(timezone.utc).isoformat(),git_commit=revision,
               code_sha256=_hash(Path(__file__)),python_version=__import__('platform').python_version(),
               numpy_version=np.__version__,pandas_version=pd.__version__,
               scope='Pairing proposals only; no background/window selection, concentration conversion or Q.',
@@ -1152,6 +1286,7 @@ def run_matching(records_dir, processed_dir, calibration_dir, output_dir, *, roo
               options=dict(protocol_inference=protocol,session_gap_seconds=gap_seconds,session_gap_factor=gap_factor,association_tolerance_seconds=tolerance_seconds,
                            probe_identity_policy='Record-table aliases are placeholders; source relationships establish K pairing, independently pinned native evidence establishes physical identity.',
                            mass_route_eligible='Compatible concentration units and a supported K link only; not discharge readiness or scientific acceptance.',
+                           measurement_quality='Nonfinite cells retain their source row references; they do not erase file/K identity. No values filled or pulse windows selected.',
                            candidate_generation='all local date/site-compatible recordings; reviewed relationships required for support',
                            chronology='Reported field-local clocks under explicit protocol; association tolerance is operational, not a travel-time estimate or UTC correction',
                            gap_diagnostic='delta > 1.5 * median positive cadence; not an event boundary',

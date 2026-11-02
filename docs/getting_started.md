@@ -45,7 +45,7 @@ The parser writes CSVs, metadata and a per-file manifest. Review its errors and 
 After parsing the field recordings and fitting calibration curves, run:
 
 ```sh
-python -m salt_dilution.scripts.processing.matching --calibrations salt_dilution/results/calibrations/2026-10-26_probe_review --output salt_dilution/results/matching/new_run
+python -m salt_dilution.scripts.processing.matching --calibrations salt_dilution/results/calibrations/2026-10-26_probe_review --overrides salt_dilution/config/pairing_overrides.json --output salt_dilution/results/matching/new_run
 ```
 
 Use a new output directory. `--records` and `--processed` select other input directories. The matcher checks saved calibration hashes, inventories local recordings and writes `recording_candidates.csv`, `calibration_candidates.csv`, `pairing_summary.csv`, `trial_associations.csv` and `run_info.json`. Read the summary first, then follow its edge IDs to the evidence and alternatives. Structured CSV cells contain JSON.
@@ -58,9 +58,13 @@ The default candidate break exceeds both 60 seconds and ten median sampling inte
 
 An existing notebook-to-file relationship can identify a recording even when the release clock is uncertain. The matcher rechecks its registered file hashes, native probe identity, date and current CSV path before using it. This does not create an exact timestamp or choose between acquisition segments within that file. Competing sessions and source contradictions remain visible. Reviewed clock corrections and known missing recording roles take precedence over the default assumptions. Multiple sites on a day prevent automatic site inference for an unlabelled recording. Both conductivity channels and mass/relative concentration fits retain their own units. Numeric trial/calibration suffixes and fit quality do not establish associations.
 
-`trial_associations.csv` audits each current `trial_inputs.csv` row. It retains the original calibration ID and alias labels alongside source relationships, native serial evidence and review flags. Record-table probe aliases were entered as placeholders, so a missing or different alias does not reject an otherwise supported K link. A fit's alias remains part of its saved lookup key; it does not establish physical identity. Missing conductivity cells remain measurement-quality issues and block automatic recording selection. Alternative preparations remain alternatives.
+`trial_associations.csv` audits each current `trial_inputs.csv` row. It retains the original calibration ID and alias labels alongside source relationships, native serial evidence and review flags. Record-table probe aliases were entered as placeholders, so a missing or different alias does not reject an otherwise supported K link. A fit's alias remains part of its saved lookup key; it does not establish physical identity. Isolated missing conductivity cells retain their source-row references in `measurement_quality` and do not erase a supported pairing. A recording with no finite conductivity remains unselected. `measurement_review_required` flags gaps for later pulse/background checks; no values are filled.
+
+The supplied [pairing evidence](../salt_dilution/config/pairing_overrides.json) records the documented July 31 continuation, session-based August 6 and September 18 proposals, and Paradise dose-sequence/site-calibration links. `pairing_evidence_bases` distinguishes these from clock-based proposals. Whole-file links retain `event_alignment_review_required`; they do not recover an exact release time or select a pulse. Folder dates corroborate acquisition dates or limit candidates when internal dates are absent. Internal timestamps take precedence, and folder disagreements remain visible. Known practice releases without downstream detection are `excluded_practice`, rather than missing usable experiments.
 
 `identity_status` distinguishes a reproduced electronic calibration with matching native serials (`native_match`), identity carried through the reported within-trial procedure (`source_protocol_match`), and a source-linked K without independent device confirmation (`unverified`). Genuine native serial disagreements and conflicting identity evidence still block the affected link. The matcher applies no cross-device transfer factor. `identity_review_required` remains visible even when the source pairing is complete. `mass_route_eligible` describes compatible K units and a supported link, not an accepted Q calculation. All pairing outputs remain scientifically unaccepted until the later quantity, background and pulse-window checks.
+
+`preparation_method_review_required` flags a source mass-stock label paired with a saved relative-concentration fit. Candidate rows retain the source method, selected procedure, stock stages and exact fitted units. Matching does not decide which historical interpretation is correct or refit K. Resolve this discrepancy before applying the coefficient to discharge.
 
 The matcher compares proposals with current curated links and preserves disagreements. It leaves those links unchanged. It does not choose background or integration windows, apply K, calculate discharge or link rock trials to Q. Those are later analysis steps. Older processed files are checked against raw exports before metadata are recovered in memory; normalized files are not overwritten.
 
@@ -71,10 +75,11 @@ The matcher compares proposals with current curated links and preserves disagree
 | List | Entry fields, in addition to evidence/source_ref |
 | --- | --- |
 | `recordings` | `content_ref`; optionally `site_alias`, `role`, `activity`, `clock_correction_seconds`, `clock_basis` |
-| `recording_links` | `trial_id`, `content_ref` |
+| `recording_links` | `trial_id`, `content_ref`; optionally `scope: "whole_file"`, `association_basis`, `continuation_of` |
 | `calibration_links` | `trial_id`, `calibration_id`, `probe_alias` |
 | `trial_clocks` | `trial_id`, `utc_offset_seconds`, for a notebook local clock |
 | `expected_roles` | `trial_id`, `roles` (a nonempty list of main-discharge roles) |
+| `trial_dispositions` | `trial_id`, `disposition: "practice_no_detection"`, for a source-labelled practice release |
 
 For example, a reviewed link has this shape; replace the illustrative IDs and source reference with verified records:
 
@@ -83,6 +88,8 @@ For example, a reviewed link has this shape; replace the illustrative IDs and so
 ```
 
 A recording correction shifts its existing UTC series by the stated seconds and requires `clock_basis`; it cannot create UTC for an unresolved local series. Notebook offsets must agree within a site/day, and recording corrections within a physical device/day. Supported numeric report offsets and source timestamps with offsets are recognized automatically. Overrides cannot remove source hash or physical-device conflicts. Keep evidence for a real protocol change rather than adjusting clocks or choosing K until the answer looks plausible.
+
+`association_basis` can be `source_documented`, `session_inferred` or `dose_sequence_inferred`. A whole-file link cannot choose between acquisition segments. `continuation_of` references an earlier piece from the same physical device and date; the pieces remain separate, with no fabricated samples across the gap. `evidence_files` is an optional top-level list of `{ "path": "...", "sha256": "..." }` pins for supporting files inside the repository. Changed or missing pinned evidence stops the run. Without `--overrides`, the matcher uses current source associations and chronology alone.
 
 ## Work with seismic recordings
 

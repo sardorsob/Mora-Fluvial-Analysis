@@ -1,0 +1,400 @@
+{
+  "schema_version": 1,
+  "evidence_files": [
+    {
+      "path": "salt_dilution/data/processed/20250731/20250731_075234_mixing_riverRight_840058.csv",
+      "sha256": "e6caa3fb96cf45be38df7cab3d95d9ed086a88dbbb7cc09642b67026dc023927"
+    },
+    {
+      "path": "salt_dilution/data/processed/20250731/20250731_075234_mixing_riverRight_840058_metadata.json",
+      "sha256": "3e199892cb4aea6552915a2c7e8c13c9dbbed8a3f8214b8c6110784c02eae1bd"
+    },
+    {
+      "path": "salt_dilution/data/processed/20250731/LiveReadings/VuSitu_LiveReadings_2025-07-31_08-09-26_Device_Location.csv",
+      "sha256": "4e782dbdff780655c433f37765b1424754cdd79599ec51c88161d5b1e49bd39b"
+    },
+    {
+      "path": "salt_dilution/data/processed/20250731/LiveReadings/VuSitu_LiveReadings_2025-07-31_08-09-26_Device_Location_metadata.json",
+      "sha256": "0b09444b803044baab5c37f4e69c6af86354155c9a1413c353452a89d20f70ce"
+    },
+    {
+      "path": "salt_dilution/data/processed/20260806/NaCl_202608061_RL_2026-08-14_17-55-39-876.csv",
+      "sha256": "4bef07385eaae6498530d59e7b07f6f81495dff2a8a045cc0262ce2d617b0095"
+    },
+    {
+      "path": "salt_dilution/data/processed/20260806/NaCl_202608061_RL_2026-08-14_17-55-39-876_metadata.json",
+      "sha256": "332976570ade3752e073ff6e7cd4e37cde952842ca204dcb2820e1b7dbeba037"
+    },
+    {
+      "path": "salt_dilution/data/processed/20260806/NaCl_20260806_RR_2026-08-14_18-16-21-465.csv",
+      "sha256": "4caefa4c965915b782db1a3d65c2ea7b7481089795acb1b70b609965c9964bb7"
+    },
+    {
+      "path": "salt_dilution/data/processed/20260806/NaCl_20260806_RR_2026-08-14_18-16-21-465_metadata.json",
+      "sha256": "fda9ce5b180243b3aa5d6798d606ec91d7341ef25bc5ea4c18d5f9af2e066b64"
+    },
+    {
+      "path": "salt_dilution/data/processed/20260918/VuSitu_LiveReadings_2026-09-18_15-53-31_Device_Location.csv",
+      "sha256": "1eecf56951fd9a42e8e0901aecd783d07abe338a73b39305659c749b89a3af89"
+    },
+    {
+      "path": "salt_dilution/data/processed/20260918/VuSitu_LiveReadings_2026-09-18_15-53-31_Device_Location_metadata.json",
+      "sha256": "7ea44253232b159c62ed76de53657e239929e13ef0c5be0327ccb36c45ac8e1f"
+    },
+    {
+      "path": "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv",
+      "sha256": "b894e067fbd7f5772c583f489625becf840976962bb305fa0598d12cb6f9500e"
+    },
+    {
+      "path": "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv",
+      "sha256": "6dc8da9d580c4ece0dbff7a3f53b82714387aabae77a154c3cfd5e85b48a74b5"
+    },
+    {
+      "path": "salt_dilution/data/processed/field_notes/2026-10-12/field_observations.csv",
+      "sha256": "467bceaf1428a66ec6132912ae1aa07c7a33aa2d39acf3ea4e5417a405977e7e"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR05_01_600.csv",
+      "sha256": "1339ddb036596f78b49dbba21c6181fbe5a27c8e84a0f35f153f60182b202765"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR05_01_600_metadata.json",
+      "sha256": "3ee001bd214c819b8bca7d6b39c3fa388d4c87b98995599e949a078585e9f0f4"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR05_02_400.csv",
+      "sha256": "260436080212ec452a99bb052893245eb0028050cd9489a309cd77109ea97404"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR05_02_400_metadata.json",
+      "sha256": "260e6eaf6e945a685aed541af618feef1d13a027d7155d81de66343157d84143"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR05_03_200.csv",
+      "sha256": "529793f8233cbed130a85d803bb6682a4120257388a2df1f2493ea5f1d968c25"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR05_03_200_metadata.json",
+      "sha256": "45b1cbac6159c5e8e159f963b6951634b077ea83e5acfeddebcf77bd2f98d4d7"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR05_WQ.csv",
+      "sha256": "20139e791916b0351308a761807975aba0065ac372775c454f89fbc9dfe5a6b5"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR05_WQ_metadata.json",
+      "sha256": "3d4ba9c25ee610a031013e2b2579ab37647e7d34cb4d0b0e4291e04b29d61915"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR06_01_500.csv",
+      "sha256": "f4d514cbb3954ea721ca8da097cd2b711b833b0935dc7cd498b8bf7b514c1312"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR06_01_500_metadata.json",
+      "sha256": "05eb820c3730bede0e6cc377a000f15c77f979b856fc3ad92b46c7f9279f04bb"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR06_02_500.csv",
+      "sha256": "5fff606d5c06dd20d771b3950da3e470c3cecd0cd571b331049b0aa04efc3400"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR06_02_500_metadata.json",
+      "sha256": "40deb712b59c59bba57f8dc20f8c642d013de399ce8fe1fa8ef3c0b692ee72ee"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR06_03_400.csv",
+      "sha256": "96f6fbb37092b91b347ef907ce13bfc3baf38b990871b3ddc68784d69b379774"
+    },
+    {
+      "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR06_03_400_metadata.json",
+      "sha256": "e118d42d3dadc8d41a4e765b83c10d544c0b8948bc5d38dd24fd733177d91a78"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250731/20250731_075234_mixing_riverRight_840058.csv",
+      "sha256": "eee7a6956cb43efb9998d0dff4a81ad6e88473c0a02134ed02f21ef212b7c47f"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250731/LiveReadings/VuSitu_LiveReadings_2025-07-31_08-09-26_Device_Location.html",
+      "sha256": "29adef3dee0af3e79ae41074b717a2529c7cf91e7cca52fcda9fca39f7ed0401"
+    },
+    {
+      "path": "salt_dilution/data/raw/20260806/NaCl_202608061_RL_2026-08-14_17-55-39-876.csv",
+      "sha256": "6d3cb7a11e78f4f2ccbb9858d7925ae27c72eb87429ed0ad2f8295f16ce708a0"
+    },
+    {
+      "path": "salt_dilution/data/raw/20260806/NaCl_20260806_RR_2026-08-14_18-16-21-465.csv",
+      "sha256": "d86d778d356757d7f00e0fcc2293c80383d19ddee9c505fc16e0d3fccd3fa9f8"
+    },
+    {
+      "path": "salt_dilution/data/raw/20260918/VuSitu_LiveReadings_2026-09-18_15-53-31_Device_Location.html",
+      "sha256": "5cf42ced335db22b29fa4905be69cf5813da94e8bbf7dda12c1f19b38cf39f6d"
+    },
+    {
+      "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR05_01_600.csv",
+      "sha256": "48985ad01dce75629d7189d477590fe8afa20b0456ac31c7edacb4bff5b18905"
+    },
+    {
+      "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR05_02_400.csv",
+      "sha256": "ea6debfb65a5f6a80a02553500dce11c7791b7597315addd0b3fce727cfb0602"
+    },
+    {
+      "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR05_03_200.csv",
+      "sha256": "47b7c767ee488288db74e254a02e6802c02b471d841c4deb5960b813856db6cb"
+    },
+    {
+      "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR05_WQ.csv",
+      "sha256": "7f43a13c1375a591de4c1acced1541246d04d30defe3c496a008a0ee2d5da7e8"
+    },
+    {
+      "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR06_01_500.csv",
+      "sha256": "09d41428af937cad2f1c192fdd1e778d5fc326198ad9b3e001f37be12ef2d861"
+    },
+    {
+      "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR06_02_500.csv",
+      "sha256": "63e6bd864c3154850176dc16da293da4e8b96118df51e2b67f81394b9c62eafc"
+    },
+    {
+      "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR06_03_400.csv",
+      "sha256": "a1e624c26a377592b5f2cc6f114c277c83ce8478cb075ca2600bbd389ea4c0bf"
+    }
+  ],
+  "recordings": [
+    {
+      "content_ref": "DS-eee7a6956cb43efb",
+      "site_alias": "NISQ",
+      "role": "downstream_right",
+      "activity": "river",
+      "evidence": "Notebook documents app crash and split live recording; existing curated first piece contains release clock 08:03:18.",
+      "source_ref": "Document_261007_113237.pdf#page=6;side=left;block=a_06_dry_dump"
+    },
+    {
+      "content_ref": "DS-29adef3dee0af3e7",
+      "site_alias": "NISQ",
+      "role": "downstream_right",
+      "activity": "river",
+      "evidence": "Documented app-crash continuation of same serial840058; retain gap from08:07:42 to08:09:27. File relationship only; full pulse coverage remains unverified.",
+      "source_ref": "Document_261007_113237.pdf#page=6;side=left;block=a_06_dry_dump"
+    },
+    {
+      "content_ref": "FILE-4389dfbf47b4317c",
+      "site_alias": "NISQ",
+      "role": "downstream_left",
+      "activity": "river",
+      "evidence": "Session-level inference: the only retained paired RL/RR river logs in August6folder, internally acquired August6; notebook has one Nisqually solution release and associated calibration. Written14:09 precedes acquisition14:24; cause and pulse capture unresolved, no clock correction applied. The generic calibration CSV on this date belongs to Tahoma and is not substituted.",
+      "source_ref": "Document_261007_160953.pdf#page=1;side=left;block=c_01_nisqually"
+    },
+    {
+      "content_ref": "FILE-bbed25e164cae327",
+      "site_alias": "NISQ",
+      "role": "downstream_right",
+      "activity": "river",
+      "evidence": "Session-level inference: the only retained paired RL/RR river logs in August6folder, internally acquired August6; notebook has one Nisqually solution release and associated calibration. Written14:09 precedes acquisition14:24; cause and pulse capture unresolved, no clock correction applied. The generic calibration CSV on this date belongs to Tahoma and is not substituted.",
+      "source_ref": "Document_261007_160953.pdf#page=1;side=left;block=c_01_nisqually"
+    },
+    {
+      "content_ref": "FILE-bfdaa8c83bc6baa0",
+      "site_alias": "NISQ",
+      "role": "downstream",
+      "activity": "river",
+      "evidence": "Session-level inference: one retained September18river LiveReadings export with transient EC response and one source mass-release block. Notebook explicitly restarts calibration using initial stock directly; C01abandoned, C02retained. Release clock remains unknown.",
+      "source_ref": "Document_261007_160953.pdf#page=9;side=right;block=c_09_mass_dump"
+    },
+    {
+      "content_ref": "FILE-aee07f32f2781687",
+      "site_alias": "PAR",
+      "role": "downstream",
+      "activity": "river",
+      "evidence": "Inferred FourthCrossing↔PR05: unique600/400/200g sequence matches notebook; source visit heading~15:15 aligns PR05WQ15:15, and specific peaks760/600/448 correspond764.10/604.91/447.98. Preserve source values; no exact release clocks inferred.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=left;block=c_05_crossing_dump_1;calibration=page7right:PR05"
+    },
+    {
+      "content_ref": "FILE-e4005a7339021497",
+      "site_alias": "PAR",
+      "role": "downstream",
+      "activity": "river",
+      "evidence": "Inferred FourthCrossing↔PR05: unique600/400/200g sequence matches notebook; source visit heading~15:15 aligns PR05WQ15:15, and specific peaks760/600/448 correspond764.10/604.91/447.98. Preserve source values; no exact release clocks inferred.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=left;block=c_05_crossing_dump_2;calibration=page7right:PR05"
+    },
+    {
+      "content_ref": "FILE-72ddc787cec1e048",
+      "site_alias": "PAR",
+      "role": "downstream",
+      "activity": "river",
+      "evidence": "Inferred FourthCrossing↔PR05: unique600/400/200g sequence matches notebook; source visit heading~15:15 aligns PR05WQ15:15, and specific peaks760/600/448 correspond764.10/604.91/447.98. Preserve source values; no exact release clocks inferred.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=left;block=c_05_crossing_dump_3;calibration=page7right:PR05"
+    },
+    {
+      "content_ref": "FILE-de2094f999075dbc",
+      "site_alias": "PAR",
+      "role": "downstream",
+      "activity": "river",
+      "evidence": "Inferred UpperBridge↔PR06:500/500/400g sequence, source order and later visit match PR06files. Notebook corrected peaks1100/1100/1013 differ from electronic maxima1209.60/1108.58/1029.67; discrepancy retained, not corrected or treated as exact agreement. Exact release clocks unknown.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=right;block=c_05_upper_dump_1;calibration=page7right:PR06"
+    },
+    {
+      "content_ref": "FILE-86e0c54ca6b23bd9",
+      "site_alias": "PAR",
+      "role": "downstream",
+      "activity": "river",
+      "evidence": "Inferred UpperBridge↔PR06:500/500/400g sequence, source order and later visit match PR06files. Notebook corrected peaks1100/1100/1013 differ from electronic maxima1209.60/1108.58/1029.67; discrepancy retained, not corrected or treated as exact agreement. Exact release clocks unknown.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=right;block=c_05_upper_dump_2;calibration=page7right:PR06"
+    },
+    {
+      "content_ref": "FILE-5ca907a95b3a1510",
+      "site_alias": "PAR",
+      "role": "downstream",
+      "activity": "river",
+      "evidence": "Inferred UpperBridge↔PR06:500/500/400g sequence, source order and later visit match PR06files. Notebook corrected peaks1100/1100/1013 differ from electronic maxima1209.60/1108.58/1029.67; discrepancy retained, not corrected or treated as exact agreement. Exact release clocks unknown.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=right;block=c_05_upper_dump_3;calibration=page7right:PR06"
+    }
+  ],
+  "recording_links": [
+    {
+      "trial_id": "NISQ-20250731-T01",
+      "content_ref": "DS-eee7a6956cb43efb",
+      "scope": "whole_file",
+      "association_basis": "source_documented",
+      "evidence": "Notebook documents app crash and split live recording; existing curated first piece contains release clock 08:03:18.",
+      "source_ref": "Document_261007_113237.pdf#page=6;side=left;block=a_06_dry_dump"
+    },
+    {
+      "trial_id": "NISQ-20250731-T01",
+      "content_ref": "DS-29adef3dee0af3e7",
+      "scope": "whole_file",
+      "association_basis": "source_documented",
+      "evidence": "Documented app-crash continuation of same serial840058; retain gap from08:07:42 to08:09:27. File relationship only; full pulse coverage remains unverified.",
+      "source_ref": "Document_261007_113237.pdf#page=6;side=left;block=a_06_dry_dump",
+      "continuation_of": "DS-eee7a6956cb43efb"
+    },
+    {
+      "trial_id": "NISQ-20260806-T01",
+      "content_ref": "FILE-4389dfbf47b4317c",
+      "scope": "whole_file",
+      "association_basis": "session_inferred",
+      "evidence": "Session-level inference: the only retained paired RL/RR river logs in August6folder, internally acquired August6; notebook has one Nisqually solution release and associated calibration. Written14:09 precedes acquisition14:24; cause and pulse capture unresolved, no clock correction applied. The generic calibration CSV on this date belongs to Tahoma and is not substituted.",
+      "source_ref": "Document_261007_160953.pdf#page=1;side=left;block=c_01_nisqually"
+    },
+    {
+      "trial_id": "NISQ-20260806-T01",
+      "content_ref": "FILE-bbed25e164cae327",
+      "scope": "whole_file",
+      "association_basis": "session_inferred",
+      "evidence": "Session-level inference: the only retained paired RL/RR river logs in August6folder, internally acquired August6; notebook has one Nisqually solution release and associated calibration. Written14:09 precedes acquisition14:24; cause and pulse capture unresolved, no clock correction applied. The generic calibration CSV on this date belongs to Tahoma and is not substituted.",
+      "source_ref": "Document_261007_160953.pdf#page=1;side=left;block=c_01_nisqually"
+    },
+    {
+      "trial_id": "NISQ-20260918-T01",
+      "content_ref": "FILE-bfdaa8c83bc6baa0",
+      "scope": "whole_file",
+      "association_basis": "session_inferred",
+      "evidence": "Session-level inference: one retained September18river LiveReadings export with transient EC response and one source mass-release block. Notebook explicitly restarts calibration using initial stock directly; C01abandoned, C02retained. Release clock remains unknown.",
+      "source_ref": "Document_261007_160953.pdf#page=9;side=right;block=c_09_mass_dump"
+    },
+    {
+      "trial_id": "PAR-20260901-T01",
+      "content_ref": "FILE-aee07f32f2781687",
+      "scope": "whole_file",
+      "association_basis": "dose_sequence_inferred",
+      "evidence": "Inferred FourthCrossing↔PR05: unique600/400/200g sequence matches notebook; source visit heading~15:15 aligns PR05WQ15:15, and specific peaks760/600/448 correspond764.10/604.91/447.98. Preserve source values; no exact release clocks inferred.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=left;block=c_05_crossing_dump_1;calibration=page7right:PR05"
+    },
+    {
+      "trial_id": "PAR-20260901-T02",
+      "content_ref": "FILE-e4005a7339021497",
+      "scope": "whole_file",
+      "association_basis": "dose_sequence_inferred",
+      "evidence": "Inferred FourthCrossing↔PR05: unique600/400/200g sequence matches notebook; source visit heading~15:15 aligns PR05WQ15:15, and specific peaks760/600/448 correspond764.10/604.91/447.98. Preserve source values; no exact release clocks inferred.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=left;block=c_05_crossing_dump_2;calibration=page7right:PR05"
+    },
+    {
+      "trial_id": "PAR-20260901-T03",
+      "content_ref": "FILE-72ddc787cec1e048",
+      "scope": "whole_file",
+      "association_basis": "dose_sequence_inferred",
+      "evidence": "Inferred FourthCrossing↔PR05: unique600/400/200g sequence matches notebook; source visit heading~15:15 aligns PR05WQ15:15, and specific peaks760/600/448 correspond764.10/604.91/447.98. Preserve source values; no exact release clocks inferred.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=left;block=c_05_crossing_dump_3;calibration=page7right:PR05"
+    },
+    {
+      "trial_id": "PAR-20260901-T04",
+      "content_ref": "FILE-de2094f999075dbc",
+      "scope": "whole_file",
+      "association_basis": "dose_sequence_inferred",
+      "evidence": "Inferred UpperBridge↔PR06:500/500/400g sequence, source order and later visit match PR06files. Notebook corrected peaks1100/1100/1013 differ from electronic maxima1209.60/1108.58/1029.67; discrepancy retained, not corrected or treated as exact agreement. Exact release clocks unknown.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=right;block=c_05_upper_dump_1;calibration=page7right:PR06"
+    },
+    {
+      "trial_id": "PAR-20260901-T05",
+      "content_ref": "FILE-86e0c54ca6b23bd9",
+      "scope": "whole_file",
+      "association_basis": "dose_sequence_inferred",
+      "evidence": "Inferred UpperBridge↔PR06:500/500/400g sequence, source order and later visit match PR06files. Notebook corrected peaks1100/1100/1013 differ from electronic maxima1209.60/1108.58/1029.67; discrepancy retained, not corrected or treated as exact agreement. Exact release clocks unknown.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=right;block=c_05_upper_dump_2;calibration=page7right:PR06"
+    },
+    {
+      "trial_id": "PAR-20260901-T06",
+      "content_ref": "FILE-5ca907a95b3a1510",
+      "scope": "whole_file",
+      "association_basis": "dose_sequence_inferred",
+      "evidence": "Inferred UpperBridge↔PR06:500/500/400g sequence, source order and later visit match PR06files. Notebook corrected peaks1100/1100/1013 differ from electronic maxima1209.60/1108.58/1029.67; discrepancy retained, not corrected or treated as exact agreement. Exact release clocks unknown.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=right;block=c_05_upper_dump_3;calibration=page7right:PR06"
+    }
+  ],
+  "calibration_links": [
+    {
+      "trial_id": "PAR-20260901-T01",
+      "calibration_id": "PAR-20260903-C03",
+      "probe_alias": "",
+      "evidence": "Notebook calibration table explicitly labelledPR05; retained source describes September3calibration of earlier site samples. Link to same site-coded river group, not date-only reuse. Kfit remains provisional; DI-stock/background and calibration-device applicability unresolved.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=left;block=c_05_crossing_dump_1;calibration=page7right:PR05"
+    },
+    {
+      "trial_id": "PAR-20260901-T02",
+      "calibration_id": "PAR-20260903-C03",
+      "probe_alias": "",
+      "evidence": "Notebook calibration table explicitly labelledPR05; retained source describes September3calibration of earlier site samples. Link to same site-coded river group, not date-only reuse. Kfit remains provisional; DI-stock/background and calibration-device applicability unresolved.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=left;block=c_05_crossing_dump_2;calibration=page7right:PR05"
+    },
+    {
+      "trial_id": "PAR-20260901-T03",
+      "calibration_id": "PAR-20260903-C03",
+      "probe_alias": "",
+      "evidence": "Notebook calibration table explicitly labelledPR05; retained source describes September3calibration of earlier site samples. Link to same site-coded river group, not date-only reuse. Kfit remains provisional; DI-stock/background and calibration-device applicability unresolved.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=left;block=c_05_crossing_dump_3;calibration=page7right:PR05"
+    },
+    {
+      "trial_id": "PAR-20260901-T04",
+      "calibration_id": "PAR-20260903-C04",
+      "probe_alias": "",
+      "evidence": "Notebook calibration table explicitly labelledPR06; retained source describes September3calibration of earlier site samples. Link to same site-coded river group, not date-only reuse. Kfit remains provisional; DI-stock/background and calibration-device applicability unresolved.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=right;block=c_05_upper_dump_1;calibration=page7right:PR06"
+    },
+    {
+      "trial_id": "PAR-20260901-T05",
+      "calibration_id": "PAR-20260903-C04",
+      "probe_alias": "",
+      "evidence": "Notebook calibration table explicitly labelledPR06; retained source describes September3calibration of earlier site samples. Link to same site-coded river group, not date-only reuse. Kfit remains provisional; DI-stock/background and calibration-device applicability unresolved.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=right;block=c_05_upper_dump_2;calibration=page7right:PR06"
+    },
+    {
+      "trial_id": "PAR-20260901-T06",
+      "calibration_id": "PAR-20260903-C04",
+      "probe_alias": "",
+      "evidence": "Notebook calibration table explicitly labelledPR06; retained source describes September3calibration of earlier site samples. Link to same site-coded river group, not date-only reuse. Kfit remains provisional; DI-stock/background and calibration-device applicability unresolved.",
+      "source_ref": "Document_261007_160953.pdf#page=5;side=right;block=c_05_upper_dump_3;calibration=page7right:PR06"
+    }
+  ],
+  "trial_dispositions": [
+    {
+      "trial_id": "NISQ-20250703-T01",
+      "disposition": "practice_no_detection",
+      "evidence": "Source explicitly labels practice and no downstream detection; first release also states no calibration file created. Retain record without requiring a fabricated usable pairing.",
+      "source_ref": "Document_261007_113237.pdf#page=2;side=right;block=a_02_dump_01"
+    },
+    {
+      "trial_id": "NISQ-20250703-T02",
+      "disposition": "practice_no_detection",
+      "evidence": "Source explicitly labels practice and no downstream detection; first release also states no calibration file created. Retain record without requiring a fabricated usable pairing.",
+      "source_ref": "Document_261007_113237.pdf#page=2;side=right;block=a_02_dump_02"
+    }
+  ]
+}

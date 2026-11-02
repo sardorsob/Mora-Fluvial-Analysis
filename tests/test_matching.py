@@ -86,6 +86,22 @@ class InventoryTests(FileFixtures, unittest.TestCase):
         self.assertEqual(len(groups[0]['members']), 2)
         self.assertEqual(len(groups[0]['samples']), 3)
 
+    def test_folder_date_is_corroboration_not_a_timestamp_replacement(self):
+        self.processed = self.processed / '20261006'
+        self.recording()
+        rec = self.inventory()[0]
+        self.assertEqual(rec['dates'], ['2026-10-05'])
+        self.assertEqual(rec['date_evidence']['folder_date'], '2026-10-06')
+        self.assertEqual(rec['date_evidence']['status'], 'disagrees_with_measurement_date')
+
+    def test_folder_date_limits_candidates_when_internal_dates_are_missing(self):
+        self.processed = self.processed / '20261005'
+        self.recording(times=('unknown',),values=(20,))
+        recs=matching.reconcile_recordings(self.inventory())
+        result=matching.match_records([dict(trial_id='T',field_date='2026-10-06',site_alias='NISQ')],[],[],self.provenance,recs)
+        self.assertEqual(result['recording_candidates'],[])
+        self.assertEqual(result['exclusions'][0]['reasons'],['different_date'])
+
     def test_conflicting_overlap_cannot_be_averaged_or_merged(self):
         self.recording()
         self.recording('b', times=('10:00:01', '10:00:02'), values=(99, 40))
@@ -255,6 +271,17 @@ class RunnerTests(AssociationFixtures, unittest.TestCase):
     def run_matcher(self, name='output'):
         return matching.run_matching(self.records,self.processed,self.bundle,self.root/name,
                                      root=self.root,overrides_path=self.override_file)
+
+    def test_reviewed_evidence_file_is_pinned_and_rejects_later_edits(self):
+        source=self.root/'field_notes.csv'
+        source.write_text('trial,note\nT01,app crash\n')
+        self.overrides['evidence_files']=[dict(path='field_notes.csv',sha256=hashlib.sha256(source.read_bytes()).hexdigest())]
+        self.override_file.write_text(json.dumps(self.overrides))
+        result=self.run_matcher('before_edit')
+        self.assertIn('field_notes.csv',[item['path'] for item in result['inputs']])
+        source.write_text('trial,note\nT01,changed\n')
+        with self.assertRaisesRegex(ValueError,'evidence.*hash'):
+            self.run_matcher('after_edit')
 
     def test_run_is_deterministic_and_preserves_sources(self):
         paths=list(self.records.iterdir())+list(self.processed.iterdir())+list(self.bundle.iterdir())
@@ -676,8 +703,22 @@ class ExistingSourceLinkTests(AssociationFixtures, unittest.TestCase):
         result=self.reconcile()
         row=result['trial_associations'][0]
         self.assertEqual(row['recording_link_status'],'source_confirmed')
-        self.assertEqual(row['applicability_status'],'evidence_requires_review')
+        self.assertEqual(row['applicability_status'],'source_linked_identity_unverified')
         self.assertIn('nonfinite_conductivity',row['reasons'])
+        self.assertTrue(any(e['selected_for_pairing'] for e in result['recording_candidates']))
+        edge = next(e for e in result['recording_candidates'] if e['selected_for_pairing'])
+        self.assertEqual(edge['measurement_quality']['actual']['nonfinite_rows'], [1])
+        self.assertEqual(edge['measurement_quality']['actual']['finite_count'], 1)
+        self.assertTrue(result['pairing_summary'][0]['measurement_review_required'])
+        self.assertEqual(result['pairing_summary'][0]['status'], 'inferred_proposal')
+
+    def test_no_finite_measurements_keeps_identity_but_does_not_claim_usable_recording(self):
+        self.recording(values=(float('nan'), float('nan')))
+        rec=self.inventory()[0]
+        for kind,key in [('processed','processed_sha256'),('metadata','metadata_sha256'),('raw','source_sha256')]:
+            self.provenance['datasets']['D1'][key]=rec['files'][kind]['sha256']
+        result=self.reconcile()
+        self.assertEqual(result['trial_associations'][0]['recording_link_status'], 'source_confirmed')
         self.assertFalse(any(e['selected_for_pairing'] for e in result['recording_candidates']))
 
 
@@ -763,3 +804,96 @@ class PlaceholderAliasTests(AssociationFixtures, unittest.TestCase):
         result=self.match()
         self.assertTrue(all(c['status']=='ambiguous' for c in result['calibration_candidates']))
         self.assertTrue(all('competing_calibration_series' in c['reasons'] for c in result['calibration_candidates']))
+
+
+class ReviewedFileTests(AssociationFixtures, unittest.TestCase):
+    def test_continuation_cannot_hide_an_unresolved_multisession_parent(self):
+        self.recording(times=('10:00:00','10:00:01','10:10:00','10:10:01'),values=(20,30,40,50))
+        parent=self.inventory()[0]['content_ref']
+        self.recording('b',times=('10:20:00','10:20:01'))
+        child=next(r for r in self.inventory() if Path(r['path']).name=='b.csv')['content_ref']
+        self.overrides['recording_links'][0].update(content_ref=parent,scope='whole_file')
+        self.overrides['recording_links'].append(dict(self.overrides['recording_links'][0],content_ref=child,continuation_of=parent))
+        self.overrides['recordings'][0]['content_ref']=parent
+        self.overrides['recordings'].append(dict(self.overrides['recordings'][0],content_ref=child))
+        self.trials[0]['dump_timestamp_utc']=''
+        self.assertNotEqual(self.match()['pairing_summary'][0]['status'],'inferred_proposal')
+
+    def test_branched_overlapping_continuations_are_rejected(self):
+        self.overrides['recording_links'][0]['scope']='whole_file'
+        for name,times in [('b',('10:10:00','10:10:02')),('c',('10:10:01','10:10:03'))]:
+            self.recording(name,times=times)
+            rec=next(r for r in self.inventory() if Path(r['path']).name==name+'.csv')
+            self.overrides['recording_links'].append(dict(self.overrides['recording_links'][0],content_ref=rec['content_ref'],continuation_of=self.record_ref))
+        with self.assertRaisesRegex(ValueError,'continuation'):
+            self.match()
+
+    def test_source_method_disagreement_is_flagged_without_rewriting_saved_k(self):
+        self.preps[0]['procedure_id']='solution_secondary'
+        self.provenance['calibrations']['C01']['source_record']={'method_family':'mass_stock'}
+        self.fits[0].update(calibration_basis='relative_concentration',concentration_unit='mL/mL',coefficient_unit='(mL/mL) / (uS/cm)')
+        result=self.match()
+        self.assertTrue(result['pairing_summary'][0]['preparation_method_review_required'])
+        edge=result['calibration_candidates'][0]
+        self.assertEqual(edge['preparation_history']['source_method_family'],'mass_stock')
+        self.assertEqual(edge['k'],'0.25')
+        self.assertEqual(edge['concentration_unit'],'mL/mL')
+        self.assertEqual(edge['status'],'supported')
+
+    def test_whole_file_review_pairs_without_inventing_release_clock(self):
+        self.trials[0]['dump_timestamp_utc']=''
+        self.overrides['recording_links'][0]['scope']='whole_file'
+        result=self.match()
+        self.assertEqual(result['pairing_summary'][0]['status'],'inferred_proposal')
+        selected=next(e for e in result['recording_candidates'] if e['selected_for_pairing'])
+        self.assertEqual(selected['chronology_evidence']['clock_basis'],'reviewed_whole_file_relationship')
+        self.assertFalse(selected['time_evidence']['release_utc'])
+
+    def test_documented_continuation_selects_both_pieces_without_bridging_gap(self):
+        self.recording('b',times=('10:10:00','10:10:01'))
+        rec=next(r for r in self.inventory() if Path(r['path']).name=='b.csv')
+        self.overrides['recordings'].append(dict(self.overrides['recordings'][0],content_ref=rec['content_ref']))
+        self.overrides['recording_links'][0]['scope']='whole_file'
+        self.overrides['recording_links'].append(dict(self.overrides['recording_links'][0],content_ref=rec['content_ref'],continuation_of=self.record_ref))
+        result=self.match()
+        self.assertEqual(result['pairing_summary'][0]['status'],'inferred_proposal')
+        self.assertEqual(len(result['pairing_summary'][0]['selected_recording_edge_ids']),2)
+        self.assertEqual(len(result['recording_segments']),2)
+
+    def test_two_whole_files_for_same_device_without_continuation_remain_ambiguous(self):
+        self.recording('b',times=('10:10:00','10:10:01'))
+        rec=next(r for r in self.inventory() if Path(r['path']).name=='b.csv')
+        self.overrides['recordings'].append(dict(self.overrides['recordings'][0],content_ref=rec['content_ref']))
+        self.overrides['recording_links'][0]['scope']='whole_file'
+        self.overrides['recording_links'].append(dict(self.overrides['recording_links'][0],content_ref=rec['content_ref']))
+        self.assertEqual(self.match()['pairing_summary'][0]['status'],'ambiguous')
+
+    def test_continuation_cannot_switch_physical_device(self):
+        self.recording('b',serial='222',times=('10:10:00','10:10:01'))
+        rec=next(r for r in self.inventory() if Path(r['path']).name=='b.csv')
+        self.overrides['recording_links'].append(dict(self.overrides['recording_links'][0],content_ref=rec['content_ref'],scope='whole_file',continuation_of=self.record_ref))
+        with self.assertRaisesRegex(ValueError,'continuation'):
+            self.match()
+
+    def test_whole_file_review_does_not_choose_one_of_multiple_acquisition_segments(self):
+        self.recording(times=('10:00:00','10:00:01','10:10:00','10:10:01'),values=(20,30,40,50))
+        rec=self.inventory()[0]
+        self.overrides['recordings'][0]['content_ref']=rec['content_ref']
+        self.overrides['recording_links'][0].update(content_ref=rec['content_ref'],scope='whole_file')
+        self.trials[0]['dump_timestamp_utc']=''
+        self.assertNotEqual(self.match()['pairing_summary'][0]['status'],'inferred_proposal')
+
+    def test_abandoned_preparation_cannot_compete_with_retained_fit(self):
+        self.preps.append(dict(self.preps[0],calibration_id='C02'))
+        self.fits.append(dict(self.fits[0],calibration_id='C02'))
+        self.provenance['calibrations']['C02']=dict(source_trial_id='T01',source_table_status='abandoned')
+        result=self.match()
+        self.assertEqual(result['pairing_summary'][0]['status'],'complete_proposal')
+        self.assertTrue(all(c['status']=='unavailable' for c in result['calibration_candidates'] if c['calibration_id']=='C02'))
+
+    def test_known_practice_without_detection_is_excluded_not_missing(self):
+        self.provenance['trials']={'T01':{'source_record':{'treatment_label':'practice'}}}
+        self.overrides['trial_dispositions']=[dict(trial_id='T01',disposition='practice_no_detection',evidence='No downstream detection; no calibration created',source_ref='notebook#practice')]
+        result=self.match()
+        self.assertEqual(result['pairing_summary'][0]['status'],'excluded_practice')
+        self.assertFalse(any(e.get('selected_for_pairing') for e in result['recording_candidates']))

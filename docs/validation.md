@@ -26,6 +26,8 @@ Protocol-based pairing uses field dates, written release times and acquisition b
 
 A candidate K link does not settle the release-to-recording association. Review the generated `pairing_summary.csv`, selected edge references and retained alternatives; no pairing output is scientific acceptance or a discharge result. The runner reproduces pinned electronic calibration observations where available, rather than searching river curves for convenient calibration values.
 
+Missing-cell tests retain known file/K relationships and exact source-row references, while keeping all-empty conductivity unselected. Reviewed whole-file links preserve uncertain event clocks and cannot select between acquisition segments. Documented continuations require one ordered chain from the same native device/date, reject branching and retain gaps. Abandoned preparations cannot compete with retained fits; practice exclusions require a source-labelled practice release. Supporting-file pins are checked before matching. Folder-date tests preserve disagreements with internal timestamps. Method-label discrepancies remain explicit without changing saved K values or units.
+
 ## Migration checks
 
 The September 29, 2026 check used Python 3.13 to compare the initial reorganization with the pinned [source revisions](provenance.md). Its recorded scope was:

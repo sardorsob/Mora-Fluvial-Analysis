@@ -46,3 +46,4 @@ __pycache__/
 /salt_dilution/results/matching/*
 !/salt_dilution/results/matching/2026-10-31_final_pairings/
 !/salt_dilution/results/matching/2026-11-01_source_linked_pairings/
+!/salt_dilution/results/matching/2026-11-01_reviewed_pairings/
