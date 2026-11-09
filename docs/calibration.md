@@ -69,6 +69,14 @@ For a supported linear calibration, background subtraction gives `k × (EC − E
 
 The deionized-stock ionic-background correction is not implemented. The runner fits provisional series; it does not approve field applicability.
 
+## Can one K replace repeated calibrations?
+
+`calibration_reuse.py` separates compatible mass fits from relative fits, unknown instrument identities and unresolved recipe interpretations. It compares log K within a sensor, channel, site, procedure and observed date range. Calibration sessions are grouped by day; calibration points are not independent repetitions. A narrow interval for mean K does not establish that K works for a new session.
+
+The operational reuse tolerance is ±5% in Q. Passing requires sufficient sessions/days, bounded held-out-day effects, session/day application intervals, bounded drift and verified preparation/instrument conditions. Stock lineage and compensation settings remain unverified here. Actual-conductivity reuse also needs a temperature model, which is not implemented; temperature presence alone cannot pass the test.
+
+The nine October sessions for sensor 790481 cover three days. Specific-conductivity reuse fails the tolerance test (largest held-out-day session effect about 17.4%); actual-conductivity reuse is inconclusive without calibration temperatures. This does not establish instrument drift. Trial-specific K remains primary, and no reference-K discharge comparisons are generated. Eight older method-conflict preparations remain isolated; candidate mass refits do not resolve their historical recipe.
+
 ## Saved outputs and next step
 
 | Output | Contents |

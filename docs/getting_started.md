@@ -91,6 +91,35 @@ A recording correction shifts its existing UTC series by the stated seconds and 
 
 `association_basis` can be `source_documented`, `session_inferred` or `dose_sequence_inferred`. A whole-file link cannot choose between acquisition segments. `continuation_of` references an earlier piece from the same physical device and date; the pieces remain separate, with no fabricated samples across the gap. `evidence_files` is an optional top-level list of `{ "path": "...", "sha256": "..." }` pins for supporting files inside the repository. Changed or missing pinned evidence stops the run. Without `--overrides`, the matcher uses current source associations and chronology alone.
 
+## Calculate mass-slug discharge
+
+These commands need the local normalized recordings and source files pinned by the saved pairing bundle. A clone containing only tracked tables cannot run this batch. Changed or missing inputs stop the run; parsing into another directory does not repair a saved bundle's source references.
+
+```sh
+python -m salt_dilution.scripts.processing.calibration_reuse --output salt_dilution/results/calibration_reuse/new_reuse_test
+python -m salt_dilution.scripts.processing.mass_slug --reuse salt_dilution/results/calibration_reuse/new_reuse_test --windows salt_dilution/config/pulse_windows.json --output salt_dilution/results/discharge/new_mass_slug
+```
+
+Use fresh output directories. Defaults select the reviewed calibration and pairing bundles above; `--records`, `--processed`, `--calibrations` and `--pairing` select explicit inputs. Alternate record locations must contain the same source bytes as the saved bundles. Code hashes are also pinned: rerun reuse after changing its implementation.
+
+Without `--windows`, the mass runner proposes automatic windows. Inspect every pulse plot; a rejected automatic tail check can need manual review. Window configuration has `schema_version: 1` and a `windows` list keyed by `trial_id`, `logical_recording_id` and `channel` (`specific` or `actual`). Each usable entry supplies `pre`, `pulse` and `post` pairs of local-clock timestamps, plus `evidence`, `reviewer`, `reviewed_on` and `review_status`. `checker_proposed` requires user signoff before becoming `reviewed`; the latter requires explicit `user_signoff: true`. A `blocked` decision retains its reason and cannot produce Q. Stored pairing/source pins protect decisions against use with changed inputs.
+
+The runner reads `salt_dilution/config/release_confirmations.json` when present, or an explicit `--confirmations` file. It applies delivered-mass confirmations only to named release IDs with matching field date/site and recorded evidence. The file and its hash are saved with the run. These confirmations supplement historical records; they do not approve windows or scientific acceptance.
+
+The bundle contains `discharge_estimates.csv`, one `release_summary.csv` row per release, per-recording outcomes, window proposals, pulse/comparison figures and hashed `run_info.json`. The used windows file is copied into the result bundle for reproduction. Specific conductivity is primary when it computes; actual conductivity is a comparison. Neither channels nor sensors are averaged. The current runner keeps every estimate `proposed` and `scientifically_accepted=false`; applicability, mixing and windows still need review. October delivered masses are confirmed by the field participant; weighing uncertainty remains unquantified.
+
+## Export the analysis package
+
+After producing the saved mass, source-audit, numerical-review and reuse bundles, assemble the current handoff:
+
+```sh
+python -m salt_dilution.scripts.processing.export_discharge --output salt_dilution/results/discharge/new_analysis_bundle
+```
+
+Defaults select the current reviewed bundles documented in the [results guide](../salt_dilution/results/README.md#use-the-analysis-bundle). Use `--mass-run`, `--audit-run`, `--review-run` and `--reuse-run` for explicit versions; audit and review must reference the selected mass run. The exporter verifies source hashes, preserves original Q strings and blanks, and refuses existing output folders. It writes one table covering every release, a primary subset, exact channel estimates, settings, review evidence and copied figures. It performs no new discharge inference or field approval.
+
+Start with `discharge_by_release.csv`; use `discharge_primary.csv` for the five proposed primary estimates and retain its flags in analysis. `analysis_limits.json` defines closure and scientific limits. `bundle_index.json` contains the exact rebuild command. The package needs the local source bundles when rebuilding; reading its tables and figures does not require the raw recordings.
+
 ## Work with seismic recordings
 
 Supply the inputs described in the [seismic data guide](../fluvial_seismology/data/README.md), then start Jupyter:

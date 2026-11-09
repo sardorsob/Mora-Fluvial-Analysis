@@ -17,7 +17,11 @@ Q = M_delivered / integral(Delta_C(t) dt)
 
 For the same salt mass, a higher discharge produces a smaller concentration–time integral. This calculation assumes sufficiently steady discharge during passage, adequate mixing, tracer recovery and a suitable river background. It requires the full pulse, including its tail; peak height alone is insufficient.
 
-The maintained code extracts recordings and [fits calibration curves](calibration.md). Event matching, reviewed integration windows and discharge calculation are still unfinished. Historical solution-slug calibrations use relative injectate concentration and require the corresponding injectate quantity; their coefficients cannot be substituted into the mass equation above.
+The maintained code extracts recordings, [fits calibration curves](calibration.md), proposes recording/K pairs and calculates mass-slug discharge. It integrates signed conductivity excess over elapsed seconds using trapezoids, with background interpolated between pre- and post-pulse means. It never joins separated recording pieces, fills missing pulse readings or extrapolates an unobserved tail. Recording boundaries do not establish pulse boundaries.
+
+Trial-specific K is primary; actual and specific conductivity remain separate. Automatic or unsigned reviewed windows, uncertain delivered mass and unresolved applicability keep results `proposed`. Software checks and reviewer recommendations do not grant scientific acceptance. Sensitivity estimates cover fit error and background/window choices, not total measurement uncertainty. See [usage](getting_started.md#calculate-mass-slug-discharge) and [current results](../salt_dilution/results/README.md#local-discharge-results).
+
+Historical solution-slug calibrations use relative injectate concentration and require the corresponding injectate quantity; their coefficients cannot be substituted into the mass equation above. That route is not implemented in the maintained mass runner.
 
 Moore (2004) covers constant-rate injection; Moore (2005) covers solution-slug injection. Richardson (2015) and Richardson et al. (2017) develop mass-stock calibration and uncertainty. See [references](references/README.md) and the [instrument guide](salt_dilution_instruments.md). Constant-rate injection is background methodology, not an implemented workflow here.
 

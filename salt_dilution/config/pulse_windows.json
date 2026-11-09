@@ -1,0 +1,640 @@
+{
+  "schema_version": 1,
+  "review_scope": "11 mass-route releases; 23 recording/channel attempts. Five release windows proposed on both channels; six releases remain blocked. No user/staff acceptance.",
+  "windows": [
+    {
+      "trial_id": "NISQ-20250731-T01",
+      "logical_recording_id": "REC-9c2e4625c18f1450",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20250731-T01:REC-9c2e4625c18f1450",
+        "calibration_edge_id": "NISQ-20250731-T01:REC-9c2e4625c18f1450:NISQ-20250731-C02:probe_01:actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20250731/LiveReadings/VuSitu_LiveReadings_2025-07-31_08-09-26_Device_Location.csv",
+            "sha256": "4e782dbdff780655c433f37765b1424754cdd79599ec51c88161d5b1e49bd39b"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Continuation begins in dry-release tail after app-crash gap. Later full pulse near 08:24 belongs to a separate solution wave; cannot substitute it for this dry release.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Continuation begins in dry-release tail after app-crash gap. Later full pulse near 08:24 belongs to a separate solution wave; cannot substitute it for this dry release.",
+      "reason_code": "pulse_start_missing"
+    },
+    {
+      "trial_id": "NISQ-20250731-T01",
+      "logical_recording_id": "REC-9d6a06bbbfe34327",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20250731-T01:REC-9d6a06bbbfe34327",
+        "calibration_edge_id": "NISQ-20250731-T01:REC-9d6a06bbbfe34327:NISQ-20250731-C02:probe_01:actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20250731/20250731_075234_mixing_riverRight_840058.csv",
+            "sha256": "e6caa3fb96cf45be38df7cab3d95d9ed086a88dbbb7cc09642b67026dc023927"
+          },
+          {
+            "path": "salt_dilution/data/processed/20250731/LiveReadings/VuSitu_LiveReadings_2025-07-31_07-52-34_Device_Location.csv",
+            "sha256": "e6caa3fb96cf45be38df7cab3d95d9ed086a88dbbb7cc09642b67026dc023927"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Dry-release pulse ends at/near peak before app-crash gap; tail is not captured in this segment.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Dry-release pulse ends at/near peak before app-crash gap; tail is not captured in this segment.",
+      "reason_code": "pulse_truncated"
+    },
+    {
+      "trial_id": "NISQ-20250731-T01",
+      "logical_recording_id": "REC-c41d93416ed9e9cd",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20250731-T01:REC-c41d93416ed9e9cd",
+        "calibration_edge_id": "NISQ-20250731-T01:REC-c41d93416ed9e9cd:NISQ-20250731-C02:probe_01:actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20250731/Logs/VuSitu_Log_20250731_072812.csv",
+            "sha256": "1dcecbd484306c4ed332c02ef1ccb77115dbf34ab7451f5379b3641ae7850a4e"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Two distinct pulses and unresolved event clock; selected dry release is first pulse near 08:07. Coarse sampling and unresolved pairing prevent defensible complete single-pulse/mass estimate.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Two distinct pulses and unresolved event clock; selected dry release is first pulse near 08:07. Coarse sampling and unresolved pairing prevent defensible complete single-pulse/mass estimate.",
+      "reason_code": "release_alignment_unresolved"
+    },
+    {
+      "trial_id": "NISQ-20260918-T01",
+      "logical_recording_id": "REC-ad18f24cf13fc889",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20260918-T01:REC-ad18f24cf13fc889",
+        "calibration_edge_id": "NISQ-20260918-T01:REC-ad18f24cf13fc889:NISQ-20260918-C02::specific",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20260918/VuSitu_LiveReadings_2026-09-18_15-53-31_Device_Location.csv",
+            "sha256": "1eecf56951fd9a42e8e0901aecd783d07abe338a73b39305659c749b89a3af89"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled"
+    },
+    {
+      "trial_id": "NISQ-20260918-T01",
+      "logical_recording_id": "REC-ad18f24cf13fc889",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20260918-T01:REC-ad18f24cf13fc889",
+        "calibration_edge_id": "NISQ-20260918-T01:REC-ad18f24cf13fc889:NISQ-20260918-C02::actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20260918/VuSitu_LiveReadings_2026-09-18_15-53-31_Device_Location.csv",
+            "sha256": "1eecf56951fd9a42e8e0901aecd783d07abe338a73b39305659c749b89a3af89"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled"
+    },
+    {
+      "trial_id": "NISQ-20261002-T01",
+      "logical_recording_id": "REC-699be6dc50467e56",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261002-T01:REC-699be6dc50467e56",
+        "calibration_edge_id": "NISQ-20261002-T01:REC-699be6dc50467e56:NISQ-20261002-C02:probe_03:specific",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261002/VuSitu_LiveReadings_2026-10-02_17-48-22_Device_Location.csv",
+            "sha256": "b3685316ea429f6225757698e33debb6e95013ae5cac4a8934a07a43787b96e7"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-02T17:48:30",
+        "2026-10-02T17:49:25"
+      ],
+      "pulse": [
+        "2026-10-02T17:49:45",
+        "2026-10-02T17:53:45"
+      ],
+      "post": [
+        "2026-10-02T17:53:50",
+        "2026-10-02T17:54:25"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending."
+    },
+    {
+      "trial_id": "NISQ-20261002-T01",
+      "logical_recording_id": "REC-699be6dc50467e56",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261002-T01:REC-699be6dc50467e56",
+        "calibration_edge_id": "NISQ-20261002-T01:REC-699be6dc50467e56:NISQ-20261002-C02:probe_03:actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261002/VuSitu_LiveReadings_2026-10-02_17-48-22_Device_Location.csv",
+            "sha256": "b3685316ea429f6225757698e33debb6e95013ae5cac4a8934a07a43787b96e7"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-02T17:48:30",
+        "2026-10-02T17:49:25"
+      ],
+      "pulse": [
+        "2026-10-02T17:49:45",
+        "2026-10-02T17:53:45"
+      ],
+      "post": [
+        "2026-10-02T17:53:50",
+        "2026-10-02T17:54:25"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending."
+    },
+    {
+      "trial_id": "NISQ-20261002-T02",
+      "logical_recording_id": "REC-f53ae975ea1d2066",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261002-T02:REC-f53ae975ea1d2066",
+        "calibration_edge_id": "NISQ-20261002-T02:REC-f53ae975ea1d2066:NISQ-20261002-C01:probe_03:specific",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261002/VuSitu_LiveReadings_2026-10-02_14-42-48_Device_Location.csv",
+            "sha256": "86e1ee35ae78ded8ef4e487c64f572904449a0617ac5a54ed18bbd0eafc1e84f"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled"
+    },
+    {
+      "trial_id": "NISQ-20261002-T02",
+      "logical_recording_id": "REC-f53ae975ea1d2066",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261002-T02:REC-f53ae975ea1d2066",
+        "calibration_edge_id": "NISQ-20261002-T02:REC-f53ae975ea1d2066:NISQ-20261002-C01:probe_03:actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261002/VuSitu_LiveReadings_2026-10-02_14-42-48_Device_Location.csv",
+            "sha256": "86e1ee35ae78ded8ef4e487c64f572904449a0617ac5a54ed18bbd0eafc1e84f"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled"
+    },
+    {
+      "trial_id": "NISQ-20261004-T01",
+      "logical_recording_id": "REC-4a7a771ed5fc02b2",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T01:REC-4a7a771ed5fc02b2",
+        "calibration_edge_id": "NISQ-20261004-T01:REC-4a7a771ed5fc02b2:NISQ-20261004-C01:probe_03:specific",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_07-21-30_Device_Location.csv",
+            "sha256": "4ff6912e8037f5d54b378a08c718037b3febb143d2a2ccaf88967442e7539ec4"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled"
+    },
+    {
+      "trial_id": "NISQ-20261004-T01",
+      "logical_recording_id": "REC-4a7a771ed5fc02b2",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T01:REC-4a7a771ed5fc02b2",
+        "calibration_edge_id": "NISQ-20261004-T01:REC-4a7a771ed5fc02b2:NISQ-20261004-C01:probe_03:actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_07-21-30_Device_Location.csv",
+            "sha256": "4ff6912e8037f5d54b378a08c718037b3febb143d2a2ccaf88967442e7539ec4"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled"
+    },
+    {
+      "trial_id": "NISQ-20261004-T02",
+      "logical_recording_id": "REC-7f5709554e2c6b46",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T02:REC-7f5709554e2c6b46",
+        "calibration_edge_id": "NISQ-20261004-T02:REC-7f5709554e2c6b46:NISQ-20261004-C02:probe_03:specific",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_12-24-34_Device_Location.csv",
+            "sha256": "74d71bf3ce23e8c2d932bec0d18b5da20eaa3a35f1b6d57814568c0ed62aa03a"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-04T12:24:45",
+        "2026-10-04T12:26:30"
+      ],
+      "pulse": [
+        "2026-10-04T12:26:40",
+        "2026-10-04T12:31:45"
+      ],
+      "post": [
+        "2026-10-04T12:31:50",
+        "2026-10-04T12:32:20"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending."
+    },
+    {
+      "trial_id": "NISQ-20261004-T02",
+      "logical_recording_id": "REC-7f5709554e2c6b46",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T02:REC-7f5709554e2c6b46",
+        "calibration_edge_id": "NISQ-20261004-T02:REC-7f5709554e2c6b46:NISQ-20261004-C02:probe_03:actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_12-24-34_Device_Location.csv",
+            "sha256": "74d71bf3ce23e8c2d932bec0d18b5da20eaa3a35f1b6d57814568c0ed62aa03a"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-04T12:24:45",
+        "2026-10-04T12:26:30"
+      ],
+      "pulse": [
+        "2026-10-04T12:26:40",
+        "2026-10-04T12:31:45"
+      ],
+      "post": [
+        "2026-10-04T12:31:50",
+        "2026-10-04T12:32:20"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending."
+    },
+    {
+      "trial_id": "NISQ-20261004-T03",
+      "logical_recording_id": "REC-da6256536b52d8a1",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T03:REC-da6256536b52d8a1",
+        "calibration_edge_id": "NISQ-20261004-T03:REC-da6256536b52d8a1:NISQ-20261004-C04:probe_03:specific",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_17-45-54_Device_Location.csv",
+            "sha256": "5ca75364fa2217fdf9ec6c4e4c17a5cd2e74d4c44ae330b4bda0bf29149a9f40"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-04T17:46:00",
+        "2026-10-04T17:47:25"
+      ],
+      "pulse": [
+        "2026-10-04T17:47:30",
+        "2026-10-04T17:51:35"
+      ],
+      "post": [
+        "2026-10-04T17:51:40",
+        "2026-10-04T17:52:15"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending."
+    },
+    {
+      "trial_id": "NISQ-20261004-T03",
+      "logical_recording_id": "REC-da6256536b52d8a1",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T03:REC-da6256536b52d8a1",
+        "calibration_edge_id": "NISQ-20261004-T03:REC-da6256536b52d8a1:NISQ-20261004-C04:probe_03:actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_17-45-54_Device_Location.csv",
+            "sha256": "5ca75364fa2217fdf9ec6c4e4c17a5cd2e74d4c44ae330b4bda0bf29149a9f40"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-04T17:46:00",
+        "2026-10-04T17:47:25"
+      ],
+      "pulse": [
+        "2026-10-04T17:47:30",
+        "2026-10-04T17:51:35"
+      ],
+      "post": [
+        "2026-10-04T17:51:40",
+        "2026-10-04T17:52:15"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending."
+    },
+    {
+      "trial_id": "NISQ-20261004-T04",
+      "logical_recording_id": "REC-33d70d175906e90a",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T04:REC-33d70d175906e90a",
+        "calibration_edge_id": "NISQ-20261004-T04:REC-33d70d175906e90a:NISQ-20261004-C03:probe_03:specific",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_15-29-37_Device_Location.csv",
+            "sha256": "583ac5dd09ce258d88ceb49ad7c24f855a5d09629cd1992118d8331fddab2930"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled"
+    },
+    {
+      "trial_id": "NISQ-20261004-T04",
+      "logical_recording_id": "REC-33d70d175906e90a",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T04:REC-33d70d175906e90a",
+        "calibration_edge_id": "NISQ-20261004-T04:REC-33d70d175906e90a:NISQ-20261004-C03:probe_03:actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_15-29-37_Device_Location.csv",
+            "sha256": "583ac5dd09ce258d88ceb49ad7c24f855a5d09629cd1992118d8331fddab2930"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled"
+    },
+    {
+      "trial_id": "NISQ-20261005-T01",
+      "logical_recording_id": "REC-8760791310ac7565",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261005-T01:REC-8760791310ac7565",
+        "calibration_edge_id": "NISQ-20261005-T01:REC-8760791310ac7565:NISQ-20261005-C01:probe_03:specific",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261005/VuSitu_LiveReadings_2026-10-05_11-49-30_Device_Location.csv",
+            "sha256": "7ba114b14b06424f32742fcc4c732b380a7ce1842ad4e75b65166449fd022043"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled"
+    },
+    {
+      "trial_id": "NISQ-20261005-T01",
+      "logical_recording_id": "REC-8760791310ac7565",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261005-T01:REC-8760791310ac7565",
+        "calibration_edge_id": "NISQ-20261005-T01:REC-8760791310ac7565:NISQ-20261005-C01:probe_03:actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261005/VuSitu_LiveReadings_2026-10-05_11-49-30_Device_Location.csv",
+            "sha256": "7ba114b14b06424f32742fcc4c732b380a7ce1842ad4e75b65166449fd022043"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled"
+    },
+    {
+      "trial_id": "NISQ-20261005-T02",
+      "logical_recording_id": "REC-c0bf309f5ddbeb7d",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261005-T02:REC-c0bf309f5ddbeb7d",
+        "calibration_edge_id": "NISQ-20261005-T02:REC-c0bf309f5ddbeb7d:NISQ-20261005-C02:probe_03:specific",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261005/VuSitu_LiveReadings_2026-10-05_14-49-50_Device_Location.csv",
+            "sha256": "af2ea7c3b1e8f1bd08f92c583a500e643b59b20d5edd4d41f2804187cf1bce08"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-05T14:50:00",
+        "2026-10-05T14:51:30"
+      ],
+      "pulse": [
+        "2026-10-05T14:51:35",
+        "2026-10-05T14:55:45"
+      ],
+      "post": [
+        "2026-10-05T14:55:50",
+        "2026-10-05T14:56:25"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending."
+    },
+    {
+      "trial_id": "NISQ-20261005-T02",
+      "logical_recording_id": "REC-c0bf309f5ddbeb7d",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261005-T02:REC-c0bf309f5ddbeb7d",
+        "calibration_edge_id": "NISQ-20261005-T02:REC-c0bf309f5ddbeb7d:NISQ-20261005-C02:probe_03:actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261005/VuSitu_LiveReadings_2026-10-05_14-49-50_Device_Location.csv",
+            "sha256": "af2ea7c3b1e8f1bd08f92c583a500e643b59b20d5edd4d41f2804187cf1bce08"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-05T14:50:00",
+        "2026-10-05T14:51:30"
+      ],
+      "pulse": [
+        "2026-10-05T14:51:35",
+        "2026-10-05T14:55:45"
+      ],
+      "post": [
+        "2026-10-05T14:55:50",
+        "2026-10-05T14:56:25"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending."
+    },
+    {
+      "trial_id": "NISQ-20261005-T03",
+      "logical_recording_id": "REC-7f395f6d9298eaa3",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261005-T03:REC-7f395f6d9298eaa3",
+        "calibration_edge_id": "NISQ-20261005-T03:REC-7f395f6d9298eaa3:NISQ-20261005-C03:probe_03:specific",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261005/VuSitu_LiveReadings_2026-10-05_17-33-57_Device_Location.csv",
+            "sha256": "475723e9438710f1c679448b4d45673c52543f0bd74a21017799db9658c01e8f"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-05T17:34:05",
+        "2026-10-05T17:35:20"
+      ],
+      "pulse": [
+        "2026-10-05T17:35:25",
+        "2026-10-05T17:39:50"
+      ],
+      "post": [
+        "2026-10-05T17:39:55",
+        "2026-10-05T17:40:30"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending."
+    },
+    {
+      "trial_id": "NISQ-20261005-T03",
+      "logical_recording_id": "REC-7f395f6d9298eaa3",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261005-T03:REC-7f395f6d9298eaa3",
+        "calibration_edge_id": "NISQ-20261005-T03:REC-7f395f6d9298eaa3:NISQ-20261005-C03:probe_03:actual",
+        "run_info_sha256": "419d0af238c4aaf705e83ac265f911edd6b5ff671e150d08ced0e346260129a3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261005/VuSitu_LiveReadings_2026-10-05_17-33-57_Device_Location.csv",
+            "sha256": "475723e9438710f1c679448b4d45673c52543f0bd74a21017799db9658c01e8f"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-05T17:34:05",
+        "2026-10-05T17:35:20"
+      ],
+      "pulse": [
+        "2026-10-05T17:35:25",
+        "2026-10-05T17:39:50"
+      ],
+      "post": [
+        "2026-10-05T17:39:55",
+        "2026-10-05T17:40:30"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending."
+    }
+  ],
+  "scope": "Nisqually mass-route pulse decisions; proposed windows require user signoff."
+}

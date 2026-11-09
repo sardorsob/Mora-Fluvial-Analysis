@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "source": {
+    "kind": "direct_field_participant_confirmation",
+    "question": "For the October 2\u20135, 2026 tests, can you confirm that each release actually delivered 4,000 g of salt into the stream, including any salt left in the bucket?",
+    "answer": "4,000 g was delivered in each release",
+    "recorded_on": "2026-11-08",
+    "scope": "Nine Nisqually releases on October 2, 4 and 5, 2026; no other releases.",
+    "limits": "Mass measurement uncertainty is not quantified. This does not approve windows, calibration applicability or scientific acceptance."
+  },
+  "releases": [
+    {
+      "trial_id": "NISQ-20261002-T01",
+      "field_date": "2026-10-02",
+      "site_alias": "NISQ",
+      "delivered_salt_mass_g": 4000,
+      "status": "confirmed_delivered",
+      "confirmed_on": "2026-11-08",
+      "confirmed_by": "field_participant",
+      "evidence": "Direct participant confirmation: 4,000 g entered the stream in each October 2\u20135 release, including the question about bucket residue."
+    },
+    {
+      "trial_id": "NISQ-20261002-T02",
+      "field_date": "2026-10-02",
+      "site_alias": "NISQ",
+      "delivered_salt_mass_g": 4000,
+      "status": "confirmed_delivered",
+      "confirmed_on": "2026-11-08",
+      "confirmed_by": "field_participant",
+      "evidence": "Direct participant confirmation: 4,000 g entered the stream in each October 2\u20135 release, including the question about bucket residue."
+    },
+    {
+      "trial_id": "NISQ-20261004-T01",
+      "field_date": "2026-10-04",
+      "site_alias": "NISQ",
+      "delivered_salt_mass_g": 4000,
+      "status": "confirmed_delivered",
+      "confirmed_on": "2026-11-08",
+      "confirmed_by": "field_participant",
+      "evidence": "Direct participant confirmation: 4,000 g entered the stream in each October 2\u20135 release, including the question about bucket residue."
+    },
+    {
+      "trial_id": "NISQ-20261004-T02",
+      "field_date": "2026-10-04",
+      "site_alias": "NISQ",
+      "delivered_salt_mass_g": 4000,
+      "status": "confirmed_delivered",
+      "confirmed_on": "2026-11-08",
+      "confirmed_by": "field_participant",
+      "evidence": "Direct participant confirmation: 4,000 g entered the stream in each October 2\u20135 release, including the question about bucket residue."
+    },
+    {
+      "trial_id": "NISQ-20261004-T03",
+      "field_date": "2026-10-04",
+      "site_alias": "NISQ",
+      "delivered_salt_mass_g": 4000,
+      "status": "confirmed_delivered",
+      "confirmed_on": "2026-11-08",
+      "confirmed_by": "field_participant",
+      "evidence": "Direct participant confirmation: 4,000 g entered the stream in each October 2\u20135 release, including the question about bucket residue."
+    },
+    {
+      "trial_id": "NISQ-20261004-T04",
+      "field_date": "2026-10-04",
+      "site_alias": "NISQ",
+      "delivered_salt_mass_g": 4000,
+      "status": "confirmed_delivered",
+      "confirmed_on": "2026-11-08",
+      "confirmed_by": "field_participant",
+      "evidence": "Direct participant confirmation: 4,000 g entered the stream in each October 2\u20135 release, including the question about bucket residue."
+    },
+    {
+      "trial_id": "NISQ-20261005-T01",
+      "field_date": "2026-10-05",
+      "site_alias": "NISQ",
+      "delivered_salt_mass_g": 4000,
+      "status": "confirmed_delivered",
+      "confirmed_on": "2026-11-08",
+      "confirmed_by": "field_participant",
+      "evidence": "Direct participant confirmation: 4,000 g entered the stream in each October 2\u20135 release, including the question about bucket residue."
+    },
+    {
+      "trial_id": "NISQ-20261005-T02",
+      "field_date": "2026-10-05",
+      "site_alias": "NISQ",
+      "delivered_salt_mass_g": 4000,
+      "status": "confirmed_delivered",
+      "confirmed_on": "2026-11-08",
+      "confirmed_by": "field_participant",
+      "evidence": "Direct participant confirmation: 4,000 g entered the stream in each October 2\u20135 release, including the question about bucket residue."
+    },
+    {
+      "trial_id": "NISQ-20261005-T03",
+      "field_date": "2026-10-05",
+      "site_alias": "NISQ",
+      "delivered_salt_mass_g": 4000,
+      "status": "confirmed_delivered",
+      "confirmed_on": "2026-11-08",
+      "confirmed_by": "field_participant",
+      "evidence": "Direct participant confirmation: 4,000 g entered the stream in each October 2\u20135 release, including the question about bucket residue."
+    }
+  ]
+}

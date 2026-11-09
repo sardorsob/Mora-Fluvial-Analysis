@@ -1,6 +1,6 @@
 # Salt-dilution discharge analysis
 
-This workflow prepares conductivity recordings and calibration curves for slug-injection discharge measurements. The maintained scripts normalize instrument exports and fit provisional concentration-per-conductivity factors, K. Stream-event selection and discharge calculation remain unimplemented.
+This workflow calculates proposed slug-injection discharge from conductivity recordings, concentration-per-conductivity calibrations (K), release quantities and explicit pulse windows. It preserves source observations and reports unresolved cases.
 
 ## Workflows
 
@@ -8,7 +8,10 @@ This workflow prepares conductivity recordings and calibration curves for slug-i
 | --- | --- |
 | `scripts/parsers/parse_data.py` | Maintained single-file and batch extraction for supported instrument exports and calibration CSVs. |
 | `scripts/processing/calibration.py` | Maintained concentration-on-conductivity fits from curated preparation and point tables. |
-| `scripts/processing/mass_slug.py` | Empty placeholder for future mass-based slug-discharge processing. |
+| `scripts/processing/matching.py` | Source- and protocol-based release/recording/K proposals. |
+| `scripts/processing/calibration_reuse.py` | Calibration compatibility audit and conditional coefficient-reuse test. |
+| `scripts/processing/mass_slug.py` | Mass-based pulse integration, proposed discharge, sensitivity diagnostics and figures. |
+| `scripts/processing/export_discharge.py` | Verified analysis handoff with all release dispositions, proposed estimates, quality flags and figures. |
 | `notebooks/salt_dilution_discharge.ipynb` | Historical July 24, 2025 example using a retired helper API. |
 | `notebooks/exploratory/` | Historical interactive calculations with older assumptions and incomplete inputs. |
 | `scripts/experimental/` | Unfinished class-based dilution implementation and launcher. |
@@ -22,7 +25,7 @@ The [curated records](data/records/README.md) separate 38 physical releases, 43 
 
 Before applying K, identify the instrument, conductivity channel and preparation associated with the selected release. The main discharge work uses Aqua TROLL river recordings and their associated calibration. General meters served farther-downstream attenuation monitoring. Within a supported physical trial/role, an identified Aqua TROLL can carry through its calibration; different probes require applicability review. Existing notebook links do not automatically approve transfer. See the [instrument catalog and procedure history](../docs/salt_dilution_instruments.md).
 
-All association rows remain `needs_review`, with no accepted integration windows. Paired probes, split logs and alternative calibrations must remain separate; repeated file links are not additional physical releases.
+The curated association rows remain `needs_review`. Window proposals in `config/pulse_windows.json` retain reviewer evidence and pending user signoff; none is an accepted measurement. Paired probes, split logs and alternative calibrations stay separate; repeated file links are not additional physical releases.
 
 ## Parsers
 
@@ -50,4 +53,4 @@ Choose a fresh directory. Source timestamps, extra columns and distinct actual/s
 - The class-based prototype marks its discharge formula as unfinished and omits time integration. It is not a validated alternative method.
 - Provisional fits do not establish delivered salt quantity, complete tracer recovery, mixing, clock alignment, background/tail windows or calibration uncertainty. The DI-stock ionic-background correction has not been implemented.
 
-Future discharge processing should consume normalized readings and reviewed associations while preserving raw observations, units, preparation evidence and source clocks. Keep derived calculations separate from the observation tables.
+The mass runner uses the saved pairings and exact fitted K, actual elapsed seconds, signed excess conductivity and a pre/post background. Gaps or missing cells inside used windows block calculation. Relative-injectate discharge and tail extrapolation remain outside this runner. [Results](results/README.md) separate calculated proposals from blocked releases.

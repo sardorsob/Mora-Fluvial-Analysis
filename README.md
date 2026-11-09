@@ -2,7 +2,7 @@
 
 Tools for studying river flow and sediment movement at Mount Rainier National Park through salt-dilution measurements and fluvial seismology.
 
-The salt workflow reads conductivity recordings and fits calibration curves that convert conductivity changes into added salt concentration. The seismic workflows explore how river flow and moving sediment appear in ground vibrations. The project combines two research repositories; [source provenance](docs/provenance.md) records their authors, revisions and licenses.
+The salt workflow reads conductivity recordings, fits concentration calibrations and calculates proposed mass-slug discharge from paired recordings and pulse windows. The seismic workflows explore how river flow and moving sediment appear in ground vibrations. The project combines two research repositories; [source provenance](docs/provenance.md) records their authors, revisions and licenses.
 
 ## Start here
 
@@ -14,11 +14,13 @@ The salt workflow reads conductivity recordings and fits calibration curves that
 
 | Workflow | Available work |
 | --- | --- |
-| Salt dilution | Instrument-file extraction, provisional calibration fits and release/recording/K pairing proposals with evidence and unresolved cases. |
+| Salt dilution | Instrument-file extraction, calibration fits, recording/K pairing, coefficient-reuse tests and proposed mass-slug discharge with window and uncertainty diagnostics. |
 | Rock trials | 331 tethered-rock observations, grouped by session, round, category and individual test. |
 | Fluvial seismology | Imported Python/R scripts and notebooks for waveform preparation, spectra, turbulence and bedload models. |
 
-The [reviewed calibration results](salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) contain **49 provisional fits and 37 skipped series**. The maintained workflow does not yet calculate discharge, Q. The seismic workflows require field recordings and have not been validated end to end here.
+The [reviewed calibration results](salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) contain **49 provisional fits and 37 skipped series**. Local discharge results cover five Nisqually releases, with separate conductivity-channel estimates. They use trial-specific K and 4 kg delivered per release, confirmed by the field participant; none is scientifically accepted. See [results and limitations](salt_dilution/results/README.md). The seismic workflows require field recordings and have not been validated end to end here.
+
+The current [analysis handoff](salt_dilution/results/README.md#use-the-analysis-bundle) consolidates all 38 release dispositions, five proposed Q values, quality flags and figures. It is ready for analysis with its documented limits.
 
 Use the [salt guide](salt_dilution/README.md) or [seismic guide](fluvial_seismology/README.md) for the available scripts and notebooks. Historical dilution notebooks use retired helpers.
 
