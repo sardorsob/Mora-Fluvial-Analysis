@@ -113,12 +113,14 @@ The bundle contains `discharge_estimates.csv`, one `release_summary.csv` row per
 After producing the saved mass, source-audit, numerical-review and reuse bundles, assemble the current handoff:
 
 ```sh
-python -m salt_dilution.scripts.processing.export_discharge --output salt_dilution/results/discharge/new_analysis_bundle
+python -m salt_dilution.scripts.processing.export_discharge
 ```
+
+The default output is the stable `salt_dilution/results/discharge_analysis/` folder. An existing folder is never overwritten: the tracked analysis can be read directly, and a rebuild must use `--output` with a separate, absent working directory before a reviewed replacement. Do not create dated publication folders or copy code into results. Tables go in `tables/`, figures in `figures/`, settings snapshots in `settings/`, and source references in `provenance/`. Implementation remains in `scripts/` or `notebooks/`.
 
 Defaults select the current reviewed bundles documented in the [results guide](../salt_dilution/results/README.md#use-the-analysis-bundle). Use `--mass-run`, `--audit-run`, `--review-run` and `--reuse-run` for explicit versions; audit and review must reference the selected mass run. The exporter verifies source hashes, preserves original Q strings and blanks, and refuses existing output folders. It writes one table covering every release, a primary subset, exact channel estimates, settings, review evidence and copied figures. It performs no new discharge inference or field approval.
 
-Start with `discharge_by_release.csv`; use `discharge_primary.csv` for the five proposed primary estimates and retain its flags in analysis. `analysis_limits.json` defines closure and scientific limits. `bundle_index.json` contains the exact rebuild command. The package needs the local source bundles when rebuilding; reading its tables and figures does not require the raw recordings.
+Start with `tables/discharge_by_release.csv`; use `tables/discharge_primary.csv` for the five proposed primary estimates and retain its flags in analysis. `analysis_limits.json` defines closure and scientific limits. `bundle_index.json` contains the exact rebuild command. The package needs the local source bundles when rebuilding; reading its tables and figures does not require the raw recordings.
 
 ## Work with seismic recordings
 

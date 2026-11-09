@@ -22,13 +22,15 @@ The reuse test covers nine October calibration sessions over three days for sens
 
 ## Use the analysis bundle
 
-The [current analysis bundle](discharge/2026-11-08_discharge_analysis/) is included in the repository. Open the [primary estimates](discharge/2026-11-08_discharge_analysis/discharge_primary.csv) for Q, or [all release outcomes](discharge/2026-11-08_discharge_analysis/discharge_by_release.csv) for results and missing-data reasons:
+The [current analysis bundle](discharge_analysis/) is included in the repository. Open the [primary estimates](discharge_analysis/tables/discharge_primary.csv) for Q, or [all release outcomes](discharge_analysis/tables/discharge_by_release.csv) for results and missing-data reasons:
 
-- `discharge_by_release.csv`: all 38 releases, exact Q values or blanks, final processing dispositions, review status, flags and data limits. `case_disposition` is the export status; `category` preserves the earlier stage's classification.
-- `discharge_primary.csv`: the five proposed primary estimates, including the flagged October 4 T03 result.
-- `discharge_estimates.csv`: all ten channel estimates with exact K references, windows, units and sensitivity components. Comparison channels are not additional releases.
+- `tables/discharge_by_release.csv`: all 38 releases, exact Q values or blanks, final processing dispositions, review status, flags and data limits. `case_disposition` is the export status; `category` preserves the earlier stage's classification.
+- `tables/discharge_primary.csv`: the five proposed primary estimates, including the flagged October 4 T03 result.
+- `tables/discharge_estimates.csv`: all ten channel estimates with exact K references, windows, units and sensitivity components. Comparison channels are not additional releases.
 - `figures/mass/`, `figures/review/`, `figures/reuse/`: discharge/pulse, window-sensitivity and calibration-consistency figures.
-- `bundle_index.json`, `source_bundles.json`, `run_info.json` and the review tables: file meanings, reproducibility commands, source hashes and evidence.
+- `bundle_index.json`, `provenance/source_bundles.json`, `run_info.json` and the review tables: file meanings, reproducibility commands, source hashes and evidence.
+
+The published analysis has one stable location, with `tables/`, `figures/`, `settings/` and `provenance/` subfolders. There is no dated wrapper or copied code directory. Implementation stays in `salt_dilution/scripts/` or `salt_dilution/notebooks/`. The original numerical run record is preserved at `provenance/original_run_info.json`; the root manifest records the organization-only move and current output paths.
 
 A blank Q means not estimated, never zero flow. Six mass-route releases are closed as not estimable from the current capture; the remaining no-estimate cases retain their method, identity, calibration, practice or scope reasons. A case can be revisited if new source evidence becomes available. Processing closure does not remove scientific flags or confer field acceptance.
 
@@ -36,15 +38,15 @@ Generate a fresh package with the [export command](../../docs/getting_started.md
 
 ### Graphs
 
-![Five proposed discharge estimates, comparing specific and actual conductivity channels.](discharge/2026-11-08_discharge_analysis/figures/mass/discharge_comparison.png)
+![Five proposed discharge estimates, comparing specific and actual conductivity channels.](discharge_analysis/figures/mass/discharge_comparison.png)
 
 Specific conductivity gives the primary estimates; actual conductivity is a separate comparison. The original plot's “window review pending” label refers to a stage before the numerical review below; field sign-off remains pending. Error bars show sensitivity components, not total uncertainty or confidence intervals.
 
-![Changes in the five primary discharge estimates under tested pulse-window and background choices.](discharge/2026-11-08_discharge_analysis/figures/review/window_background_sensitivity.png)
+![Changes in the five primary discharge estimates under tested pulse-window and background choices.](discharge_analysis/figures/review/window_background_sensitivity.png)
 
-![Calibration coefficients across nine sessions, showing failed specific-channel reuse and insufficient evidence for actual-channel reuse.](discharge/2026-11-08_discharge_analysis/figures/reuse/calibration_consistency.png)
+![Calibration coefficients across nine sessions, showing failed specific-channel reuse and insufficient evidence for actual-channel reuse.](discharge_analysis/figures/reuse/calibration_consistency.png)
 
-The [individual pulse plots](discharge/2026-11-08_discharge_analysis/figures/mass/pulses/) show the recordings behind estimates and blocked capture cases. Keep the quality flags and limitations above with any presentation of these graphs.
+The [individual pulse plots](discharge_analysis/figures/mass/pulses/) show the recordings behind estimates and blocked capture cases. Keep the quality flags and limitations above with any presentation of these graphs.
 
 ## Reproducing a calibration run
 
@@ -60,6 +62,6 @@ The remaining partial release is July 9, 2025 T01, with no supported calibration
 
 The [association table](matching/2026-11-01_reviewed_pairings/trial_associations.csv) still audits all 59 current input rows, including unresolved curated placeholders; proposed links are in the candidate tables and summary. Identity, method, measurement and event-alignment review flags describe different remaining checks. Neither file contains Q estimates or accepted integration windows. See [setup](../../docs/getting_started.md#pair-releases-recordings-and-k-fits) for reproduction and status meanings.
 
-Keep each analysis in a named directory. `_template/` provides `figures/`, `tables/` and `run_info.json`; it contains no scientific result. The historical `result_path` helper uses `MORA_RUN_ID` or a UTC timestamp and starts a run record with status `started`. Complete input references, configuration, Git revision and outcome when the run finishes.
+Keep the published discharge analysis at `discharge_analysis/`; use Git history rather than dated publication folders for versions. Keep dates, configuration, input references and execution details in run metadata. Historical source-run paths remain in provenance and are not renamed by this layout cleanup. Unpublished intermediate runs remain local; `_template/` is only a starting layout, not a scientific result.
 
 Selected calibration, pairing and discharge bundles are tracked. Other generated runs and local MLflow stay ignored; large normalized readings belong in the local processed-data folder. Historical notebooks use retired processing interfaces and are not the maintained runner.

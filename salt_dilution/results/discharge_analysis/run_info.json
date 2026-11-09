@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "record_type": "layout_migration",
+  "scope": "Organization only; no numerical analysis, input-data reconciliation or field acceptance performed.",
+  "source_repository_revision": "7827504b1edfde81421f5e38039b78e38f10f679",
+  "previous_bundle": "salt_dilution/results/discharge/2026-11-08_discharge_analysis",
+  "published_bundle": "salt_dilution/results/discharge_analysis",
+  "numerical_results_changed": false,
+  "scientific_acceptance": false,
+  "release_count": 38,
+  "primary_release_count": 5,
+  "channel_estimate_count": 10,
+  "figure_count": 26,
+  "inputs": [],
+  "historical_provenance": {
+    "path": "provenance/original_run_info.json",
+    "git_blob_sha1": "00d3471bc1b4f7f3dd75942dee020625acc5a064",
+    "meaning": "Unchanged original numerical-run record, including original input paths, output paths and SHA-256 pins. This is the calculation provenance, not a rerun under the new layout."
+  },
+  "removed_duplicate_code": {
+    "old_path": "code/export_discharge.py",
+    "git_blob_sha1": "11e696af4921a4cebb798446c731b4ff81198148",
+    "maintained_path": "salt_dilution/scripts/processing/export_discharge.py",
+    "historical_revision": "7827504b1edfde81421f5e38039b78e38f10f679"
+  },
+  "integrity_scope": "Outputs retain original recorded SHA-256 pins at the new paths. The preserved historical run record is separately identified by its Git blob SHA-1. The entire unchanged figures subtree retains its original Git tree SHA-1. No historical input pins were rewritten.",
+  "preserved_trees": [
+    {
+      "path": "figures",
+      "git_tree_sha1": "4b74bad3eba5219f2bbbc1573238dcaebf6b884d"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "README.md",
+      "sha256": "b1abee748907e6499cbd2129333f335a14ad27f900b5a7fab53584cba2a2b3fb"
+    },
+    {
+      "path": "analysis_limits.json",
+      "sha256": "165f719a88b238cc8dba10ec56c29ac8b8f11fbc4a7723f9c33a44cd37ffbd6d"
+    },
+    {
+      "path": "bundle_index.json",
+      "sha256": "0412da1e0917756f2084c0026025597ee5e15cfa2f9c55790c996c3b2317c058"
+    },
+    {
+      "path": "figures/mass/discharge_comparison.png",
+      "sha256": "1591ff9291b217be5085482123f944c65df4c536dd820517ac959bce17588cd3"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20250731-T01_REC-9c2e4625c18f1450_actual.png",
+      "sha256": "15e4000265c3bd14711c98774a80e14f5759427fc7ab5deff46316cfd5b03c99"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20250731-T01_REC-9d6a06bbbfe34327_actual.png",
+      "sha256": "230ba84db2c55090d529b780be886a9095e09b702b31045082946b53039f7b1c"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20250731-T01_REC-c41d93416ed9e9cd_actual.png",
+      "sha256": "13a3aa00f56cd69791a0b1727914ff63d878f13c1bf4fe534ed5c76e8008e99f"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20260918-T01_REC-ad18f24cf13fc889_actual.png",
+      "sha256": "65440b6e74504ab5482df8ece268cdbb8c918dda6167b61a732f61f6b92feb85"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20260918-T01_REC-ad18f24cf13fc889_specific.png",
+      "sha256": "6938b805dcb70043cb0b673f52346a466d0cbb9e349ab3d156b147d38254a2d3"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261002-T01_REC-699be6dc50467e56_actual.png",
+      "sha256": "eb5d9606a0e4c42d5deece25f29bb3882eb0a6f171186d628a6309f7b8c585ff"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261002-T01_REC-699be6dc50467e56_specific.png",
+      "sha256": "9264d9bc4481dec09628abfe5a53b769c405dc39460a1b4ac0a8e4e4a1e1889d"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261002-T02_REC-f53ae975ea1d2066_actual.png",
+      "sha256": "4295c17e95d0c07d852a3d77a1a26d8a1d855a7870a95cbcddb3963d1acf1ad2"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261002-T02_REC-f53ae975ea1d2066_specific.png",
+      "sha256": "b559d510839110fe0feb958014fcf414f55d8898887ba7e92993cfccfa1bcb69"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261004-T01_REC-4a7a771ed5fc02b2_actual.png",
+      "sha256": "1f340d9348a2863c67c01aa757e9bea4bb5aaa2ab8e8b24a2a59d904bae15491"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261004-T01_REC-4a7a771ed5fc02b2_specific.png",
+      "sha256": "31a6bc847eea13666b334698bc39cc92428ae606fd8a1dd1f4cdabdc17f597a8"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261004-T02_REC-7f5709554e2c6b46_actual.png",
+      "sha256": "66146caf2292526786eb5b19e9a3acc9b7ab9e5526846128c7b180c128c21507"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261004-T02_REC-7f5709554e2c6b46_specific.png",
+      "sha256": "8ffb120c9a2cab33f65c46396da914c23e4277dbddfe73c6115121590a2251fc"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261004-T03_REC-da6256536b52d8a1_actual.png",
+      "sha256": "a37eccc561c3d0b416d912ec16aa8b7e95074882633016e8063014e6a4cc6b6e"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261004-T03_REC-da6256536b52d8a1_specific.png",
+      "sha256": "75a946c04e8d29691b15710dadcde7c2cac9d0807f4c2942f3b31b4bc6c1ee84"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261004-T04_REC-33d70d175906e90a_actual.png",
+      "sha256": "d0b8053d1fee6883cb7a0529032176e4f01eab3876a7b74e3faabdd1ca78d170"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261004-T04_REC-33d70d175906e90a_specific.png",
+      "sha256": "81b50864fb19e42829951d8327196d445a1c8864b882a0a5b2bba09af9b90a9b"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261005-T01_REC-8760791310ac7565_actual.png",
+      "sha256": "682cf9c643734c35ef356d8be389b026b84c4fbf9426732796fe6b07a553349b"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261005-T01_REC-8760791310ac7565_specific.png",
+      "sha256": "77ba10c7ab6494840a3b3883e545862f37f2b18ddba14a1f5eafd3382495e7a1"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261005-T02_REC-c0bf309f5ddbeb7d_actual.png",
+      "sha256": "e4cfe674501625ab0ab7997ae62a8d4a5f70cad6731325687def96fe0f0bfff2"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261005-T02_REC-c0bf309f5ddbeb7d_specific.png",
+      "sha256": "ec7fb449bd960453790c3d4ec7d386eebfb5296c42a738f0aaec426a41980f8d"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261005-T03_REC-7f395f6d9298eaa3_actual.png",
+      "sha256": "5bc114b20a5bc940131fd52b8dc75fdd9e5618e615e760ad58d65ce128a9afd9"
+    },
+    {
+      "path": "figures/mass/pulses/NISQ-20261005-T03_REC-7f395f6d9298eaa3_specific.png",
+      "sha256": "9667b791ad9b4692e8b0102c49d1ac44cca03c3de2cf9083ed9b4f7f3df87bc1"
+    },
+    {
+      "path": "figures/reuse/calibration_consistency.png",
+      "sha256": "63d2bb752dbe0eb70c4ea4102d20f06d77ffa8f1caf219259e684aeec2826f18"
+    },
+    {
+      "path": "figures/review/window_background_sensitivity.png",
+      "sha256": "342c69a3bf1d83ab83ac2844086867bb667630fec46a1fa07543dcef429affa8"
+    },
+    {
+      "path": "provenance/references.json",
+      "sha256": "d9f53347a883464307f4a4e0159c35078a70cd8dd33ca4d02a9c38d1a4270b0d"
+    },
+    {
+      "path": "provenance/source_bundles.json",
+      "sha256": "117b1383cd7c8809d2d67da2f51879c70e7aed750f86b2f2ac6d82f61d528ea4"
+    },
+    {
+      "path": "settings/pulse_windows.json",
+      "sha256": "999be29e1a340f86cd6d72f32cc31f80d288874b189db228cd82ca8ff4a8f9c9"
+    },
+    {
+      "path": "settings/release_confirmations.json",
+      "sha256": "827e8a2d64b46b0822b438c72255db5fdadd932bb41eec2c563e22eed9224238"
+    },
+    {
+      "path": "settings/reuse_test_design.json",
+      "sha256": "83889386b3764e6ca21308e6300f5ba79dfe4890d2249d836e951ae1517c97eb"
+    },
+    {
+      "path": "settings/window_review_design.json",
+      "sha256": "7d93d134de2e1e2b1f2b4c4d5bd24356d04d40b87de4c32d151b7031f79381ab"
+    },
+    {
+      "path": "tables/blocked_capture_review.csv",
+      "sha256": "0e41c1ffb66d76f99cbdf979f5a05b9a5d6b8252905b044bf6b78ebfa7b33e00"
+    },
+    {
+      "path": "tables/calibration_compatibility.csv",
+      "sha256": "7c8b2d01559cde38dedc0f8e0449bee82d052ea5969382b9066540c495963a07"
+    },
+    {
+      "path": "tables/capture_coverage.csv",
+      "sha256": "f754ff15d5654e595af3bac72d6cf761f4476a5757f6830ee8edd64aa2d03264"
+    },
+    {
+      "path": "tables/coefficient_reuse.csv",
+      "sha256": "c7bd0f18d702cb7426faac2d9421897c924ce3d0e8053c56ebaa856d6154d9a5"
+    },
+    {
+      "path": "tables/discharge_by_release.csv",
+      "sha256": "91ed8f69bfd55882be47b44536a4a2dbfce32ff6bcba23485985aa3a9f9450c2"
+    },
+    {
+      "path": "tables/discharge_estimates.csv",
+      "sha256": "74da4b9964fe9a5599e2d4ec7f726f9475f4f704612064266396d0eefe2f5cf7"
+    },
+    {
+      "path": "tables/discharge_primary.csv",
+      "sha256": "95ff686bf54699c8a946fe16c57d82e47c769a639fd99483acb5f1d4a0829eb7"
+    },
+    {
+      "path": "tables/field_note_comparison.csv",
+      "sha256": "a8b55550d840784a407ff8c3cc2fb6dccc4d274c698cfe9fb1ac621fea3408fc"
+    },
+    {
+      "path": "tables/isolated_method_candidates.csv",
+      "sha256": "0765a5005a2a640fbdca53ce85124f3ca25efac1ef0b6123bd312b7ae595df56"
+    },
+    {
+      "path": "tables/native_export_comparison.csv",
+      "sha256": "8a3ce96845d0981e5f5b668f07790ad327fdf0f33413be46f584706ffe885d26"
+    },
+    {
+      "path": "tables/quality_review_by_channel.csv",
+      "sha256": "ea925a149b65298bb298bb2c3373bb137625affefdae52b9dcf3cede27779c81"
+    },
+    {
+      "path": "tables/quality_review_by_release.csv",
+      "sha256": "34da3d9c854aa313f5ce010f8b11607280f4fb03d9a26aeb426da4ef56e33a40"
+    },
+    {
+      "path": "tables/recording_outcomes.csv",
+      "sha256": "afeb49e73a772a002207d625cedfe8def819c1aeeee64ff3fa0fdc6262f100da"
+    },
+    {
+      "path": "tables/window_sensitivity_scenarios.csv",
+      "sha256": "dc3c2d97a98eeb1aaa3b2ebf8b04bcf96be13e72cae86090404bea7bcfa295c5"
+    }
+  ]
+}

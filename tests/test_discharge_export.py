@@ -108,7 +108,7 @@ class BundleTests(unittest.TestCase):
         self.assertFalse(info['scientific_acceptance'])
         self.assertEqual(info['completion_status'],'complete_for_current_dataset')
         self.assertEqual((self.root/'out/figures/mass/example.png').read_bytes(),b'fixture-image-bytes')
-        with (self.root/'out/discharge_primary.csv').open() as stream:self.assertEqual(len(list(csv.DictReader(stream))),1)
+        with (self.root/'out/tables/discharge_primary.csv').open() as stream:self.assertEqual(len(list(csv.DictReader(stream))),1)
         self.assertTrue((self.root/'out/bundle_index.json').is_file())
 
     def test_changed_source_and_existing_output_are_refused(self):
@@ -131,3 +131,22 @@ class BundleTests(unittest.TestCase):
         other=self.root/'unrelated_reuse';shutil.copytree(self.sources['reuse'],other)
         with self.assertRaisesRegex(ValueError,'reuse'):
             export.run_export(self.sources['mass'],self.sources['audit'],self.sources['review'],other,self.root/'out',root=self.root)
+
+    def test_stable_layout_keeps_code_out_of_results(self):
+        self.run_export()
+        output = self.root/'out'
+        self.assertEqual(export.DEFAULT_OUTPUT, export.ROOT/'salt_dilution/results/discharge_analysis')
+        self.assertFalse((output/'code').exists())
+        self.assertFalse(list(output.rglob('*.py')))
+        self.assertFalse(list(output.rglob('*.ipynb')))
+        for directory in ('tables', 'figures', 'settings', 'provenance'):
+            self.assertTrue((output/directory).is_dir())
+        guide = json.loads((output/'bundle_index.json').read_text())
+        for field in ('entry_point', 'primary_subset', 'channel_estimates', 'provenance'):
+            self.assertTrue((output/guide[field]).is_file(), field)
+        self.assertEqual((output/'tables/discharge_estimates.csv').read_bytes(),
+                         (self.sources['mass']/'discharge_estimates.csv').read_bytes())
+        manifest = json.loads((output/'run_info.json').read_text())
+        self.assertFalse(any(item['path'].startswith('code/') for item in manifest['outputs']))
+        for item in manifest['outputs']:
+            self.assertEqual(hashlib.sha256((output/item['path']).read_bytes()).hexdigest(), item['sha256'])

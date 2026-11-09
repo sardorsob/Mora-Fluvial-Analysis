@@ -48,8 +48,6 @@ __pycache__/
 !/salt_dilution/results/matching/2026-11-01_source_linked_pairings/
 !/salt_dilution/results/matching/2026-11-01_reviewed_pairings/
 
-# Share the reviewed discharge tables, figures and reproducibility record.
-!/salt_dilution/results/discharge/
-/salt_dilution/results/discharge/*
-!/salt_dilution/results/discharge/2026-11-08_discharge_analysis/
-!/salt_dilution/results/discharge/2026-11-08_discharge_analysis/**
+# Share the stable discharge analysis, not intermediate run folders.
+!/salt_dilution/results/discharge_analysis/
+!/salt_dilution/results/discharge_analysis/**

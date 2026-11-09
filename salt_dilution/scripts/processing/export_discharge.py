@@ -11,6 +11,7 @@ import shutil
 from . import calibration_reuse as reuse, mass_slug, matching
 
 ROOT = matching.ROOT
+DEFAULT_OUTPUT = ROOT/'salt_dilution/results/discharge_analysis'
 DEFAULT_MASS = ROOT/'salt_dilution/results/discharge/2026-11-08_confirmed_mass'
 DEFAULT_AUDIT = ROOT/'salt_dilution/results/discharge/2026-11-08_confirmed_mass_evidence'
 DEFAULT_REVIEW = ROOT/'salt_dilution/results/discharge/2026-11-08_window_applicability_review'
@@ -18,23 +19,23 @@ DEFAULT_REUSE = ROOT/'salt_dilution/results/calibration_reuse/2026-11-08_reuse_t
 
 # Retain scientific evidence and settings alongside the combined analysis table.
 COPY_FILES = {
-    'mass': [('discharge_estimates.csv','discharge_estimates.csv'),
-             ('recording_outcomes.csv','recording_outcomes.csv'),
-             ('pulse_windows_used.json','pulse_windows.json'),
-             ('release_confirmations_used.json','release_confirmations.json')],
-    'audit': [('native_export_comparison.csv','native_export_comparison.csv'),
-              ('capture_coverage.csv','capture_coverage.csv')],
-    'review': [('review_by_release.csv','quality_review_by_release.csv'),
-               ('review_by_channel.csv','quality_review_by_channel.csv'),
-               ('window_sensitivity_scenarios.csv','window_sensitivity_scenarios.csv'),
-               ('notebook_native_comparison.csv','field_note_comparison.csv'),
-               ('blocked_release_review.csv','blocked_capture_review.csv'),
-               ('review_design.json','window_review_design.json'),
-               ('references.json','references.json')],
-    'reuse': [('compatibility.csv','calibration_compatibility.csv'),
-              ('method_candidates.csv','isolated_method_candidates.csv'),
-              ('reuse_evaluation.csv','coefficient_reuse.csv'),
-              ('frozen_sessions.json','reuse_test_design.json')],
+    'mass': [('discharge_estimates.csv','tables/discharge_estimates.csv'),
+             ('recording_outcomes.csv','tables/recording_outcomes.csv'),
+             ('pulse_windows_used.json','settings/pulse_windows.json'),
+             ('release_confirmations_used.json','settings/release_confirmations.json')],
+    'audit': [('native_export_comparison.csv','tables/native_export_comparison.csv'),
+              ('capture_coverage.csv','tables/capture_coverage.csv')],
+    'review': [('review_by_release.csv','tables/quality_review_by_release.csv'),
+               ('review_by_channel.csv','tables/quality_review_by_channel.csv'),
+               ('window_sensitivity_scenarios.csv','tables/window_sensitivity_scenarios.csv'),
+               ('notebook_native_comparison.csv','tables/field_note_comparison.csv'),
+               ('blocked_release_review.csv','tables/blocked_capture_review.csv'),
+               ('review_design.json','settings/window_review_design.json'),
+               ('references.json','provenance/references.json')],
+    'reuse': [('compatibility.csv','tables/calibration_compatibility.csv'),
+              ('method_candidates.csv','tables/isolated_method_candidates.csv'),
+              ('reuse_evaluation.csv','tables/coefficient_reuse.csv'),
+              ('frozen_sessions.json','settings/reuse_test_design.json')],
 }
 
 DISPOSITIONS = {
@@ -139,13 +140,15 @@ def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=R
         if pins.get(str(source.resolve())) != matching._hash(source):
             raise ValueError(f'Export source is not pinned by its bundle: {source}')
     with reuse.staged_run(output_dir,pins,[__file__,reuse.__file__,mass_slug.__file__,matching.__file__]) as (stage,pins):
-        mass_slug._table(stage/'discharge_by_release.csv',combined,['trial_id'])
-        mass_slug._table(stage/'discharge_primary.csv',primaries,['trial_id','q_primary_m3_s'])
+        (stage/'tables').mkdir()
+        (stage/'provenance').mkdir()
+        mass_slug._table(stage/'tables/discharge_by_release.csv',combined,['trial_id'])
+        mass_slug._table(stage/'tables/discharge_primary.csv',primaries,['trial_id','q_primary_m3_s'])
         for source,destination in copies:
             target = stage/destination
             target.parent.mkdir(parents=True,exist_ok=True)
             shutil.copy2(source,target)
-        (stage/'source_bundles.json').write_text(matching._json(index)+'\n')
+        (stage/'provenance/source_bundles.json').write_text(matching._json(index)+'\n')
         limits = dict(scientifically_accepted=False,window_signoff_inferred=False,
             meaning_of_closure='All processing cases have a recorded result or no-estimate disposition for the current dataset; new source evidence can reopen a case.',
             capture_policy='No tail extrapolation, interpolation across missing samples or substitution of another release.',
@@ -157,14 +160,16 @@ def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=R
         for key,option in [('mass','--mass-run'),('audit','--audit-run'),('review','--review-run'),('reuse','--reuse-run')]:
             commands += [option,matching._ref(sources[key],root)]
         commands += ['--output','<fresh_output_directory>']
-        guide = dict(entry_point='discharge_by_release.csv',primary_subset='discharge_primary.csv',
-            channel_estimates='discharge_estimates.csv',units=dict(q_primary_m3_s='m3/s',q_primary_l_s='L/s',mass_g='g',k='(mg/L)/(uS/cm)'),
+        guide = dict(entry_point='tables/discharge_by_release.csv',primary_subset='tables/discharge_primary.csv',
+            channel_estimates='tables/discharge_estimates.csv',units=dict(q_primary_m3_s='m3/s',q_primary_l_s='L/s',mass_g='g',k='(mg/L)/(uS/cm)'),
             missing_values='Blank Q means not estimated; never zero discharge.',
             figures='figures/mass: discharge and pulse plots; figures/review: window sensitivity; figures/reuse: calibration consistency.',
-            quality='quality_review_by_release.csv, quality_review_by_channel.csv, field_note_comparison.csv and analysis_limits.json',
+            quality='tables/quality_review_by_release.csv, tables/quality_review_by_channel.csv, tables/field_note_comparison.csv and analysis_limits.json',
+            settings='settings/', provenance='provenance/source_bundles.json',
+            implementation='salt_dilution/scripts/processing/export_discharge.py',
             reproduce_command=commands)
         (stage/'bundle_index.json').write_text(matching._json(guide)+'\n')
-        (stage/'code').mkdir();shutil.copy2(__file__,stage/'code/export_discharge.py')
+        (stage/'README.md').write_text('# Discharge analysis\n\nStart with [all release outcomes](tables/discharge_by_release.csv),\n[primary estimates](tables/discharge_primary.csv), or\n[all channel estimates](tables/discharge_estimates.csv).\n\n- `tables/` contains results, quality checks and sensitivity tables.\n- `figures/` contains discharge, pulse, review and calibration plots.\n- `settings/` contains the window, quantity and study-design snapshots.\n- `provenance/` contains source-run references and supporting citations.\n\n`analysis_limits.json` retains the scientific limitations. Blank Q is not zero.\n`bundle_index.json` provides navigation and a rebuild command; `run_info.json`\nrecords hashes. Rebuilding needs the original local source bundles.\n\nExecutable code belongs in `salt_dilution/scripts/` or `salt_dilution/notebooks/`,\nnever in this results folder. Dates belong in records and run metadata, not in\na dated wrapper around this published analysis. Original source-run paths can\nstill contain dates because they document the historical calculation.\n', encoding='utf-8')
         info = reuse.write_run_info(stage,pins,scope='Complete analysis handoff for the current dataset; proposed estimates and explicit no-estimate outcomes.',
             completion_status='complete_for_current_dataset',release_count=len(combined),primary_release_count=len(primaries),
             channel_estimate_count=len(estimates),disposition_counts=dict(Counter(r['case_disposition'] for r in combined)),
@@ -180,7 +185,7 @@ def main(argv=None):
     parser.add_argument('--audit-run',type=Path,default=DEFAULT_AUDIT)
     parser.add_argument('--review-run',type=Path,default=DEFAULT_REVIEW)
     parser.add_argument('--reuse-run',type=Path,default=DEFAULT_REUSE)
-    parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--output',type=Path,default=DEFAULT_OUTPUT,help='Stable analysis directory; existing outputs are never overwritten')
     args = parser.parse_args(argv)
     try: info = run_export(args.mass_run,args.audit_run,args.review_run,args.reuse_run,args.output)
     except (ValueError,OSError) as error: parser.exit(2,str(error)+'\n')

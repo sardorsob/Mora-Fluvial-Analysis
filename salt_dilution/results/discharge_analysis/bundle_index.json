@@ -1,0 +1,34 @@
+{
+  "entry_point": "tables/discharge_by_release.csv",
+  "primary_subset": "tables/discharge_primary.csv",
+  "channel_estimates": "tables/discharge_estimates.csv",
+  "units": {
+    "q_primary_m3_s": "m3/s",
+    "q_primary_l_s": "L/s",
+    "mass_g": "g",
+    "k": "(mg/L)/(uS/cm)"
+  },
+  "missing_values": "Blank Q means not estimated; never zero discharge.",
+  "figures": "figures/mass: discharge and pulse plots; figures/review: window sensitivity; figures/reuse: calibration consistency.",
+  "quality": "tables/quality_review_by_release.csv, tables/quality_review_by_channel.csv, tables/field_note_comparison.csv and analysis_limits.json",
+  "settings": "settings/",
+  "provenance": "provenance/source_bundles.json",
+  "original_run": "provenance/original_run_info.json",
+  "implementation": "salt_dilution/scripts/processing/export_discharge.py",
+  "reproduce_command": [
+    "python",
+    "-m",
+    "salt_dilution.scripts.processing.export_discharge",
+    "--mass-run",
+    "salt_dilution/results/discharge/2026-11-08_confirmed_mass",
+    "--audit-run",
+    "salt_dilution/results/discharge/2026-11-08_confirmed_mass_evidence",
+    "--review-run",
+    "salt_dilution/results/discharge/2026-11-08_window_applicability_review",
+    "--reuse-run",
+    "salt_dilution/results/calibration_reuse/2026-11-08_reuse_test",
+    "--output",
+    "<fresh_output_directory>"
+  ],
+  "rebuild_note": "Historical local source bundles are required. The maintained exporter writes the organized layout and refuses to overwrite the published analysis."
+}
