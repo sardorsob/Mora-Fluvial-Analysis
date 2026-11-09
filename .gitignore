@@ -28,7 +28,7 @@ __pycache__/
 !/fluvial_seismology/results/README.md
 !/fluvial_seismology/results/_template/
 
-# Salt-dilution parser outputs and generated analysis runs stay local.
+# Salt-dilution parser outputs and unselected analysis runs stay local.
 /salt_dilution/data/processed/*
 !/salt_dilution/data/processed/.gitkeep
 !/salt_dilution/data/processed/README.md
@@ -47,3 +47,9 @@ __pycache__/
 !/salt_dilution/results/matching/2026-10-31_final_pairings/
 !/salt_dilution/results/matching/2026-11-01_source_linked_pairings/
 !/salt_dilution/results/matching/2026-11-01_reviewed_pairings/
+
+# Share the reviewed discharge tables, figures and reproducibility record.
+!/salt_dilution/results/discharge/
+/salt_dilution/results/discharge/*
+!/salt_dilution/results/discharge/2026-11-08_discharge_analysis/
+!/salt_dilution/results/discharge/2026-11-08_discharge_analysis/**

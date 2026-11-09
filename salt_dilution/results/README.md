@@ -2,7 +2,7 @@
 
 The [reviewed calibration bundle](calibrations/2026-10-26_probe_review/README.md) contains 49 provisional fits, 37 skipped series and diagnostic figures. Its supported identity fills leave all numerical fit fields unchanged from the [earlier bundle](calibrations/README.md). Both bundles are retained; neither contains accepted discharge estimates.
 
-## Local discharge results
+## Discharge results
 
 Processing and numerical review are complete for the current mass-slug dataset. All **38 releases** have a recorded disposition: **five proposed primary Q estimates**, with five actual-channel comparisons, and **33 releases without a mass-slug estimate**. The five estimates use trial-specific K and 4000 g delivered per release, confirmed by the field participant for October 2–5, 2026. Numerical window review is complete. Field mixing, tracer recovery and total measurement uncertainty remain unverified; no discharge is certified by this export.
 
@@ -22,7 +22,7 @@ The reuse test covers nine October calibration sessions over three days for sens
 
 ## Use the analysis bundle
 
-The current handoff is `discharge/2026-11-08_discharge_analysis/`:
+The [current analysis bundle](discharge/2026-11-08_discharge_analysis/) is included in the repository. Open the [primary estimates](discharge/2026-11-08_discharge_analysis/discharge_primary.csv) for Q, or [all release outcomes](discharge/2026-11-08_discharge_analysis/discharge_by_release.csv) for results and missing-data reasons:
 
 - `discharge_by_release.csv`: all 38 releases, exact Q values or blanks, final processing dispositions, review status, flags and data limits. `case_disposition` is the export status; `category` preserves the earlier stage's classification.
 - `discharge_primary.csv`: the five proposed primary estimates, including the flagged October 4 T03 result.
@@ -32,7 +32,19 @@ The current handoff is `discharge/2026-11-08_discharge_analysis/`:
 
 A blank Q means not estimated, never zero flow. Six mass-route releases are closed as not estimable from the current capture; the remaining no-estimate cases retain their method, identity, calibration, practice or scope reasons. A case can be revisited if new source evidence becomes available. Processing closure does not remove scientific flags or confer field acceptance.
 
-Generate a fresh package with the [export command](../../docs/getting_started.md#export-the-analysis-package). The bundle remains ignored and local; ordinary clones do not contain the normalized recordings or intermediate run bundles needed to rebuild it. Historical calibration, pairing, discharge and review runs remain intact.
+Generate a fresh package with the [export command](../../docs/getting_started.md#export-the-analysis-package). Reading these versioned tables and graphs needs no local inputs. Rebuilding them requires the normalized recordings and intermediate run bundles, which remain local; the saved provenance identifies those inputs and their hashes. Historical runs remain intact.
+
+### Graphs
+
+![Five proposed discharge estimates, comparing specific and actual conductivity channels.](discharge/2026-11-08_discharge_analysis/figures/mass/discharge_comparison.png)
+
+Specific conductivity gives the primary estimates; actual conductivity is a separate comparison. The original plot's “window review pending” label refers to a stage before the numerical review below; field sign-off remains pending. Error bars show sensitivity components, not total uncertainty or confidence intervals.
+
+![Changes in the five primary discharge estimates under tested pulse-window and background choices.](discharge/2026-11-08_discharge_analysis/figures/review/window_background_sensitivity.png)
+
+![Calibration coefficients across nine sessions, showing failed specific-channel reuse and insufficient evidence for actual-channel reuse.](discharge/2026-11-08_discharge_analysis/figures/reuse/calibration_consistency.png)
+
+The [individual pulse plots](discharge/2026-11-08_discharge_analysis/figures/mass/pulses/) show the recordings behind estimates and blocked capture cases. Keep the quality flags and limitations above with any presentation of these graphs.
 
 ## Reproducing a calibration run
 
@@ -50,4 +62,4 @@ The [association table](matching/2026-11-01_reviewed_pairings/trial_associations
 
 Keep each analysis in a named directory. `_template/` provides `figures/`, `tables/` and `run_info.json`; it contains no scientific result. The historical `result_path` helper uses `MORA_RUN_ID` or a UTC timestamp and starts a run record with status `started`. Complete input references, configuration, Git revision and outcome when the run finishes.
 
-Selected calibration and pairing bundles are tracked. Other generated runs and local MLflow stay ignored; large normalized readings belong in the local processed-data folder. Historical notebooks use retired processing interfaces and are not the maintained runner.
+Selected calibration, pairing and discharge bundles are tracked. Other generated runs and local MLflow stay ignored; large normalized readings belong in the local processed-data folder. Historical notebooks use retired processing interfaces and are not the maintained runner.

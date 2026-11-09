@@ -13,3 +13,6 @@ salt_dilution/data/records/*.json text eol=lf
 salt_dilution/results/matching/2026-10-31_final_pairings/* -text -whitespace
 salt_dilution/results/matching/2026-11-01_source_linked_pairings/* -text -whitespace
 salt_dilution/results/matching/2026-11-01_reviewed_pairings/* -text -whitespace
+
+# Preserve the discharge bundle's recorded hashes across checkout platforms.
+salt_dilution/results/discharge/2026-11-08_discharge_analysis/** -text -whitespace
