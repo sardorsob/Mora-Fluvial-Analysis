@@ -27,8 +27,9 @@
     "salt_dilution/results/discharge/2026-11-08_window_applicability_review",
     "--reuse-run",
     "salt_dilution/results/calibration_reuse/2026-11-08_reuse_test",
+    "--refresh-figures",
     "--output",
     "<fresh_output_directory>"
   ],
-  "rebuild_note": "Historical local source bundles are required. The maintained exporter writes the organized layout and refuses to overwrite the published analysis."
+  "rebuild_note": "The rebuild requires the verified local source runs and recordings. The publication includes the preserved original run record."
 }

@@ -113,12 +113,12 @@ The bundle contains `discharge_estimates.csv`, one `release_summary.csv` row per
 After producing the saved mass, source-audit, numerical-review and reuse bundles, assemble the current handoff:
 
 ```sh
-python -m salt_dilution.scripts.processing.export_discharge
+python -m salt_dilution.scripts.processing.export_discharge --refresh-figures --output /tmp/discharge-rebuild
 ```
 
 The default output is the stable `salt_dilution/results/discharge_analysis/` folder. An existing folder is never overwritten: the tracked analysis can be read directly, and a rebuild must use `--output` with a separate, absent working directory before a reviewed replacement. Do not create dated publication folders or copy code into results. Tables go in `tables/`, figures in `figures/`, settings snapshots in `settings/`, and source references in `provenance/`. Implementation remains in `scripts/` or `notebooks/`.
 
-Defaults select the current reviewed bundles documented in the [results guide](../salt_dilution/results/README.md#use-the-analysis-bundle). Use `--mass-run`, `--audit-run`, `--review-run` and `--reuse-run` for explicit versions; audit and review must reference the selected mass run. The exporter verifies source hashes, preserves original Q strings and blanks, and refuses existing output folders. It writes one table covering every release, a primary subset, exact channel estimates, settings, review evidence and copied figures. It performs no new discharge inference or field approval.
+Defaults select the current reviewed bundles documented in the [results guide](../salt_dilution/results/README.md#use-the-analysis-bundle). Use `--mass-run`, `--audit-run`, `--review-run` and `--reuse-run` for explicit versions. The audit and review must reference the selected mass run. The exporter checks source hashes and preserves exact Q values, blanks, quality flags and settings. With `--refresh-figures`, it redraws the published graphs from the verified tables, windows and local conductivity recordings. The default export copies the historical source figures.
 
 Start with `tables/discharge_by_release.csv`; use `tables/discharge_primary.csv` for the five proposed primary estimates and retain its flags in analysis. `analysis_limits.json` defines closure and scientific limits. `bundle_index.json` contains the exact rebuild command. The package needs the local source bundles when rebuilding; reading its tables and figures does not require the raw recordings.
 

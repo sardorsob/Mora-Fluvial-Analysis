@@ -27,10 +27,11 @@ The [current analysis bundle](discharge_analysis/) is included in the repository
 - `tables/discharge_by_release.csv`: all 38 releases, exact Q values or blanks, final processing dispositions, review status, flags and data limits. `case_disposition` is the export status; `category` preserves the earlier stage's classification.
 - `tables/discharge_primary.csv`: the five proposed primary estimates, including the flagged October 4 T03 result.
 - `tables/discharge_estimates.csv`: all ten channel estimates with exact K references, windows, units and sensitivity components. Comparison channels are not additional releases.
+- `tables/quality_review_by_channel.csv`: one row per channel. The inherited `q_primary_m3_s` column gives that row's channel estimate. Use `estimate_role` in `discharge_estimates.csv` to identify the primary channel.
 - `figures/mass/`, `figures/review/`, `figures/reuse/`: discharge/pulse, window-sensitivity and calibration-consistency figures.
 - `bundle_index.json`, `provenance/source_bundles.json`, `run_info.json` and the review tables: file meanings, reproducibility commands, source hashes and evidence.
 
-The published analysis has one stable location, with `tables/`, `figures/`, `settings/` and `provenance/` subfolders. There is no dated wrapper or copied code directory. Implementation stays in `salt_dilution/scripts/` or `salt_dilution/notebooks/`. The original numerical run record is preserved at `provenance/original_run_info.json`; the root manifest records the organization-only move and current output paths.
+The published analysis uses one stable folder. The original numerical run record is preserved at `provenance/original_run_info.json`. The current manifest records the figure rebuild and its input and output hashes.
 
 A blank Q means not estimated, never zero flow. Six mass-route releases are closed as not estimable from the current capture; the remaining no-estimate cases retain their method, identity, calibration, practice or scope reasons. A case can be revisited if new source evidence becomes available. Processing closure does not remove scientific flags or confer field acceptance.
 
@@ -40,13 +41,13 @@ Generate a fresh package with the [export command](../../docs/getting_started.md
 
 ![Five proposed discharge estimates, comparing specific and actual conductivity channels.](discharge_analysis/figures/mass/discharge_comparison.png)
 
-Specific conductivity gives the primary estimates; actual conductivity is a separate comparison. The original plot's “window review pending” label refers to a stage before the numerical review below; field sign-off remains pending. Error bars show sensitivity components, not total uncertainty or confidence intervals.
+Specific conductivity gives the primary estimates. Actual conductivity gives a separate comparison for the same releases. The next figure shows how the primary estimates respond to changes in the integration window and background.
 
 ![Changes in the five primary discharge estimates under tested pulse-window and background choices.](discharge_analysis/figures/review/window_background_sensitivity.png)
 
-![Calibration coefficients across nine sessions, showing failed specific-channel reuse and insufficient evidence for actual-channel reuse.](discharge_analysis/figures/reuse/calibration_consistency.png)
+![Estimated changes in Q under coefficient reuse across nine calibration sessions, with a ±5% tolerance.](discharge_analysis/figures/reuse/calibration_consistency.png)
 
-The [individual pulse plots](discharge_analysis/figures/mass/pulses/) show the recordings behind estimates and blocked capture cases. Keep the quality flags and limitations above with any presentation of these graphs.
+The pulse plots show the recorded conductivity and the background and integration windows used for each estimate. Blocked cases show the available recording and the reason for leaving Q blank. [Individual pulse plots](discharge_analysis/figures/mass/pulses/)
 
 ## Reproducing a calibration run
 

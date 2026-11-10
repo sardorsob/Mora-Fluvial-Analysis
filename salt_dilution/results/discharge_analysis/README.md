@@ -18,7 +18,7 @@ never in this results folder. Dates belong in records and run metadata, not in
 a dated wrapper around this published analysis. Original source-run paths can
 still contain dates because they document the historical calculation.
 
-The published bundle was reorganized without recalculating Q. Its unchanged
-original run record is preserved as `provenance/original_run_info.json`.
-The root `run_info.json` records the layout migration and current output paths;
-the original record retains the numerical run's original input paths and hashes.
+The current figures use the saved estimates, sensitivity scenarios and pulse
+windows. `run_info.json` records the figure rebuild and its hashes.
+`provenance/original_run_info.json` records the original numerical analysis and
+its inputs.

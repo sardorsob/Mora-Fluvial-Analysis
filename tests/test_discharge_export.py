@@ -7,6 +7,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from salt_dilution.scripts.processing import export_discharge as export
 
@@ -126,6 +127,18 @@ class BundleTests(unittest.TestCase):
         (self.sources['mass']/'figures/unverified.png').write_bytes(b'unverified')
         with self.assertRaisesRegex(ValueError,'pinned'):self.run_export()
         self.assertFalse((self.root/'out').exists())
+
+    def test_incomplete_refreshed_figures_do_not_publish_bundle(self):
+        from salt_dilution.scripts.processing import plot_discharge_pulses, plot_discharge_summary
+
+        output = self.root/'out'
+        with patch.object(plot_discharge_summary, 'render_summary'), \
+                patch.object(plot_discharge_pulses, 'render_pulses'), \
+                self.assertRaisesRegex(ValueError, 'figure inventory'):
+            export.run_export(self.sources['mass'], self.sources['audit'],
+                              self.sources['review'], self.sources['reuse'], output,
+                              root=self.root, refresh_figures=True)
+        self.assertFalse(output.exists())
 
     def test_reuse_run_must_match_the_mass_bundle_dependency(self):
         other=self.root/'unrelated_reuse';shutil.copytree(self.sources['reuse'],other)

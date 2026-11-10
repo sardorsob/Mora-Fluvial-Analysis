@@ -106,7 +106,8 @@ def assemble_release_table(master, estimates, reviews):
     return result
 
 
-def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=ROOT):
+def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=ROOT,
+               refresh_figures=False):
     root = Path(root).resolve()
     sources = {key: Path(value).resolve() for key,value in
                [('mass',mass_dir),('audit',audit_dir),('review',review_dir),('reuse',reuse_dir)]}
@@ -139,16 +140,31 @@ def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=R
     for source,_ in copies:
         if pins.get(str(source.resolve())) != matching._hash(source):
             raise ValueError(f'Export source is not pinned by its bundle: {source}')
-    with reuse.staged_run(output_dir,pins,[__file__,reuse.__file__,mass_slug.__file__,matching.__file__]) as (stage,pins):
+    code_paths = [__file__, reuse.__file__, mass_slug.__file__, matching.__file__]
+    if refresh_figures:
+        from . import plot_discharge_pulses, plot_discharge_summary
+
+        code_paths.extend([plot_discharge_pulses.__file__, plot_discharge_summary.__file__])
+    with reuse.staged_run(output_dir,pins,code_paths) as (stage,pins):
         (stage/'tables').mkdir()
         (stage/'provenance').mkdir()
         mass_slug._table(stage/'tables/discharge_by_release.csv',combined,['trial_id'])
         mass_slug._table(stage/'tables/discharge_primary.csv',primaries,['trial_id','q_primary_m3_s'])
         for source,destination in copies:
+            if refresh_figures and destination.parts[0] == 'figures':
+                continue
             target = stage/destination
             target.parent.mkdir(parents=True,exist_ok=True)
             shutil.copy2(source,target)
         (stage/'provenance/source_bundles.json').write_text(matching._json(index)+'\n')
+        if refresh_figures:
+            figure_dir = stage/'figures'
+            plot_discharge_summary.render_summary(stage, figure_dir)
+            plot_discharge_pulses.render_pulses(stage, figure_dir, root=root, mass_dir=sources['mass'])
+            expected = {destination for _,destination in copies if destination.parts[0] == 'figures'}
+            rendered = {p.relative_to(stage) for p in figure_dir.rglob('*.png') if p.is_file()}
+            if rendered != expected:
+                raise ValueError('Refreshed figure inventory differs from the verified source runs')
         limits = dict(scientifically_accepted=False,window_signoff_inferred=False,
             meaning_of_closure='All processing cases have a recorded result or no-estimate disposition for the current dataset; new source evidence can reopen a case.',
             capture_policy='No tail extrapolation, interpolation across missing samples or substitution of another release.',
@@ -159,6 +175,8 @@ def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=R
         commands = ['python','-m','salt_dilution.scripts.processing.export_discharge']
         for key,option in [('mass','--mass-run'),('audit','--audit-run'),('review','--review-run'),('reuse','--reuse-run')]:
             commands += [option,matching._ref(sources[key],root)]
+        if refresh_figures:
+            commands.append('--refresh-figures')
         commands += ['--output','<fresh_output_directory>']
         guide = dict(entry_point='tables/discharge_by_release.csv',primary_subset='tables/discharge_primary.csv',
             channel_estimates='tables/discharge_estimates.csv',units=dict(q_primary_m3_s='m3/s',q_primary_l_s='L/s',mass_g='g',k='(mg/L)/(uS/cm)'),
@@ -173,6 +191,8 @@ def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=R
         info = reuse.write_run_info(stage,pins,scope='Complete analysis handoff for the current dataset; proposed estimates and explicit no-estimate outcomes.',
             completion_status='complete_for_current_dataset',release_count=len(combined),primary_release_count=len(primaries),
             channel_estimate_count=len(estimates),disposition_counts=dict(Counter(r['case_disposition'] for r in combined)),
+            figure_count=sum(destination.parts[0] == 'figures' for _,destination in copies),
+            figures_refreshed=refresh_figures,
             retained_source_discrepancy_ids=[r['trial_id'] for r in combined if r['source_background_discrepancy']],
             case_closure_is_scientific_acceptance=False,source_bundles=index,
             field_acceptance='Not claimed. Remaining physical evidence limits are retained, not uncompleted software tasks.')
@@ -185,9 +205,12 @@ def main(argv=None):
     parser.add_argument('--audit-run',type=Path,default=DEFAULT_AUDIT)
     parser.add_argument('--review-run',type=Path,default=DEFAULT_REVIEW)
     parser.add_argument('--reuse-run',type=Path,default=DEFAULT_REUSE)
+    parser.add_argument('--refresh-figures',action='store_true',
+                        help='Redraw the reviewed figures from verified local evidence')
     parser.add_argument('--output',type=Path,default=DEFAULT_OUTPUT,help='Stable analysis directory; existing outputs are never overwritten')
     args = parser.parse_args(argv)
-    try: info = run_export(args.mass_run,args.audit_run,args.review_run,args.reuse_run,args.output)
+    try: info = run_export(args.mass_run,args.audit_run,args.review_run,args.reuse_run,args.output,
+                           refresh_figures=args.refresh_figures)
     except (ValueError,OSError) as error: parser.exit(2,str(error)+'\n')
     print(matching._json({k:info[k] for k in ('completion_status','release_count','primary_release_count','disposition_counts')}))
     return 0
