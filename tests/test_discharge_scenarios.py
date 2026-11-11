@@ -77,5 +77,79 @@ class ScenarioTests(unittest.TestCase):
             scenarios.scenario_area(self.frame(),window,'linear')
 
 
+class WorkingProtocolTests(unittest.TestCase):
+    def fixture(self):
+        tid='NISQ-20250805-T01'
+        decision=dict(field='stock_mass_g',value=2,unit='g',basis='inherited_preceding_same_method',
+            donor_ids=['NISQ-20250731-C02'],source_refs=['stocks.csv#row=6'],reason='Same dry-stock protocol')
+        choice=dict(trial_id=tid,preferred_recipe_ids=['direct'],selection_status='working_protocol_adopted',
+                    field_decisions=[decision],known_exceptions=['Instrument compatibility assumed'])
+        config=dict(cases=[dict(trial_id=tid,recipes=[dict(id='direct',calibration_id='C01',stock_mass_g=2),dict(id='secondary',calibration_id='C01',stock_mass_g=2)])],
+            windows=[dict(id='window',post=[1,2],gap_modes=['reject'])],working_protocol=dict(cases=[choice]))
+        rows=[dict(trial_id=tid,recipe_id=recipe,window_id='window',background_mode=mode,gap_mode='reject',
+            q_m3_s=q,result_class='assumption_conditional') for recipe,q in [('direct',100.),('secondary',4.)]
+              for mode in ('pre','linear','post')]
+        return config,rows
+
+    def test_protocol_choice_does_not_follow_smaller_or_more_familiar_q(self):
+        config,rows=self.fixture()
+        parameters,working,summary=scenarios.working_tables(config,rows)
+        self.assertEqual(len(working),1)
+        self.assertEqual(working[0]['q_m3_s'],100.)
+        self.assertEqual(working[0]['background_mode'],'linear')
+        self.assertEqual(parameters[0]['donor_age_days'],{'NISQ-20250731-C02':5})
+        self.assertEqual(parameters[0]['parameter_source_status'],'inferred')
+        self.assertEqual(summary[0]['working_recipe_count'],1)
+
+    def test_unresolved_hypotheses_do_not_enter_working_q(self):
+        config,rows=self.fixture();choice=config['working_protocol']['cases'][0]
+        choice.update(preferred_recipe_ids=[],retained_hypothesis_ids=['direct','secondary'],selection_status='stock_stage_unresolved')
+        _,working,summary=scenarios.working_tables(config,rows)
+        self.assertEqual(working,[])
+        self.assertEqual(summary[0]['disposition'],'working_recipe_unresolved')
+        choice['preferred_recipe_ids']=['direct']
+        with self.assertRaisesRegex(ValueError,'Unresolved'):
+            scenarios.working_tables(config,rows)
+
+    def test_future_cross_site_and_cross_year_donors_rejected(self):
+        for donor in ('NISQ-20250806-C01','PAR-20250731-C01','NISQ-20240731-C01'):
+            config,rows=self.fixture();config['working_protocol']['cases'][0]['field_decisions'][0]['donor_ids']=[donor]
+            with self.assertRaisesRegex(ValueError,'precedent'):
+                scenarios.working_tables(config,rows)
+
+    def test_working_parameter_must_equal_the_recipe_used_for_calculation(self):
+        config,rows=self.fixture()
+        config['working_protocol']['cases'][0]['field_decisions'][0]['value']=4
+        with self.assertRaisesRegex(ValueError,'differs from calculation'):
+            scenarios.working_tables(config,rows)
+        config,rows=self.fixture()
+        config['working_protocol']['cases'][0]['field_decisions'][0]['unit']='mg'
+        with self.assertRaisesRegex(ValueError,'unit differs'):
+            scenarios.working_tables(config,rows)
+
+    def test_distinct_calibration_receivers_cannot_be_silently_merged(self):
+        config,rows=self.fixture();decisions=config['working_protocol']['cases'][0]['field_decisions']
+        decisions.append(dict(decisions[0]))
+        with self.assertRaisesRegex(ValueError,'Duplicate'):
+            scenarios.working_tables(config,rows)
+        decisions[0]['calibration_id']='C01';decisions[1]['calibration_id']='C02'
+        parameters,_,_=scenarios.working_tables(config,rows)
+        self.assertEqual(len(parameters),2)
+
+    def test_reported_solution_quantity_is_checked_and_summary_preserves_limits(self):
+        config,rows=self.fixture();decision=config['working_protocol']['cases'][0]['field_decisions'][0]
+        decision.update(field='reported_solution_volume',value=12900,unit='mL')
+        config['cases'][0]['recipes'][0]['solution_volume_ml']=12000
+        with self.assertRaisesRegex(ValueError,'differs from calculation'):
+            scenarios.working_tables(config,rows)
+        config['cases'][0]['recipes'][0]['solution_volume_ml']=12900
+        limits={('NISQ-20250805-T01',):dict(blocking_factors=['pipette_dose_uncertainty'],
+            calibration_evidence='Broken pipette',capture_evidence='Tail assumed complete',quantity_evidence='Nominal delivery')}
+        _,_,summary=scenarios.working_tables(config,rows,limits)
+        self.assertEqual(summary[0]['calibration_limitations'],'Broken pipette')
+        self.assertEqual(summary[0]['capture_limitations'],'Tail assumed complete')
+        self.assertEqual(summary[0]['quantity_limitations'],'Nominal delivery')
+
+
 if __name__=='__main__':
     unittest.main()

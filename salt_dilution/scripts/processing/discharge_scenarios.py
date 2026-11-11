@@ -10,6 +10,7 @@ import hashlib
 from pathlib import Path
 import re
 import subprocess
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -160,6 +161,99 @@ def scenario_q(recipe, k, area):
     return positive(recipe['solution_volume_ml'], 'solution_volume_ml') / 1e6 / (k*area)
 
 
+def working_tables(config, rows, requirements=None):
+    """Apply source-led protocol choices; never rank recipes by the resulting Q."""
+    selections = config.get('working_protocol')
+    if selections is None:
+        return [], [], []
+    cases = review._index(config['cases'], 'trial_id')
+    choices = review._index(selections['cases'], 'trial_id')
+    if choices.keys() != cases.keys():
+        raise ValueError('Working protocol must cover every scenario release exactly once')
+    window_index = review._index(config['windows'], 'id')
+    parameters, estimates, summaries = [], [], []
+    for (tid,), choice in choices.items():
+        known = {r['id'] for r in cases[(tid,)]['recipes']}
+        selected = choice['preferred_recipe_ids']
+        if len(set(selected)) != len(selected) or not set(selected).issubset(known):
+            raise ValueError('Unknown or duplicate working recipe')
+        if choice['selection_status'] == 'stock_stage_unresolved' and selected:
+            raise ValueError('Unresolved stock hypotheses cannot be working recipes')
+        target_date = datetime.strptime(tid.split('-')[1], '%Y%m%d').date()
+        decision_keys = set()
+        for decision in choice['field_decisions']:
+            key = (decision['field'], decision.get('calibration_id', ''))
+            if key in decision_keys or not decision.get('source_refs') or not decision.get('reason'):
+                raise ValueError('Duplicate or unsupported working parameter')
+            decision_keys.add(key)
+            expected_unit = {'stock_mass_g':'g', 'nominal_salt_mass':'g', 'delivered_salt_mass':'g',
+                'stock_volume_ml':'mL', 'receiver_initial_volume':'mL', 'working_solution_volume':'mL',
+                'reported_solution_volume':'mL'}.get(decision['field'])
+            if expected_unit and decision['unit'] != expected_unit:
+                raise ValueError('Working parameter unit differs from calculation unit')
+            values = {'stock_mass_g': decision['value']} if decision['field'] == 'stock_mass_g' else (
+                {'stock_volume_ml': decision['value']} if decision['field'] == 'stock_volume_ml' else {})
+            if decision['field'] == 'calibration_stock':
+                values = dict(stock_mass_g=decision['value']['salt_mass_g'], stock_volume_ml=decision['value']['starting_water_ml'])
+            elif decision['field'] == 'relative_stock_stage':
+                values = dict(secondary_aliquot_ml=decision['value']['primary_aliquot_ml'], secondary_water_ml=decision['value']['starting_water_ml'])
+            elif decision['field'] == 'receiver_initial_volume':
+                values = dict(receiver_initial_ml=decision['value'])
+            elif decision['field'] in ('working_solution_volume', 'reported_solution_volume'):
+                values = dict(solution_volume_ml=decision['value'])
+            elif decision['field'] in ('nominal_salt_mass', 'delivered_salt_mass'):
+                values = dict(mass_g=decision['value'])
+            applied = []
+            for recipe in cases[(tid,)]['recipes']:
+                if recipe['id'] not in selected or decision.get('calibration_id', recipe['calibration_id']) != recipe['calibration_id']:
+                    continue
+                used = {k: v for k, v in values.items() if recipe.get(k) is not None}
+                if any(float(recipe[k]) != float(v) for k, v in used.items()):
+                    raise ValueError(f'Working parameter differs from calculation recipe: {tid} {decision["field"]}')
+                if used:
+                    applied.append(recipe['id'])
+            days = {}
+            for donor in decision['donor_ids']:
+                donor_date = datetime.strptime(donor.split('-')[1], '%Y%m%d').date()
+                if donor.split('-')[0] != tid.split('-')[0] or donor_date.year != target_date.year or donor_date > target_date:
+                    raise ValueError('Recipe precedent must be same site/year and not a future date')
+                days[donor] = (target_date-donor_date).days
+            basis = decision['basis']
+            source_status = ('unresolved' if decision['value'] is None else 'participant_confirmed' if basis.startswith(('participant_confirmed', 'field_participant_confirmed'))
+                else 'reviewed_nominal' if basis.startswith('user_reviewed') else 'recorded' if basis.startswith(('observed_', 'recorded_')) else 'inferred')
+            parameters.append(dict(trial_id=tid, **decision, donor_age_days=days,
+                                   parameter_source_status=source_status, used_by_working_recipes=applied))
+        adopted = []
+        for row in rows:
+            if row['trial_id'] != tid or row['recipe_id'] not in selected:
+                continue
+            window = window_index[(row['window_id'],)]
+            preferred_mode = window.get('working_background_mode', 'linear' if window.get('post') else 'pre')
+            preferred_gap = 'linear' if 'linear' in window.get('gap_modes', []) else 'reject'
+            if row['background_mode'] != preferred_mode or row['gap_mode'] != preferred_gap:
+                continue
+            adopted.append(dict(row, working_recipe_status=choice['selection_status'],
+                protocol_source_decisions=choice['field_decisions'], protocol_exceptions=choice['known_exceptions'],
+                working_choice_is_measurement=False))
+        estimates.extend(adopted)
+        qs = [r['q_m3_s'] for r in adopted if r['q_m3_s'] is not None]
+        unit_count = sum(r['result_class'] == 'unit_response' for r in adopted)
+        limits = (requirements or {}).get((tid,), {})
+        summaries.append(dict(trial_id=tid, recipe_status=choice['selection_status'],
+            working_recipe_count=len(selected), working_recipe_ids=selected,
+            retained_hypothesis_ids=choice.get('retained_hypothesis_ids', []),
+            working_channel_estimates=len(qs), working_q_min_m3_s=min(qs) if qs else None,
+            working_q_max_m3_s=max(qs) if qs else None, unit_response_count=unit_count,
+            disposition='working_conditional_q' if qs else ('unit_response_only' if unit_count else 'working_recipe_unresolved' if not selected else 'working_window_unavailable'),
+            interpretation='Separate instruments/channels and calibration attempts are retained. Their range is not a confidence interval.',
+            unresolved_requirements=limits.get('blocking_factors', []),
+            calibration_limitations=limits.get('calibration_evidence', ''),
+            capture_limitations=limits.get('capture_evidence', ''),
+            quantity_limitations=limits.get('quantity_evidence', ''),
+            known_exceptions=choice['known_exceptions'], scientifically_accepted=False))
+    return parameters, estimates, summaries
+
+
 def run_scenarios(config_path, pairing_dir, calibration_dir, baseline_dir, output, *, root=matching.ROOT):
     root = Path(root).resolve()
     config_path, pairing_dir, calibration_dir, baseline_dir = [Path(p).resolve() for p in
@@ -181,6 +275,12 @@ def run_scenarios(config_path, pairing_dir, calibration_dir, baseline_dir, outpu
         if baseline_inputs.get(path) != matching._hash(path):
             raise ValueError('Baseline must reference the exact selected calibration and pairing runs')
     review.pin_review_sources(config['sources'], pins, root)
+    for choice in config.get('working_protocol', {}).get('cases', []):
+        for decision in choice['field_decisions']:
+            for ref in decision['source_refs']:
+                path = matching._path(re.split(r' row | cell |#', ref, maxsplit=1)[0], root).resolve()
+                if not path.is_relative_to(root) or str(path) not in pins:
+                    raise ValueError(f'Working parameter source is not pinned: {ref}')
     cases = review._index(config['cases'], 'trial_id')
     recordings = review._index(review._read(pairing_dir/'recording_candidates.csv', 'recording_edge_id'), 'recording_edge_id')
     pairing = review._index(review._read(pairing_dir/'pairing_summary.csv', 'trial_id'), 'trial_id')
@@ -291,17 +391,25 @@ def run_scenarios(config_path, pairing_dir, calibration_dir, baseline_dir, outpu
                 selection='All source-admissible alternatives retained; no selection by proximity to other Q values.',
                 range_interpretation='Range of explicit assumptions, not a confidence interval or validated discharge range.',
                 scientifically_accepted=False))
+        parameters, working, working_summary = working_tables(config, rows, requirements)
         for name, values, empty in [('scenario_estimates', rows, ['trial_id','q_m3_s']),
                                     ('scenario_calibrations', fits, ['trial_id','recipe_id','k']),
                                     ('scenario_rejections', rejected, ['trial_id','reason']),
                                     ('scenario_by_release', summaries, ['trial_id','disposition'])]:
             slug._table(stage/f'{name}.csv', values, empty)
+        if config.get('working_protocol'):
+            for name, values, empty in [('working_parameters', parameters, ['trial_id','field','value']),
+                                       ('working_estimates', working, ['trial_id','q_m3_s']),
+                                       ('working_by_release', working_summary, ['trial_id','disposition'])]:
+                slug._table(stage/f'{name}.csv', values, empty)
         (stage/'scenario_settings.json').write_text(matching._json(config)+'\n')
         (stage/'historical_code.json').write_text(matching._json(historical)+'\n')
         return reuse.write_run_info(stage, pins, scope='Assumption-explicit discharge recovery experiments',
             release_count=len(summaries), scenario_count=len(rows), rejected_scenarios=len(rejected),
             conditional_q_releases=sum(s['disposition']=='conditional_scenarios' for s in summaries),
             unit_response_releases=sum(s['disposition']=='unit_response_only' for s in summaries),
+            working_q_releases=sum(s['disposition']=='working_conditional_q' for s in working_summary),
+            working_protocol_releases=sum(s['working_recipe_count'] > 0 for s in working_summary),
             primary_q_promotions=0)
 
 

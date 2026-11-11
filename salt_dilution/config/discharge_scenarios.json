@@ -379,16 +379,18 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "nominal_mass_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 6 Document_261007_113237.pdf#page=5;side=left;block=a_05_dry_attempt_01",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 7",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 2",
-            "salt_dilution/data/records/trials.csv#NISQ-20250717-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20250717-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 6",
+            "salt_dilution/data/records/calibrations.csv row 6 Document_261007_113237.pdf#page=5;side=left;block=a_05_dry_attempt_01",
+            "salt_dilution/data/records/provenance.json#NISQ-20250717-T01",
+            "salt_dilution/data/records/trials.csv#NISQ-20250717-T01"
           ],
           "assumptions": [
             "Nominal recorded 4000 g; delivery unverified.",
             "Direct 2 g stock in 1000 mL starting water; final stock volume unmeasured.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [],
           "mass_g": 4000.0,
@@ -406,16 +408,18 @@
           "receiver_initial_ml": 3000.0,
           "quantity_kind": "nominal_mass_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 7 Document_261007_113237.pdf#page=5;side=left;block=a_05_dry_attempt_02",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 8",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 2",
-            "salt_dilution/data/records/trials.csv#NISQ-20250717-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20250717-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 6",
+            "salt_dilution/data/records/calibrations.csv row 7 Document_261007_113237.pdf#page=5;side=left;block=a_05_dry_attempt_02",
+            "salt_dilution/data/records/provenance.json#NISQ-20250717-T01",
+            "salt_dilution/data/records/trials.csv#NISQ-20250717-T01"
           ],
           "assumptions": [
             "Nominal recorded 4000 g; delivery unverified.",
             "Direct 2 g stock in 1000 mL starting water; final stock volume unmeasured.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [],
           "mass_g": 4000.0,
@@ -442,16 +446,18 @@
           "receiver_initial_ml": 3000.0,
           "quantity_kind": "reported_solution_volume_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 8 Document_261007_113237.pdf#page=5;side=right;block=a_05_solution",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 9",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 3",
-            "salt_dilution/data/records/trials.csv#NISQ-20250724-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20250724-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 7",
+            "salt_dilution/data/records/calibrations.csv row 8 Document_261007_113237.pdf#page=5;side=right;block=a_05_solution",
+            "salt_dilution/data/records/provenance.json#NISQ-20250724-T01",
+            "salt_dilution/data/records/trials.csv#NISQ-20250724-T01"
           ],
           "assumptions": [
             "10 mL primary aliquot plus 1000 mL starting water; same-day linkage must be checked; final secondary volume unmeasured.",
             "Reported amount is not confirmed delivered, and final-volume measurement basis is uncertain.",
-            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [],
           "solution_volume_ml": 12900.0,
@@ -478,19 +484,22 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "estimated_mass_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 10 Document_261007_113237.pdf#page=6;side=right;block=a_06_dry",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 11",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
-            "salt_dilution/data/records/trials.csv#NISQ-20250731-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20250731-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 8",
+            "salt_dilution/data/records/calibrations.csv row 10 Document_261007_113237.pdf#page=6;side=right;block=a_06_dry",
+            "salt_dilution/data/records/provenance.json#NISQ-20250731-T01",
+            "salt_dilution/data/records/trials.csv",
+            "salt_dilution/data/records/trials.csv#NISQ-20250731-T01"
           ],
           "assumptions": [
             "4000 g from curated/settings or nearby source; approximate, delivery unverified.",
             "Direct 2 g stock in 1000 mL starting water; final stock volume unmeasured.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [
-            "NISQ-20250805-T01"
+            "NISQ-20250717-T01"
           ],
           "mass_g": 4000.0,
           "stock_stage": "independent_mass_stock",
@@ -516,16 +525,18 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "reported_solution_volume_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 9 Document_261007_113237.pdf#page=6;side=left;block=a_06_solution",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 10",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 5",
-            "salt_dilution/data/records/trials.csv#NISQ-20250731-T02",
-            "salt_dilution/data/records/provenance.json#NISQ-20250731-T02"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 9",
+            "salt_dilution/data/records/calibrations.csv row 9 Document_261007_113237.pdf#page=6;side=left;block=a_06_solution",
+            "salt_dilution/data/records/provenance.json#NISQ-20250731-T02",
+            "salt_dilution/data/records/trials.csv#NISQ-20250731-T02"
           ],
           "assumptions": [
             "10 mL primary aliquot plus 1000 mL starting water; same-day linkage must be checked; final secondary volume unmeasured.",
             "Reported amount is not confirmed delivered, and final-volume measurement basis is uncertain.",
-            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [],
           "solution_volume_ml": 12900.0,
@@ -552,17 +563,24 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "nominal_mass_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 11 Document_261007_113237.pdf#page=7;side=left;block=a_07_am_dry_cal",
+            "salt_dilution/config/calibration_recovered_recipes.json",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 12",
-            "salt_dilution/data/records/trials.csv#NISQ-20250805-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20250805-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 10",
+            "salt_dilution/data/records/calibrations.csv row 11 Document_261007_113237.pdf#page=7;side=left;block=a_07_am_dry_cal",
+            "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20250805-C01",
+            "salt_dilution/data/records/provenance.json#NISQ-20250805-T01",
+            "salt_dilution/data/records/trials.csv#NISQ-20250805-T01"
           ],
           "assumptions": [
             "Nominal recorded 4000 g; delivery unverified.",
             "Candidate 2 g/1000 mL stock: legacy INI/curated settings; independent same-day stock recipe not recorded. Not observed delivery.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
-          "donor_ids": [],
+          "donor_ids": [
+            "NISQ-20250731-C02"
+          ],
           "mass_g": 4000.0,
           "stock_stage": "independent_mass_stock",
           "evidence_class": "recorded_recipe_delivery_or_applicability_assumed"
@@ -614,16 +632,18 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "reported_solution_volume_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 12 Document_261007_113237.pdf#page=7;side=right;block=a_07_am_solution_cal",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 13",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 8",
-            "salt_dilution/data/records/trials.csv#NISQ-20250805-T02",
-            "salt_dilution/data/records/provenance.json#NISQ-20250805-T02"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 11",
+            "salt_dilution/data/records/calibrations.csv row 12 Document_261007_113237.pdf#page=7;side=right;block=a_07_am_solution_cal",
+            "salt_dilution/data/records/provenance.json#NISQ-20250805-T02",
+            "salt_dilution/data/records/trials.csv#NISQ-20250805-T02"
           ],
           "assumptions": [
             "10 mL primary aliquot plus 1000 mL starting water; same-day linkage must be checked; final secondary volume unmeasured.",
             "Reported amount is not confirmed delivered, and final-volume measurement basis is uncertain.",
-            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [],
           "solution_volume_ml": 12900.0,
@@ -650,17 +670,24 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "estimated_mass_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 13 Document_261007_113237.pdf#page=7;side=right;block=a_07_pm_dry_cal",
+            "salt_dilution/config/calibration_recovered_recipes.json",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 14",
-            "salt_dilution/data/records/trials.csv#NISQ-20250805-T03",
-            "salt_dilution/data/records/provenance.json#NISQ-20250805-T03"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 12",
+            "salt_dilution/data/records/calibrations.csv row 13 Document_261007_113237.pdf#page=7;side=right;block=a_07_pm_dry_cal",
+            "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20250805-C03",
+            "salt_dilution/data/records/provenance.json#NISQ-20250805-T03",
+            "salt_dilution/data/records/trials.csv",
+            "salt_dilution/data/records/trials.csv#NISQ-20250805-T03"
           ],
           "assumptions": [
             "4000 g from curated/settings or nearby source; approximate, delivery unverified.",
             "Candidate 2 g/1000 mL stock: legacy INI/curated settings; independent same-day stock recipe not recorded. Not observed delivery.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [
+            "NISQ-20250731-C02",
             "NISQ-20250805-T01"
           ],
           "mass_g": 4000.0,
@@ -716,18 +743,24 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "reported_solution_volume_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 14 Document_261007_113237.pdf#page=7;side=right;block=a_07_pm_solution_cal",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 15",
-            "salt_dilution/data/records/trials.csv#NISQ-20250805-T04",
-            "salt_dilution/data/records/provenance.json#NISQ-20250805-T04"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 8",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 11",
+            "salt_dilution/data/records/calibrations.csv row 14 Document_261007_113237.pdf#page=7;side=right;block=a_07_pm_solution_cal",
+            "salt_dilution/data/records/provenance.json#NISQ-20250805-T04",
+            "salt_dilution/data/records/trials.csv#NISQ-20250805-T04"
           ],
           "assumptions": [
             "10 mL primary aliquot plus 1000 mL starting water; same-day linkage must be checked; final secondary volume unmeasured.",
             "Same-day/nearby secondary recipe candidate only; PM stock lineage unresolved.",
             "Reported amount is not confirmed delivered, and final-volume measurement basis is uncertain.",
-            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
-          "donor_ids": [],
+          "donor_ids": [
+            "NISQ-20250805-C02",
+            "NISQ-20250805-T02"
+          ],
           "solution_volume_ml": 12900.0,
           "stock_stage": "secondary_of_original_injectate",
           "evidence_class": "recorded_recipe_delivery_or_applicability_assumed"
@@ -777,17 +810,24 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "estimated_mass_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 15 Document_261007_113237.pdf#page=8;side=left;block=a_08_dry_cal",
+            "salt_dilution/config/calibration_recovered_recipes.json",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 16",
-            "salt_dilution/data/records/trials.csv#NISQ-20250808-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20250808-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 14",
+            "salt_dilution/data/records/calibrations.csv row 15 Document_261007_113237.pdf#page=8;side=left;block=a_08_dry_cal",
+            "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20250808-C01",
+            "salt_dilution/data/records/provenance.json#NISQ-20250808-T01",
+            "salt_dilution/data/records/trials.csv",
+            "salt_dilution/data/records/trials.csv#NISQ-20250808-T01"
           ],
           "assumptions": [
             "4000 g from curated/settings or nearby source; approximate, delivery unverified.",
             "Candidate 2 g/1000 mL stock: legacy INI/curated settings; independent same-day stock recipe not recorded. Not observed delivery.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [
+            "NISQ-20250731-C02",
             "NISQ-20250805-T01"
           ],
           "mass_g": 4000.0,
@@ -843,17 +883,24 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "nominal_mass_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 16 Document_261007_113641.pdf#page=2;side=left;block=b_02_sep03_dry",
+            "salt_dilution/config/calibration_recovered_recipes.json",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 17",
-            "salt_dilution/data/records/trials.csv#NISQ-20250903-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20250903-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 15",
+            "salt_dilution/data/records/calibrations.csv row 16 Document_261007_113641.pdf#page=2;side=left;block=b_02_sep03_dry",
+            "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20250903-C01",
+            "salt_dilution/data/records/provenance.json#NISQ-20250903-T01",
+            "salt_dilution/data/records/trials.csv#NISQ-20250903-T01"
           ],
           "assumptions": [
             "Nominal recorded 4000 g; delivery unverified.",
             "Candidate 2 g/1000 mL stock: legacy INI/curated settings; independent same-day stock recipe not recorded. Not observed delivery.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
-          "donor_ids": [],
+          "donor_ids": [
+            "NISQ-20250731-C02"
+          ],
           "mass_g": 4000.0,
           "stock_stage": "independent_mass_stock",
           "evidence_class": "recorded_recipe_delivery_or_applicability_assumed"
@@ -905,18 +952,23 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "per_liter_response_not_release",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 17 Document_261007_113641.pdf#page=2;side=left;block=b_02_sep03_solution",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 18",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 10",
-            "salt_dilution/data/records/trials.csv#NISQ-20250903-T02",
-            "salt_dilution/data/records/provenance.json#NISQ-20250903-T02"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 11",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 16",
+            "salt_dilution/data/records/calibrations.csv row 17 Document_261007_113641.pdf#page=2;side=left;block=b_02_sep03_solution",
+            "salt_dilution/data/records/provenance.json#NISQ-20250903-T02",
+            "salt_dilution/data/records/trials.csv#NISQ-20250903-T02"
           ],
           "assumptions": [
             "10 mL primary aliquot plus 1000 mL starting water; same-day linkage must be checked; final secondary volume unmeasured.",
             "Documented spill: unit response per 1 L only; not nominal or delivered volume.",
-            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
-          "donor_ids": [],
+          "donor_ids": [
+            "NISQ-20250805-T02"
+          ],
           "solution_volume_ml": 1000.0,
           "stock_stage": "secondary_of_original_injectate",
           "evidence_class": "recorded_recipe_delivery_or_applicability_assumed"
@@ -941,17 +993,24 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "nominal_mass_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 18 Document_261007_113641.pdf#page=2;side=right;block=b_02_am_dry_cal",
+            "salt_dilution/config/calibration_recovered_recipes.json",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 19",
-            "salt_dilution/data/records/trials.csv#NISQ-20250917-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20250917-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 17",
+            "salt_dilution/data/records/calibrations.csv row 18 Document_261007_113641.pdf#page=2;side=right;block=b_02_am_dry_cal",
+            "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20250917-C01",
+            "salt_dilution/data/records/provenance.json#NISQ-20250917-T01",
+            "salt_dilution/data/records/trials.csv#NISQ-20250917-T01"
           ],
           "assumptions": [
             "Nominal recorded 4000 g; delivery unverified.",
             "Candidate 2 g/1000 mL stock: legacy INI/curated settings; independent same-day stock recipe not recorded. Not observed delivery.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
-          "donor_ids": [],
+          "donor_ids": [
+            "NISQ-20250731-C02"
+          ],
           "mass_g": 4000.0,
           "stock_stage": "independent_mass_stock",
           "evidence_class": "recorded_recipe_delivery_or_applicability_assumed"
@@ -1003,18 +1062,23 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "reported_solution_volume_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 19 Document_261007_113641.pdf#page=2;side=right;block=b_02_am_solution_cal",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 20",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 12",
-            "salt_dilution/data/records/trials.csv#NISQ-20250917-T02",
-            "salt_dilution/data/records/provenance.json#NISQ-20250917-T02"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 11",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 18",
+            "salt_dilution/data/records/calibrations.csv row 19 Document_261007_113641.pdf#page=2;side=right;block=b_02_am_solution_cal",
+            "salt_dilution/data/records/provenance.json#NISQ-20250917-T02",
+            "salt_dilution/data/records/trials.csv#NISQ-20250917-T02"
           ],
           "assumptions": [
             "10 mL primary aliquot plus 1000 mL starting water; same-day linkage must be checked; final secondary volume unmeasured.",
             "Reported amount is not confirmed delivered, and final-volume measurement basis is uncertain.",
-            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
-          "donor_ids": [],
+          "donor_ids": [
+            "NISQ-20250805-T02"
+          ],
           "solution_volume_ml": 12900.0,
           "stock_stage": "secondary_of_original_injectate",
           "evidence_class": "recorded_recipe_delivery_or_applicability_assumed"
@@ -1039,17 +1103,24 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "nominal_mass_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 20 Document_261007_113641.pdf#page=3;side=left;block=b_03_pm_dry_cal",
+            "salt_dilution/config/calibration_recovered_recipes.json",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 21",
-            "salt_dilution/data/records/trials.csv#NISQ-20250917-T03",
-            "salt_dilution/data/records/provenance.json#NISQ-20250917-T03"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 19",
+            "salt_dilution/data/records/calibrations.csv row 20 Document_261007_113641.pdf#page=3;side=left;block=b_03_pm_dry_cal",
+            "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20250917-C03",
+            "salt_dilution/data/records/provenance.json#NISQ-20250917-T03",
+            "salt_dilution/data/records/trials.csv#NISQ-20250917-T03"
           ],
           "assumptions": [
             "Nominal recorded 4000 g; delivery unverified.",
             "Candidate 2 g/1000 mL stock: legacy INI/curated settings; independent same-day stock recipe not recorded. Not observed delivery.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
-          "donor_ids": [],
+          "donor_ids": [
+            "NISQ-20250731-C02"
+          ],
           "mass_g": 4000.0,
           "stock_stage": "independent_mass_stock",
           "evidence_class": "recorded_recipe_delivery_or_applicability_assumed"
@@ -1101,18 +1172,25 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "reported_solution_volume_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 21 Document_261007_113641.pdf#page=3;side=left;block=b_03_pm_solution_cal",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 22",
-            "salt_dilution/data/records/trials.csv#NISQ-20250917-T04",
-            "salt_dilution/data/records/provenance.json#NISQ-20250917-T04"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 12",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 11",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 20",
+            "salt_dilution/data/records/calibrations.csv row 21 Document_261007_113641.pdf#page=3;side=left;block=b_03_pm_solution_cal",
+            "salt_dilution/data/records/provenance.json#NISQ-20250917-T04",
+            "salt_dilution/data/records/trials.csv#NISQ-20250917-T04"
           ],
           "assumptions": [
             "10 mL primary aliquot plus 1000 mL starting water; same-day linkage must be checked; final secondary volume unmeasured.",
             "Same-day/nearby secondary recipe candidate only; PM stock lineage unresolved.",
             "Reported amount is not confirmed delivered, and final-volume measurement basis is uncertain.",
-            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
-          "donor_ids": [],
+          "donor_ids": [
+            "NISQ-20250805-T02",
+            "NISQ-20250917-C02"
+          ],
           "solution_volume_ml": 12900.0,
           "stock_stage": "secondary_of_original_injectate",
           "evidence_class": "recorded_recipe_delivery_or_applicability_assumed"
@@ -1162,16 +1240,18 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "preparation_water_as_solution_volume_estimate",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 22 Document_261007_113641.pdf#page=4;side=left;block=b_04_jul16_cal",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 23",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 14",
-            "salt_dilution/data/records/trials.csv#NISQ-20260716-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20260716-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 21",
+            "salt_dilution/data/records/calibrations.csv row 22 Document_261007_113641.pdf#page=4;side=left;block=b_04_jul16_cal",
+            "salt_dilution/data/records/provenance.json#NISQ-20260716-T01",
+            "salt_dilution/data/records/trials.csv#NISQ-20260716-T01"
           ],
           "assumptions": [
             "10 mL primary aliquot plus 1000 mL starting water; same-day linkage must be checked; final secondary volume unmeasured.",
             "12 L preparation water used as approximate delivered final solution volume; salt volume, reserved sample, losses and physical delivery are unknown.",
-            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [],
           "solution_volume_ml": 12000.0,
@@ -1227,16 +1307,19 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "preparation_water_as_solution_volume_estimate",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 23 Document_261007_113641.pdf#page=4;side=right;block=b_04_jul21_cal",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 24",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 14",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 16",
-            "salt_dilution/data/records/trials.csv#NISQ-20260721-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20260721-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 22",
+            "salt_dilution/data/records/calibrations.csv row 23 Document_261007_113641.pdf#page=4;side=right;block=b_04_jul21_cal",
+            "salt_dilution/data/records/provenance.json#NISQ-20260721-T01",
+            "salt_dilution/data/records/trials.csv#NISQ-20260721-T01"
           ],
           "assumptions": [
             "1000 mL secondary water is an estimated July 16 same-protocol donor; July 21 source does not restate it.",
             "12 L preparation water used as approximate delivered final solution volume; salt volume, reserved sample, losses and physical delivery are unknown.",
-            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [
             "NISQ-20260716-C01"
@@ -1296,16 +1379,19 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "preparation_water_as_solution_volume_estimate",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 24 Document_261007_160953.pdf#page=1;side=left;block=c_01_nisqually_cal",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 25",
-            "salt_dilution/data/records/trials.csv#NISQ-20260806-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20260806-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 14",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 16",
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 23",
+            "salt_dilution/data/records/calibrations.csv row 24 Document_261007_160953.pdf#page=1;side=left;block=c_01_nisqually_cal",
+            "salt_dilution/data/records/provenance.json#NISQ-20260806-T01",
+            "salt_dilution/data/records/trials.csv#NISQ-20260806-T01"
           ],
           "assumptions": [
             "Secondary recipe is absent; July 21 aliquot and July 16 water are separate candidate protocol donors, not an observed linked stock.",
             "12 L preparation water used as approximate delivered final solution volume; salt volume, reserved sample, losses and physical delivery are unknown.",
             "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
-            "Donors lie outside 14 days: broader protocol scenario, not chained imputation."
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [
             "NISQ-20260716-C01",
@@ -1422,16 +1508,18 @@
           "receiver_initial_ml": 1000.0,
           "quantity_kind": "nominal_mass_delivery_assumed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 35 Document_261007_160953.pdf#page=9;side=right;block=c_09_attempt_02",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 37",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 20",
-            "salt_dilution/data/records/trials.csv#NISQ-20260918-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20260918-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 31",
+            "salt_dilution/data/records/calibrations.csv row 35 Document_261007_160953.pdf#page=9;side=right;block=c_09_attempt_02",
+            "salt_dilution/data/records/provenance.json#NISQ-20260918-T01",
+            "salt_dilution/data/records/trials.csv#NISQ-20260918-T01"
           ],
           "assumptions": [
             "Nominal recorded 4000 g; delivery unverified.",
             "Restart uses initial stock directly; increments as recorded.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [],
           "mass_g": 4000.0,
@@ -1458,16 +1546,18 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "delivered_mass_confirmed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 36 Document_261007_160953.pdf#page=12;side=right;block=c_12_oct02_cal_01",
+            "salt_dilution/config/release_confirmations.json",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 38",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 22",
-            "salt_dilution/data/records/trials.csv#NISQ-20261002-T02",
-            "salt_dilution/data/records/provenance.json#NISQ-20261002-T02"
+            "salt_dilution/data/records/calibrations.csv row 36 Document_261007_160953.pdf#page=12;side=right;block=c_12_oct02_cal_01",
+            "salt_dilution/data/records/provenance.json#NISQ-20261002-T02",
+            "salt_dilution/data/records/trials.csv#NISQ-20261002-T02"
           ],
           "assumptions": [
             "User-confirmed delivered 4000 g.",
             "Oct 2 stock recorded; later October same-procedure recipe is a candidate if not explicitly linked in source; final volume unmeasured.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
           "donor_ids": [],
           "mass_g": 4000.0,
@@ -1494,17 +1584,23 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "delivered_mass_confirmed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 38 Document_261007_160953.pdf#page=14;side=right;block=c_14_oct04_cal_01",
+            "salt_dilution/config/release_confirmations.json",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 40",
-            "salt_dilution/data/records/trials.csv#NISQ-20261004-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20261004-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 22",
+            "salt_dilution/data/records/calibrations.csv row 38 Document_261007_160953.pdf#page=14;side=right;block=c_14_oct04_cal_01",
+            "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20261004-C01",
+            "salt_dilution/data/records/provenance.json#NISQ-20261004-T01",
+            "salt_dilution/data/records/trials.csv#NISQ-20261004-T01"
           ],
           "assumptions": [
             "User-confirmed delivered 4000 g.",
             "Oct 2 stock recorded; later October same-procedure recipe is a candidate if not explicitly linked in source; final volume unmeasured.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
-          "donor_ids": [],
+          "donor_ids": [
+            "NISQ-20261002-C01"
+          ],
           "mass_g": 4000.0,
           "stock_stage": "independent_mass_stock",
           "evidence_class": "recorded_recipe_delivery_or_applicability_assumed"
@@ -1529,17 +1625,23 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "delivered_mass_confirmed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 40 Document_261007_160953.pdf#page=17;side=right;block=c_17_oct04_cal_03",
+            "salt_dilution/config/release_confirmations.json",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 42",
-            "salt_dilution/data/records/trials.csv#NISQ-20261004-T04",
-            "salt_dilution/data/records/provenance.json#NISQ-20261004-T04"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 22",
+            "salt_dilution/data/records/calibrations.csv row 40 Document_261007_160953.pdf#page=17;side=right;block=c_17_oct04_cal_03",
+            "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20261004-C03",
+            "salt_dilution/data/records/provenance.json#NISQ-20261004-T04",
+            "salt_dilution/data/records/trials.csv#NISQ-20261004-T04"
           ],
           "assumptions": [
             "User-confirmed delivered 4000 g.",
             "Oct 2 stock recorded; later October same-procedure recipe is a candidate if not explicitly linked in source; final volume unmeasured.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
-          "donor_ids": [],
+          "donor_ids": [
+            "NISQ-20261002-C01"
+          ],
           "mass_g": 4000.0,
           "stock_stage": "independent_mass_stock",
           "evidence_class": "recorded_recipe_delivery_or_applicability_assumed"
@@ -1564,17 +1666,23 @@
           "receiver_initial_ml": 2000.0,
           "quantity_kind": "delivered_mass_confirmed",
           "source_refs": [
-            "salt_dilution/data/records/calibrations.csv row 42 Document_261007_160953.pdf#page=19;side=left;block=c_19_oct05_cal_01",
+            "salt_dilution/config/release_confirmations.json",
             "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 44",
-            "salt_dilution/data/records/trials.csv#NISQ-20261005-T01",
-            "salt_dilution/data/records/provenance.json#NISQ-20261005-T01"
+            "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 22",
+            "salt_dilution/data/records/calibrations.csv row 42 Document_261007_160953.pdf#page=19;side=left;block=c_19_oct05_cal_01",
+            "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20261005-C01",
+            "salt_dilution/data/records/provenance.json#NISQ-20261005-T01",
+            "salt_dilution/data/records/trials.csv#NISQ-20261005-T01"
           ],
           "assumptions": [
             "User-confirmed delivered 4000 g.",
             "Oct 2 stock recorded; later October same-procedure recipe is a candidate if not explicitly linked in source; final volume unmeasured.",
-            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved."
+            "Stock stage tested: independent_mass_stock. Identity remains assumed where source lineage is unresolved.",
+            "Working recipe follows recorded values and preceding same-protocol field decisions; see working_parameters for observed versus inferred inputs."
           ],
-          "donor_ids": [],
+          "donor_ids": [
+            "NISQ-20261002-C01"
+          ],
           "mass_g": 4000.0,
           "stock_stage": "independent_mass_stock",
           "evidence_class": "recorded_recipe_delivery_or_applicability_assumed"
@@ -4563,12 +4671,20 @@
       "sha256": "6dc8da9d580c4ece0dbff7a3f53b82714387aabae77a154c3cfd5e85b48a74b5"
     },
     {
+      "path": "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv",
+      "sha256": "8fe676242e95625d6a2d9b63c1cc4ddeb736d6e57173e15cbf0ec77037350bcf"
+    },
+    {
       "path": "salt_dilution/data/records/calibration_points.csv",
       "sha256": "894c560e193baa2ac5bb4ce0fbd16707217680d021381bf3936e332fac913875"
     },
     {
       "path": "salt_dilution/data/records/calibrations.csv",
       "sha256": "becc8fcd3860b0c9fd3c5186f8653990141730eb08e007c96e4a690ac314a177"
+    },
+    {
+      "path": "salt_dilution/data/records/manifest.json",
+      "sha256": "83216a55d31e51d78ccdd5726ac98f23f348ad499c7b29e2608686b450423eba"
     },
     {
       "path": "salt_dilution/data/records/provenance.json",
@@ -4585,12 +4701,12 @@
   ],
   "design": {
     "selection": "Retain alternatives; never select by Q similarity or R-squared alone.",
-    "donor_window_days": 14,
     "volume_sensitivity": "12 and 12.9 L are explicit assumptions; 7.5% is not an uncertainty bound.",
     "gain_assumption": "Transferred K assumes compatible sensitivity; aliases are not identity evidence.",
     "gap_models": "Linear and endpoint-hold completions are sensitivity cases, not measured area or guaranteed bounds.",
     "primary_promotion": "None without resolving independent physical evidence.",
-    "baseline": "11 selected releases/16 channels at ca93aa3; retain exact Q."
+    "baseline": "11 selected releases/16 channels at ca93aa3; retain exact Q.",
+    "donor_rule": "Own source records and reviewed nominal settings, then shared stock, then preceding same-site/year/method evidence until an explicit protocol change; donor ages recorded without a fixed-day cutoff."
   },
   "references": [
     {
@@ -4601,5 +4717,1769 @@
       "title": "Richardson et al. 2017",
       "url": "https://confluence-jwsm.ca/index.php/jwsm/article/download/1/2"
     }
-  ]
+  ],
+  "working_protocol": {
+    "version": 1,
+    "rules": [
+      "Field-recorded values first; then explicit shared stock; then nearest preceding same-protocol observation.",
+      "Never infer target measured delivery from nominal or reported quantity.",
+      "Precedent chronology does not establish calibration identity, waveform capture or field acceptance.",
+      "No chained imputation as source."
+    ],
+    "cases": [
+      {
+        "trial_id": "NISQ-20250709-T01",
+        "preferred_recipe_ids": [],
+        "field_decisions": [
+          {
+            "field": "stock_stage",
+            "value": null,
+            "unit": null,
+            "basis": "unresolved",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/notebooks/exploratory/check_dilution_calculations.ipynb cell 6",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 6"
+            ],
+            "reason": "No earlier usable source resolves C04 stock association; later methods are not preceding evidence."
+          },
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000.0,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 4"
+            ],
+            "reason": "Nominal, not measured delivered."
+          },
+          {
+            "field": "working_solution_volume",
+            "value": 12000,
+            "unit": "mL",
+            "basis": "preparation_water_as_nominal_solution_convention",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 4"
+            ],
+            "reason": "12 L is recorded preparation water, treated as working solution volume only; final volume and delivery are unmeasured."
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 15000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 5 Document_261007_113237.pdf#page=3;side=right;block=a_03_attempt_04",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 6",
+              "salt_dilution/notebooks/exploratory/check_dilution_calculations.ipynb cell 6",
+              "salt_dilution/data/records/trials.csv#NISQ-20250709-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20250709-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250709-C04"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20250709-T01:NISQ-20250709-C04:scenario_02",
+            "reason": "Illustrative 12.9 L sensitivity rather than preceding recorded delivered volume."
+          },
+          {
+            "recipe_id": "NISQ-20250709-T01:NISQ-20250709-C04:scenario_04",
+            "reason": "Illustrative 12.9 L sensitivity rather than preceding recorded delivered volume."
+          }
+        ],
+        "known_exceptions": [
+          "C04 stock stage unresolved: retain all four original-injectate and independent-stock direct/secondary possibilities with 12 L working volume or 4000 g nominal mass. They are competing hypotheses, not independently selected fits. T01 association derives from exploratory notebook; shared calibration remains provisional."
+        ],
+        "selection_status": "stock_stage_unresolved",
+        "retained_hypothesis_ids": [
+          "NISQ-20250709-T01:NISQ-20250709-C04:scenario_01",
+          "NISQ-20250709-T01:NISQ-20250709-C04:scenario_03",
+          "NISQ-20250709-T01:NISQ-20250709-C04:scenario_05",
+          "NISQ-20250709-T01:NISQ-20250709-C04:scenario_06"
+        ]
+      },
+      {
+        "trial_id": "NISQ-20250709-T02",
+        "preferred_recipe_ids": [],
+        "field_decisions": [
+          {
+            "field": "stock_stage",
+            "value": null,
+            "unit": null,
+            "basis": "unresolved",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/notebooks/exploratory/check_dilution_calculations.ipynb cell 6",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 6"
+            ],
+            "reason": "No earlier usable source resolves C04 stock association; later methods are not preceding evidence."
+          },
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250709-T01"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 4"
+            ],
+            "reason": "Earlier same-day solution release; T02 not independently recorded.",
+            "days_since_precedent": 0
+          },
+          {
+            "field": "working_solution_volume",
+            "value": 12000,
+            "unit": "mL",
+            "basis": "preparation_water_as_nominal_solution_convention",
+            "donor_ids": [
+              "NISQ-20250709-T01"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 4"
+            ],
+            "reason": "12 L is recorded preparation water, treated as working solution volume only; final volume and delivery are unmeasured.",
+            "days_since_precedent": 0
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 15000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 5 Document_261007_113237.pdf#page=3;side=right;block=a_03_attempt_04",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 6",
+              "salt_dilution/data/records/trials.csv#NISQ-20250709-T02",
+              "salt_dilution/data/records/provenance.json#NISQ-20250709-T02"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250709-C04"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20250709-T02:NISQ-20250709-C04:scenario_02",
+            "reason": "Illustrative 12.9 L sensitivity rather than preceding recorded delivered volume."
+          },
+          {
+            "recipe_id": "NISQ-20250709-T02:NISQ-20250709-C04:scenario_04",
+            "reason": "Illustrative 12.9 L sensitivity rather than preceding recorded delivered volume."
+          }
+        ],
+        "known_exceptions": [
+          "C04 stock stage unresolved: retain all four original-injectate and independent-stock direct/secondary possibilities with 12 L working volume or 4000 g nominal mass. They are competing hypotheses, not independently selected fits. T01 association derives from exploratory notebook; shared calibration remains provisional."
+        ],
+        "selection_status": "stock_stage_unresolved",
+        "retained_hypothesis_ids": [
+          "NISQ-20250709-T02:NISQ-20250709-C04:scenario_01",
+          "NISQ-20250709-T02:NISQ-20250709-C04:scenario_03",
+          "NISQ-20250709-T02:NISQ-20250709-C04:scenario_05",
+          "NISQ-20250709-T02:NISQ-20250709-C04:scenario_06"
+        ]
+      },
+      {
+        "trial_id": "NISQ-20250717-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20250717-T01:NISQ-20250717-C01:scenario_01",
+          "NISQ-20250717-T01:NISQ-20250717-C02:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 6"
+            ],
+            "reason": "Nominal quantity recorded; delivery not independently confirmed."
+          },
+          {
+            "field": "calibration_stock",
+            "value": {
+              "salt_mass_g": 2,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "observed_stock",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 2"
+            ],
+            "reason": "Direct independent mass stock; final solution volume unmeasured."
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 6 Document_261007_113237.pdf#page=5;side=left;block=a_05_dry_attempt_01",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 7",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 2",
+              "salt_dilution/data/records/trials.csv#NISQ-20250717-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20250717-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250717-C01"
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 3000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 7 Document_261007_113237.pdf#page=5;side=left;block=a_05_dry_attempt_02",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 8",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 2",
+              "salt_dilution/data/records/trials.csv#NISQ-20250717-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20250717-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250717-C02"
+          }
+        ],
+        "rejected_alternatives": [],
+        "known_exceptions": [
+          "Two direct-stock same-sensor calibrations remain plausible; no source proves which superseded the other."
+        ],
+        "selection_status": "protocol_adopted_calibration_alternatives",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250724-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20250724-T01:NISQ-20250724-C01:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000.0,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 7"
+            ],
+            "reason": "Nominal, not measured delivered."
+          },
+          {
+            "field": "reported_solution_volume",
+            "value": 12900,
+            "unit": "mL",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 7"
+            ],
+            "reason": "Working reported volume; actual delivery and final-volume measurement basis unverified."
+          },
+          {
+            "field": "relative_stock_stage",
+            "value": {
+              "primary_aliquot_ml": 10,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "observed_stock",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 8 Document_261007_113237.pdf#page=5;side=right;block=a_05_solution",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 9",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 3"
+            ],
+            "reason": "10 mL original solution into 1000 mL water; measured final secondary volume absent. An inherited stage is a working assumption, not a target observation."
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 3000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 8 Document_261007_113237.pdf#page=5;side=right;block=a_05_solution",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 9",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 3",
+              "salt_dilution/data/records/trials.csv#NISQ-20250724-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20250724-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250724-C01"
+          }
+        ],
+        "rejected_alternatives": [],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250731-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20250731-T01:NISQ-20250731-C02:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250717-T01"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 8",
+              "salt_dilution/data/records/trials.csv"
+            ],
+            "reason": "Working 4 kg nominal, actual delivery unconfirmed.",
+            "days_since_precedent": 14
+          },
+          {
+            "field": "calibration_stock",
+            "value": {
+              "salt_mass_g": 2,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "observed_stock",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6"
+            ],
+            "reason": "Direct independent mass stock; final solution volume unmeasured."
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 10 Document_261007_113237.pdf#page=6;side=right;block=a_06_dry",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 11",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+              "salt_dilution/data/records/trials.csv#NISQ-20250731-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20250731-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250731-C02"
+          }
+        ],
+        "rejected_alternatives": [],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250731-T02",
+        "preferred_recipe_ids": [
+          "NISQ-20250731-T02:NISQ-20250731-C01:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000.0,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 9"
+            ],
+            "reason": "Nominal, not measured delivered."
+          },
+          {
+            "field": "reported_solution_volume",
+            "value": 12900,
+            "unit": "mL",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 9"
+            ],
+            "reason": "Working reported volume; actual delivery and final-volume measurement basis unverified."
+          },
+          {
+            "field": "relative_stock_stage",
+            "value": {
+              "primary_aliquot_ml": 10,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "observed_stock",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 9 Document_261007_113237.pdf#page=6;side=left;block=a_06_solution",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 10",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 5"
+            ],
+            "reason": "10 mL original solution into 1000 mL water; measured final secondary volume absent. An inherited stage is a working assumption, not a target observation."
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 9 Document_261007_113237.pdf#page=6;side=left;block=a_06_solution",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 10",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 5",
+              "salt_dilution/data/records/trials.csv#NISQ-20250731-T02",
+              "salt_dilution/data/records/provenance.json#NISQ-20250731-T02"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250731-C01"
+          }
+        ],
+        "rejected_alternatives": [],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250805-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20250805-T01:NISQ-20250805-C01:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 10"
+            ],
+            "reason": "Nominal quantity recorded; delivery not independently confirmed."
+          },
+          {
+            "field": "stock_mass_g",
+            "value": 2.0,
+            "unit": "g",
+            "basis": "user_reviewed_nominal_setting",
+            "calibration_id": "NISQ-20250805-C01",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20250805-C01"
+            ],
+            "reason": "User-reviewed nominal stock setting for this calibration, not a new observation or scientific acceptance."
+          },
+          {
+            "field": "stock_volume_ml",
+            "value": 1000.0,
+            "unit": "mL",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250731-C02"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+              "salt_dilution/config/calibration_recovered_recipes.json"
+            ],
+            "reason": "Starting water volume; inherited preceding same-method stock where noted, not a measured final solution volume.",
+            "days_since_precedent": 5,
+            "calibration_id": "NISQ-20250805-C01"
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 11 Document_261007_113237.pdf#page=7;side=left;block=a_07_am_dry_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 12",
+              "salt_dilution/data/records/trials.csv#NISQ-20250805-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20250805-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250805-C01"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20250805-T01:NISQ-20250805-C01:scenario_02",
+            "reason": "Working interpretation follows the documented or preceding same-protocol stock stage; this remains a sensitivity rather than a disproven recipe."
+          }
+        ],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250805-T02",
+        "preferred_recipe_ids": [
+          "NISQ-20250805-T02:NISQ-20250805-C02:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000.0,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 11"
+            ],
+            "reason": "Nominal, not measured delivered."
+          },
+          {
+            "field": "reported_solution_volume",
+            "value": 12900,
+            "unit": "mL",
+            "basis": "observed_source_recheck",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/provenance.json#NISQ-20250805-T02"
+            ],
+            "reason": "Working reported volume; actual delivery and final-volume measurement basis unverified."
+          },
+          {
+            "field": "relative_stock_stage",
+            "value": {
+              "primary_aliquot_ml": 10,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "observed_stock",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 12 Document_261007_113237.pdf#page=7;side=right;block=a_07_am_solution_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 13",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 8"
+            ],
+            "reason": "10 mL original solution into 1000 mL water; measured final secondary volume absent. An inherited stage is a working assumption, not a target observation."
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 12 Document_261007_113237.pdf#page=7;side=right;block=a_07_am_solution_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 13",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 8",
+              "salt_dilution/data/records/trials.csv#NISQ-20250805-T02",
+              "salt_dilution/data/records/provenance.json#NISQ-20250805-T02"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250805-C02"
+          }
+        ],
+        "rejected_alternatives": [],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250805-T03",
+        "preferred_recipe_ids": [
+          "NISQ-20250805-T03:NISQ-20250805-C03:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250805-T01"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 12",
+              "salt_dilution/data/records/trials.csv"
+            ],
+            "reason": "Working 4 kg nominal, actual delivery unconfirmed.",
+            "days_since_precedent": 0
+          },
+          {
+            "field": "stock_mass_g",
+            "value": 2.0,
+            "unit": "g",
+            "basis": "user_reviewed_nominal_setting",
+            "calibration_id": "NISQ-20250805-C03",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20250805-C03"
+            ],
+            "reason": "User-reviewed nominal stock setting for this calibration, not a new observation or scientific acceptance."
+          },
+          {
+            "field": "stock_volume_ml",
+            "value": 1000.0,
+            "unit": "mL",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250731-C02"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+              "salt_dilution/config/calibration_recovered_recipes.json"
+            ],
+            "reason": "Starting water volume; inherited preceding same-method stock where noted, not a measured final solution volume.",
+            "days_since_precedent": 5,
+            "calibration_id": "NISQ-20250805-C03"
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 13 Document_261007_113237.pdf#page=7;side=right;block=a_07_pm_dry_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 14",
+              "salt_dilution/data/records/trials.csv#NISQ-20250805-T03",
+              "salt_dilution/data/records/provenance.json#NISQ-20250805-T03"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250805-C03"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20250805-T03:NISQ-20250805-C03:scenario_02",
+            "reason": "Working interpretation follows the documented or preceding same-protocol stock stage; this remains a sensitivity rather than a disproven recipe."
+          }
+        ],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250805-T04",
+        "preferred_recipe_ids": [
+          "NISQ-20250805-T04:NISQ-20250805-C04:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250805-T02"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 11"
+            ],
+            "reason": "Same-day earlier solution nominal, not independently remeasured.",
+            "days_since_precedent": 0
+          },
+          {
+            "field": "reported_solution_volume",
+            "value": 12900,
+            "unit": "mL",
+            "basis": "observed_source_recheck",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/provenance.json#NISQ-20250805-T04"
+            ],
+            "reason": "Working reported volume; actual delivery and final-volume measurement basis unverified."
+          },
+          {
+            "field": "relative_stock_stage",
+            "value": {
+              "primary_aliquot_ml": 10,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250805-C02"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 8",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 15"
+            ],
+            "reason": "10 mL original solution into 1000 mL water; measured final secondary volume absent. An inherited stage is a working assumption, not a target observation.",
+            "days_since_precedent": 0
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 14 Document_261007_113237.pdf#page=7;side=right;block=a_07_pm_solution_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 15",
+              "salt_dilution/data/records/trials.csv#NISQ-20250805-T04",
+              "salt_dilution/data/records/provenance.json#NISQ-20250805-T04"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250805-C04"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20250805-T04:NISQ-20250805-C04:scenario_02",
+            "reason": "Working interpretation follows the documented or preceding same-protocol stock stage; this remains a sensitivity rather than a disproven recipe."
+          }
+        ],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250808-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20250808-T01:NISQ-20250808-C01:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250805-T01"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 14",
+              "salt_dilution/data/records/trials.csv"
+            ],
+            "reason": "Working 4 kg nominal, actual delivery unconfirmed.",
+            "days_since_precedent": 3
+          },
+          {
+            "field": "stock_mass_g",
+            "value": 2.0,
+            "unit": "g",
+            "basis": "user_reviewed_nominal_setting",
+            "calibration_id": "NISQ-20250808-C01",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20250808-C01"
+            ],
+            "reason": "User-reviewed nominal stock setting for this calibration, not a new observation or scientific acceptance."
+          },
+          {
+            "field": "stock_volume_ml",
+            "value": 1000.0,
+            "unit": "mL",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250731-C02"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+              "salt_dilution/config/calibration_recovered_recipes.json"
+            ],
+            "reason": "Starting water volume; inherited preceding same-method stock where noted, not a measured final solution volume.",
+            "days_since_precedent": 8,
+            "calibration_id": "NISQ-20250808-C01"
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 15 Document_261007_113237.pdf#page=8;side=left;block=a_08_dry_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 16",
+              "salt_dilution/data/records/trials.csv#NISQ-20250808-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20250808-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250808-C01"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20250808-T01:NISQ-20250808-C01:scenario_02",
+            "reason": "Working interpretation follows the documented or preceding same-protocol stock stage; this remains a sensitivity rather than a disproven recipe."
+          }
+        ],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250903-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20250903-T01:NISQ-20250903-C01:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 15"
+            ],
+            "reason": "Nominal quantity recorded; delivery not independently confirmed."
+          },
+          {
+            "field": "stock_mass_g",
+            "value": 2.0,
+            "unit": "g",
+            "basis": "user_reviewed_nominal_setting",
+            "calibration_id": "NISQ-20250903-C01",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20250903-C01"
+            ],
+            "reason": "User-reviewed nominal stock setting for this calibration, not a new observation or scientific acceptance."
+          },
+          {
+            "field": "stock_volume_ml",
+            "value": 1000.0,
+            "unit": "mL",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250731-C02"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+              "salt_dilution/config/calibration_recovered_recipes.json"
+            ],
+            "reason": "Starting water volume; inherited preceding same-method stock where noted, not a measured final solution volume.",
+            "days_since_precedent": 34,
+            "calibration_id": "NISQ-20250903-C01"
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 16 Document_261007_113641.pdf#page=2;side=left;block=b_02_sep03_dry",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 17",
+              "salt_dilution/data/records/trials.csv#NISQ-20250903-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20250903-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250903-C01"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20250903-T01:NISQ-20250903-C01:scenario_02",
+            "reason": "Working interpretation follows the documented or preceding same-protocol stock stage; this remains a sensitivity rather than a disproven recipe."
+          }
+        ],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250903-T02",
+        "preferred_recipe_ids": [
+          "NISQ-20250903-T02:NISQ-20250903-C02:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250805-T02"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 11"
+            ],
+            "reason": "Last directly recorded same-method solution preparation, not proof of target delivery; later source does not restate mass.",
+            "days_since_precedent": 29
+          },
+          {
+            "field": "planned_or_reported_solution_volume",
+            "value": 12900,
+            "unit": "mL",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 16",
+              "salt_dilution/data/records/provenance.json#NISQ-20250903-T02"
+            ],
+            "reason": "Recorded 12.9 L before spill; actual delivered amount unknown."
+          },
+          {
+            "field": "delivered_solution_volume",
+            "value": null,
+            "unit": "mL",
+            "basis": "unknown_due_to_spill",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 16"
+            ],
+            "reason": "Do not equate reported/planned volume with delivery."
+          },
+          {
+            "field": "relative_stock_stage",
+            "value": {
+              "primary_aliquot_ml": 10,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "observed_stock",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 17 Document_261007_113641.pdf#page=2;side=left;block=b_02_sep03_solution",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 18",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 10"
+            ],
+            "reason": "10 mL original solution into 1000 mL water; measured final secondary volume absent. An inherited stage is a working assumption, not a target observation."
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 17 Document_261007_113641.pdf#page=2;side=left;block=b_02_sep03_solution",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 18",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 10",
+              "salt_dilution/data/records/trials.csv#NISQ-20250903-T02",
+              "salt_dilution/data/records/provenance.json#NISQ-20250903-T02"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250903-C02"
+          }
+        ],
+        "rejected_alternatives": [],
+        "known_exceptions": [
+          "Per-litre response only, not full-release Q; spill quantity unknown."
+        ],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250917-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20250917-T01:NISQ-20250917-C01:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 17"
+            ],
+            "reason": "Nominal quantity recorded; delivery not independently confirmed."
+          },
+          {
+            "field": "stock_mass_g",
+            "value": 2.0,
+            "unit": "g",
+            "basis": "user_reviewed_nominal_setting",
+            "calibration_id": "NISQ-20250917-C01",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20250917-C01"
+            ],
+            "reason": "User-reviewed nominal stock setting for this calibration, not a new observation or scientific acceptance."
+          },
+          {
+            "field": "stock_volume_ml",
+            "value": 1000.0,
+            "unit": "mL",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250731-C02"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+              "salt_dilution/config/calibration_recovered_recipes.json"
+            ],
+            "reason": "Starting water volume; inherited preceding same-method stock where noted, not a measured final solution volume.",
+            "days_since_precedent": 48,
+            "calibration_id": "NISQ-20250917-C01"
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 18 Document_261007_113641.pdf#page=2;side=right;block=b_02_am_dry_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 19",
+              "salt_dilution/data/records/trials.csv#NISQ-20250917-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20250917-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250917-C01"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20250917-T01:NISQ-20250917-C01:scenario_02",
+            "reason": "Working interpretation follows the documented or preceding same-protocol stock stage; this remains a sensitivity rather than a disproven recipe."
+          }
+        ],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250917-T02",
+        "preferred_recipe_ids": [
+          "NISQ-20250917-T02:NISQ-20250917-C02:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250805-T02"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 11"
+            ],
+            "reason": "Last directly recorded same-method solution preparation, not proof of target delivery; later source does not restate mass.",
+            "days_since_precedent": 43
+          },
+          {
+            "field": "reported_solution_volume",
+            "value": 12900,
+            "unit": "mL",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 18"
+            ],
+            "reason": "Working reported volume; actual delivery and final-volume measurement basis unverified."
+          },
+          {
+            "field": "relative_stock_stage",
+            "value": {
+              "primary_aliquot_ml": 10,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "observed_stock",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 19 Document_261007_113641.pdf#page=2;side=right;block=b_02_am_solution_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 20",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 12"
+            ],
+            "reason": "10 mL original solution into 1000 mL water; measured final secondary volume absent. An inherited stage is a working assumption, not a target observation."
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 19 Document_261007_113641.pdf#page=2;side=right;block=b_02_am_solution_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 20",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 12",
+              "salt_dilution/data/records/trials.csv#NISQ-20250917-T02",
+              "salt_dilution/data/records/provenance.json#NISQ-20250917-T02"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250917-C02"
+          }
+        ],
+        "rejected_alternatives": [],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250917-T03",
+        "preferred_recipe_ids": [
+          "NISQ-20250917-T03:NISQ-20250917-C03:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 19"
+            ],
+            "reason": "Nominal quantity recorded; delivery not independently confirmed."
+          },
+          {
+            "field": "stock_mass_g",
+            "value": 2.0,
+            "unit": "g",
+            "basis": "user_reviewed_nominal_setting",
+            "calibration_id": "NISQ-20250917-C03",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20250917-C03"
+            ],
+            "reason": "User-reviewed nominal stock setting for this calibration, not a new observation or scientific acceptance."
+          },
+          {
+            "field": "stock_volume_ml",
+            "value": 1000.0,
+            "unit": "mL",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250731-C02"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 6",
+              "salt_dilution/config/calibration_recovered_recipes.json"
+            ],
+            "reason": "Starting water volume; inherited preceding same-method stock where noted, not a measured final solution volume.",
+            "days_since_precedent": 48,
+            "calibration_id": "NISQ-20250917-C03"
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 20 Document_261007_113641.pdf#page=3;side=left;block=b_03_pm_dry_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 21",
+              "salt_dilution/data/records/trials.csv#NISQ-20250917-T03",
+              "salt_dilution/data/records/provenance.json#NISQ-20250917-T03"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250917-C03"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20250917-T03:NISQ-20250917-C03:scenario_02",
+            "reason": "Working interpretation follows the documented or preceding same-protocol stock stage; this remains a sensitivity rather than a disproven recipe."
+          }
+        ],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20250917-T04",
+        "preferred_recipe_ids": [
+          "NISQ-20250917-T04:NISQ-20250917-C04:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250805-T02"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 11"
+            ],
+            "reason": "Last directly recorded same-method solution preparation, not proof of target delivery; later source does not restate mass.",
+            "days_since_precedent": 43
+          },
+          {
+            "field": "reported_solution_volume",
+            "value": 12900,
+            "unit": "mL",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 20"
+            ],
+            "reason": "Working reported volume; actual delivery and final-volume measurement basis unverified."
+          },
+          {
+            "field": "relative_stock_stage",
+            "value": {
+              "primary_aliquot_ml": 10,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20250917-C02"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 12",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 22"
+            ],
+            "reason": "10 mL original solution into 1000 mL water; measured final secondary volume absent. An inherited stage is a working assumption, not a target observation.",
+            "days_since_precedent": 0
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 21 Document_261007_113641.pdf#page=3;side=left;block=b_03_pm_solution_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 22",
+              "salt_dilution/data/records/trials.csv#NISQ-20250917-T04",
+              "salt_dilution/data/records/provenance.json#NISQ-20250917-T04"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20250917-C04"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20250917-T04:NISQ-20250917-C04:scenario_02",
+            "reason": "Working interpretation follows the documented or preceding same-protocol stock stage; this remains a sensitivity rather than a disproven recipe."
+          }
+        ],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20260716-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20260716-T01:NISQ-20260716-C01:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000.0,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 21"
+            ],
+            "reason": "Nominal, not measured delivered."
+          },
+          {
+            "field": "working_solution_volume",
+            "value": 12000,
+            "unit": "mL",
+            "basis": "preparation_water_as_nominal_solution_convention",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 21"
+            ],
+            "reason": "12 L is recorded preparation water, treated as working solution volume only; final volume and delivery are unmeasured."
+          },
+          {
+            "field": "relative_stock_stage",
+            "value": {
+              "primary_aliquot_ml": 10,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "observed_stock",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 22 Document_261007_113641.pdf#page=4;side=left;block=b_04_jul16_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 23",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 14"
+            ],
+            "reason": "10 mL original solution into 1000 mL water; measured final secondary volume absent. An inherited stage is a working assumption, not a target observation."
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 22 Document_261007_113641.pdf#page=4;side=left;block=b_04_jul16_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 23",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 14",
+              "salt_dilution/data/records/trials.csv#NISQ-20260716-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20260716-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20260716-C01"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20260716-T01:NISQ-20260716-C01:scenario_02",
+            "reason": "Illustrative 12.9 L sensitivity rather than preceding recorded delivered volume."
+          }
+        ],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20260721-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20260721-T01:NISQ-20260721-C01:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000.0,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 22"
+            ],
+            "reason": "Nominal, not measured delivered."
+          },
+          {
+            "field": "working_solution_volume",
+            "value": 12000,
+            "unit": "mL",
+            "basis": "preparation_water_as_nominal_solution_convention",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 22"
+            ],
+            "reason": "12 L is recorded preparation water, treated as working solution volume only; final volume and delivery are unmeasured."
+          },
+          {
+            "field": "relative_stock_stage",
+            "value": {
+              "primary_aliquot_ml": 10,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "partial_inheritance_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20260716-C01"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 14",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 16"
+            ],
+            "reason": "10 mL original solution into 1000 mL water; measured final secondary volume absent. An inherited stage is a working assumption, not a target observation.",
+            "days_since_precedent": 5
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 23 Document_261007_113641.pdf#page=4;side=right;block=b_04_jul21_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 24",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 16",
+              "salt_dilution/data/records/trials.csv#NISQ-20260721-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20260721-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20260721-C01"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20260721-T01:NISQ-20260721-C01:scenario_02",
+            "reason": "Illustrative 12.9 L sensitivity rather than preceding recorded delivered volume."
+          }
+        ],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20260806-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20260806-T01:NISQ-20260806-C01:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000.0,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 23"
+            ],
+            "reason": "Nominal, not measured delivered."
+          },
+          {
+            "field": "working_solution_volume",
+            "value": 12000,
+            "unit": "mL",
+            "basis": "preparation_water_as_nominal_solution_convention",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 23"
+            ],
+            "reason": "12 L is recorded preparation water, treated as working solution volume only; final volume and delivery are unmeasured."
+          },
+          {
+            "field": "relative_stock_stage",
+            "value": {
+              "primary_aliquot_ml": 10,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20260721-C01",
+              "NISQ-20260716-C01"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 14",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 16",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 25"
+            ],
+            "reason": "10 mL original solution into 1000 mL water; measured final secondary volume absent. An inherited stage is a working assumption, not a target observation.",
+            "days_since_precedent": {
+              "aliquot": 16,
+              "water": 21
+            }
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 24 Document_261007_160953.pdf#page=1;side=left;block=c_01_nisqually_cal",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 25",
+              "salt_dilution/data/records/trials.csv#NISQ-20260806-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20260806-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20260806-C01"
+          }
+        ],
+        "rejected_alternatives": [
+          {
+            "recipe_id": "NISQ-20260806-T01:NISQ-20260806-C01:scenario_02",
+            "reason": "Illustrative 12.9 L sensitivity rather than preceding recorded delivered volume."
+          },
+          {
+            "recipe_id": "NISQ-20260806-T01:NISQ-20260806-C01:scenario_03",
+            "reason": "Working interpretation follows the documented or preceding same-protocol stock stage; this remains a sensitivity rather than a disproven recipe."
+          },
+          {
+            "recipe_id": "NISQ-20260806-T01:NISQ-20260806-C01:scenario_04",
+            "reason": "Illustrative 12.9 L sensitivity rather than preceding recorded delivered volume."
+          }
+        ],
+        "known_exceptions": [
+          "Nisqually release versus recorded event association remains unresolved; Tahoma calibration is a distinct preparation."
+        ],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20260918-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20260918-T01:NISQ-20260918-C02:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "nominal_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "observed_transcription",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/trials.csv row 31"
+            ],
+            "reason": "Nominal quantity recorded; delivery not independently confirmed."
+          },
+          {
+            "field": "calibration_stock",
+            "value": {
+              "salt_mass_g": 0.5,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "observed_stock",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 20"
+            ],
+            "reason": "C02 restart uses stock directly; C01 is abandoned and ambiguous."
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 1000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 35 Document_261007_160953.pdf#page=9;side=right;block=c_09_attempt_02",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 37",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 20",
+              "salt_dilution/data/records/trials.csv#NISQ-20260918-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20260918-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20260918-C02"
+          }
+        ],
+        "rejected_alternatives": [],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20261002-T02",
+        "preferred_recipe_ids": [
+          "NISQ-20261002-T02:NISQ-20261002-C01:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "delivered_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "field_participant_confirmed",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/config/release_confirmations.json"
+            ],
+            "reason": "Participant confirmed actual delivery for this release."
+          },
+          {
+            "field": "calibration_stock",
+            "value": {
+              "salt_mass_g": 1,
+              "starting_water_ml": 1000
+            },
+            "unit": null,
+            "basis": "observed_stock",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 22"
+            ],
+            "reason": "October 2 stock recorded; later same-procedure use is an assumption; final volume unmeasured.",
+            "days_since_precedent": 0
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 36 Document_261007_160953.pdf#page=12;side=right;block=c_12_oct02_cal_01",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 38",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 22",
+              "salt_dilution/data/records/trials.csv#NISQ-20261002-T02",
+              "salt_dilution/data/records/provenance.json#NISQ-20261002-T02"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20261002-C01"
+          }
+        ],
+        "rejected_alternatives": [],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20261004-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20261004-T01:NISQ-20261004-C01:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "delivered_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "field_participant_confirmed",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/config/release_confirmations.json"
+            ],
+            "reason": "Participant confirmed actual delivery for this release."
+          },
+          {
+            "field": "stock_mass_g",
+            "value": 1.0,
+            "unit": "g",
+            "basis": "user_reviewed_nominal_setting",
+            "calibration_id": "NISQ-20261004-C01",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20261004-C01"
+            ],
+            "reason": "User-reviewed nominal stock setting for this calibration, not a new observation or scientific acceptance."
+          },
+          {
+            "field": "stock_volume_ml",
+            "value": 1000.0,
+            "unit": "mL",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20261002-C01"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 22"
+            ],
+            "reason": "Starting water volume; inherited preceding same-method stock where noted, not a measured final solution volume.",
+            "days_since_precedent": 2,
+            "calibration_id": "NISQ-20261004-C01"
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 38 Document_261007_160953.pdf#page=14;side=right;block=c_14_oct04_cal_01",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 40",
+              "salt_dilution/data/records/trials.csv#NISQ-20261004-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20261004-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20261004-C01"
+          }
+        ],
+        "rejected_alternatives": [],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20261004-T04",
+        "preferred_recipe_ids": [
+          "NISQ-20261004-T04:NISQ-20261004-C03:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "delivered_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "field_participant_confirmed",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/config/release_confirmations.json"
+            ],
+            "reason": "Participant confirmed actual delivery for this release."
+          },
+          {
+            "field": "stock_mass_g",
+            "value": 1.0,
+            "unit": "g",
+            "basis": "user_reviewed_nominal_setting",
+            "calibration_id": "NISQ-20261004-C03",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20261004-C03"
+            ],
+            "reason": "User-reviewed nominal stock setting for this calibration, not a new observation or scientific acceptance."
+          },
+          {
+            "field": "stock_volume_ml",
+            "value": 1000.0,
+            "unit": "mL",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20261002-C01"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 22"
+            ],
+            "reason": "Starting water volume; inherited preceding same-method stock where noted, not a measured final solution volume.",
+            "days_since_precedent": 2,
+            "calibration_id": "NISQ-20261004-C03"
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 40 Document_261007_160953.pdf#page=17;side=right;block=c_17_oct04_cal_03",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 42",
+              "salt_dilution/data/records/trials.csv#NISQ-20261004-T04",
+              "salt_dilution/data/records/provenance.json#NISQ-20261004-T04"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20261004-C03"
+          }
+        ],
+        "rejected_alternatives": [],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      },
+      {
+        "trial_id": "NISQ-20261005-T01",
+        "preferred_recipe_ids": [
+          "NISQ-20261005-T01:NISQ-20261005-C01:scenario_01"
+        ],
+        "field_decisions": [
+          {
+            "field": "delivered_salt_mass",
+            "value": 4000,
+            "unit": "g",
+            "basis": "field_participant_confirmed",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/config/release_confirmations.json"
+            ],
+            "reason": "Participant confirmed actual delivery for this release."
+          },
+          {
+            "field": "stock_mass_g",
+            "value": 1.0,
+            "unit": "g",
+            "basis": "user_reviewed_nominal_setting",
+            "calibration_id": "NISQ-20261005-C01",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/manifest.json#reviewed_setting_overrides.values.NISQ-20261005-C01"
+            ],
+            "reason": "User-reviewed nominal stock setting for this calibration, not a new observation or scientific acceptance."
+          },
+          {
+            "field": "stock_volume_ml",
+            "value": 1000.0,
+            "unit": "mL",
+            "basis": "inherited_preceding_same_method",
+            "donor_ids": [
+              "NISQ-20261002-C01"
+            ],
+            "source_refs": [
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/stocks.csv row 22"
+            ],
+            "reason": "Starting water volume; inherited preceding same-method stock where noted, not a measured final solution volume.",
+            "days_since_precedent": 3,
+            "calibration_id": "NISQ-20261005-C01"
+          },
+          {
+            "field": "receiver_initial_volume",
+            "value": 2000.0,
+            "unit": "mL",
+            "basis": "recorded_calibration_receiver",
+            "donor_ids": [],
+            "source_refs": [
+              "salt_dilution/data/records/calibrations.csv row 42 Document_261007_160953.pdf#page=19;side=left;block=c_19_oct05_cal_01",
+              "salt_dilution/data/processed/field_notes/2026-10-12/discharge/calibrations.csv row 44",
+              "salt_dilution/data/records/trials.csv#NISQ-20261005-T01",
+              "salt_dilution/data/records/provenance.json#NISQ-20261005-T01"
+            ],
+            "reason": "Source-recorded receiver; verify applicable calibration and additions independently.",
+            "calibration_id": "NISQ-20261005-C01"
+          }
+        ],
+        "rejected_alternatives": [],
+        "known_exceptions": [],
+        "selection_status": "working_protocol_adopted",
+        "retained_hypothesis_ids": []
+      }
+    ]
+  }
 }
