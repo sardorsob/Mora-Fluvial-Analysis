@@ -53,3 +53,7 @@ __pycache__/
 # Share the stable discharge analysis, not intermediate run folders.
 !/salt_dilution/results/discharge_analysis/
 !/salt_dilution/results/discharge_analysis/**
+
+# Selected assumption experiments; intermediate runs remain local.
+!/salt_dilution/results/discharge_scenarios/
+!/salt_dilution/results/discharge_scenarios/**

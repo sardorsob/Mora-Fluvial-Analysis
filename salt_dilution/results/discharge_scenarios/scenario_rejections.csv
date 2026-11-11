@@ -1,0 +1,4 @@
+trial_id,recipe_id,stage,reason,window_id
+NISQ-20260918-T01,NISQ-20260918-T01:NISQ-20260918-C01:scenario_01,source_screen,Abandoned calibration with ambiguous corrected dose; use recorded restart.,
+NISQ-20250731-T01,,source_screen,First fragment ends near peak and later fragment proves remaining tracer; use composite gap models or coarse companion.,window_037
+NISQ-20250731-T01,,source_screen,First fragment ends near peak and later fragment proves remaining tracer; use composite gap models or coarse companion.,window_038

@@ -19,6 +19,10 @@ The [calibration fits](calibration.md) are preparation- and channel-specific. Ac
 
 The [numerical review](getting_started.md#review-the-saved-release-estimates) recomputes saved estimates and compares plausible windows and background choices. Those ranges and fit standard errors cover individual uncertainty components. Full uncertainty also depends on delivered quantity, recipe, mixing and tracer recovery. Where the source supports a conditional observed-interval scenario, the review records the capture and background assumptions in a separate table. All current estimates await field acceptance. See [the results](../salt_dilution/results/discharge_analysis/README.md).
 
+The [scenario analysis](getting_started.md#explore-discharge-assumptions) separately tests explicit alternatives for missing quantities, stock recipes and pulse capture. For a fixed coefficient and pulse integral, increasing assumed solution volume from 12 to 12.9 L increases Q by 7.5%; this is a one-sided sensitivity, not a measured volume or uncertainty bound. A direct stock and a 10 mL aliquot diluted into 1,000 mL of water differ in concentration by a factor of 101. Applying that scale changes the fitted coefficient without changing its R², so fit quality cannot identify which recipe was used. Gap models based on endpoint values are sensitivities, not guaranteed bounds on the unobserved pulse.
+
+Automatic window proposals use configurable defaults of two background observations and 30 seconds, replacing an earlier ten-observation heuristic. Two samples are the mathematical floor for an interval, not a field protocol; neither default is a pipette count. Inspect the resulting windows and source evidence before interpreting a scenario.
+
 Moore (2004) covers constant-rate injection as background methodology. Moore (2005) covers solution-slug injection. Richardson (2015) and Richardson et al. (2017) develop mass-stock calibration and uncertainty. See [references](references/README.md) and the [instrument guide](salt_dilution_instruments.md).
 
 ## Rock trials: observing particle movement

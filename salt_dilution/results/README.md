@@ -12,6 +12,14 @@ October 4 T03 retains a source discrepancy. The notebook lists a specific-conduc
 
 The observed-window ranges cover tested choices of pulse edges and background. Field mixing, tracer recovery and total measurement uncertainty remain open. Specific-channel reuse fails the ±5% Q criterion for the nine October calibration sessions across three days. Actual-channel reuse is inconclusive. See the [reuse evaluation](discharge_analysis/tables/coefficient_reuse.csv).
 
+## Scenarios for missing information
+
+The separate scenario package includes conditional Q scenarios for **24 additional releases** and a per-litre response for the September 3 spill. The spill response is not a discharge estimate for the release. None of the scenarios is scientifically accepted, and the 11 selected estimates in the analysis bundle remain unchanged. Read each row's quantity, stock, instrument and capture qualifications before interpreting a value.
+
+Some July 9 stock-stage alternatives produce implausibly large Q values. They remain diagnostic counterfactuals, not recommended estimates. The full minimum-to-maximum scenario range is not a plausible-discharge interval; inspect `recipe_evidence` and the source limitations for each alternative.
+
+Start with [scenario dispositions](discharge_scenarios/scenario_by_release.csv), then inspect the [scenario estimates](discharge_scenarios/scenario_estimates.csv), [calibrations](discharge_scenarios/scenario_calibrations.csv) and [rejections](discharge_scenarios/scenario_rejections.csv). The [settings](discharge_scenarios/scenario_settings.json) and [run record](discharge_scenarios/run_info.json) identify the assumptions and inputs. Volume and stock-stage alternatives are sensitivities, not measured quantities; endpoint gap models do not bound the missing pulse. See [methods](../../docs/research_methods.md#salt-dilution-measuring-water-discharge) and the [reproduction command](../../docs/getting_started.md#explore-discharge-assumptions).
+
 ## Use the analysis bundle
 
 Start with the [all-release table](discharge_analysis/tables/discharge_by_release.csv) for estimates and reasons for blank Q. Blank Q means no selected estimate; separate capture-assumed scenarios are identified explicitly. The [primary table](discharge_analysis/tables/discharge_primary.csv) gives one selected estimate per release with a computed Q. Read `estimate_support` and the quality flags before using any value.

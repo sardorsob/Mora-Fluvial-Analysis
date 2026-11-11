@@ -153,6 +153,21 @@ python -m salt_dilution.scripts.processing.export_discharge \
 
 Open [the stable analysis package](../salt_dilution/results/discharge_analysis/README.md) to read its tables and figures without the raw recordings. Start with `tables/discharge_by_release.csv` for one row per release. Use `tables/discharge_primary.csv` for the selected estimates, including their support qualifications, and `tables/conditional_discharge.csv` for capture-assumed scenarios. Blank Q means no selected estimate; separate capture-assumed scenarios are identified explicitly. `bundle_index.json` records the exact export command and `analysis_limits.json` describes the remaining evidence gaps. Rebuild into a separate, absent output directory.
 
+## Explore discharge assumptions
+
+The scenario runner compares explicit quantity, calibration-stock, background and capture assumptions for releases without a selected Q. It does not replace the 11 selected estimates or establish field acceptance. The saved inputs and local recordings must be available; choose a fresh, absent output directory under the ignored results area.
+
+```sh
+python -m salt_dilution.scripts.processing.discharge_scenarios \
+  --config salt_dilution/config/discharge_scenarios.json \
+  --pairing salt_dilution/results/matching/2026-11-10_recovery_v4 \
+  --calibration salt_dilution/results/calibrations/2026-11-10_recovery_v2 \
+  --baseline salt_dilution/results/discharge_analysis \
+  --output salt_dilution/results/discharge/new_scenario_run
+```
+
+Read `scenario_by_release.csv` for dispositions, `scenario_estimates.csv` for the assumptions and conditional results, `scenario_calibrations.csv` for fitted coefficients, and `scenario_rejections.csv` for excluded attempts. `scenario_settings.json` records the tested settings and `run_info.json` records inputs and outputs. The [scenario results](../salt_dilution/results/README.md#scenarios-for-missing-information) explain their interpretation.
+
 ## Work with seismic recordings
 
 Supply the inputs described in the [seismic data guide](../fluvial_seismology/data/README.md), then start Jupyter:

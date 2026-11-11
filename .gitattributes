@@ -16,3 +16,4 @@ salt_dilution/results/matching/2026-11-01_reviewed_pairings/* -text -whitespace
 
 # Preserve the discharge analysis bytes across checkout platforms.
 salt_dilution/results/discharge_analysis/** -text -whitespace
+salt_dilution/results/discharge_scenarios/** -text -whitespace
