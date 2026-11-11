@@ -60,7 +60,7 @@
           ],
           "assumptions": [
             "12 L preparation water used as approximate delivered final solution volume; salt volume, reserved sample, losses and physical delivery are unknown.",
-            "12.9 L is a scenario only; no same-protocol observed volume within 14 days established for this target.",
+            "12.9 L is a sensitivity scenario, not a measured final or delivered solution volume for this trial.",
             "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
             "12.9 L versus 12 L is +7.5% sensitivity, not a density calculation, nearby-day mean or uncertainty bound."
           ],
@@ -114,7 +114,7 @@
           ],
           "assumptions": [
             "12 L preparation water used as approximate delivered final solution volume; salt volume, reserved sample, losses and physical delivery are unknown.",
-            "12.9 L is a scenario only; no same-protocol observed volume within 14 days established for this target.",
+            "12.9 L is a sensitivity scenario, not a measured final or delivered solution volume for this trial.",
             "Stock stage tested: original_injectate. Identity remains assumed where source lineage is unresolved.",
             "12.9 L versus 12 L is +7.5% sensitivity, not a density calculation, nearby-day mean or uncertainty bound."
           ],
@@ -233,7 +233,7 @@
           "assumptions": [
             "12 L preparation water used as approximate delivered final solution volume; salt volume, reserved sample, losses and physical delivery are unknown.",
             "T01 is same-day preparation-water donor; T02 not independently recorded.",
-            "12.9 L is a scenario only; no same-protocol observed volume within 14 days established for this target.",
+            "12.9 L is a sensitivity scenario, not a measured final or delivered solution volume for this trial.",
             "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
             "12.9 L versus 12 L is +7.5% sensitivity, not a density calculation, nearby-day mean or uncertainty bound."
           ],
@@ -291,7 +291,7 @@
           "assumptions": [
             "12 L preparation water used as approximate delivered final solution volume; salt volume, reserved sample, losses and physical delivery are unknown.",
             "T01 is same-day preparation-water donor; T02 not independently recorded.",
-            "12.9 L is a scenario only; no same-protocol observed volume within 14 days established for this target.",
+            "12.9 L is a sensitivity scenario, not a measured final or delivered solution volume for this trial.",
             "Stock stage tested: original_injectate. Identity remains assumed where source lineage is unresolved.",
             "12.9 L versus 12 L is +7.5% sensitivity, not a density calculation, nearby-day mean or uncertainty bound."
           ],
@@ -1278,7 +1278,7 @@
           "assumptions": [
             "10 mL primary aliquot plus 1000 mL starting water; same-day linkage must be checked; final secondary volume unmeasured.",
             "12 L preparation water used as approximate delivered final solution volume; salt volume, reserved sample, losses and physical delivery are unknown.",
-            "12.9 L is a scenario only; no same-protocol observed volume within 14 days established for this target.",
+            "12.9 L is a sensitivity scenario, not a measured final or delivered solution volume for this trial.",
             "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
             "12.9 L versus 12 L is +7.5% sensitivity, not a density calculation, nearby-day mean or uncertainty bound."
           ],
@@ -1348,7 +1348,7 @@
           "assumptions": [
             "1000 mL secondary water is an estimated July 16 same-protocol donor; July 21 source does not restate it.",
             "12 L preparation water used as approximate delivered final solution volume; salt volume, reserved sample, losses and physical delivery are unknown.",
-            "12.9 L is a scenario only; no same-protocol observed volume within 14 days established for this target.",
+            "12.9 L is a sensitivity scenario, not a measured final or delivered solution volume for this trial.",
             "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
             "12.9 L versus 12 L is +7.5% sensitivity, not a density calculation, nearby-day mean or uncertainty bound."
           ],
@@ -1420,10 +1420,10 @@
           "assumptions": [
             "Secondary recipe is absent; July 21 aliquot and July 16 water are separate candidate protocol donors, not an observed linked stock.",
             "12 L preparation water used as approximate delivered final solution volume; salt volume, reserved sample, losses and physical delivery are unknown.",
-            "12.9 L is a scenario only; no same-protocol observed volume within 14 days established for this target.",
+            "12.9 L is a sensitivity scenario, not a measured final or delivered solution volume for this trial.",
             "Stock stage tested: secondary_of_original_injectate. Identity remains assumed where source lineage is unresolved.",
             "12.9 L versus 12 L is +7.5% sensitivity, not a density calculation, nearby-day mean or uncertainty bound.",
-            "Donors lie outside 14 days: broader protocol scenario, not chained imputation."
+            "Older protocol donors remain explicit; they do not turn an inferred recipe into an observed preparation."
           ],
           "donor_ids": [
             "NISQ-20260716-C01",
@@ -1452,7 +1452,7 @@
           "assumptions": [
             "12 L preparation water used as approximate delivered final solution volume; salt volume, reserved sample, losses and physical delivery are unknown.",
             "Stock stage tested: original_injectate. Identity remains assumed where source lineage is unresolved.",
-            "Donors lie outside 14 days: broader protocol scenario, not chained imputation."
+            "Older protocol donors remain explicit; they do not turn an inferred recipe into an observed preparation."
           ],
           "donor_ids": [],
           "solution_volume_ml": 12000.0,
@@ -1477,10 +1477,10 @@
           ],
           "assumptions": [
             "12 L preparation water used as approximate delivered final solution volume; salt volume, reserved sample, losses and physical delivery are unknown.",
-            "12.9 L is a scenario only; no same-protocol observed volume within 14 days established for this target.",
+            "12.9 L is a sensitivity scenario, not a measured final or delivered solution volume for this trial.",
             "Stock stage tested: original_injectate. Identity remains assumed where source lineage is unresolved.",
             "12.9 L versus 12 L is +7.5% sensitivity, not a density calculation, nearby-day mean or uncertainty bound.",
-            "Donors lie outside 14 days: broader protocol scenario, not chained imputation."
+            "Older protocol donors remain explicit; they do not turn an inferred recipe into an observed preparation."
           ],
           "donor_ids": [],
           "solution_volume_ml": 12900.0,

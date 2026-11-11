@@ -155,7 +155,7 @@ Open [the stable analysis package](../salt_dilution/results/discharge_analysis/R
 
 ## Explore discharge assumptions
 
-The scenario runner compares explicit quantity, calibration-stock, background and capture assumptions for releases without a selected Q. It does not replace the 11 selected estimates or establish field acceptance. The saved inputs and local recordings must be available; choose a fresh, absent output directory under the ignored results area.
+The scenario runner compares explicit quantity, calibration-stock, background and capture assumptions for releases without a selected Q. Its working tables apply recipes supported by trial records or preceding protocol patterns. They retain the assumptions and do not replace the 11 selected estimates or establish field acceptance. The saved inputs and local recordings must be available; choose a fresh, absent output directory under the ignored results area.
 
 ```sh
 python -m salt_dilution.scripts.processing.discharge_scenarios \
@@ -166,7 +166,9 @@ python -m salt_dilution.scripts.processing.discharge_scenarios \
   --output salt_dilution/results/discharge/new_scenario_run
 ```
 
-Read `scenario_by_release.csv` for dispositions, `scenario_estimates.csv` for the assumptions and conditional results, `scenario_calibrations.csv` for fitted coefficients, and `scenario_rejections.csv` for excluded attempts. `scenario_settings.json` records the tested settings and `run_info.json` records inputs and outputs. The [scenario results](../salt_dilution/results/README.md#scenarios-for-missing-information) explain their interpretation.
+Start with `working_by_release.csv`, then `working_estimates.csv` for each retained recording/channel calculation. `working_parameters.csv` gives each quantity's value, units, source status, source references, preceding donor IDs and donor ages. The working choice uses the configured recipe and background/gap model; it does not rank results by Q. Separate calibration attempts and instruments remain separate.
+
+Use `scenario_by_release.csv`, `scenario_estimates.csv`, `scenario_calibrations.csv` and `scenario_rejections.csv` to compare all tested alternatives. `scenario_settings.json` records the tested settings and `run_info.json` records inputs and outputs. The [scenario results](../salt_dilution/results/README.md#scenarios-for-missing-information) explain their interpretation.
 
 ## Work with seismic recordings
 
