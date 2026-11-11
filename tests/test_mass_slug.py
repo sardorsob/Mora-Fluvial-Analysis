@@ -78,6 +78,50 @@ class NumericalTests(unittest.TestCase):
         windows=dict(pre=[40,80],pulse=[90,350],post=[400,500])
         self.assertAlmostEqual(slug.integrate_excess(prepared,windows)['integral_us_cm_s'],1000,places=8)
 
+    def test_confirmed_pre_injection_pause_does_not_fill_or_drop_the_pulse(self):
+        frame=self.frame(); frame=frame.loc[~frame.t_s.between(65,75)]
+        prepared,_=slug.prepare_series(samples(frame.t_s,frame.ec),'specific')
+        windows=self.windows()
+        windows['pre_injection_pause']=dict(release_offset_s=78,background_applicable=True,
+                                            evidence='Field record places release after recording resumed.')
+        area=slug.integrate_excess(prepared,windows)
+        self.assertAlmostEqual(area['integral_us_cm_s'],1000,places=8)
+        self.assertEqual(area['bridged_cells'],0)
+
+    def test_pause_confirmation_cannot_justify_an_in_pulse_gap(self):
+        frame=self.frame(); frame=frame.loc[~frame.t_s.between(150,180)]
+        prepared,_=slug.prepare_series(samples(frame.t_s,frame.ec),'specific')
+        windows=self.windows()
+        windows['pre_injection_pause']=dict(release_offset_s=78,background_applicable=True,evidence='Before release')
+        with self.assertRaisesRegex(ValueError,'gap'):slug.integrate_excess(prepared,windows)
+
+    def test_unconfirmed_pause_between_background_and_pulse_remains_visible(self):
+        frame=self.frame();frame=frame.loc[~frame.t_s.between(65,75)]
+        prepared,_=slug.prepare_series(samples(frame.t_s,frame.ec),'specific')
+        with self.assertRaisesRegex(ValueError,'gap'):slug.integrate_excess(prepared,self.windows())
+
+    def test_missing_fit_se_does_not_prevent_sensitivity_calculation(self):
+        result=slug.uncertainty(self.frame(),self.windows(),4,.5,'')
+        self.assertIsNone(result['u_k_fit_relative'])
+        self.assertIsNone(result['indicative_sensitivity_relative'])
+        self.assertIsNotNone(result['u_background_sensitivity'])
+
+    def test_solution_volume_and_equivalent_mass_give_same_discharge(self):
+        result=slug.solution_discharge(1000,2e-6,1000)
+        self.assertAlmostEqual(result['q_m3_s'],.5)
+        self.assertEqual(result,slug.discharge(250,.5,1000))
+        with self.assertRaises(ValueError):slug.solution_discharge(-1,2e-6,1000)
+
+    def test_reported_solution_volume_requires_matching_source_and_opt_in(self):
+        trial=dict(injection_solution_volume_ml='12900')
+        evidence=dict(source_record=dict(reported_injected_solution_ml='12900',delivered_solution_ml=''))
+        with self.assertRaisesRegex(ValueError,'delivered_solution'):slug.solution_quantity(trial,evidence)
+        volume,basis=slug.solution_quantity(trial,evidence,allow_reported=True)
+        self.assertEqual(volume,12900)
+        self.assertEqual(basis,'reported_delivery_assumed')
+        with self.assertRaisesRegex(ValueError,'source'):
+            slug.solution_quantity(dict(injection_solution_volume_ml='13000'),evidence,allow_reported=True)
+
     def test_reversed_or_outside_windows_rejected(self):
         for windows in [dict(pre=[0,60],pulse=[300,100],post=[400,500]),dict(pre=[0,60],pulse=[80,350],post=[600,700])]:
             with self.assertRaises(ValueError):slug.integrate_excess(self.frame(),windows)
@@ -119,6 +163,15 @@ class WindowTests(unittest.TestCase):
         chosen=slug.propose_windows(frame,release_offset_s=380)
         self.assertFalse(chosen['issues'],chosen)
         self.assertGreater(chosen['pulse'][0],350)
+
+    def test_corrected_elapsed_release_offset_selects_the_intended_pulse(self):
+        frame=self.frame();t=frame.t_s.to_numpy()
+        frame['ec']+=np.where((t>=400)&(t<=500),10*np.sin(np.pi*(t-400)/100)**2,0)
+        edge=dict(trial_id='T',logical_recording_id='R',chronology_evidence=json.dumps(
+            dict(release_offset_seconds=380,release_clock='2026-10-04 17:06:20+00:00',clock_basis='explicit_utc')))
+        windows,_=slug._choose_windows(frame,edge,'specific',{})
+        self.assertFalse(windows['issues'])
+        self.assertGreater(windows['pulse'][0],350)
 
 
 import csv
@@ -193,6 +246,52 @@ class RunnerTests(unittest.TestCase):
         self.assertAlmostEqual(float(estimate['q_l_s']),8,delta=.08)
         self.assertEqual(estimate['q_status'],'proposed');self.assertEqual(estimate['mass_basis'],'operational_unverified')
         self.assertEqual(estimate['k'],'0.5');self.assertEqual(estimate['scientifically_accepted'],'false')
+
+    def test_relative_runner_uses_original_injectate_volume(self):
+        self.trials[1]['injection_solution_volume_ml']='1000'
+        csvfile(self.records/'trials.csv',self.trials)
+        p=json.loads((self.records/'provenance.json').read_text())
+        p['trials']['T2']['source_record']=dict(delivered_solution_ml='1000')
+        (self.records/'provenance.json').write_text(json.dumps(p))
+        self.calinfo['inputs']=self.pins(list(self.records.iterdir()))
+        (self.cal/'run_info.json').write_text(json.dumps(self.calinfo))
+        for edge in self.edges:
+            ref=json.loads(edge['fit_reference'])
+            ref['run_info_sha256']=hashlib.sha256((self.cal/'run_info.json').read_bytes()).hexdigest()
+            edge['fit_reference']=json.dumps(ref)
+        self.info['inputs']=self.pins([*self.records.iterdir(),*self.proc.iterdir(),self.cal/'run_info.json',self.cal/'calibration_fits.csv'])
+        self.seal();self.run_batch(include_relative=True)
+        row=next(r for r in self.read('discharge_estimates.csv') if r['trial_id']=='T2')
+        self.assertAlmostEqual(float(row['q_l_s']),.002,delta=.00002)
+        self.assertEqual(row['discharge_method'],'solution_slug')
+        self.assertEqual(row['mass_g'],'')
+        self.assertEqual(row['injection_solution_volume_ml'],'1000.0')
+
+    def test_supported_edge_can_survive_a_conflicting_companion(self):
+        self.summaries[0]['status']='conflicting'
+        self.seal();self.run_batch(include_relative=True)
+        self.assertTrue(any(r['trial_id']=='T1' for r in self.read('discharge_estimates.csv')))
+
+    def test_saved_pause_windows_replay_with_their_evidence(self):
+        path=self.proc/'a.csv';df=pd.read_csv(path)
+        df=df.drop(index=range(65,76));df.to_csv(path,index=False)
+        self.info['inventory'][0]['files']['processed']['sha256']=hashlib.sha256(path.read_bytes()).hexdigest()
+        self.info['inputs']=self.pins([*self.records.iterdir(),*self.proc.iterdir(),self.cal/'run_info.json',self.cal/'calibration_fits.csv'])
+        self.seal()
+        origin=pd.Timestamp('2026-10-04 09:00:00')
+        window=dict(trial_id='T1',logical_recording_id='R1',channel='specific',review_status='checker_proposed',
+            evidence='Documented stop before release.',reviewer='test reviewer',reviewed_on='2026-11-10',
+            pre_injection_pause=dict(release_offset_s=78,background_applicable=True,evidence='Release after resume.'))
+        for key,values in dict(pre=[0,60],pulse=[80,350],post=[400,500]).items():
+            window[key]=[(origin+pd.Timedelta(seconds=v)).isoformat() for v in values]
+        windows=self.root/'windows.json';windows.write_text(json.dumps(dict(schema_version=1,windows=[window])))
+        self.run_batch(windows_path=windows)
+        row=next(r for r in self.read('discharge_estimates.csv') if r['trial_id']=='T1')
+        frame,_=slug.prepare_series(df,'specific')
+        replay=slug.integrate_excess(frame,json.loads(row['windows']))
+        self.assertAlmostEqual(replay['integral_us_cm_s'],float(row['integral_us_cm_s']))
+        proposal=json.loads((self.root/'out/pulse_windows_proposed.json').read_text())['windows'][0]
+        self.assertEqual(proposal['pre_injection_pause'],window['pre_injection_pause'])
 
     def test_stale_processed_hash_stops_before_output(self):
         with (self.proc/'a.csv').open('a') as f:f.write('changed')

@@ -101,7 +101,19 @@ def _window_parts(frame, windows):
         parts.append(part)
     if windows['pre'][1]>windows['pulse'][0] or windows['pulse'][1]>windows['post'][0]:raise ValueError('overlapping_background_windows')
     whole=frame.loc[frame.t_s.between(windows['pre'][0],windows['post'][1])]
-    if whole.segment.nunique()!=1:raise ValueError('pulse_or_background_crosses_segment_gap')
+    if whole.segment.nunique()!=1:
+        pause=windows.get('pre_injection_pause',{})
+        release=pause.get('release_offset_s')
+        pulse_start=parts[1].segment.iloc[0]
+        resumed=float(frame.loc[frame.segment==pulse_start,'t_s'].min())
+        # Only a documented pause before release can separate baseline from pulse.
+        valid_pause=(all(p.segment.nunique()==1 for p in parts)
+            and frame.loc[frame.t_s.between(windows['pulse'][0],windows['post'][1]),'segment'].nunique()==1
+            and parts[0].segment.iloc[-1]<pulse_start
+            and pause.get('background_applicable') is True and bool(pause.get('evidence'))
+            and isinstance(release,(int,float)) and math.isfinite(release)
+            and resumed<=release<=windows['pulse'][0])
+        if not valid_pause:raise ValueError('pulse_or_background_crosses_segment_gap')
     if any(not np.isfinite(p.ec).all() for p in parts):raise ValueError('missing_cells_in_windows')
     return parts
 
@@ -130,25 +142,52 @@ def discharge(mass_g,k,integral):
     return dict(q_l_s=q,q_m3_s=q/1000)
 
 
-def uncertainty(frame,windows,mass_g,k,k_se):
+def solution_discharge(volume_ml,k_relative,integral):
+    """Conserve the original injectate volume using a relative-concentration K."""
+    if not all(math.isfinite(float(v)) and float(v)>0 for v in (volume_ml,k_relative,integral)):
+        raise ValueError('nonpositive_or_nonfinite_volume_k_or_integral')
+    q=float(volume_ml)/1000/(float(k_relative)*float(integral))
+    return dict(q_l_s=q,q_m3_s=q/1000)
+
+
+def solution_quantity(trial,provenance,*,allow_reported=False):
+    source=provenance.get('source_record',{})
+    delivered=source.get('delivered_solution_ml')
+    if delivered:
+        volume=float(delivered);basis='recorded_delivered'
+    elif allow_reported:
+        reported=source.get('reported_injected_solution_ml')
+        compact=trial.get('injection_solution_volume_ml')
+        if not reported or not compact or not math.isclose(float(reported),float(compact)):
+            raise ValueError('solution_volume_source_unresolved')
+        volume=float(reported);basis='reported_delivery_assumed'
+    else:
+        raise ValueError('delivered_solution_volume_unavailable')
+    if not math.isfinite(volume) or volume<=0:raise ValueError('invalid_solution_volume')
+    return volume,basis
+
+
+def uncertainty(frame,windows,mass_g,k,k_se,*,method='mass_slug'):
     pre,pulse,post=_window_parts(frame,windows)
-    primary=discharge(mass_g,k,integrate_excess(frame,windows)['integral_us_cm_s'])['q_l_s']
+    calculate=discharge if method=='mass_slug' else solution_discharge
+    primary=calculate(mass_g,k,integrate_excess(frame,windows)['integral_us_cm_s'])['q_l_s']
     bg=[];edges=[]
     for mode in ('pre','post'):
         area=integrate_excess(frame,windows,background=mode)['integral_us_cm_s']
-        if area>0:bg.append(abs(discharge(mass_g,k,area)['q_l_s']/primary-1))
+        if area>0:bg.append(abs(calculate(mass_g,k,area)['q_l_s']/primary-1))
     for a,b in ((windows['pulse'][0]-10,windows['pulse'][1]),(windows['pulse'][0]+10,windows['pulse'][1]),
                 (windows['pulse'][0],windows['pulse'][1]-30),(windows['pulse'][0],windows['pulse'][1]+30)):
         if a<frame.t_s.min() or b>frame.t_s.max() or a>=b:continue
         p=frame.loc[frame.t_s.between(a,b)]
         if p.segment.nunique()!=1 or not np.isfinite(p.ec).all():continue
         area=float(np.trapezoid(p.ec.to_numpy()-_background(p.t_s.to_numpy(),pre,post,'linear'),p.t_s.to_numpy()))
-        if area>0:edges.append(abs(discharge(mass_g,k,area)['q_l_s']/primary-1))
-    uk=float(k_se)/float(k)
+        if area>0:edges.append(abs(calculate(mass_g,k,area)['q_l_s']/primary-1))
+    uk=float(k_se)/float(k) if k_se not in ('',None) and math.isfinite(float(k_se)) else None
     ub=max(bg) if len(bg)==2 else None;uw=max(edges) if len(edges)==4 else None
-    rss=float(np.sqrt(uk**2+sum(v**2 for v in (ub,uw) if v is not None)))
+    rss=float(np.sqrt(uk**2+sum(v**2 for v in (ub,uw) if v is not None))) if uk is not None else None
     return dict(u_k_fit_relative=uk,u_background_sensitivity=ub,u_window_sensitivity=uw,u_mass='not_quantified',u_gap='no_bridge_allowed',
-                indicative_sensitivity_relative=rss,indicative_q_lower_l_s=max(0,primary*(1-rss)),indicative_q_upper_l_s=primary*(1+rss),
+                indicative_sensitivity_relative=rss,indicative_q_lower_l_s=max(0,primary*(1-rss)) if rss is not None else None,
+                indicative_q_upper_l_s=primary*(1+rss) if rss is not None else None,
                 uncertainty_scope='Indicative fit-SE plus deterministic sensitivity RSS; not a confidence interval or total Q uncertainty. Mass, recipe, mixing and clock errors unquantified.')
 
 
@@ -238,11 +277,22 @@ def _choose_windows(frame, edge, channel, decisions):
                         detail=decision.get('reason', 'Reviewer rejected this window')), 'blocked'
         windows = {k: [(pd.Timestamp(t)-origin).total_seconds() for t in decision[k]]
                    for k in ('pre', 'pulse', 'post')}
+        if decision.get('pre_injection_pause'):
+            windows['pre_injection_pause']=decision['pre_injection_pause']
         windows['issues'] = []
         _window_parts(frame, windows)
         return windows, decision['review_status']
-    clock = _decoded(edge, 'chronology_evidence', {}).get('release_clock')
-    offset = (pd.Timestamp(clock)-origin).total_seconds() if clock else None
+    chronology = _decoded(edge, 'chronology_evidence', {})
+    clock = chronology.get('release_clock')
+    offset = chronology.get('release_offset_seconds')
+    if offset is None and clock:
+        release=pd.Timestamp(clock)
+        if release.tzinfo is None and origin.tzinfo is None:
+            offset=(release-origin).total_seconds()
+        elif release.tzinfo is not None and origin.tzinfo is not None:
+            offset=(release-origin).total_seconds()
+        else:
+            raise ValueError('release_recording_clock_basis_mismatch')
     # The notebook clock can be unresolved. It may select a pulse only when it
     # falls in this recording's local acquisition range; it is not a UTC fix.
     if offset is not None and not 0 <= offset <= frame.t_s.iloc[-1]:
@@ -326,7 +376,8 @@ def plot_discharge(path, estimates):
         for i, row in enumerate(primaries):
             labels.append(row['trial_id'].replace('NISQ-', ''))
             label = f"{row['conductivity_basis'].title()} · trial-specific K (primary)"
-            ax.errorbar(i, row['q_l_s'], yerr=row['q_l_s']*row['indicative_sensitivity_relative'],
+            spread=row.get('indicative_sensitivity_relative')
+            ax.errorbar(i, row['q_l_s'], yerr=row['q_l_s']*spread if spread is not None else None,
                         fmt='o', color='#0072B2', mfc='white', mec='#0072B2', ecolor='#777777', capsize=3,
                         label=label if label not in seen else None)
             seen.add(label)
@@ -350,7 +401,8 @@ def plot_discharge(path, estimates):
 
 
 def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, output_dir, *,
-                  reuse_dir=None, windows_path=None, confirmations_path=None, site='NISQ', root=ROOT):
+                  reuse_dir=None, windows_path=None, confirmations_path=None, site='NISQ', root=ROOT,
+                  include_relative=False, allow_reported_volume=False):
     """Calculate proposals without changing a source, pairing or previous run."""
     records_dir, processed_dir, pairing_dir, calibration_dir, root = [Path(p).resolve()
         for p in (records_dir, processed_dir, pairing_dir, calibration_dir, root)]
@@ -381,7 +433,10 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
     edges = {r['calibration_edge_id']: r for r in matching._read_table(pairing_dir/'calibration_candidates.csv', ['calibration_edge_id'])}
     fits = {(r['calibration_id'], r.get('probe_alias', ''), r['conductivity_basis']): r
             for r in calibration._read_csv(calibration_dir/'calibration_fits.csv')}
-    audit, _ = reuse.audit_calibrations(records_dir, calibration_dir, pairing_dir, site=site)
+    audit=[]
+    for selected_site in sorted({t['site_alias'] for t in trials.values()} if site is None else {site}):
+        rows, _ = reuse.audit_calibrations(records_dir, calibration_dir, pairing_dir, site=selected_site)
+        audit.extend(r for r in rows if r['site_alias']==selected_site)
     audited = {(r['calibration_id'], r['alias_label'], r['conductivity_basis']): r for r in audit}
     provenance = json.loads((records_dir/'provenance.json').read_text())
     decisions = _read_windows(windows_path)
@@ -408,7 +463,7 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
         for summary in summaries:
             tid = summary['trial_id']; trial = trials[tid]; reasons = []; start_count = len(estimates)
             category = ''
-            if trial['site_alias'] != site: category = 'out_of_scope_site'
+            if site is not None and trial['site_alias'] != site: category = 'out_of_scope_site'
             elif summary['status'] == 'excluded_practice': category = 'excluded_practice'
             elif summary['status'] == 'partial': category = 'partial_missing_calibration'
             elif summary['status'] == 'conflicting': category = 'conflicting_identity'
@@ -421,15 +476,18 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
                 _selected_fit(edge, fits, calibration_dir)
             if any(recordings[rid]['trial_id'] != tid for rid in selected_recordings):
                 raise ValueError('Selected recording edge has a different release')
+            if include_relative and category=='conflicting_identity' and any(e.get('status')=='supported' for e in selected_edges):
+                category=''
             if not category:
                 if any(audited[tuple(_decoded(e, 'fit_reference', {})['key'])]['compat_class'] == 'method_conflict_isolated' for e in selected_edges):
                     category = 'method_conflict_isolated'
-                elif not any(e.get('mass_route_eligible', '').lower() == 'true' for e in selected_edges):
+                elif not include_relative and not any(e.get('mass_route_eligible', '').lower() == 'true' for e in selected_edges):
                     category = 'relative_basis_not_mass_route'
             if not category:
                 for rid in _decoded(summary, 'selected_recording_edge_ids', []):
                     edge_recording = recordings[rid]
-                    candidates = [e for e in selected_edges if e['recording_edge_id'] == rid and e.get('mass_route_eligible', '').lower() == 'true']
+                    candidates = [e for e in selected_edges if e['recording_edge_id'] == rid
+                                  and (include_relative or e.get('mass_route_eligible', '').lower() == 'true')]
                     for edge in candidates:
                         basis = edge['conductivity_basis']; logical_id = edge_recording['logical_recording_id']
                         fit = fits[tuple(_decoded(edge, 'fit_reference', {})['key'])]
@@ -439,8 +497,13 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
                         attempts.append(attempt)
                         frame = None; windows = dict(issues=[])
                         try:
-                            if compatible['compat_class'] not in ('mass_library_eligible', 'mass_trial_only'):
+                            relative=include_relative and fit.get('calibration_basis')=='relative_concentration'
+                            method='solution_slug' if relative else 'mass_slug'
+                            allowed=('relative_only',) if relative else ('mass_library_eligible','mass_trial_only')
+                            if compatible['compat_class'] not in allowed:
                                 raise ValueError('calibration_not_mass_compatible')
+                            required_unit='(mL/mL) / (uS/cm)' if relative else '(mg/L) / (uS/cm)'
+                            if fit['coefficient_unit']!=required_unit:raise ValueError('coefficient_unit_method_mismatch')
                             serial = edge_recording.get('device_serial', '')
                             cal_serial = edge.get('calibration_device_serial', '') or compatible['sensor_serial']
                             if compatible['sensor_serial'] and cal_serial != compatible['sensor_serial']:
@@ -453,11 +516,15 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
                             if windows.get('issues'): raise ValueError(';'.join(windows['issues']))
                             area = integrate_excess(frame, windows)
                             confirmation = confirmations.get(tid, {})
-                            mass = float(confirmation.get('delivered_salt_mass_g', trial.get('salt_mass_g') or 'nan'))
-                            q = discharge(mass, fit['k'], area['integral_us_cm_s'])
+                            mass = '' if relative else float(confirmation.get('delivered_salt_mass_g', trial.get('salt_mass_g') or 'nan'))
+                            volume,volume_basis=solution_quantity(trial,provenance['trials'].get(tid,{}),
+                                allow_reported=allow_reported_volume) if relative else ('','')
+                            quantity=volume if relative else mass
+                            q = (solution_discharge if relative else discharge)(quantity, fit['k'], area['integral_us_cm_s'])
                             basis_source = provenance['trials'].get(tid, {}).get('quantity_basis', {}).get('salt_mass_g', 'unknown')
-                            mass_basis = 'user_confirmed_delivered' if confirmation else ('operational_unverified' if basis_source == 'unknown' else basis_source)
-                            if not confirmation: flags.append('nominal_equals_delivered_mass_assumed')
+                            mass_basis = '' if relative else ('user_confirmed_delivered' if confirmation else ('operational_unverified' if basis_source == 'unknown' else basis_source))
+                            if relative and volume_basis=='reported_delivery_assumed':flags.append('reported_equals_delivered_solution_assumed')
+                            if not relative and not confirmation: flags.append('nominal_equals_delivered_mass_assumed')
                             flags += ['mixing_not_independently_validated',
                                       'compensation_settings_unrecovered', 'window_user_signoff_pending']
                             if edge.get('identity_status') not in ('native_match', 'source_protocol_match'): flags.append('identity_unverified')
@@ -471,12 +538,15 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
                                 identity_status=edge.get('identity_status', ''), conductivity_basis=basis,
                                 coefficient_source='trial_specific', calibration_id=fit['calibration_id'], fit_reference=_decoded(edge, 'fit_reference', {}),
                                 k=fit['k'], k_se=compatible['k_se'], coefficient_unit=fit['coefficient_unit'],
+                                discharge_method=method,injection_solution_volume_ml=volume,solution_volume_basis=volume_basis,
                                 mass_g=mass, mass_basis=mass_basis, mass_source_basis=basis_source,
-                                mass_confirmation=confirmation, nominal_equals_delivered_mass_assumed=not bool(confirmation),
-                                windows={key: windows[key] for key in ('pre', 'pulse', 'post')}, recording_origin_local=str(frame.timestamp.iloc[0]),
+                                mass_confirmation=confirmation, nominal_equals_delivered_mass_assumed=not relative and not bool(confirmation),
+                                windows={key: windows[key] for key in ('pre', 'pulse', 'post','pre_injection_pause') if key in windows}, recording_origin_local=str(frame.timestamp.iloc[0]),
                                 window_status=window_status, background_mode='linear', **area,
-                                integral_mg_s_l=float(fit['k'])*area['integral_us_cm_s'], **q,
-                                **uncertainty(frame, windows, mass, fit['k'], compatible['k_se']), flags=sorted(set(flags)),
+                                integral_mg_s_l='' if relative else float(fit['k'])*area['integral_us_cm_s'],
+                                integral_relative_s=float(fit['k'])*area['integral_us_cm_s'] if relative else '', **q,
+                                **uncertainty(frame, windows, quantity, fit['k'], compatible['k_se'],method=method), flags=sorted(set(flags)),
+                                estimate_support='conditional_reported_volume' if volume_basis=='reported_delivery_assumed' else 'proposed_observed_pulse',
                                 q_status='proposed', estimate_role='primary' if basis == 'specific' or not any(c['conductivity_basis']=='specific' for c in candidates) else 'comparison_channel',
                                 scientifically_accepted=False)
                             estimates.append(row); attempt['outcome'] = 'computed'
@@ -504,6 +574,8 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
                         proposal = dict(trial_id=tid, logical_recording_id=logical_id, channel=basis,
                                         issues=windows.get('issues', []), decision='computed_proposal' if attempt['outcome']=='computed' else 'blocked')
                         if frame is not None:
+                            if windows.get('pre_injection_pause'):
+                                proposal['pre_injection_pause']=windows['pre_injection_pause']
                             proposal.update({key: [(frame.timestamp.iloc[0]+pd.to_timedelta(v, unit='s')).isoformat(' ') for v in windows[key]]
                                              for key in ('pre', 'pulse', 'post') if key in windows})
                             plot_pulse(pulse_dir/f'{tid}_{logical_id.replace(":", "-")}_{basis}.png', frame, windows,
@@ -533,7 +605,8 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
             confirmed_delivery_release_ids=sorted(confirmations), confirmed_delivery_release_count=len(confirmations),
             reference_policy='Only passed observed domains; trial-specific K remains primary.',
             gap_policy='No bridging or filling; missing cells in used windows block integration.',
-            formula='Q_L_s = mass_g * 1000 / (K_mg_L_per_uS_cm * integral_uS_cm_s)',
+            formula='Q_L_s = mass_g * 1000 / (K_mass * integral); solution Q_L_s = volume_ml / 1000 / (K_relative * integral)',
+            include_relative=include_relative,allow_reported_volume=allow_reported_volume,
             limitations=['unconfirmed_masses_remain_unverified','calibration_and_clock_assumptions','mixing_unvalidated','indicative_sensitivity_not_total_uncertainty'])
     return info
 
@@ -547,11 +620,16 @@ def main(argv=None):
     parser.add_argument('--reuse', type=Path)
     parser.add_argument('--windows', type=Path)
     parser.add_argument('--confirmations', type=Path, help='Explicit per-release delivered-mass confirmations; defaults to config/release_confirmations.json when present.')
+    parser.add_argument('--include-relative',action='store_true',help='Also calculate the historical original-solution-volume route.')
+    parser.add_argument('--allow-reported-volume',action='store_true',help='Permit matching source-reported solution volumes, with conditional-delivery flags.')
+    parser.add_argument('--all-sites',action='store_true',help='Assess every recorded site separately.')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
         info = run_mass_slug(args.records, args.processed, args.pairing, args.calibrations, args.output,
-                             reuse_dir=args.reuse, windows_path=args.windows, confirmations_path=args.confirmations)
+                             reuse_dir=args.reuse, windows_path=args.windows, confirmations_path=args.confirmations,
+                             include_relative=args.include_relative,allow_reported_volume=args.allow_reported_volume,
+                             site=None if args.all_sites else 'NISQ')
     except (ValueError, OSError) as error:
         parser.exit(2, str(error)+'\n')
     print(matching._json(dict(categories=info['category_counts'], estimates=info['estimate_count'], output=str(args.output))))
