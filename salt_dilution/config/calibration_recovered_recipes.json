@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "worksheet": {
+    "path": "salt_dilution/data/raw/wrd_sample/correction_factors.csv",
+    "sha256": "f7327a114fb54e9bb287a11dbd7e5ec391ddb2ea8f4a39da1ee3d8ddca47d6c0"
+  },
+  "direct_stock_preparations": [
+    {
+      "calibration_id": "NISQ-20250717-C01",
+      "stock_id": "a_05_dry_stock",
+      "qualification": "Notebook links this dry attempt to 2.0 g salt in 1000 mL H2O and a single cumulative dose sequence. Solvent origin and final stock volume are unspecified."
+    },
+    {
+      "calibration_id": "NISQ-20250717-C02",
+      "stock_id": "a_05_dry_stock",
+      "qualification": "Notebook links this dry attempt to 2.0 g salt in 1000 mL H2O and a single cumulative dose sequence. Solvent origin and final stock volume are unspecified."
+    }
+  ],
+  "worksheet_preparations": [
+    {
+      "calibration_id": "PAR-20260903-C01",
+      "site_code": "PR03",
+      "sensor_serial": "607927",
+      "source_lines": [
+        10,
+        13
+      ],
+      "point_source": "notebook",
+      "incompatible_notebook_version": false,
+      "qualification": "Four specific EC and cumulative doses agree. Worksheet sample volume decreases at the 4 mL dose despite a recorded addition. Use the notebook receiver and cumulative doses with the worksheet stock concentration."
+    },
+    {
+      "calibration_id": "PAR-20260903-C02",
+      "site_code": "PR04",
+      "sensor_serial": "607927",
+      "source_lines": [
+        14,
+        17
+      ],
+      "point_source": "notebook",
+      "incompatible_notebook_version": false,
+      "qualification": "All four specific EC readings, cumulative doses, receiver and vessel volumes agree."
+    },
+    {
+      "calibration_id": "PAR-20260903-C03",
+      "site_code": "PR05",
+      "sensor_serial": "607927",
+      "source_lines": [
+        18,
+        25
+      ],
+      "point_source": "worksheet",
+      "incompatible_notebook_version": true,
+      "qualification": "Same site code, starting receiver and ordered EC anchors. Worksheet includes 518 and 638 µS/cm and doses through 14 mL. Notebook omits or differs on those observations and assigns later EC readings to earlier doses. Fit the whole worksheet variant."
+    },
+    {
+      "calibration_id": "PAR-20260903-C04",
+      "site_code": "PR06",
+      "sensor_serial": "607927",
+      "source_lines": [
+        26,
+        33
+      ],
+      "point_source": "worksheet",
+      "incompatible_notebook_version": true,
+      "qualification": "Same site code, starting receiver and later ordered EC anchors. Worksheet contains 532/662/773 µS/cm and doses through 26 mL; notebook lists 522/622 and omits the 773 point. Fit the whole worksheet variant."
+    },
+    {
+      "calibration_id": "PAR-20260903-C05",
+      "site_code": "PR03.5",
+      "sensor_serial": "790481",
+      "source_lines": [
+        34,
+        37
+      ],
+      "point_source": "worksheet",
+      "incompatible_notebook_version": true,
+      "qualification": "Same site code, starting receiver, cumulative doses and initial EC. Worksheet reports 370 and 417 µS/cm where notebook reports 378 and an uncertain 417. Fit the whole worksheet variant."
+    },
+    {
+      "calibration_id": "PAR-20260903-C07",
+      "site_code": "EC02",
+      "sensor_serial": "683231",
+      "source_lines": [
+        2,
+        5
+      ],
+      "point_source": "worksheet",
+      "incompatible_notebook_version": true,
+      "qualification": "All four EC readings and dose volumes agree. Worksheet identifies the receiver as 282.3 mL. The notebook has 287.2 g and a conflicting 500 total column. Supporting calibration without a linked release."
+    },
+    {
+      "calibration_id": "PAR-20260903-C08",
+      "site_code": "PR02",
+      "sensor_serial": "607927",
+      "source_lines": [
+        6,
+        9
+      ],
+      "point_source": "worksheet",
+      "incompatible_notebook_version": true,
+      "qualification": "Site label and receiver near 317 mL identify the matching group. Notebook pairs 391 µS/cm with 6 mL rather than 4 mL. Fit the whole 317.5 mL worksheet variant as supporting evidence, with no linked release."
+    },
+    {
+      "calibration_id": "PAR-20260903-C09",
+      "site_code": "EC02",
+      "sensor_serial": "558407",
+      "source_lines": [
+        38,
+        41
+      ],
+      "point_source": "worksheet",
+      "incompatible_notebook_version": false,
+      "qualification": "All four ordered specific EC and dose pairs agree. Worksheet identifies the earlier unlabelled series as EC02 on serial 558407 and supplies the 322.8 mL receiver. Supporting calibration without a linked release."
+    }
+  ]
+}

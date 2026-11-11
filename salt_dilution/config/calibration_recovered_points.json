@@ -1,0 +1,658 @@
+{
+  "schema_version": 1,
+  "selection_rule": "Match the ordered notebook actual EC within 0.005001 uS/cm on a native report identified by its instrument header. Use the local dose plateau: within halfway boundaries between adjacent candidate steps, require actual and specific EC spans in the 11-sample neighborhood at most 10% of the preparation median actual EC dose increment, and temperature span at most 0.10 C. At report boundaries use the available neighborhood. Where notebook temperature exists, take the closest temperature match within 0.10 C; otherwise use the earliest qualifying row. Native CSV and HTML measurements agree on timestamp, actual EC, specific EC and temperature throughout each recording. Retain one observation per dose step.",
+  "sequences": [
+    {
+      "calibration_id": "NISQ-20250731-C01",
+      "probe_alias": "probe_01",
+      "sensor_serial": "680530",
+      "source_csv": {
+        "path": "salt_dilution/data/raw/20250731/20250731_084717_calibration_680530.csv",
+        "sha256": "b374887ff789c71d922ba62fb2428b0ba706638ada87e500545b9d33efb3714a"
+      },
+      "duplicate_exports": [
+        {
+          "path": "salt_dilution/data/raw/20250731/LiveReadings/VuSitu_LiveReadings_2025-07-31_08-47-17_Device_Location.html",
+          "sha256": "674f88c7591eac681f7562b45543fbbdd60b8ea917677307a2693cbb750a19e1"
+        }
+      ],
+      "duplicate_measurement_rows": 621,
+      "plateau_ec_span_limit_us_cm": 0.361,
+      "unmatched_steps": [],
+      "points": [
+        {
+          "step_no": "0",
+          "source_line": 98,
+          "local_timestamp": "2025-07-31 08:48:40",
+          "actual_span_11_samples": 0.029623,
+          "specific_span_11_samples": 0.029652,
+          "temperature_span_11_samples": 0.072564,
+          "eligible_plateau_rows": 16,
+          "eligible_specific_range_us_cm": [
+            22.635038,
+            22.711224
+          ]
+        },
+        {
+          "step_no": "1",
+          "source_line": 167,
+          "local_timestamp": "2025-07-31 08:49:49",
+          "actual_span_11_samples": 0.025336,
+          "specific_span_11_samples": 0.053267,
+          "temperature_span_11_samples": 0.0341525,
+          "eligible_plateau_rows": 3,
+          "eligible_specific_range_us_cm": [
+            26.91574,
+            26.915962
+          ]
+        },
+        {
+          "step_no": "2",
+          "source_line": 224,
+          "local_timestamp": "2025-07-31 08:50:46",
+          "actual_span_11_samples": 0.051592,
+          "specific_span_11_samples": 0.076479,
+          "temperature_span_11_samples": 0.019229,
+          "eligible_plateau_rows": 13,
+          "eligible_specific_range_us_cm": [
+            31.8683,
+            31.897322
+          ]
+        },
+        {
+          "step_no": "3",
+          "source_line": 289,
+          "local_timestamp": "2025-07-31 08:51:51",
+          "actual_span_11_samples": 0.035145,
+          "specific_span_11_samples": 0.045408,
+          "temperature_span_11_samples": 0.019946,
+          "eligible_plateau_rows": 9,
+          "eligible_specific_range_us_cm": [
+            36.715286,
+            36.729008
+          ]
+        },
+        {
+          "step_no": "4",
+          "source_line": 380,
+          "local_timestamp": "2025-07-31 08:53:22",
+          "actual_span_11_samples": 0.212908,
+          "specific_span_11_samples": 0.28212,
+          "temperature_span_11_samples": 0.0026015,
+          "eligible_plateau_rows": 6,
+          "eligible_specific_range_us_cm": [
+            41.57716,
+            41.588764
+          ]
+        },
+        {
+          "step_no": "5",
+          "source_line": 464,
+          "local_timestamp": "2025-07-31 08:54:46",
+          "actual_span_11_samples": 0.04706,
+          "specific_span_11_samples": 0.065448,
+          "temperature_span_11_samples": 0.012109,
+          "eligible_plateau_rows": 10,
+          "eligible_specific_range_us_cm": [
+            46.38803,
+            46.406826
+          ]
+        },
+        {
+          "step_no": "6",
+          "source_line": 534,
+          "local_timestamp": "2025-07-31 08:55:56",
+          "actual_span_11_samples": 0.054253,
+          "specific_span_11_samples": 0.07038,
+          "temperature_span_11_samples": 0.005047,
+          "eligible_plateau_rows": 4,
+          "eligible_specific_range_us_cm": [
+            51.00423,
+            51.005795
+          ]
+        }
+      ]
+    },
+    {
+      "calibration_id": "NISQ-20250731-C02",
+      "probe_alias": "probe_01",
+      "sensor_serial": "680530",
+      "source_csv": {
+        "path": "salt_dilution/data/raw/20250731/20250731_090210_calibration_680530.csv",
+        "sha256": "f508237e73d1894ad3a52c10620c7464e2e19ccbdc26124a8ca62c790ebe3c43"
+      },
+      "duplicate_exports": [
+        {
+          "path": "salt_dilution/data/raw/20250731/LiveReadings/VuSitu_LiveReadings_2025-07-31_09-02-10_Device_Location.html",
+          "sha256": "1fb083122b115b98f765a47a5d6927cc2570bc86998c84e3288546464d198e16"
+        }
+      ],
+      "duplicate_measurement_rows": 387,
+      "plateau_ec_span_limit_us_cm": 0.351,
+      "unmatched_steps": [],
+      "points": [
+        {
+          "step_no": "0",
+          "source_line": 64,
+          "local_timestamp": "2025-07-31 09:02:59",
+          "actual_span_11_samples": 0.013319,
+          "specific_span_11_samples": 0.068865,
+          "temperature_span_11_samples": 0.097379,
+          "eligible_plateau_rows": 1,
+          "eligible_specific_range_us_cm": [
+            21.96575,
+            21.96575
+          ]
+        },
+        {
+          "step_no": "1",
+          "source_line": 110,
+          "local_timestamp": "2025-07-31 09:03:45",
+          "actual_span_11_samples": 0.008825,
+          "specific_span_11_samples": 0.020216,
+          "temperature_span_11_samples": 0.0303806,
+          "eligible_plateau_rows": 18,
+          "eligible_specific_range_us_cm": [
+            26.718416,
+            26.750648
+          ]
+        },
+        {
+          "step_no": "2",
+          "source_line": 173,
+          "local_timestamp": "2025-07-31 09:04:48",
+          "actual_span_11_samples": 0.249928,
+          "specific_span_11_samples": 0.341696,
+          "temperature_span_11_samples": 0.026821,
+          "eligible_plateau_rows": 22,
+          "eligible_specific_range_us_cm": [
+            31.501015,
+            31.515202
+          ]
+        },
+        {
+          "step_no": "3",
+          "source_line": 244,
+          "local_timestamp": "2025-07-31 09:05:59",
+          "actual_span_11_samples": 0.047522,
+          "specific_span_11_samples": 0.053664,
+          "temperature_span_11_samples": 0.0227363,
+          "eligible_plateau_rows": 19,
+          "eligible_specific_range_us_cm": [
+            36.217922,
+            36.240585
+          ]
+        },
+        {
+          "step_no": "4",
+          "source_line": 319,
+          "local_timestamp": "2025-07-31 09:07:14",
+          "actual_span_11_samples": 0.103438,
+          "specific_span_11_samples": 0.132604,
+          "temperature_span_11_samples": 0.0097132,
+          "eligible_plateau_rows": 14,
+          "eligible_specific_range_us_cm": [
+            40.87335,
+            40.886436
+          ]
+        },
+        {
+          "step_no": "5",
+          "source_line": 375,
+          "local_timestamp": "2025-07-31 09:08:10",
+          "actual_span_11_samples": 0.055614,
+          "specific_span_11_samples": 0.077207,
+          "temperature_span_11_samples": 0.0080196,
+          "eligible_plateau_rows": 9,
+          "eligible_specific_range_us_cm": [
+            45.543854,
+            45.55962
+          ]
+        }
+      ]
+    },
+    {
+      "calibration_id": "NISQ-20250805-C01",
+      "probe_alias": "probe_01",
+      "sensor_serial": "680530",
+      "source_csv": {
+        "path": "salt_dilution/data/raw/20250805/20250805_092215_calibration_680530.csv",
+        "sha256": "44cb127459f3b8805110bb5d1532410e76477c0d0f04cd0c90c8f5499d17651f"
+      },
+      "duplicate_exports": [
+        {
+          "path": "salt_dilution/data/raw/20250805/LiveReadings/VuSitu_LiveReadings_2025-08-05_09-22-15_Device_Location.html",
+          "sha256": "5876a335f384918bcb695b246e4a3ed90a0b8f414184300655e0a035f381ebb9"
+        }
+      ],
+      "duplicate_measurement_rows": 596,
+      "plateau_ec_span_limit_us_cm": 0.326,
+      "unmatched_steps": [
+        {
+          "step_no": "4",
+          "reason": "Curated actual EC 32.08; worksheet 32.68 and native fourth dose plateau do not verify the curated actual reading. The dose remains in the fit mass balance."
+        }
+      ],
+      "points": [
+        {
+          "step_no": "0",
+          "source_line": 148,
+          "local_timestamp": "2025-08-05 09:24:27",
+          "actual_span_11_samples": 0.013138,
+          "specific_span_11_samples": 0.050531,
+          "temperature_span_11_samples": 0.0524033,
+          "eligible_plateau_rows": 14,
+          "eligible_specific_range_us_cm": [
+            25.54572,
+            25.598091
+          ]
+        },
+        {
+          "step_no": "1",
+          "source_line": 218,
+          "local_timestamp": "2025-08-05 09:25:37",
+          "actual_span_11_samples": 0.024395,
+          "specific_span_11_samples": 0.035092,
+          "temperature_span_11_samples": 0.0527429,
+          "eligible_plateau_rows": 8,
+          "eligible_specific_range_us_cm": [
+            30.087132,
+            30.102785
+          ]
+        },
+        {
+          "step_no": "2",
+          "source_line": 327,
+          "local_timestamp": "2025-08-05 09:27:26",
+          "actual_span_11_samples": 0.039463,
+          "specific_span_11_samples": 0.051218,
+          "temperature_span_11_samples": 0.001266,
+          "eligible_plateau_rows": 12,
+          "eligible_specific_range_us_cm": [
+            34.58184,
+            34.60041
+          ]
+        },
+        {
+          "step_no": "3",
+          "source_line": 411,
+          "local_timestamp": "2025-08-05 09:28:50",
+          "actual_span_11_samples": 0.036816,
+          "specific_span_11_samples": 0.051034,
+          "temperature_span_11_samples": 0.0032894,
+          "eligible_plateau_rows": 18,
+          "eligible_specific_range_us_cm": [
+            38.89505,
+            38.906746
+          ]
+        },
+        {
+          "step_no": "5",
+          "source_line": 594,
+          "local_timestamp": "2025-08-05 09:31:53",
+          "actual_span_11_samples": 0.063938,
+          "specific_span_11_samples": 0.082166,
+          "temperature_span_11_samples": 0.0036063,
+          "eligible_plateau_rows": 14,
+          "eligible_specific_range_us_cm": [
+            47.30391,
+            47.32915
+          ]
+        }
+      ]
+    },
+    {
+      "calibration_id": "NISQ-20250805-C02",
+      "probe_alias": "probe_01",
+      "sensor_serial": "680530",
+      "source_csv": {
+        "path": "salt_dilution/data/raw/20250805/20250805_093720_calibration_680530.csv",
+        "sha256": "faa29f1d921463f60898d973ee8f4c7cbefb29f5a0f887e6fe56e2ea13c38037"
+      },
+      "duplicate_exports": [
+        {
+          "path": "salt_dilution/data/raw/20250805/LiveReadings/VuSitu_LiveReadings_2025-08-05_09-37-20_Device_Location.html",
+          "sha256": "b52019568d425d213b4a9afbf67ce4d227d04bce912d9f57b8cb6ac8fcdf6d2d"
+        }
+      ],
+      "duplicate_measurement_rows": 369,
+      "plateau_ec_span_limit_us_cm": 0.499,
+      "unmatched_steps": [],
+      "points": [
+        {
+          "step_no": "0",
+          "source_line": 79,
+          "local_timestamp": "2025-08-05 09:38:32",
+          "actual_span_11_samples": 0.02656,
+          "specific_span_11_samples": 0.060318,
+          "temperature_span_11_samples": 0.0390191,
+          "eligible_plateau_rows": 12,
+          "eligible_specific_range_us_cm": [
+            25.718096,
+            25.803707
+          ]
+        },
+        {
+          "step_no": "1",
+          "source_line": 138,
+          "local_timestamp": "2025-08-05 09:39:31",
+          "actual_span_11_samples": 0.032316,
+          "specific_span_11_samples": 0.048788,
+          "temperature_span_11_samples": 0.0098443,
+          "eligible_plateau_rows": 22,
+          "eligible_specific_range_us_cm": [
+            32.559227,
+            32.58409
+          ]
+        },
+        {
+          "step_no": "2",
+          "source_line": 263,
+          "local_timestamp": "2025-08-05 09:41:36",
+          "actual_span_11_samples": 0.046318,
+          "specific_span_11_samples": 0.061655,
+          "temperature_span_11_samples": 0.0005385,
+          "eligible_plateau_rows": 12,
+          "eligible_specific_range_us_cm": [
+            39.37462,
+            39.38711
+          ]
+        },
+        {
+          "step_no": "3",
+          "source_line": 313,
+          "local_timestamp": "2025-08-05 09:42:26",
+          "actual_span_11_samples": 0.043948,
+          "specific_span_11_samples": 0.058059,
+          "temperature_span_11_samples": 0.003129,
+          "eligible_plateau_rows": 11,
+          "eligible_specific_range_us_cm": [
+            46.020596,
+            46.028423
+          ]
+        },
+        {
+          "step_no": "4",
+          "source_line": 378,
+          "local_timestamp": "2025-08-05 09:43:31",
+          "actual_span_11_samples": 0.062763,
+          "specific_span_11_samples": 0.085014,
+          "temperature_span_11_samples": 0.0041425,
+          "eligible_plateau_rows": 16,
+          "eligible_specific_range_us_cm": [
+            52.631252,
+            52.65698
+          ]
+        }
+      ]
+    },
+    {
+      "calibration_id": "NISQ-20250805-C03",
+      "probe_alias": "probe_01",
+      "sensor_serial": "680530",
+      "source_csv": {
+        "path": "salt_dilution/data/raw/20250805/20250805_172900_calibration_680530.csv",
+        "sha256": "39b3bf44311030372092bf3ccf607ec570c228a09bbabf32206b248a57d899d5"
+      },
+      "duplicate_exports": [
+        {
+          "path": "salt_dilution/data/raw/20250805/LiveReadings/VuSitu_LiveReadings_2025-08-05_17-29-00_Device_Location.html",
+          "sha256": "8bca56303d4845fa685a5feceef89f198f017604e28264ab283e7463be967a4a"
+        }
+      ],
+      "duplicate_measurement_rows": 800,
+      "plateau_ec_span_limit_us_cm": 0.42,
+      "unmatched_steps": [],
+      "points": [
+        {
+          "step_no": "0",
+          "source_line": 37,
+          "local_timestamp": "2025-08-05 17:29:21",
+          "actual_span_11_samples": 0.024858,
+          "specific_span_11_samples": 0.030982,
+          "temperature_span_11_samples": 0.010206,
+          "eligible_plateau_rows": 7,
+          "eligible_specific_range_us_cm": [
+            21.543589,
+            21.550192
+          ]
+        },
+        {
+          "step_no": "1",
+          "source_line": 108,
+          "local_timestamp": "2025-08-05 17:30:32",
+          "actual_span_11_samples": 0.019547,
+          "specific_span_11_samples": 0.024713,
+          "temperature_span_11_samples": 0.002622,
+          "eligible_plateau_rows": 11,
+          "eligible_specific_range_us_cm": [
+            26.873133,
+            26.879921
+          ]
+        },
+        {
+          "step_no": "2",
+          "source_line": 176,
+          "local_timestamp": "2025-08-05 17:31:40",
+          "actual_span_11_samples": 0.024786,
+          "specific_span_11_samples": 0.03363,
+          "temperature_span_11_samples": 0.0093725,
+          "eligible_plateau_rows": 6,
+          "eligible_specific_range_us_cm": [
+            32.035763,
+            32.039417
+          ]
+        },
+        {
+          "step_no": "3",
+          "source_line": 260,
+          "local_timestamp": "2025-08-05 17:33:04",
+          "actual_span_11_samples": 0.027288,
+          "specific_span_11_samples": 0.031852,
+          "temperature_span_11_samples": 0.006252,
+          "eligible_plateau_rows": 14,
+          "eligible_specific_range_us_cm": [
+            37.19178,
+            37.203995
+          ]
+        },
+        {
+          "step_no": "4",
+          "source_line": 347,
+          "local_timestamp": "2025-08-05 17:34:31",
+          "actual_span_11_samples": 0.04876,
+          "specific_span_11_samples": 0.056228,
+          "temperature_span_11_samples": 0.003573,
+          "eligible_plateau_rows": 12,
+          "eligible_specific_range_us_cm": [
+            42.350273,
+            42.372993
+          ]
+        },
+        {
+          "step_no": "5",
+          "source_line": 437,
+          "local_timestamp": "2025-08-05 17:36:01",
+          "actual_span_11_samples": 0.04552,
+          "specific_span_11_samples": 0.058048,
+          "temperature_span_11_samples": 0.004678,
+          "eligible_plateau_rows": 19,
+          "eligible_specific_range_us_cm": [
+            47.4345,
+            47.468464
+          ]
+        }
+      ]
+    },
+    {
+      "calibration_id": "NISQ-20250805-C04",
+      "probe_alias": "probe_01",
+      "sensor_serial": "680530",
+      "source_csv": {
+        "path": "salt_dilution/data/raw/20250805/20250805_174314_calibration_680530.csv",
+        "sha256": "aeec920ca9183f0a952f8306c48625fc1a431e6e4112f210518caa38c2f68b1f"
+      },
+      "duplicate_exports": [
+        {
+          "path": "salt_dilution/data/raw/20250805/LiveReadings/VuSitu_LiveReadings_2025-08-05_17-43-14_Device_Location.html",
+          "sha256": "8f687f85893ec5c6fb176b14a297e7b25904168d4081cd359f4b8ed4c1d34c96"
+        }
+      ],
+      "duplicate_measurement_rows": 435,
+      "plateau_ec_span_limit_us_cm": 0.49,
+      "unmatched_steps": [],
+      "points": [
+        {
+          "step_no": "0",
+          "source_line": 18,
+          "local_timestamp": "2025-08-05 17:43:16",
+          "actual_span_11_samples": 0.027861,
+          "specific_span_11_samples": 0.055755,
+          "temperature_span_11_samples": 0.0615675,
+          "eligible_plateau_rows": 19,
+          "eligible_specific_range_us_cm": [
+            21.198917,
+            21.344122
+          ]
+        },
+        {
+          "step_no": "1",
+          "source_line": 119,
+          "local_timestamp": "2025-08-05 17:44:57",
+          "actual_span_11_samples": 0.031973,
+          "specific_span_11_samples": 0.040789,
+          "temperature_span_11_samples": 0.005278,
+          "eligible_plateau_rows": 13,
+          "eligible_specific_range_us_cm": [
+            27.542736,
+            27.556923
+          ]
+        },
+        {
+          "step_no": "2",
+          "source_line": 215,
+          "local_timestamp": "2025-08-05 17:46:33",
+          "actual_span_11_samples": 0.039652,
+          "specific_span_11_samples": 0.049714,
+          "temperature_span_11_samples": 0.008566,
+          "eligible_plateau_rows": 8,
+          "eligible_specific_range_us_cm": [
+            33.78156,
+            33.79372
+          ]
+        },
+        {
+          "step_no": "3",
+          "source_line": 298,
+          "local_timestamp": "2025-08-05 17:47:56",
+          "actual_span_11_samples": 0.020673,
+          "specific_span_11_samples": 0.02478,
+          "temperature_span_11_samples": 0.003105,
+          "eligible_plateau_rows": 9,
+          "eligible_specific_range_us_cm": [
+            39.868122,
+            39.869797
+          ]
+        },
+        {
+          "step_no": "4",
+          "source_line": 367,
+          "local_timestamp": "2025-08-05 17:49:05",
+          "actual_span_11_samples": 0.065399,
+          "specific_span_11_samples": 0.074402,
+          "temperature_span_11_samples": 0.009432,
+          "eligible_plateau_rows": 16,
+          "eligible_specific_range_us_cm": [
+            45.9188,
+            45.95206
+          ]
+        }
+      ]
+    },
+    {
+      "calibration_id": "NISQ-20250808-C01",
+      "probe_alias": "probe_01",
+      "sensor_serial": "680530",
+      "source_csv": {
+        "path": "salt_dilution/data/raw/20250808/20250808_101105_calibration_680530.csv",
+        "sha256": "32ac37ccd106a094894fbd335b1df71c5ddf943b6deaf9c52c47c711e1bc2a5a"
+      },
+      "duplicate_exports": [
+        {
+          "path": "salt_dilution/data/raw/20250808/LiveReadings/VuSitu_LiveReadings_2025-08-08_10-11-05_Device_Location.html",
+          "sha256": "9ddca65c7a4877349d62d43dbed2943761d61e88b52fb74aa39f735021f802b8"
+        }
+      ],
+      "duplicate_measurement_rows": 301,
+      "plateau_ec_span_limit_us_cm": 0.3365,
+      "unmatched_steps": [],
+      "points": [
+        {
+          "step_no": "0",
+          "source_line": 45,
+          "local_timestamp": "2025-08-08 10:11:34",
+          "actual_span_11_samples": 0.02164,
+          "specific_span_11_samples": 0.023301,
+          "temperature_span_11_samples": 0.0087547,
+          "eligible_plateau_rows": 11,
+          "eligible_specific_range_us_cm": [
+            29.51509,
+            29.523369
+          ]
+        },
+        {
+          "step_no": "1",
+          "source_line": 112,
+          "local_timestamp": "2025-08-08 10:12:41",
+          "actual_span_11_samples": 0.039501,
+          "specific_span_11_samples": 0.053105,
+          "temperature_span_11_samples": 0.0028633,
+          "eligible_plateau_rows": 11,
+          "eligible_specific_range_us_cm": [
+            34.049053,
+            34.05225
+          ]
+        },
+        {
+          "step_no": "2",
+          "source_line": 160,
+          "local_timestamp": "2025-08-08 10:13:29",
+          "actual_span_11_samples": 0.02712,
+          "specific_span_11_samples": 0.03959,
+          "temperature_span_11_samples": 0.0120014,
+          "eligible_plateau_rows": 6,
+          "eligible_specific_range_us_cm": [
+            38.44567,
+            38.46086
+          ]
+        },
+        {
+          "step_no": "3",
+          "source_line": 229,
+          "local_timestamp": "2025-08-08 10:14:38",
+          "actual_span_11_samples": 0.084864,
+          "specific_span_11_samples": 0.109415,
+          "temperature_span_11_samples": 0.0043288,
+          "eligible_plateau_rows": 3,
+          "eligible_specific_range_us_cm": [
+            42.96779,
+            42.96925
+          ]
+        },
+        {
+          "step_no": "4",
+          "source_line": 299,
+          "local_timestamp": "2025-08-08 10:15:48",
+          "actual_span_11_samples": 0.117208,
+          "specific_span_11_samples": 0.15868,
+          "temperature_span_11_samples": 0.0119748,
+          "eligible_plateau_rows": 2,
+          "eligible_specific_range_us_cm": [
+            47.574215,
+            47.58236
+          ]
+        }
+      ]
+    }
+  ]
+}

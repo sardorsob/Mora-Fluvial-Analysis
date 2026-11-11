@@ -29,6 +29,10 @@ class CompatibilityTests(unittest.TestCase):
         self.prep['site_alias']='PAR'
         self.assertEqual(reuse.classify_fit(self.fit,self.prep,self.evidence,self.device)[0],'out_of_scope_site')
 
+    def test_all_site_audit_keeps_site_identity_without_excluding_paradise(self):
+        self.prep['site_alias']='PAR'
+        self.assertEqual(reuse.classify_fit(self.fit,self.prep,self.evidence,self.device,site=None)[0],'mass_library_eligible')
+
     def test_abandoned_does_not_enter(self):
         self.evidence['source_table_status']='abandoned'
         self.assertEqual(reuse.classify_fit(self.fit,self.prep,self.evidence,self.device)[0],'abandoned_or_supporting')
@@ -39,6 +43,30 @@ class CompatibilityTests(unittest.TestCase):
     def test_bad_units_cannot_enter_library(self):
         self.fit['coefficient_unit']='unknown'
         self.assertEqual(reuse.classify_fit(self.fit,self.prep,self.evidence,self.device)[0],'not_fitted')
+
+    def test_relative_fit_requires_relative_coefficient_units(self):
+        self.fit.update(calibration_basis='relative_concentration', concentration_unit='mL/mL')
+        result, _ = reuse.classify_fit(self.fit, self.prep, self.evidence, self.device)
+        self.assertEqual(result, 'not_fitted')
+
+    def test_leave_one_dose_sensitivity_preserves_the_fit_and_step_identity(self):
+        points = [dict(step_no=str(i), conductivity_us_cm=i, concentration=y, residual=r,
+                       used_in_fit='True', exclusion_reason='')
+                  for i, (y, r) in enumerate(zip((0, 1, 2, 5), (.4, -.2, -.8, .6)))]
+        points.insert(2, dict(step_no='4', used_in_fit='False', exclusion_reason='missing_specific'))
+        result = reuse.point_selection_diagnostics(points, 1.6)
+        self.assertEqual(result['used_dose_steps'], ['0', '1', '2', '3'])
+        self.assertEqual(result['excluded_dose_steps'], {'4': 'missing_specific'})
+        self.assertAlmostEqual(result['leave_one_dose_k']['3'], 1.0)
+        self.assertAlmostEqual(result['max_abs_leave_one_dose_k_relative_effect'], .375)
+        self.assertIsNone(result['quadratic_sse_reduction_fraction'])
+
+    def test_leave_one_dose_preserves_minimum_primary_point_count(self):
+        points = [dict(step_no=str(i), conductivity_us_cm=i, concentration=i, residual=0,
+                       used_in_fit='True', exclusion_reason='') for i in range(3)]
+        result = reuse.point_selection_diagnostics(points, 1)
+        self.assertEqual(result['leave_one_dose_k'], {})
+        self.assertIsNone(result['max_abs_leave_one_dose_k_relative_effect'])
 
     def test_slope_se_hand_dataset(self):
         # x=0,1,2; y=0,1,3 gives residuals1/6,-1/3,1/6, SSE1/6, Sxx2.

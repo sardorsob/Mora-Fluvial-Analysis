@@ -21,6 +21,7 @@ import numpy as np
 import pandas as pd
 
 from salt_dilution.scripts.parsers.parse_data import read_data
+from salt_dilution.scripts.processing import calibration
 
 ROOT = Path(__file__).resolve().parents[3]
 CHANNELS = {b: f'{b}_conductivity_us_cm' for b in ('actual', 'specific')}
@@ -454,18 +455,66 @@ def _validate_overrides(overrides, trials, calibrations, recordings):
     return result
 
 
-def _release_time(trial, provenance, overrides):
+def _validate_field_clock(field_clock):
+    if field_clock is None:
+        return
+    fields = {'schema_version', 'site_aliases', 'utc_offset_seconds', 'evidence', 'source_ref'}
+    if not isinstance(field_clock, dict) or set(field_clock) != fields or field_clock['schema_version'] != 1:
+        raise ValueError('Invalid field clock schema')
+    sites = field_clock['site_aliases']
+    if (not isinstance(sites, list) or not sites or any(not isinstance(s, str) or not s.strip() for s in sites)
+            or len(sites) != len(set(sites))):
+        raise ValueError('Field clock requires a nonempty list of unique site aliases')
+    offset = field_clock['utc_offset_seconds']
+    if type(offset) is not int or abs(offset) >= 86400:
+        raise ValueError('Invalid field clock UTC offset in seconds')
+    if any(not isinstance(field_clock[key], str) or not field_clock[key].strip() for key in ('evidence', 'source_ref')):
+        raise ValueError('Field clock requires evidence and source_ref')
+
+
+def _release_time(trial, provenance, overrides, field_clock=None):
     explicit = trial.get('dump_timestamp_utc', '')
     if explicit:
         value = pd.Timestamp(explicit)
         if value.tzinfo is not None:
             return value.tz_convert('UTC'), 'trials.dump_timestamp_utc'
-    clock = next((o for o in overrides['trial_clocks'] if o['trial_id'] == trial['trial_id']), None)
+    clock = next((o for o in overrides['trial_clocks'] if o['trial_id'] == trial['trial_id']), field_clock)
     source = provenance.get('trials', {}).get(trial['trial_id'], {}).get('source_record', {})
     local = _local_release_clock(trial, provenance)
     if clock and local is not None:
         return (local - pd.to_timedelta(clock['utc_offset_seconds'],unit='s')).tz_localize('UTC'), clock['source_ref']
     return None, 'unresolved_notebook_clock:' + source.get('timezone_label_raw', '')
+
+
+def _measurement_clock(rec, field_clock):
+    samples = rec['samples']
+    native = samples.get('timestamp_utc', pd.Series(dtype='datetime64[ns, UTC]'))
+    native_start, native_end = native.min(), native.max()
+    basis, offset = rec.get('clock_basis', ''), rec.get('source_offset_seconds')
+    effective_start, effective_end = pd.NaT, pd.NaT
+    effective_basis, effective_offset, source = '', None, ''
+    local = samples.get('timestamp')
+    if field_clock and local is not None and not local.empty and local.dt.tz is None:
+        effective_offset = field_clock['utc_offset_seconds']
+        shift = pd.to_timedelta(effective_offset, unit='s')
+        effective_start = local.min().tz_localize('UTC') - shift
+        effective_end = local.max().tz_localize('UTC') - shift
+        effective_basis = 'participant_confirmed_fixed_field_offset'
+        source = field_clock['source_ref']
+    elif basis in ('explicit_report_numeric_offset', 'offset_in_source_timestamps') and not native.isna().any():
+        effective_start, effective_end = native_start, native_end
+        effective_basis, effective_offset = basis, offset
+    encoded_offset_conflict = bool(offset is not None and effective_offset is not None and offset != effective_offset)
+    evidence = dict(measurement_basis=basis, source_offset_seconds=offset,
+        acquisition_start_local=rec.get('acquisition_start_local', rec.get('first_local', '')),
+        acquisition_end_local=rec.get('acquisition_end_local', rec.get('last_local', '')),
+        native_acquisition_start_utc=str(native_start) if pd.notna(native_start) else '',
+        native_acquisition_end_utc=str(native_end) if pd.notna(native_end) else '',
+        effective_measurement_basis=effective_basis, effective_offset_seconds=effective_offset,
+        effective_measurement_basis_source=source, encoded_offset_conflict=encoded_offset_conflict,
+        effective_acquisition_start_utc=str(effective_start) if pd.notna(effective_start) else '',
+        effective_acquisition_end_utc=str(effective_end) if pd.notna(effective_end) else '')
+    return effective_start, effective_end, evidence
 
 
 def _sequence_evidence(calibration_id, evidence, points, root):
@@ -598,6 +647,64 @@ def _calibration_device(evidence, recordings):
     return dict(result,basis='native_calibration_serial_unavailable')
 
 
+def _recovered_calibration_identity(fit_run, pinned_paths, records_dir, root):
+    """Reproduce recovered device evidence from the fit's hash-pinned sources."""
+    claimed = fit_run.get('recovered_native_calibration_serials', {})
+    overlay = next((path for path in pinned_paths if path.name == calibration.RECOVERY.name), None)
+    if overlay is None:
+        if claimed != {}:
+            raise ValueError('Native calibration recovery must be pinned by the fit run')
+        return {}
+    rows, recovery_paths = calibration.read_calibration_points(records_dir, recovery_path=overlay, root=root)
+    if any(path not in pinned_paths for path in recovery_paths):
+        raise ValueError('All native calibration recovery sources must be pinned by the fit run')
+    identity = {}
+    for row in rows:
+        serial = row.get('native_sensor_serial')
+        if not serial:
+            continue
+        cal_id = row['calibration_id']
+        source = root / row['native_measurement_source'].rsplit('#L', 1)[0]
+        result = identity.setdefault(cal_id, dict(status='verified', device_serial=serial,
+            basis='recovered_native_calibration_sequence', files=[pinned_paths[overlay]]))
+        if result['device_serial'] != serial:
+            raise ValueError(f'Recovered calibration has multiple native serials: {cal_id}')
+        if pinned_paths[source] not in result['files']:
+            result['files'].append(pinned_paths[source])
+    if claimed != {cal_id: evidence['device_serial'] for cal_id, evidence in identity.items()}:
+        raise ValueError('Recovered calibration serial claims disagree with verified native evidence')
+    return identity
+
+
+def _replayed_calibration_recipes(fit_run, pinned_paths, preparations, points, provenance, root):
+    """Verify worksheet calibration identities and recover the pinned recipe metadata."""
+    claimed = fit_run.get('worksheet_calibration_serials', {})
+    overlay = next((path for path in pinned_paths if path.name == calibration.RECIPE_RECOVERY.name), None)
+    if overlay is None:
+        if claimed != {}:
+            raise ValueError('Calibration worksheet recovery must be pinned by the fit run')
+        return preparations, {}
+    updated, _, sources, identities = calibration.apply_recipe_recovery(
+        preparations, points, provenance, overlay, root=root)
+    if any(path not in pinned_paths for path in sources):
+        raise ValueError('All calibration worksheet sources must be pinned by the fit run')
+    if claimed != {identity: row['device_serial'] for identity, row in identities.items()}:
+        raise ValueError('Calibration worksheet serial claims disagree with verified worksheet rows')
+    files = [pinned_paths[path] for path in sources]
+    return updated, {identity: dict(row, status='verified', basis='collaborator_calibration_worksheet', files=files)
+                     for identity, row in identities.items()}
+
+
+def _combine_calibration_identity(previous, recovered):
+    if recovered is None:
+        return previous
+    if previous['status'] == 'conflicting' or (previous['status'] == 'verified'
+            and previous['device_serial'] != recovered['device_serial']):
+        return dict(status='conflicting', device_serial='', basis='native_calibration_evidence_disagreement',
+                    files=previous['files'] + recovered['files'], prior_identity=previous, recovered_identity=recovered)
+    return dict(recovered, prior_identity=previous) if previous['status'] == 'verified' else recovered
+
+
 def _reconcile_existing_links(result, trials, preparations, provenance, recordings, associations):
     """Audit current CSV links separately from whether a fitted K can be used.
 
@@ -705,7 +812,7 @@ def _reconcile_existing_links(result, trials, preparations, provenance, recordin
         summary['trial_disposition'] = 'practice' if source.get('treatment_label')=='practice' else 'field_release'
 
 
-def _infer_chronology(result, trials, provenance, recordings, tolerance_seconds, overrides):
+def _infer_chronology(result, trials, provenance, recordings, tolerance_seconds):
     """Apply the reported local-clock/trial protocol, retaining qualifications."""
     segments = {r['logical_recording_id']: r for r in recordings}
     trials_by_id = {t['trial_id']: t for t in trials}
@@ -733,25 +840,26 @@ def _infer_chronology(result, trials, provenance, recordings, tolerance_seconds,
                 release_clock_alignment='not_established_by_file_relationship')
             edge['qualifications']=list(edge['reasons'])+['reviewed_file_pairing_event_clock_not_established']
             continue
-        # Prefer explicit UTC when both sides have it. Otherwise compare the
-        # written civil clocks under the reported field protocol; do not create UTC.
-        release_utc, effective_release_basis = _release_time(trial, provenance, overrides)
-        correction = edge['time_evidence'].get('correction_seconds',0)
+        # Prefer a common UTC basis. If the release UTC is unresolved, compare
+        # the written civil clocks under the reported field protocol.
+        time = edge['time_evidence']
+        correction = time['correction_seconds']
         basis = 'reported_local_field_clock'
-        if release_utc is not None:
-            if 'timestamp_utc' not in samples or samples.timestamp_utc.isna().any():
+        if time['release_utc']:
+            if 'release_offset_seconds' not in time:
                 continue
-            release = pd.Timestamp(release_utc)
-            if release.tzinfo is None:
-                continue
-            release = release.tz_convert('UTC')
-            times = samples.timestamp_utc + pd.to_timedelta(correction,unit='s')
-            basis = 'explicit_utc'
+            release = pd.Timestamp(time['release_utc'])
+            release_offset = time['release_offset_seconds']
+            separation = time['separation_from_acquisition_seconds']
+            basis = ('effective_field_utc' if time['effective_measurement_basis'] == 'participant_confirmed_fixed_field_offset'
+                     else 'explicit_utc')
         elif local is not None:
             release = local
             times = samples.timestamp + pd.to_timedelta(correction,unit='s')
             if times.dt.tz is not None:
                 times = times.dt.tz_localize(None)
+            release_offset = (release - times.min()).total_seconds()
+            separation = max(-release_offset, (release - times.max()).total_seconds(), 0.0)
         elif edge.get('source_link_evidence'):
             # The notebook and measured device already identify this file.
             # Retain the uncertain clock instead of manufacturing an exact time.
@@ -761,11 +869,10 @@ def _infer_chronology(result, trials, provenance, recordings, tolerance_seconds,
             continue
         else:
             continue
-        first, last = times.min(), times.max()
-        separation = max((first-release).total_seconds(), (release-last).total_seconds(), 0.0)
         edge['chronology_evidence'] = dict(release_clock=str(release),clock_basis=basis,
             acquisition_start_local=str(samples.timestamp.min()),acquisition_end_local=str(samples.timestamp.max()),
-            reviewed_clock_correction_seconds=correction,effective_release_basis=effective_release_basis,
+            reviewed_clock_correction_seconds=correction,effective_release_basis=time['release_basis'],
+            release_offset_seconds=float(release_offset),
             separation_from_acquisition_seconds=float(separation),tolerance_seconds=tolerance_seconds,
             source_logical_recording_id=rec.get('source_logical_recording_id',rec['logical_recording_id']),
             user_protocol='Same field date; trial chronology and acquisition breaks normally identify trials.')
@@ -862,12 +969,17 @@ def _infer_chronology(result, trials, provenance, recordings, tolerance_seconds,
         summary.update(status=status,reasons=sorted(set(reasons)),pairing_assumptions=sorted(set(summary['pairing_assumptions'])))
 
 
-def match_records(trials, calibrations, fits, provenance, recordings, overrides=None, *, associations=None, protocol=True, gap_seconds=60.0, gap_factor=10.0, tolerance_seconds=120.0):
+def match_records(trials, calibrations, fits, provenance, recordings, overrides=None, *, associations=None, field_clock=None, recovered_calibration_identity=None, protocol=True, gap_seconds=60.0, gap_factor=10.0, tolerance_seconds=120.0):
     """Return recording edges, calibration edges and a status for every release."""
     if any(not isinstance(v,(int,float)) or isinstance(v,bool) or not math.isfinite(v) or v<=0 for v in (gap_seconds,gap_factor,tolerance_seconds)):
         raise ValueError('Session and association tolerances must be finite and positive')
     recordings = _split_sessions(recordings,gap_seconds,gap_factor) if protocol else recordings
     overrides = _validate_overrides(overrides, trials, calibrations, recordings)
+    _validate_field_clock(field_clock)
+    field_sites = field_clock['site_aliases'] if field_clock else []
+    sites_by_day = {}
+    for trial in trials:
+        sites_by_day.setdefault(_date(trial['field_date']), set()).add(trial['site_alias'])
     associations = provenance.get('trial_inputs', []) if associations is None else associations
     preparations = {c['calibration_id']: c for c in calibrations}
     if len(preparations) != len(calibrations) or len({t['trial_id'] for t in trials}) != len(trials):
@@ -875,14 +987,21 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
     fit_keys = [(f['calibration_id'],f.get('probe_alias',''),f['conductivity_basis']) for f in fits]
     if len(set(fit_keys)) != len(fit_keys):
         raise ValueError('Duplicate calibration fit key')
-    native_calibrations = {c['calibration_id']:_calibration_device(provenance.get('calibrations',{}).get(c['calibration_id'],{}),recordings)
-                           for c in calibrations}
+    recovered_calibration_identity = recovered_calibration_identity or {}
+    if set(recovered_calibration_identity) - preparations.keys():
+        raise ValueError('Recovered native identity references an unknown calibration')
+    native_calibrations = {cal_id: _combine_calibration_identity(
+        _calibration_device(provenance.get('calibrations', {}).get(cal_id, {}), recordings),
+        recovered_calibration_identity.get(cal_id)) for cal_id in preparations}
     record_edges, cal_edges, summaries, exclusions = [], [], [], []
+    measurement_clocks = {}
     for trial in sorted(trials, key=lambda t: t['trial_id']):
         trial_id, day = trial['trial_id'], _date(trial['field_date'])
         if not day:
             raise ValueError(f'Invalid trial date: {trial_id}')
-        release_time, release_basis = _release_time(trial, provenance, overrides)
+        trial_field_clock = field_clock if trial['site_alias'] in field_sites else None
+        release_time, release_basis = _release_time(trial, provenance, overrides, trial_field_clock)
+        raw_clock = provenance.get('trials', {}).get(trial_id, {}).get('source_record', {})
         for recording in recordings:
             rec = dict(recording, issues=list(recording['issues']))
             applicable = [o for o in overrides['recordings'] if o['content_ref'] in rec['members']]
@@ -899,10 +1018,21 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
             if rec.get('site_alias') and rec['site_alias'] != trial['site_alias']:
                 reject.append('different_site')
             candidate_dates=rec.get('dates') or [rec.get('date_evidence',{}).get('folder_date','')]
+            # An unlabelled recording can use the site protocol only on a
+            # field day with a single candidate site for that recording.
+            scoped = rec.get('site_alias') in field_sites or (not rec.get('site_alias') and trial_field_clock
+                and day in candidate_dates and sites_by_day[day] == {trial['site_alias']})
+            clock_key = (rec['logical_recording_id'], bool(scoped))
+            if clock_key not in measurement_clocks:
+                measurement_clocks[clock_key] = _measurement_clock(rec, field_clock if scoped else None)
+            clock_start, clock_end, clock_evidence = measurement_clocks[clock_key]
+            correction = rec.get('clock_correction_seconds', 0)
+            shift = pd.to_timedelta(correction, unit='s')
+            corrected_start, corrected_end = clock_start + shift, clock_end + shift
+            clock_ok = pd.notna(corrected_start) and pd.notna(corrected_end)
             if any(candidate_dates) and day not in candidate_dates:
                 # UTC-midnight releases may share a recording on a different local date.
-                times = rec['samples'].get('timestamp_utc', pd.Series(dtype='datetime64[ns, UTC]'))
-                if release_time is None or times.empty or not (times.min() <= release_time <= times.max()):
+                if release_time is None or not clock_ok or not (corrected_start <= release_time <= corrected_end):
                     reject.append('different_date')
             if rec.get('activity') in ('calibration','background'):
                 reject.append('nonriver_activity')
@@ -919,19 +1049,20 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
                 reasons.append('recording_role_unresolved')
             if rec.get('activity') == 'unknown':
                 reasons.append('recording_activity_unresolved')
-            clock_ok = bool(rec.get('clock_basis') in ('explicit_report_numeric_offset','offset_in_source_timestamps') and 'timestamp_utc' in rec['samples'])
             if not clock_ok:
                 reasons.append('measurement_clock_unresolved')
             if release_time is None:
                 reasons.append('release_clock_unresolved')
             time_evidence = dict(release_utc=str(release_time) if release_time is not None else '', release_basis=release_basis,
-                                 measurement_basis=rec.get('clock_basis', ''),
-                                 source_offset_seconds=rec.get('source_offset_seconds'),
-                                 correction_seconds=rec.get('clock_correction_seconds',0),
-                                 correction_basis=rec.get('clock_correction_basis',''))
+                                 release_clock_raw=raw_clock.get('injection_time_raw', ''),
+                                 release_timezone_label_raw=raw_clock.get('timezone_label_raw', ''),
+                                 correction_seconds=correction, correction_basis=rec.get('clock_correction_basis',''),
+                                 **clock_evidence)
             if clock_ok and release_time is not None:
-                times = rec['samples']['timestamp_utc'] + pd.to_timedelta(rec.get('clock_correction_seconds',0),unit='s')
-                time_evidence['release_within_recording'] = bool(times.min() <= release_time <= times.max())
+                release_offset = (release_time - corrected_start).total_seconds()
+                time_evidence.update(release_offset_seconds=release_offset,
+                    separation_from_acquisition_seconds=max(-release_offset, (release_time - corrected_end).total_seconds(), 0.0),
+                    release_within_recording=bool(corrected_start <= release_time <= corrected_end))
                 # Outside coverage is not proof of a wrong link: a downstream pulse may arrive later.
                 if not time_evidence['release_within_recording']:
                     reasons.append('release_outside_recording_requires_travel_evidence')
@@ -986,7 +1117,9 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
                         cal_reasons.append('native_calibration_device_conflict')
                         identity_status='native_conflict'
                     else:
-                        identity_status='native_match' if native['basis']=='electronic_sequence' else 'source_protocol_match'
+                        identity_status = ('native_match' if native['basis'] in
+                                           ('electronic_sequence','recovered_native_calibration_sequence')
+                                           else 'source_protocol_match')
                 if any('mismatch' in i or 'conflict' in i for i in rec['issues']):
                     cal_reasons.append('recording_evidence_conflict')
                 if fit['conductivity_basis'] not in rec['conductivity_bases']:
@@ -1121,7 +1254,7 @@ def match_records(trials, calibrations, fits, provenance, recordings, overrides=
     result = dict(recording_candidates=record_edges,calibration_candidates=cal_edges,pairing_summary=summaries,exclusions=exclusions)
     _reconcile_existing_links(result,trials,preparations,provenance,recordings,associations)
     if protocol:
-        _infer_chronology(result,trials,provenance,recordings,tolerance_seconds,overrides)
+        _infer_chronology(result,trials,provenance,recordings,tolerance_seconds)
     for summary in summaries:
         disposition=next((d for d in overrides['trial_dispositions'] if d['trial_id']==summary['trial_id']),None)
         if disposition:
@@ -1180,7 +1313,7 @@ def _write_table(path, rows, fields):
             writer.writerow({k:_json(v) if isinstance(v,(dict,list,bool)) else v for k,v in row.items()})
 
 
-def run_matching(records_dir, processed_dir, calibration_dir, output_dir, *, root=ROOT, overrides_path=None, protocol=True, gap_seconds=60.0, gap_factor=10.0, tolerance_seconds=120.0):
+def run_matching(records_dir, processed_dir, calibration_dir, output_dir, *, root=ROOT, overrides_path=None, field_clock_path=None, protocol=True, gap_seconds=60.0, gap_factor=10.0, tolerance_seconds=120.0):
     """Publish a new reproducible proposal bundle after validating pinned inputs."""
     root = Path(root).resolve()
     if Path(output_dir).is_symlink():
@@ -1214,14 +1347,16 @@ def run_matching(records_dir, processed_dir, calibration_dir, output_dir, *, roo
     inputs.update((fit_path,fit_run_path))
     required_pins={'calibrations.csv','calibration_points.csv','provenance.json','procedure_versions.json'}
     pins={}
+    pinned_paths={}
     for item in fit_run.get('inputs', []):
         name=Path(item['path']).name
         path=records_dir/name if name in {'calibrations.csv','calibration_points.csv','provenance.json'} else _path(item['path'],root)
+        path = path.resolve()
         if not path.is_relative_to(root) or not path.is_file() or _hash(path) != item.get('sha256'):
             raise ValueError(f'Stale calibration input hash: {item["path"]}')
         if name in pins:
             raise ValueError('Duplicate calibration input pin')
-        pins[name]=item; inputs.add(path)
+        pins[name]=item; pinned_paths[path]=item; inputs.add(path)
     if not required_pins.issubset(pins):
         raise ValueError('Calibration run lacks required input hashes')
     fit_outputs=[o for o in fit_run.get('outputs',[]) if o['path']=='calibration_fits.csv']
@@ -1242,14 +1377,30 @@ def run_matching(records_dir, processed_dir, calibration_dir, output_dir, *, roo
             if not path.is_relative_to(root) or not path.is_file() or _hash(path)!=pin['sha256']:
                 raise ValueError(f'Reviewed evidence file hash mismatch or unavailable: {pin["path"]}')
             inputs.add(path)
+    field_clock = None
+    if field_clock_path is not None:
+        field_clock_path = Path(field_clock_path).resolve()
+        field_clock = json.loads(field_clock_path.read_text())
+        if field_clock is None:
+            raise ValueError('Invalid field clock schema')
+        _validate_field_clock(field_clock)
+        inputs.add(field_clock_path)
     for evidence in provenance.get('calibrations',{}).values():
         for file in evidence.get('probe_identity_review',{}).get('files',[]):
             path=_path(file['path'],root)
             if path.is_file():
                 inputs.add(path)
     code_paths = [Path(__file__), *sorted((ROOT/'salt_dilution/scripts/parsers').glob('*.py'))]
+    if any(path.name in (calibration.RECOVERY.name, calibration.RECIPE_RECOVERY.name) for path in pinned_paths):
+        code_paths.append(Path(calibration.__file__))
     inputs.update(code_paths)
     initial_hashes={_ref(path,root):_hash(path) for path in sorted(inputs)}
+    recovered_identity = _recovered_calibration_identity(fit_run, pinned_paths, records_dir, root)
+    calibrations, worksheet_identity = _replayed_calibration_recipes(
+        fit_run, pinned_paths, calibrations, points, provenance, root)
+    for identity, evidence in worksheet_identity.items():
+        recovered_identity[identity] = (_combine_calibration_identity(recovered_identity[identity], evidence)
+                                        if identity in recovered_identity else evidence)
     for identity,evidence in provenance.get('calibrations',{}).items():
         evidence['_matching_sequence']=_sequence_evidence(identity,evidence,points,root)
     inventory=inventory_recordings(processed_dir,provenance,root)
@@ -1257,7 +1408,9 @@ def run_matching(records_dir, processed_dir, calibration_dir, output_dir, *, roo
         for file in rec['files'].values():
             initial_hashes[file['path']]=file['sha256']
     logical=reconcile_recordings(inventory)
-    result=match_records(trials,calibrations,fits,provenance,logical,overrides,associations=associations,protocol=protocol,gap_seconds=gap_seconds,gap_factor=gap_factor,tolerance_seconds=tolerance_seconds)
+    result=match_records(trials,calibrations,fits,provenance,logical,overrides,associations=associations,
+                         field_clock=field_clock,recovered_calibration_identity=recovered_identity,
+                         protocol=protocol,gap_seconds=gap_seconds,gap_factor=gap_factor,tolerance_seconds=tolerance_seconds)
     for name,digest in initial_hashes.items():
         if _hash(Path(name) if Path(name).is_absolute() else root/name) != digest:
             raise ValueError(f'Input changed during matching: {name}')
@@ -1274,7 +1427,7 @@ def run_matching(records_dir, processed_dir, calibration_dir, output_dir, *, roo
               logical_recording_count=len(logical),recording_segments=result['recording_segments'],status_counts=dict(Counter(r['status'] for r in result['pairing_summary'])),
               inputs=[dict(path=p,sha256=h) for p,h in sorted(initial_hashes.items())],
               parser_sha256={p.name:_hash(p) for p in sorted((ROOT/'salt_dilution/scripts/parsers').glob('*.py'))},
-              overrides=overrides or {},sample_reference_policy='Member content_ref and zero-based normalized source row; original files retained. Equal overlaps coalesced only in memory.',
+              overrides=overrides or {},field_clock=field_clock,sample_reference_policy='Member content_ref and zero-based normalized source row; original files retained. Equal overlaps coalesced only in memory.',
               excluded_nonrecording_tables=[_ref(p,root) for p in sorted(processed_dir.rglob('*.csv'))
                   if _ref(p,root) not in {r['path'] for r in inventory}],
               inventory=[{k:v for k,v in r.items() if k not in ('samples','metadata','evidence')} for r in inventory],
@@ -1288,7 +1441,7 @@ def run_matching(records_dir, processed_dir, calibration_dir, output_dir, *, roo
                            mass_route_eligible='Compatible concentration units and a supported K link only; not discharge readiness or scientific acceptance.',
                            measurement_quality='Nonfinite cells retain their source row references; they do not erase file/K identity. No values filled or pulse windows selected.',
                            candidate_generation='all local date/site-compatible recordings; reviewed relationships required for support',
-                           chronology='Reported field-local clocks under explicit protocol; association tolerance is operational, not a travel-time estimate or UTC correction',
+                           chronology='Compare explicit UTC or field clock interpretation when available, or compare reported local clock faces. Association tolerance is operational and distinct from travel time or measured correction.',
                            gap_diagnostic='delta > 1.5 * median positive cadence; not an event boundary',
                            sequence='recheck pinned ordered observations with their recorded tolerance'),
               outputs=[])
@@ -1319,13 +1472,14 @@ def main(argv=None):
     parser.add_argument('--calibrations',type=Path,required=True,help='Saved calibration bundle with run_info.json')
     parser.add_argument('--output',type=Path,required=True,help='New output directory')
     parser.add_argument('--overrides',type=Path,help='Reviewed evidence JSON, schema_version 1; see docs/getting_started.md')
+    parser.add_argument('--field-clock',type=Path,help='Reviewed fixed offset for the named sites’ field-local clocks')
     parser.add_argument('--no-protocol-inference',action='store_true',help='Use only explicit reviewed pairing decisions')
     parser.add_argument('--session-gap-seconds',type=float,default=60,help='Minimum acquisition-break candidate gap; not an integration boundary')
     parser.add_argument('--session-gap-factor',type=float,default=10,help='Gap must also exceed this multiple of median sampling cadence')
     parser.add_argument('--association-tolerance-seconds',type=float,default=120,help='Working allowance outside acquisition coverage; not a measured travel time')
     args=parser.parse_args(argv)
     try:
-        info=run_matching(args.records,args.processed,args.calibrations,args.output,overrides_path=args.overrides,protocol=not args.no_protocol_inference,gap_seconds=args.session_gap_seconds,gap_factor=args.session_gap_factor,tolerance_seconds=args.association_tolerance_seconds)
+        info=run_matching(args.records,args.processed,args.calibrations,args.output,overrides_path=args.overrides,field_clock_path=args.field_clock,protocol=not args.no_protocol_inference,gap_seconds=args.session_gap_seconds,gap_factor=args.session_gap_factor,tolerance_seconds=args.association_tolerance_seconds)
     except (OSError,ValueError,KeyError,TypeError) as exc:
         parser.exit(2,f'Matching failed: {exc}\n')
     print(_json(dict(status=info['status'],releases=info['release_count'],status_counts=info['status_counts'],output=str(args.output))))

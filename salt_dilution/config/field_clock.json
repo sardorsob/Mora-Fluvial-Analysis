@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "site_aliases": ["NISQ", "PAR"],
+  "utc_offset_seconds": -28800,
+  "evidence": "Field timestamps use fixed UTC−8 year-round.",
+  "source_ref": "Field participant clarification, 2026-11-10"
+}

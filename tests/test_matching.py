@@ -268,9 +268,124 @@ class RunnerTests(AssociationFixtures, unittest.TestCase):
         (self.bundle/'run_info.json').write_text(json.dumps(self.runinfo))
         self.override_file=self.root/'overrides.json';self.override_file.write_text(json.dumps(self.overrides))
 
-    def run_matcher(self, name='output'):
+    def run_matcher(self, name='output', *, field_clock_path=None):
         return matching.run_matching(self.records,self.processed,self.bundle,self.root/name,
-                                     root=self.root,overrides_path=self.override_file)
+                                     root=self.root,overrides_path=self.override_file,field_clock_path=field_clock_path)
+
+    def test_field_clock_config_is_pinned_as_a_separate_input(self):
+        config = self.root/'field_clock.json'
+        config.write_text(json.dumps(dict(schema_version=1, site_aliases=['NISQ'], utc_offset_seconds=-28800,
+                                          evidence='Fixed year-round', source_ref='field participant')))
+        result = self.run_matcher(field_clock_path=config)
+        pins = {item['path']: item['sha256'] for item in result['inputs']}
+        self.assertEqual(pins['field_clock.json'], hashlib.sha256(config.read_bytes()).hexdigest())
+        self.assertIn('overrides.json', pins)
+
+    def test_forged_recovered_serial_without_pinned_evidence_is_rejected(self):
+        self.runinfo['recovered_native_calibration_serials'] = {'C01': '111'}
+        (self.bundle/'run_info.json').write_text(json.dumps(self.runinfo))
+        with self.assertRaisesRegex(ValueError, 'recovery.*pinned'):
+            self.run_matcher()
+        self.assertFalse((self.root/'output').exists())
+
+    def pin_recovered_native_sequence(self, *, claimed='111', include_native_pin=True, prior_serial=None):
+        points = self.records/'calibration_points.csv'
+        write_csv(points, [dict(calibration_id='C01', step_no='0', probe_alias='probe_01',
+                               actual_conductivity_us_cm='20', specific_conductivity_us_cm='', temperature_c='')])
+        raw = self.root/'raw/native_calibration.csv'
+        raw.write_text('Device SN = 111\nDate Time,Temperature (°C) (111),Actual Conductivity (µS/cm) (111),'
+                       'Specific Conductivity (µS/cm) (111)\n2026-10-05 11:00:00,10,20,26\n')
+        raw_pin = dict(path='raw/native_calibration.csv', sha256=hashlib.sha256(raw.read_bytes()).hexdigest())
+        overlay = self.root/'salt_dilution/config/calibration_recovered_points.json'
+        overlay.write_text(json.dumps(dict(schema_version=1, sequences=[dict(calibration_id='C01',
+            probe_alias='probe_01', sensor_serial='111', source_csv=raw_pin,
+            points=[dict(step_no='0', source_line=3, local_timestamp='2026-10-05 11:00:00')]) ])))
+        inputs = self.runinfo['inputs']
+        inputs[:] = [i for i in inputs if i['path'] not in ('records/calibration_points.csv','records/provenance.json')]
+        provenance = self.records/'provenance.json'
+        if prior_serial:
+            self.recording('calibration', serial=prior_serial, times=('11:00:00', '11:00:01'))
+            rec = next(r for r in self.inventory() if r['activity'] == 'calibration')
+            self.provenance['calibrations']['C01']['probe_identity_review'] = dict(
+                basis='confirmed_trial_association_and_user_confirmed_within_trial_probe_continuity',
+                trial_id='T01', dataset_id=rec['content_ref'], files=list(rec['files'].values()))
+            provenance.write_text(json.dumps(self.provenance))
+        inputs.extend(dict(path=str(p.relative_to(self.root)), sha256=hashlib.sha256(p.read_bytes()).hexdigest())
+                      for p in (points, provenance, overlay))
+        if include_native_pin:
+            inputs.append(raw_pin)
+        self.runinfo['recovered_native_calibration_serials'] = {'C01': claimed}
+        (self.bundle/'run_info.json').write_text(json.dumps(self.runinfo))
+
+    def test_pinned_recovered_serial_must_equal_reproduced_native_header(self):
+        self.pin_recovered_native_sequence(claimed='222')
+        with self.assertRaisesRegex(ValueError, 'Recovered.*serial.*disagree'):
+            self.run_matcher()
+
+    def test_native_recovery_sources_must_all_be_fit_input_pins(self):
+        self.pin_recovered_native_sequence(include_native_pin=False)
+        with self.assertRaisesRegex(ValueError, 'recovery.*pinned'):
+            self.run_matcher()
+
+    def test_pinned_recovered_serial_establishes_exact_device_identity(self):
+        self.pin_recovered_native_sequence()
+        result = self.run_matcher()
+        check = result['calibration_device_checks']['C01']
+        self.assertEqual(check['device_serial'], '111')
+        self.assertEqual(check['status'], 'verified')
+        edges = list(csv.DictReader((self.root/'output/calibration_candidates.csv').read_text().splitlines()))
+        self.assertEqual(edges[0]['identity_status'], 'native_match')
+
+    def test_recovered_serial_cannot_overwrite_prior_verified_serial(self):
+        self.pin_recovered_native_sequence(prior_serial='222')
+        result = self.run_matcher()
+        check = result['calibration_device_checks']['C01']
+        self.assertEqual(check['status'], 'conflicting')
+        edges = list(csv.DictReader((self.root/'output/calibration_candidates.csv').read_text().splitlines()))
+        self.assertEqual(edges[0]['identity_status'], 'evidence_conflict')
+        self.assertEqual(edges[0]['status'], 'conflicting')
+
+    def pin_recipe_worksheet(self, *, claimed='111', include_worksheet_pin=True):
+        worksheet = self.root/'raw/correction_factors.csv'
+        worksheet.write_text('probe_sn,site,sample_mL,mL_sol_added,conc_sol_added_mg_mL,SC_us_cm,mg_added,cum_mg_added\n'
+                             '111,PR04,300,0,5,24,0,0\n111,PR04,302,2,5,40,10,10\n111,PR04,304,2,5,56,10,20\n')
+        worksheet_pin = dict(path='raw/correction_factors.csv', sha256=hashlib.sha256(worksheet.read_bytes()).hexdigest())
+        overlay = self.root/'salt_dilution/config/calibration_recovered_recipes.json'
+        overlay.write_text(json.dumps(dict(schema_version=1, worksheet=worksheet_pin, direct_stock_preparations=[],
+            worksheet_preparations=[dict(calibration_id='C01', site_code='PR04', sensor_serial='111',
+                source_lines=[2,4], point_source='worksheet', incompatible_notebook_version=False, qualification='Synthetic') ])))
+        self.runinfo['inputs'].append(dict(path=str(overlay.relative_to(self.root)),
+                                           sha256=hashlib.sha256(overlay.read_bytes()).hexdigest()))
+        if include_worksheet_pin:
+            self.runinfo['inputs'].append(worksheet_pin)
+        self.runinfo['worksheet_calibration_serials'] = {'C01': claimed}
+        (self.bundle/'run_info.json').write_text(json.dumps(self.runinfo))
+
+    def test_unpinned_worksheet_calibration_identity_is_rejected(self):
+        self.runinfo['worksheet_calibration_serials'] = {'C01': '111'}
+        (self.bundle/'run_info.json').write_text(json.dumps(self.runinfo))
+        with self.assertRaisesRegex(ValueError, 'worksheet.*pinned'):
+            self.run_matcher()
+
+    def test_worksheet_file_must_be_a_fit_input_pin(self):
+        self.pin_recipe_worksheet(include_worksheet_pin=False)
+        with self.assertRaisesRegex(ValueError, 'worksheet.*pinned'):
+            self.run_matcher()
+
+    def test_worksheet_serial_claim_must_equal_the_source_table(self):
+        self.pin_recipe_worksheet(claimed='222')
+        with self.assertRaisesRegex(ValueError, 'worksheet.*serial.*disagree'):
+            self.run_matcher()
+
+    def test_verified_worksheet_serial_supports_exact_device_pairing(self):
+        self.pin_recipe_worksheet()
+        result = self.run_matcher()
+        check = result['calibration_device_checks']['C01']
+        self.assertEqual(check['device_serial'], '111')
+        self.assertEqual(check['basis'], 'collaborator_calibration_worksheet')
+        self.assertEqual(check['source_reference'], 'raw/correction_factors.csv#L2-L4')
+        edges = list(csv.DictReader((self.root/'output/calibration_candidates.csv').read_text().splitlines()))
+        self.assertEqual(edges[0]['identity_status'], 'source_protocol_match')
 
     def test_reviewed_evidence_file_is_pinned_and_rejects_later_edits(self):
         source=self.root/'field_notes.csv'
@@ -554,6 +669,55 @@ class ChronologyReviewTests(ChronologyFixtures, unittest.TestCase):
         self.overrides['trial_clocks']=[dict(trial_id='T01',utc_offset_seconds=-3600,evidence='clock audit',source_ref='field#1')]
         result=self.match(True)
         self.assertFalse(any(e.get('selected_for_pairing') for e in result['recording_candidates']))
+
+    def field_clock_case(self, day, *, clock='17:00:02', release_utc='', correction=0, sites=('NISQ',)):
+        path = self.recording(utc_offset_seconds=-25200)
+        rows = [dict(timestamp=f'{day} 17:00:{i:02}', timestamp_utc=f'{day}T17:00:{i:02}-07:00',
+                     actual_conductivity_us_cm=20+i) for i in range(8)]
+        write_csv(path, rows)
+        records = matching.reconcile_recordings(self.inventory())
+        self.trials[0].update(field_date=day, dump_timestamp_utc=release_utc)
+        self.provenance['trials']['T01']['source_record'].update(injection_time_local=clock, injection_time_raw=clock)
+        self.overrides['recordings'][0].update(content_ref=records[0]['content_ref'],
+            clock_correction_seconds=correction, clock_basis='measured clock correction')
+        self.overrides['recording_links'][0]['content_ref'] = records[0]['content_ref']
+        field_clock = dict(schema_version=1, site_aliases=list(sites), utc_offset_seconds=-28800,
+                           evidence='Fixed UTC−8 all year', source_ref='participant confirmation')
+        result = matching.match_records(self.trials, self.preps, self.fits, self.provenance,
+                                        records, self.overrides, field_clock=field_clock)
+        return result['recording_candidates'][0]
+
+    def test_field_clock_keeps_native_time_and_rolls_summer_and_winter_into_next_utc_day(self):
+        for day, next_day in (('2026-07-21', '2026-07-22'), ('2026-01-21', '2026-01-22')):
+            with self.subTest(day=day):
+                edge = self.field_clock_case(day)
+                evidence = edge['time_evidence']
+                self.assertTrue(edge['selected_for_pairing'])
+                self.assertEqual(edge['chronology_evidence']['acquisition_start_local'], f'{day} 17:00:00')
+                self.assertEqual(evidence['native_acquisition_start_utc'], f'{next_day} 00:00:00+00:00')
+                self.assertEqual(evidence['effective_acquisition_start_utc'], f'{next_day} 01:00:00+00:00')
+                self.assertEqual(evidence['release_utc'], f'{next_day} 01:00:02+00:00')
+                self.assertEqual(evidence['source_offset_seconds'], -25200)
+                self.assertEqual(evidence['effective_offset_seconds'], -28800)
+                self.assertTrue(evidence['encoded_offset_conflict'])
+                self.assertEqual(edge['chronology_evidence']['release_offset_seconds'], 2)
+
+    def test_field_clock_leaves_explicit_release_utc_intact_and_applies_correction_once(self):
+        edge = self.field_clock_case('2026-07-21', release_utc='2026-07-22T01:00:05Z', correction=2)
+        self.assertTrue(edge['selected_for_pairing'])
+        self.assertEqual(edge['time_evidence']['release_utc'], '2026-07-22 01:00:05+00:00')
+        self.assertEqual(edge['time_evidence']['effective_acquisition_start_utc'], '2026-07-22 01:00:00+00:00')
+        self.assertEqual(edge['chronology_evidence']['reviewed_clock_correction_seconds'], 2)
+        self.assertEqual(edge['chronology_evidence']['release_offset_seconds'], 3)
+
+    def test_shared_field_offset_does_not_change_elapsed_offset_or_expand_scope(self):
+        scoped = self.field_clock_case('2026-07-21', correction=3)
+        unscoped = self.field_clock_case('2026-07-21', correction=3, sites=('PAR',))
+        self.assertEqual(unscoped['time_evidence']['release_utc'], '')
+        self.assertEqual(unscoped['time_evidence']['effective_acquisition_start_utc'], '2026-07-22 00:00:00+00:00')
+        self.assertFalse(unscoped['time_evidence']['encoded_offset_conflict'])
+        self.assertEqual(scoped['chronology_evidence']['release_offset_seconds'], -1)
+        self.assertEqual(unscoped['chronology_evidence']['release_offset_seconds'], -1)
 
     def test_curated_claim_is_compared_with_selected_session(self):
         self.recording('b',times=('12:00:00','12:00:01'))

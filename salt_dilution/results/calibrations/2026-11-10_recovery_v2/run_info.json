@@ -1,0 +1,285 @@
+{
+  "status": "complete_with_skips",
+  "created_at_utc": "2026-11-11T04:18:27.215208+00:00",
+  "git_commit": "ea0d54a4aa5909acf82fe08bb257f8bc052a9105",
+  "code_sha256": "ac85d79a3b80ef482f36b7e2a8516f876f5bff1dafaa664a72e96dc48685730f",
+  "python_version": "3.13.9",
+  "numpy_version": "2.3.5",
+  "conductivity_basis": "both",
+  "fits": 59,
+  "skipped_series": 27,
+  "recovered_native_calibration_serials": {
+    "NISQ-20250731-C01": "680530",
+    "NISQ-20250731-C02": "680530",
+    "NISQ-20250805-C01": "680530",
+    "NISQ-20250805-C02": "680530",
+    "NISQ-20250805-C03": "680530",
+    "NISQ-20250805-C04": "680530",
+    "NISQ-20250808-C01": "680530"
+  },
+  "worksheet_calibration_serials": {
+    "PAR-20260903-C01": "607927",
+    "PAR-20260903-C02": "607927",
+    "PAR-20260903-C03": "607927",
+    "PAR-20260903-C04": "607927",
+    "PAR-20260903-C05": "790481",
+    "PAR-20260903-C07": "683231",
+    "PAR-20260903-C08": "607927",
+    "PAR-20260903-C09": "558407"
+  },
+  "inputs": [
+    {
+      "path": "salt_dilution/data/records/calibrations.csv",
+      "sha256": "becc8fcd3860b0c9fd3c5186f8653990141730eb08e007c96e4a690ac314a177"
+    },
+    {
+      "path": "salt_dilution/data/records/calibration_points.csv",
+      "sha256": "894c560e193baa2ac5bb4ce0fbd16707217680d021381bf3936e332fac913875"
+    },
+    {
+      "path": "salt_dilution/config/procedure_versions.json",
+      "sha256": "636f681f6cb5e469e70be73d06ab364964987854a39b8eb34870b002f9b898f1"
+    },
+    {
+      "path": "salt_dilution/config/calibration_recovered_points.json",
+      "sha256": "d3ed2b2a25caf7b67ec172c885c50ba6745711e5333f0f0d193073ad7646dbc8"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250731/20250731_084717_calibration_680530.csv",
+      "sha256": "b374887ff789c71d922ba62fb2428b0ba706638ada87e500545b9d33efb3714a"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250731/LiveReadings/VuSitu_LiveReadings_2025-07-31_08-47-17_Device_Location.html",
+      "sha256": "674f88c7591eac681f7562b45543fbbdd60b8ea917677307a2693cbb750a19e1"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250731/20250731_090210_calibration_680530.csv",
+      "sha256": "f508237e73d1894ad3a52c10620c7464e2e19ccbdc26124a8ca62c790ebe3c43"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250731/LiveReadings/VuSitu_LiveReadings_2025-07-31_09-02-10_Device_Location.html",
+      "sha256": "1fb083122b115b98f765a47a5d6927cc2570bc86998c84e3288546464d198e16"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250805/20250805_092215_calibration_680530.csv",
+      "sha256": "44cb127459f3b8805110bb5d1532410e76477c0d0f04cd0c90c8f5499d17651f"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250805/LiveReadings/VuSitu_LiveReadings_2025-08-05_09-22-15_Device_Location.html",
+      "sha256": "5876a335f384918bcb695b246e4a3ed90a0b8f414184300655e0a035f381ebb9"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250805/20250805_093720_calibration_680530.csv",
+      "sha256": "faa29f1d921463f60898d973ee8f4c7cbefb29f5a0f887e6fe56e2ea13c38037"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250805/LiveReadings/VuSitu_LiveReadings_2025-08-05_09-37-20_Device_Location.html",
+      "sha256": "b52019568d425d213b4a9afbf67ce4d227d04bce912d9f57b8cb6ac8fcdf6d2d"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250805/20250805_172900_calibration_680530.csv",
+      "sha256": "39b3bf44311030372092bf3ccf607ec570c228a09bbabf32206b248a57d899d5"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250805/LiveReadings/VuSitu_LiveReadings_2025-08-05_17-29-00_Device_Location.html",
+      "sha256": "8bca56303d4845fa685a5feceef89f198f017604e28264ab283e7463be967a4a"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250805/20250805_174314_calibration_680530.csv",
+      "sha256": "aeec920ca9183f0a952f8306c48625fc1a431e6e4112f210518caa38c2f68b1f"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250805/LiveReadings/VuSitu_LiveReadings_2025-08-05_17-43-14_Device_Location.html",
+      "sha256": "8f687f85893ec5c6fb176b14a297e7b25904168d4081cd359f4b8ed4c1d34c96"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250808/20250808_101105_calibration_680530.csv",
+      "sha256": "32ac37ccd106a094894fbd335b1df71c5ddf943b6deaf9c52c47c711e1bc2a5a"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250808/LiveReadings/VuSitu_LiveReadings_2025-08-08_10-11-05_Device_Location.html",
+      "sha256": "9ddca65c7a4877349d62d43dbed2943761d61e88b52fb74aa39f735021f802b8"
+    },
+    {
+      "path": "salt_dilution/config/calibration_recovered_recipes.json",
+      "sha256": "08df00c2d4931df29dbf01749822252fbf8da5392f5e492eedc2c7f49c9b4251"
+    },
+    {
+      "path": "salt_dilution/data/raw/wrd_sample/correction_factors.csv",
+      "sha256": "f7327a114fb54e9bb287a11dbd7e5ec391ddb2ea8f4a39da1ee3d8ddca47d6c0"
+    },
+    {
+      "path": "salt_dilution/data/records/provenance.json",
+      "sha256": "1f1a70c2cc755e742c1c7fb0aeca969ffcff674395b29ea69e6912584089cd6b"
+    }
+  ],
+  "scope": "Provisional calibration fits only. No stream-window selection, discharge, or staff acceptance.",
+  "stock_volume_policy": "Measured final volume when supplied; otherwise recorded preparation-water volume under the user-confirmed working protocol. No CSV values inferred.",
+  "fit_definition": "Concentration = k * conductivity + intercept. K is the free-intercept OLS slope; units and channel are saved per fit.",
+  "outputs": [
+    {
+      "path": "calibration_fits.csv",
+      "sha256": "7cf4a40f25ab0b3bda3568d37ad4f3c6908f4f29150097a6c16ced0068665edd"
+    },
+    {
+      "path": "calibration_points.csv",
+      "sha256": "54d023ffd5c1cb926b186ddfda655e7c8c20ca34b5224c881fa69f6ff86c8421"
+    },
+    {
+      "path": "calibration_skips.csv",
+      "sha256": "0894847a102818fde5f99cde11f564275f2d4c1ed96228b33a25a5d82813a1cd"
+    },
+    {
+      "path": "figures/NISQ-20250709-C04_probe_02.png",
+      "sha256": "70b9c5e54fbfe54c856ce03c7603c9b9d1e6cf8bdbeddb73eb0868c6ee2da685"
+    },
+    {
+      "path": "figures/NISQ-20250717-C01_probe_03.png",
+      "sha256": "66536901ba241e61c6327aec74f7b3bfcbaa068800c19c7590f784174ef8524c"
+    },
+    {
+      "path": "figures/NISQ-20250717-C02_probe_03.png",
+      "sha256": "80eb83198ec3d822199381cd124dadc42e7be98ecb497a478798b8fe1658229f"
+    },
+    {
+      "path": "figures/NISQ-20250724-C01_probe_01.png",
+      "sha256": "95cf7807bb1c4cb5881edbd0319a9103a116ac52e3a73852baea58fca4b87578"
+    },
+    {
+      "path": "figures/NISQ-20250731-C01_probe_01.png",
+      "sha256": "519e204c9e8fd267ae73cdeb81d3ec98a36e283807400f5c73f6d45a320cfe8e"
+    },
+    {
+      "path": "figures/NISQ-20250731-C02_probe_01.png",
+      "sha256": "3d65127fde81a9176f082b5dcbcd3570ad8cb353b9a398c5bd1fc5e70f386e8b"
+    },
+    {
+      "path": "figures/NISQ-20250805-C01_probe_01.png",
+      "sha256": "430ff86c75f99e5c3cbf61a445845a174c6ccfcf6392fe7c68289bafb7c2403c"
+    },
+    {
+      "path": "figures/NISQ-20250805-C02_probe_01.png",
+      "sha256": "e8345fac41b7cc181eff3f9facc86b2c87928f40e9d6a487f9aaa7924ea524ae"
+    },
+    {
+      "path": "figures/NISQ-20250805-C03_probe_01.png",
+      "sha256": "5d34f8cf09a63013f0cfa20a9262b3c60f81a8ccee25a79120c010c0fa78448f"
+    },
+    {
+      "path": "figures/NISQ-20250805-C04_probe_01.png",
+      "sha256": "c3275e59577c8f09198c41e4e0561ea0dfc132295cd4aa89766049fd01cffb2d"
+    },
+    {
+      "path": "figures/NISQ-20250808-C01_probe_01.png",
+      "sha256": "bac734bc26d0b9e38754d8bd50b41bbd30550450a684f5c9178da2162c3a7324"
+    },
+    {
+      "path": "figures/NISQ-20250903-C01_probe_02.png",
+      "sha256": "2ddc585e5fad986d13255aa6424bd47dcf7f5c29cbe0870f79eb88abb15c761b"
+    },
+    {
+      "path": "figures/NISQ-20250903-C02_probe_02.png",
+      "sha256": "c401e17c11057fa83c0bf3fa226ce519f5e4acae3f6db3b3f61882a037a85583"
+    },
+    {
+      "path": "figures/NISQ-20250917-C01_probe_02.png",
+      "sha256": "735dc0553c7ed732699ab9ddec12f67b3f7c532cb1a7525a282fe2b050330d24"
+    },
+    {
+      "path": "figures/NISQ-20250917-C02_probe_02.png",
+      "sha256": "baf84593a1ef99ed7cd3f2d37a9dc8d9fb7148a29654b28b3b54afb67b3a864c"
+    },
+    {
+      "path": "figures/NISQ-20250917-C03.png",
+      "sha256": "b61ee0b770bdf72e51ee2e73cbed3af00afadc2ab69efa32f4203c3cf785406f"
+    },
+    {
+      "path": "figures/NISQ-20250917-C04.png",
+      "sha256": "e9260b6ab95ca82a7f9129f16a8e83baf165e5ce7ba4f8c6911aaa7407829aba"
+    },
+    {
+      "path": "figures/NISQ-20260716-C01.png",
+      "sha256": "1e47ba43e97834d5abb31aa94219196a9a2249b05f2bc0d56e0a4d9a30f251f3"
+    },
+    {
+      "path": "figures/NISQ-20260721-C01.png",
+      "sha256": "f60f0de70fafcc42460c51d917199b454134757ff3ade81ac9b727c6a6437b2e"
+    },
+    {
+      "path": "figures/NISQ-20260806-C01.png",
+      "sha256": "7a527330f7d9658d2654b41712ba7525d6248e997047fe5b1372045c70b1372c"
+    },
+    {
+      "path": "figures/NISQ-20260918-C02.png",
+      "sha256": "1c2844a100dcc6ada916c007cee2ad9f71a4e7ac699b1afed49815cb23171a85"
+    },
+    {
+      "path": "figures/NISQ-20261002-C01_probe_03.png",
+      "sha256": "b63d4b3bd54b962c2aa80ff07fbcf60a3db462f910ab0db38baecfd27381420f"
+    },
+    {
+      "path": "figures/NISQ-20261002-C02_probe_03.png",
+      "sha256": "e52556da719025e448ba0d295f35cf4ebac80d90832b2ffc06e0310f32cb2aac"
+    },
+    {
+      "path": "figures/NISQ-20261004-C01_probe_03.png",
+      "sha256": "b834b39a6381185fad3276af47c02ce886b95d2f304a1da189f54de192cc2597"
+    },
+    {
+      "path": "figures/NISQ-20261004-C02_probe_03.png",
+      "sha256": "5c72be767ef94555a6b4c5afbd144b173526056263beb43b904ecec184d962f8"
+    },
+    {
+      "path": "figures/NISQ-20261004-C03_probe_03.png",
+      "sha256": "6f8fbeb35c348df66bbd8ea0c8e8e5b12ca3c3cf18a43c38cd25eb526ff0c595"
+    },
+    {
+      "path": "figures/NISQ-20261004-C04_probe_03.png",
+      "sha256": "dc6b34ee2b34ae60b38d94b5160863d1129f828d93271a8b3f1cc64923603b98"
+    },
+    {
+      "path": "figures/NISQ-20261005-C01_probe_03.png",
+      "sha256": "215f73e11971a83a080bd275469eceade82cfaf5c0daa5787817e4d3a4e625da"
+    },
+    {
+      "path": "figures/NISQ-20261005-C02_probe_03.png",
+      "sha256": "e63be878f4281b0b7f2be7d977114ce0962b2dc9086c112d7b74d3cb0e3b087f"
+    },
+    {
+      "path": "figures/NISQ-20261005-C03_probe_03.png",
+      "sha256": "e9853084821b268be7642246228f45aa60b33c0214198abebe6f25762598972b"
+    },
+    {
+      "path": "figures/PAR-20260903-C01.png",
+      "sha256": "9f252a7205144eebb041290cf14b601f770a63345f82652ff2cfde66d46b50ad"
+    },
+    {
+      "path": "figures/PAR-20260903-C02.png",
+      "sha256": "3b04fa25f35601393c09b320eaee5d336e1ced20df58bdb20767171cb7b3542b"
+    },
+    {
+      "path": "figures/PAR-20260903-C03.png",
+      "sha256": "768f44a9aa9769387eae395e69e7030cf3e6a1ec386cdb1cfe0b1b81500fea23"
+    },
+    {
+      "path": "figures/PAR-20260903-C04.png",
+      "sha256": "059b1c2b34deb868a2ad84dcbe1a49780a8830e2c2a2191558b03cf5508af5d2"
+    },
+    {
+      "path": "figures/PAR-20260903-C05.png",
+      "sha256": "c95a7059b49352d0dd0d7a0fc228eb2e50acc705000682f3565dd60365223def"
+    },
+    {
+      "path": "figures/PAR-20260903-C07.png",
+      "sha256": "135fe120b49eb6d0f03d96d60e57ba95f1aa3cf35fd3b60f140a313a6e67dec6"
+    },
+    {
+      "path": "figures/PAR-20260903-C08.png",
+      "sha256": "1b11e42c10e6282a0847741b24a45e0b64bae7c673a63cb2354d4fca4e953af5"
+    },
+    {
+      "path": "figures/PAR-20260903-C09.png",
+      "sha256": "6393a9d9740e2b098a56498943c771146c0589b28d53b41240338755540624ce"
+    }
+  ]
+}

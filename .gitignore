@@ -40,6 +40,8 @@ __pycache__/
 # Small calibration coefficients, point calculations and diagnostic figures.
 !/salt_dilution/results/calibrations/
 !/salt_dilution/results/calibrations/**
+# Exploratory recovery run; the selected recovery_v2 bundle is retained above.
+/salt_dilution/results/calibrations/2026-11-10_recovery/
 
 # Selected compact pairing evidence; exploratory runs and MLflow remain local.
 !/salt_dilution/results/matching/

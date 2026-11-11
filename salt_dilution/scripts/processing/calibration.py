@@ -22,6 +22,9 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[3]
 PROFILES = ROOT / 'salt_dilution/config/procedure_versions.json'
+DEFAULT_RECORDS = ROOT / 'salt_dilution/data/records'
+RECOVERY = PROFILES.with_name('calibration_recovered_points.json')
+RECIPE_RECOVERY = PROFILES.with_name('calibration_recovered_recipes.json')
 
 
 def _number(value, field, *, positive=False):
@@ -51,11 +54,15 @@ def fit_calibration(preparation, points, *, conductivity_basis='specific'):
                        'calibration_water_initial_ml', positive=True)
     stock_volume, stock_basis = '', ''
     if profile['calibration_basis'] == 'mass_concentration':
-        mass = _number(preparation.get('stock_salt_mass_g'), 'stock_salt_mass_g', positive=True)
-        stock_basis = ('stock_solution_final_ml' if preparation.get('stock_solution_final_ml')
-                       else 'stock_water_initial_ml')
-        stock_volume = _number(preparation.get(stock_basis), stock_basis, positive=True)
-        stock_concentration = mass * 1_000_000 / stock_volume  # g and mL -> mg/L
+        if preparation.get('stock_solution_concentration_mg_ml'):
+            stock_basis = 'stock_solution_concentration_mg_ml'
+            stock_concentration = _number(preparation[stock_basis], stock_basis, positive=True) * 1000
+        else:
+            mass = _number(preparation.get('stock_salt_mass_g'), 'stock_salt_mass_g', positive=True)
+            stock_basis = ('stock_solution_final_ml' if preparation.get('stock_solution_final_ml')
+                           else 'stock_water_initial_ml')
+            stock_volume = _number(preparation.get(stock_basis), stock_basis, positive=True)
+            stock_concentration = mass * 1_000_000 / stock_volume  # g and mL -> mg/L
         unit = 'mg/L'
     else:
         aliquot = _number(preparation.get('injectate_aliquot_ml'), 'injectate_aliquot_ml', positive=True)
@@ -69,7 +76,7 @@ def fit_calibration(preparation, points, *, conductivity_basis='specific'):
     probes = {row.get('probe_alias', '') for row in ordered} - {''}
     if len(probes) > 1:
         raise ValueError('Fit each calibration probe series separately')
-    derived, total, previous = [], 0.0, 0.0
+    derived, total, minimum_total = [], 0.0, 0.0
     column = conductivity_basis + '_conductivity_us_cm'
     for row in ordered:
         if row['calibration_id'] != preparation['calibration_id']:
@@ -86,12 +93,14 @@ def fit_calibration(preparation, points, *, conductivity_basis='specific'):
             raise ValueError('Added volumes must be nonnegative')
         if kind == 'incremental':
             total = total + added if total is not None and added is not None else None
+            if added is not None:
+                minimum_total += added
         else:
-            if added is not None and added < previous:
+            if added is not None and added < minimum_total and not math.isclose(added, minimum_total):
                 raise ValueError('Cumulative volume decreases; split restarted preparations')
             total = added
             if added is not None:
-                previous = added
+                minimum_total = added
         if total is None:
             issue = issue or 'cumulative_volume_unknown_after_missing_increment'
         concentration = stock_concentration * total / (receiver + total) if total is not None else None
@@ -112,7 +121,12 @@ def fit_calibration(preparation, points, *, conductivity_basis='specific'):
                             recorded_vessel_volume_ml=written_volume, vessel_volume_difference_ml=discrepancy,
                             conductivity_us_cm=ec, concentration=concentration, concentration_unit=unit,
                             used_in_fit=not issue, exclusion_reason=issue,
-                            sourcebook_reference=row.get('sourcebook_reference', '')))
+                            sourcebook_reference=row.get('sourcebook_reference', ''),
+                            temperature_c=row.get('temperature_c', ''),
+                            native_temperature_c=row.get('native_temperature_c', ''),
+                            native_measurement_source=row.get('native_measurement_source', ''),
+                            native_local_timestamp=row.get('native_local_timestamp', ''),
+                            native_sensor_serial=row.get('native_sensor_serial', '')))
     selected = [row for row in derived if row['used_in_fit']]
     if len(selected) < 3:
         raise ValueError(f'Fewer than three usable {conductivity_basis} conductivity/addition pairs')
@@ -140,7 +154,12 @@ def fit_calibration(preparation, points, *, conductivity_basis='specific'):
                stock_volume_ml=stock_volume, stock_volume_basis=stock_basis,
                stock_concentration=stock_concentration, stock_concentration_unit=unit,
                stock_salt_mass_g=preparation.get('stock_salt_mass_g', ''),
+               stock_water_source=preparation.get('stock_water_source', ''),
                calibration_water_initial_ml=receiver,
+               recipe_source_reference=preparation.get('recipe_source_reference', ''),
+               source_variant=preparation.get('source_variant', 'curated_notebook'),
+               incompatible_notebook_version=preparation.get('incompatible_notebook_version', False),
+               recipe_qualification=preparation.get('recipe_qualification', ''),
                vessel_disagreement_points=sum(abs(row['vessel_volume_difference_ml'] or 0) > .01 for row in derived),
                status='provisional')
     return fit, derived
@@ -149,6 +168,140 @@ def fit_calibration(preparation, points, *, conductivity_basis='specific'):
 def _read_csv(path):
     with path.open(newline='', encoding='utf-8-sig') as stream:
         return list(csv.DictReader(stream))
+
+
+def read_calibration_points(records_dir, *, recovery_path=None, root=ROOT):
+    """Apply verified native readings to blank cells in a fresh copy of the points."""
+    rows = _read_csv(Path(records_dir) / 'calibration_points.csv')
+    if recovery_path is None:
+        return rows, []
+    recovery_path, root = Path(recovery_path).resolve(), Path(root).resolve()
+    recovery = json.loads(recovery_path.read_text())
+    if recovery['schema_version'] != 1:
+        raise ValueError('Unsupported native calibration recovery schema')
+    pins = [recovery_path]
+    keys = {(row['calibration_id'], row.get('probe_alias', ''), row['step_no']): row for row in rows}
+    matched = set()
+    for sequence in recovery['sequences']:
+        identity, alias, serial = (sequence[k] for k in ('calibration_id', 'probe_alias', 'sensor_serial'))
+        for pin in (sequence['source_csv'], *sequence.get('duplicate_exports', [])):
+            path = (root / pin['path']).resolve()
+            if (not path.is_relative_to(root) or not path.is_file()
+                    or hashlib.sha256(path.read_bytes()).hexdigest() != pin['sha256']):
+                raise ValueError(f'Native calibration source hash mismatch: {pin["path"]}')
+            pins.append(path)
+        source = root / sequence['source_csv']['path']
+        with source.open(newline='', encoding='utf-8-sig') as stream:
+            raw = list(csv.reader(stream))
+        header_index = next(i for i, line in enumerate(raw) if line and line[0] == 'Date Time')
+        if [f'Device SN = {serial}'] not in raw[:header_index]:
+            raise ValueError(f'Native calibration serial mismatch: {source}')
+        header = raw[header_index]
+        temperature, actual, specific = (header.index(f'{label} ({serial})') for label in (
+            'Temperature (°C)', 'Actual Conductivity (µS/cm)', 'Specific Conductivity (µS/cm)'))
+        previous_step, previous_line = -1, header_index + 1
+        for point in sequence['points']:
+            step, line = int(point['step_no']), point['source_line']
+            key = (identity, alias, str(step))
+            if key not in keys or key in matched or step <= previous_step or not previous_line < line <= len(raw):
+                raise ValueError(f'Invalid or duplicate native calibration point: {key}, line {line}')
+            row, sample = keys[key], raw[line - 1]
+            recorded = _number(row['actual_conductivity_us_cm'], 'recorded actual conductivity')
+            if sample[0] != point['local_timestamp'] or abs(float(sample[actual]) - recorded) > .005001:
+                raise ValueError(f'Native calibration reading does not match the recorded step: {key}')
+            if row['specific_conductivity_us_cm']:
+                raise ValueError(f'Native calibration recovery would replace a recorded value: {key}')
+            _number(sample[specific], 'native specific conductivity', positive=True)
+            _number(sample[temperature], 'native temperature')
+            row.update(specific_conductivity_us_cm=sample[specific], native_temperature_c=sample[temperature],
+                       native_measurement_source=f'{sequence["source_csv"]["path"]}#L{line}',
+                       native_local_timestamp=sample[0], native_sensor_serial=serial)
+            if not row['temperature_c']:
+                row['temperature_c'] = sample[temperature]
+            previous_step, previous_line = step, line
+            matched.add(key)
+    return rows, list(dict.fromkeys(pins))
+
+
+def apply_recipe_recovery(preparations, observations, provenance, recovery_path, *, root=ROOT):
+    """Apply source-linked recipes and complete worksheet variants in memory."""
+    if recovery_path is None:
+        return preparations, observations, [], {}
+    recovery_path, root = Path(recovery_path).resolve(), Path(root).resolve()
+    config = json.loads(recovery_path.read_text())
+    if config['schema_version'] != 1:
+        raise ValueError('Unsupported calibration recipe recovery schema')
+    worksheet = config['worksheet']
+    worksheet_path = (root / worksheet['path']).resolve()
+    if (not worksheet_path.is_relative_to(root) or not worksheet_path.is_file()
+            or hashlib.sha256(worksheet_path.read_bytes()).hexdigest() != worksheet['sha256']):
+        raise ValueError(f'Calibration worksheet source hash mismatch: {worksheet["path"]}')
+    worksheet_rows = _read_csv(worksheet_path)
+    by_id = {row['calibration_id']: dict(row) for row in preparations}
+    updates, identities = {}, {}
+    for review in config['direct_stock_preparations']:
+        identity, stock = review['calibration_id'], review['stock_id']
+        prep = by_id[identity]
+        evidence = provenance['calibrations'][identity]
+        record = evidence['source_record']
+        stages = [s for s in evidence['stock_stages'] if s['stock_id'] == stock]
+        if (record['stock_id'] != stock or record['method_family'] != 'mass_stock' or len(stages) != 1
+                or stages[0]['parent_stock_id'] or stages[0]['parent_aliquot_ml']):
+            raise ValueError(f'Direct-stock lineage does not match the recorded preparation: {identity}')
+        stage = stages[0]
+        prep.update(procedure_id='mass_stock_river',
+                    stock_water_source='river' if stage['solvent'] == 'river_water' else 'unknown',
+                    stock_salt_mass_g=stage['salt_mass_g'], stock_water_initial_ml=stage['starting_water_ml'],
+                    stock_solution_final_ml=stage['measured_final_solution_ml'],
+                    recipe_source_reference=f'{prep["sourcebook_reference"]};stock={stock}',
+                    source_variant='notebook_direct_stock_lineage', recipe_qualification=review['qualification'])
+    for review in config['worksheet_preparations']:
+        identity, serial = review['calibration_id'], review['sensor_serial']
+        prep = by_id[identity]
+        first, last = review['source_lines']
+        series = worksheet_rows[first - 2:last - 1]
+        if (not 2 <= first <= last <= len(worksheet_rows) + 1 or len(series) < 3
+                or {(row['site'], row['probe_sn']) for row in series} != {(review['site_code'], serial)}
+                or review['point_source'] not in ('notebook', 'worksheet')):
+            raise ValueError(f'Worksheet preparation identity or point source mismatch: {identity}')
+        receiver = _number(series[0]['sample_mL'], 'worksheet initial receiver', positive=True)
+        stock = _number(series[0]['conc_sol_added_mg_mL'], 'worksheet stock concentration', positive=True)
+        reference = f'{worksheet["path"]}#L{first}-L{last}'
+        prep.update(stock_solution_concentration_mg_ml=stock, stock_water_initial_ml='', stock_solution_final_ml='',
+                    recipe_source_reference=reference, recipe_qualification=review['qualification'],
+                    source_variant=('collaborator_worksheet' if review['point_source'] == 'worksheet'
+                                    else 'notebook_with_worksheet_stock_concentration'),
+                    incompatible_notebook_version=review['incompatible_notebook_version'])
+        identities[identity] = dict(device_serial=serial, site_code=review['site_code'], source_reference=reference)
+        from_worksheet, cumulative = [], 0.0
+        for step, row in enumerate(series):
+            amount = _number(row['mL_sol_added'], 'worksheet added volume')
+            cumulative += amount
+            volume = _number(row['sample_mL'], 'worksheet sample volume', positive=True)
+            if (amount < 0 or (step == 0 and amount != 0)
+                    or float(row['conc_sol_added_mg_mL']) != stock
+                    or not math.isclose(float(row['mg_added']), amount * stock)
+                    or not math.isclose(float(row['cum_mg_added']), cumulative * stock)):
+                raise ValueError(f'Worksheet stock or dose does not reconcile: {identity}, step {step}')
+            if review['point_source'] == 'worksheet' and not math.isclose(volume, receiver + cumulative, abs_tol=.01):
+                raise ValueError(f'Worksheet receiver volume does not reconcile: {identity}, step {step}')
+            from_worksheet.append(dict(calibration_id=identity, probe_alias='', step_no=str(step),
+                                       addition_kind='cumulative', recorded_added_volume_ml=str(cumulative),
+                                       recorded_vessel_volume_ml=row['sample_mL'], actual_conductivity_us_cm='',
+                                       specific_conductivity_us_cm=row['SC_us_cm'], temperature_c='',
+                                       sourcebook_reference=f'{worksheet["path"]}#L{first + step}'))
+        if review['point_source'] == 'worksheet':
+            prep['calibration_water_initial_ml'] = receiver
+            updates[identity] = from_worksheet
+        else:
+            notebook = sorted((r for r in observations if r['calibration_id'] == identity), key=lambda r: int(r['step_no']))
+            pairs = lambda rows: [(float(r['recorded_added_volume_ml']), float(r['specific_conductivity_us_cm'])) for r in rows]
+            if (float(prep['calibration_water_initial_ml']) != receiver
+                    or any(r['addition_kind'] != 'cumulative' for r in notebook)
+                    or pairs(notebook) != pairs(from_worksheet)):
+                raise ValueError(f'Notebook and worksheet calibration anchors disagree: {identity}')
+    retained = [row for row in observations if row['calibration_id'] not in updates]
+    return list(by_id.values()), retained + [row for rows in updates.values() for row in rows], [recovery_path, worksheet_path], identities
 
 
 def _write_csv(path, rows):
@@ -199,7 +352,13 @@ def run_calibrations(records_dir, output_dir, *, conductivity_basis='specific'):
     if any(basis not in ('specific', 'actual') for basis in bases):
         raise ValueError('Choose actual, specific or both conductivity bases')
     preparations = _read_csv(records_dir / 'calibrations.csv')
-    observations = _read_csv(records_dir / 'calibration_points.csv')
+    recovery_path = RECOVERY if records_dir.resolve() == DEFAULT_RECORDS and RECOVERY.is_file() else None
+    observations, recovery_pins = read_calibration_points(records_dir, recovery_path=recovery_path)
+    provenance_path = records_dir / 'provenance.json'
+    provenance = json.loads(provenance_path.read_text()) if provenance_path.is_file() else {}
+    recipe_path = RECIPE_RECOVERY if recovery_path and RECIPE_RECOVERY.is_file() else None
+    preparations, observations, recipe_pins, worksheet_identities = apply_recipe_recovery(
+        preparations, observations, provenance, recipe_path)
     identities = [row['calibration_id'] for row in preparations]
     if len(identities) != len(set(identities)):
         raise ValueError('Duplicate preparation IDs')
@@ -210,8 +369,6 @@ def run_calibrations(records_dir, output_dir, *, conductivity_basis='specific'):
         raise ValueError('Duplicate or orphan calibration points')
     if any(probe and not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]*', probe) for _, probe, _ in keys):
         raise ValueError('Use file-safe probe aliases')
-    provenance_path = records_dir / 'provenance.json'
-    provenance = json.loads(provenance_path.read_text()) if provenance_path.is_file() else {}
     fits, derived, skips = [], [], []
     grouped = defaultdict(list)
     for row in observations:
@@ -248,7 +405,7 @@ def run_calibrations(records_dir, output_dir, *, conductivity_basis='specific'):
         _write_csv(stage / 'calibration_fits.csv', fits)
         _write_csv(stage / 'calibration_points.csv', derived)
         _write_csv(stage / 'calibration_skips.csv', skips)
-        inputs = [records_dir / 'calibrations.csv', records_dir / 'calibration_points.csv', PROFILES]
+        inputs = [records_dir / 'calibrations.csv', records_dir / 'calibration_points.csv', PROFILES, *recovery_pins, *recipe_pins]
         if provenance_path.is_file():
             inputs.append(provenance_path)
         git = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=ROOT, capture_output=True, text=True)
@@ -257,6 +414,9 @@ def run_calibrations(records_dir, output_dir, *, conductivity_basis='specific'):
                     code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                     python_version=platform.python_version(), numpy_version=np.__version__,
                     conductivity_basis=conductivity_basis, fits=len(fits), skipped_series=len(skips),
+                    recovered_native_calibration_serials={row['calibration_id']: row['native_sensor_serial']
+                                                          for row in observations if row.get('native_sensor_serial')},
+                    worksheet_calibration_serials={identity: item['device_serial'] for identity, item in worksheet_identities.items()},
                     inputs=[dict(path=str(path.resolve().relative_to(ROOT)) if path.resolve().is_relative_to(ROOT) else path.name,
                                  sha256=hashlib.sha256(path.read_bytes()).hexdigest()) for path in inputs],
                     scope='Provisional calibration fits only. No stream-window selection, discharge, or staff acceptance.',

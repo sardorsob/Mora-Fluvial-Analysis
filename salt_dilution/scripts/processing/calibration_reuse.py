@@ -91,7 +91,7 @@ def write_run_info(stage, pins, **details):
 
 
 def classify_fit(fit, prep, evidence, device, *, site='NISQ'):
-    if prep['site_alias']!=site:
+    if site is not None and prep['site_alias']!=site:
         return 'out_of_scope_site', ['site_excluded']
     status=evidence.get('source_table_status',evidence.get('source_record',{}).get('source_table_status',''))
     if status in ('abandoned','crossed_out'):
@@ -99,17 +99,22 @@ def classify_fit(fit, prep, evidence, device, *, site='NISQ'):
     if not fit.get('k'):
         return 'not_fitted', [fit.get('reason','no_saved_fit')]
     source_method=evidence.get('source_record',{}).get('method_family','')
-    if source_method=='mass_stock' and fit.get('calibration_basis')=='relative_concentration':
-        return 'method_conflict_isolated', ['source_mass_stock_but_saved_relative_fit']
     if fit.get('calibration_basis')=='relative_concentration':
+        if (fit.get('concentration_unit') != 'mL/mL' or fit.get('coefficient_unit') != '(mL/mL) / (uS/cm)'
+                or not math.isfinite(float(fit['k'])) or float(fit['k']) <= 0):
+            return 'not_fitted', ['invalid_relative_coefficient_or_units']
+        if source_method == 'mass_stock':
+            return 'method_conflict_isolated', ['source_mass_stock_but_saved_relative_fit']
         return 'relative_only', ['relative_injectate_not_mass_concentration']
     if (fit.get('calibration_basis')!='mass_concentration' or fit.get('concentration_unit')!='mg/L'
             or fit.get('coefficient_unit')!='(mg/L) / (uS/cm)' or not math.isfinite(float(fit['k'])) or float(fit['k'])<=0):
         return 'not_fitted', ['invalid_mass_coefficient_or_units']
     required=('stock_salt_mass_g','calibration_water_initial_ml')
     volume=prep.get('stock_solution_final_ml') or prep.get('stock_water_initial_ml')
-    if not volume or any(not prep.get(k) for k in required):
+    if not (volume or prep.get('stock_solution_concentration_mg_ml')) or any(not prep.get(k) for k in required):
         return 'not_fitted', ['recipe_incomplete']
+    if prep.get('incompatible_notebook_version'):
+        return 'mass_trial_only', ['alternate_worksheet_calibration_source_version']
     if device.get('status')=='verified' and device.get('device_serial') and status=='recorded':
         return 'mass_library_eligible', []
     return 'mass_trial_only', ['calibration_identity_or_disposition_unverified']
@@ -123,6 +128,35 @@ def slope_se(x, residuals):
     if sxx<=0:
         raise ValueError('Conductivity has no variation')
     return float(np.sqrt(np.sum(residuals**2)/(len(x)-2)/sxx))
+
+
+def point_selection_diagnostics(points, k):
+    """Describe sensitivity to complete dose steps without selecting a new fit."""
+    used = [p for p in points if str(p['used_in_fit']).lower() == 'true']
+    x = np.array([float(p['conductivity_us_cm']) for p in used])
+    y = np.array([float(p['concentration']) for p in used])
+    residuals = np.array([float(p['residual']) for p in used])
+    slopes = {}
+    if len(x) >= 4:
+        for i, point in enumerate(used):
+            keep = np.arange(len(x)) != i
+            if np.ptp(x[keep]) > 0:
+                slopes[point['step_no']] = float(stats.linregress(x[keep], y[keep]).slope)
+    quadratic_reduction = None
+    sse = float(np.dot(residuals, residuals))
+    if len(x) >= 5 and len(set(x)) >= 3 and sse > np.finfo(float).eps * np.dot(y, y):
+        scaled = (x - x.mean()) / np.ptp(x)
+        quadratic = np.polynomial.Polynomial.fit(scaled, y, 2)(scaled)
+        quadratic_reduction = float(np.clip(1 - np.sum((y - quadratic) ** 2) / sse, 0, 1))
+    return dict(point_selection_rule='all_usable_dose_steps' if used else '',
+                used_dose_steps=[p['step_no'] for p in used],
+                excluded_dose_steps={p['step_no']: p['exclusion_reason'] for p in points
+                                     if str(p['used_in_fit']).lower() != 'true'},
+                calibration_ec_span_us_cm=float(np.ptp(x)) if used else None,
+                dose_residuals={p['step_no']: float(p['residual']) for p in used},
+                leave_one_dose_k=slopes,
+                max_abs_leave_one_dose_k_relative_effect=max((abs(v / k - 1) for v in slopes.values()), default=None),
+                quadratic_sse_reduction_fraction=quadratic_reduction)
 
 
 def method_candidate(prep, points, saved):
@@ -139,9 +173,22 @@ def method_candidate(prep, points, saved):
 
 def audit_calibrations(records_dir, calibration_dir, pairing_dir, *, site='NISQ'):
     read=calibration._read_csv
-    preps={p['calibration_id']:p for p in read(Path(records_dir)/'calibrations.csv')}
-    source=read(Path(records_dir)/'calibration_points.csv')
+    preparations=read(Path(records_dir)/'calibrations.csv')
+    calibration_run = Path(calibration_dir) / 'run_info.json'
+    inputs = json.loads(calibration_run.read_text()).get('inputs', []) if calibration_run.is_file() else []
+    recovery_paths = {}
+    for pin in inputs:
+        name = Path(pin['path']).name
+        if name in (calibration.RECOVERY.name, calibration.RECIPE_RECOVERY.name):
+            path = matching._path(pin['path'], ROOT)
+            if matching._hash(path) != pin['sha256']:
+                raise ValueError(f'Stale calibration recovery pin: {path}')
+            recovery_paths[name] = path
+    source, _ = calibration.read_calibration_points(records_dir, recovery_path=recovery_paths.get(calibration.RECOVERY.name))
     provenance=json.loads((Path(records_dir)/'provenance.json').read_text())
+    preparations, source, _, _ = calibration.apply_recipe_recovery(
+        preparations, source, provenance, recovery_paths.get(calibration.RECIPE_RECOVERY.name))
+    preps = {p['calibration_id']: p for p in preparations}
     bundle=json.loads((Path(pairing_dir)/'run_info.json').read_text())
     derived=read(Path(calibration_dir)/'calibration_points.csv')
     series=read(Path(calibration_dir)/'calibration_fits.csv')+read(Path(calibration_dir)/'calibration_skips.csv')
@@ -151,22 +198,37 @@ def audit_calibrations(records_dir, calibration_dir, pairing_dir, *, site='NISQ'
         prep,evidence=preps[cid],provenance['calibrations'].get(cid,{})
         device=bundle.get('calibration_device_checks',{}).get(cid,{})
         kind,reasons=classify_fit(fit,prep,evidence,device,site=site)
-        used=[p for p in derived if p['calibration_id']==cid and p['conductivity_basis']==basis
-              and p['probe_alias']==fit.get('probe_alias','') and p['used_in_fit'].lower()=='true']
+        dose_points=[p for p in derived if p['calibration_id']==cid and p['conductivity_basis']==basis
+                     and p['probe_alias']==fit.get('probe_alias','')]
+        used=[p for p in dose_points if p['used_in_fit'].lower()=='true']
         measured=[p for p in source if p['calibration_id']==cid and p.get('probe_alias','')==fit.get('probe_alias','')]
-        identity=('native_match' if device.get('basis')=='electronic_sequence' else 'source_protocol_match') if device.get('status')=='verified' else 'unverified'
+        temperature_by_step = {p['step_no']: p.get('temperature_c') for p in measured if p.get('step_no')}
+        diagnostic_points = dose_points if all(
+            p.get('step_no') and (str(p['used_in_fit']).lower() != 'true' or p.get('concentration') not in (None, ''))
+            for p in dose_points) else []
+        identity = 'unverified'
+        if device.get('status') == 'verified':
+            identity = ('native_match' if device.get('basis') in ('electronic_sequence', 'recovered_native_calibration_sequence')
+                        else 'source_protocol_match')
         rows.append(dict(calibration_id=cid,site_alias=prep['site_alias'],field_date=matching._date(prep['field_date']),
             conductivity_basis=basis,calibration_basis=fit.get('calibration_basis',''),coefficient_unit=fit.get('coefficient_unit',''),
             k=fit.get('k',''),k_se=slope_se([p['conductivity_us_cm'] for p in used],[p['residual'] for p in used]) if used else '',
             n_points=len(used),ec_min=fit.get('ec_min',''),ec_max=fit.get('ec_max',''),procedure_id=prep['procedure_id'],
             source_method_family=evidence.get('source_record',{}).get('method_family',''),
-            recipe={k:prep.get(k,'') for k in ('stock_salt_mass_g','stock_water_initial_ml','stock_solution_final_ml','calibration_water_initial_ml','stock_water_source')},
+            recipe={k:prep.get(k,'') for k in ('stock_salt_mass_g','stock_water_initial_ml','stock_solution_final_ml',
+                                             'stock_solution_concentration_mg_ml','calibration_water_initial_ml','stock_water_source')},
+            recipe_source_reference=prep.get('recipe_source_reference',''),
+            source_variant=prep.get('source_variant','curated_notebook'),
+            incompatible_notebook_version=prep.get('incompatible_notebook_version',False),
+            recipe_qualification=prep.get('recipe_qualification',''),
             stock_water_source=prep.get('stock_water_source',''),stock_lineage=evidence.get('stock_stages',[]) or 'unknown',
             sensor_serial=device.get('device_serial',''),identity_status=identity,alias_label=fit.get('probe_alias',''),
-            temperature_available=bool(measured) and all(p.get('temperature_c') for p in measured),
+            temperature_available=bool(used) and all(
+                p.get('temperature_c') or temperature_by_step.get(p.get('step_no')) for p in used),
             reuse_conditions_confirmed=False,
             receiver_background_ec=float(used[0]['conductivity_us_cm']) if used else '',
-            disposition=evidence.get('source_table_status',''),compat_class=kind,reasons=reasons))
+            disposition=evidence.get('source_table_status',''),compat_class=kind,reasons=reasons,
+            **point_selection_diagnostics(diagnostic_points, float(fit['k']) if fit.get('k') else None)))
         if kind=='method_conflict_isolated':
             try:candidates.append(method_candidate(prep,measured,fit))
             except ValueError as error:candidates.append(dict(calibration_id=cid,conductivity_basis=basis,candidate_label='unresolved_method_candidate_not_for_use',reason=str(error)))
@@ -291,7 +353,7 @@ def run_reuse(records_dir, calibration_dir, pairing_dir, output_dir, *, site='NI
         for name,data in [('compatibility',rows),('method_candidates',candidates),('reuse_evaluation',evaluations)]:
             matching._write_table(stage/(name+'.csv'),data,['calibration_id'] if name!='reuse_evaluation' else ['sensor_serial'])
         (stage/'figures').mkdir();plot_consistency(stage/'figures/calibration_consistency.png',rows,evaluations)
-        info=write_run_info(stage,pins,scope='Nisqually calibration compatibility and conditional coefficient-reuse test only.',
+        info=write_run_info(stage,pins,scope=f'{site or "All recorded sites"}: calibration compatibility and conditional coefficient-reuse test only.',
             preregistration=prereg,compatibility_counts=dict(Counter(r['compat_class'] for r in rows)),
             outcome_counts=dict(Counter(e['outcome'] for e in evaluations)),frozen_session_count=len(frozen),
             no_library_domains_reason='No identity-supported mass sessions exist for other sensors/periods.',
@@ -303,8 +365,9 @@ def main(argv=None):
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--records',type=Path,default=ROOT/'salt_dilution/data/records');p.add_argument('--calibrations',type=Path,default=DEFAULT_CALIBRATIONS)
     p.add_argument('--pairing',type=Path,default=DEFAULT_PAIRING);p.add_argument('--output',type=Path,required=True);p.add_argument('--tolerance',type=float,default=.05)
+    p.add_argument('--all-sites',action='store_true',help='Audit each site without changing the site-separated reuse domains.')
     a=p.parse_args(argv)
-    try:info=run_reuse(a.records,a.calibrations,a.pairing,a.output,tolerance=a.tolerance)
+    try:info=run_reuse(a.records,a.calibrations,a.pairing,a.output,tolerance=a.tolerance,site=None if a.all_sites else 'NISQ')
     except (ValueError,OSError) as error:p.exit(2,str(error)+'\n')
     print(matching._json(dict(compatibility=info['compatibility_counts'],reuse=info['outcome_counts'],output=str(a.output))))
     return 0
