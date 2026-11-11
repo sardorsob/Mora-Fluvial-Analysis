@@ -1,7 +1,20 @@
 trial_id,logical_recording_id,channel,recording_edge_id,calibration_edge_id,outcome,reason,detail
-NISQ-20250731-T01,REC-9c2e4625c18f1450,actual,NISQ-20250731-T01:REC-9c2e4625c18f1450,NISQ-20250731-T01:REC-9c2e4625c18f1450:NISQ-20250731-C02:probe_01:actual,blocked,pulse_start_missing,Continuation begins in dry-release tail after app-crash gap. Later full pulse near 08:24 belongs to a separate solution wave; cannot substitute it for this dry release.
-NISQ-20250731-T01,REC-9d6a06bbbfe34327,actual,NISQ-20250731-T01:REC-9d6a06bbbfe34327,NISQ-20250731-T01:REC-9d6a06bbbfe34327:NISQ-20250731-C02:probe_01:actual,blocked,pulse_truncated,Dry-release pulse ends at/near peak before app-crash gap; tail is not captured in this segment.
-NISQ-20250731-T01,REC-c41d93416ed9e9cd,actual,NISQ-20250731-T01:REC-c41d93416ed9e9cd,NISQ-20250731-T01:REC-c41d93416ed9e9cd:NISQ-20250731-C02:probe_01:actual,blocked,release_alignment_unresolved,Two distinct pulses and unresolved event clock; selected dry release is first pulse near 08:07. Coarse sampling and unresolved pairing prevent defensible complete single-pulse/mass estimate.
+NISQ-20250709-T02,REC-3789ddb4f5256ad5,specific,NISQ-20250709-T02:REC-3789ddb4f5256ad5,NISQ-20250709-T02:REC-3789ddb4f5256ad5:NISQ-20250709-C04:probe_02:specific,blocked,solution_volume_source_unresolved,
+NISQ-20250709-T02,REC-3789ddb4f5256ad5,actual,NISQ-20250709-T02:REC-3789ddb4f5256ad5,NISQ-20250709-T02:REC-3789ddb4f5256ad5:NISQ-20250709-C04:probe_02:actual,blocked,solution_volume_source_unresolved,
+NISQ-20250724-T01,REC-591fe7db0a0512ec,specific,NISQ-20250724-T01:REC-591fe7db0a0512ec,NISQ-20250724-T01:REC-591fe7db0a0512ec:NISQ-20250724-C01:probe_01:specific,blocked,tail_incomplete,
+NISQ-20250724-T01,REC-591fe7db0a0512ec,actual,NISQ-20250724-T01:REC-591fe7db0a0512ec,NISQ-20250724-T01:REC-591fe7db0a0512ec:NISQ-20250724-C01:probe_01:actual,blocked,tail_incomplete,
+NISQ-20250903-T02,REC-525e7072ef8a07d5,actual,NISQ-20250903-T02:REC-525e7072ef8a07d5,NISQ-20250903-T02:REC-525e7072ef8a07d5:NISQ-20250903-C02:probe_02:actual,blocked,no_pre_pulse_background,
+NISQ-20250903-T02,REC-72e60754c3152fc5,actual,NISQ-20250903-T02:REC-72e60754c3152fc5,NISQ-20250903-T02:REC-72e60754c3152fc5:NISQ-20250903-C02:probe_02:actual,blocked,tail_incomplete,
+NISQ-20250917-T02,REC-6bdaefb209eea149:S01,actual,NISQ-20250917-T02:REC-6bdaefb209eea149:S01,NISQ-20250917-T02:REC-6bdaefb209eea149:S01:NISQ-20250917-C02:probe_02:actual,blocked,no_pre_pulse_background,
+NISQ-20250917-T02,REC-97afce26b22b1ed1:S01,actual,NISQ-20250917-T02:REC-97afce26b22b1ed1:S01,NISQ-20250917-T02:REC-97afce26b22b1ed1:S01:NISQ-20250917-C02:probe_02:actual,blocked,no_pre_pulse_background,
+NISQ-20250917-T04,REC-6bdaefb209eea149:S02,actual,NISQ-20250917-T04:REC-6bdaefb209eea149:S02,NISQ-20250917-T04:REC-6bdaefb209eea149:S02:NISQ-20250917-C04::actual,blocked,no_pre_pulse_background,
+NISQ-20250917-T04,REC-97afce26b22b1ed1:S02,actual,NISQ-20250917-T04:REC-97afce26b22b1ed1:S02,NISQ-20250917-T04:REC-97afce26b22b1ed1:S02:NISQ-20250917-C04::actual,blocked,no_pre_pulse_background,
+NISQ-20260716-T01,REC-9e308546661c8d28,actual,NISQ-20260716-T01:REC-9e308546661c8d28,NISQ-20260716-T01:REC-9e308546661c8d28:NISQ-20260716-C01::actual,blocked,no_pre_pulse_background,
+NISQ-20260716-T01,REC-a3ab343e52201563,actual,NISQ-20260716-T01:REC-a3ab343e52201563,NISQ-20260716-T01:REC-a3ab343e52201563:NISQ-20260716-C01::actual,blocked,no_pre_pulse_background,
+NISQ-20260721-T01,REC-2d7ffd4d071e8f31,actual,NISQ-20260721-T01:REC-2d7ffd4d071e8f31,NISQ-20260721-T01:REC-2d7ffd4d071e8f31:NISQ-20260721-C01::actual,blocked,no_pre_pulse_background,
+NISQ-20260721-T01,REC-d0a7d816b3591c63,actual,NISQ-20260721-T01:REC-d0a7d816b3591c63,NISQ-20260721-T01:REC-d0a7d816b3591c63:NISQ-20260721-C01::actual,blocked,no_pre_pulse_background,
+NISQ-20260806-T01,REC-2fd4d09d08ff29c8,actual,NISQ-20260806-T01:REC-2fd4d09d08ff29c8,NISQ-20260806-T01:REC-2fd4d09d08ff29c8:NISQ-20260806-C01::actual,blocked,tail_incomplete,
+NISQ-20260806-T01,REC-952c34b3d6bc23b4,actual,NISQ-20260806-T01:REC-952c34b3d6bc23b4,NISQ-20260806-T01:REC-952c34b3d6bc23b4:NISQ-20260806-C01::actual,blocked,no_pre_pulse_background,
 NISQ-20260918-T01,REC-ad18f24cf13fc889,specific,NISQ-20260918-T01:REC-ad18f24cf13fc889,NISQ-20260918-T01:REC-ad18f24cf13fc889:NISQ-20260918-C02::specific,blocked,tail_not_settled,Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.
 NISQ-20260918-T01,REC-ad18f24cf13fc889,actual,NISQ-20260918-T01:REC-ad18f24cf13fc889,NISQ-20260918-T01:REC-ad18f24cf13fc889:NISQ-20260918-C02::actual,blocked,tail_not_settled,Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.
 NISQ-20261002-T01,REC-699be6dc50467e56,specific,NISQ-20261002-T01:REC-699be6dc50467e56,NISQ-20261002-T01:REC-699be6dc50467e56:NISQ-20261002-C02:probe_03:specific,computed,,
@@ -22,3 +35,9 @@ NISQ-20261005-T02,REC-c0bf309f5ddbeb7d,specific,NISQ-20261005-T02:REC-c0bf309f5d
 NISQ-20261005-T02,REC-c0bf309f5ddbeb7d,actual,NISQ-20261005-T02:REC-c0bf309f5ddbeb7d,NISQ-20261005-T02:REC-c0bf309f5ddbeb7d:NISQ-20261005-C02:probe_03:actual,computed,,
 NISQ-20261005-T03,REC-7f395f6d9298eaa3,specific,NISQ-20261005-T03:REC-7f395f6d9298eaa3,NISQ-20261005-T03:REC-7f395f6d9298eaa3:NISQ-20261005-C03:probe_03:specific,computed,,
 NISQ-20261005-T03,REC-7f395f6d9298eaa3,actual,NISQ-20261005-T03:REC-7f395f6d9298eaa3,NISQ-20261005-T03:REC-7f395f6d9298eaa3:NISQ-20261005-C03:probe_03:actual,computed,,
+PAR-20260901-T01,REC-afed5aaddb2d50bd,specific,PAR-20260901-T01:REC-afed5aaddb2d50bd,PAR-20260901-T01:REC-afed5aaddb2d50bd:PAR-20260903-C03::specific,computed,,
+PAR-20260901-T02,REC-e2db9ed1c2c151f3,specific,PAR-20260901-T02:REC-e2db9ed1c2c151f3,PAR-20260901-T02:REC-e2db9ed1c2c151f3:PAR-20260903-C03::specific,computed,,
+PAR-20260901-T03,REC-51c16ac7f4ef4f39,specific,PAR-20260901-T03:REC-51c16ac7f4ef4f39,PAR-20260901-T03:REC-51c16ac7f4ef4f39:PAR-20260903-C03::specific,computed,,
+PAR-20260901-T04,REC-265ef2bc96dfd1db,specific,PAR-20260901-T04:REC-265ef2bc96dfd1db,PAR-20260901-T04:REC-265ef2bc96dfd1db:PAR-20260903-C04::specific,computed,,
+PAR-20260901-T05,REC-d2c98d98de36f830,specific,PAR-20260901-T05:REC-d2c98d98de36f830,PAR-20260901-T05:REC-d2c98d98de36f830:PAR-20260903-C04::specific,computed,,
+PAR-20260901-T06,REC-d5e2e653c0363859,specific,PAR-20260901-T06:REC-d5e2e653c0363859,PAR-20260901-T06:REC-d5e2e653c0363859:PAR-20260903-C04::specific,computed,,

@@ -16,13 +16,13 @@ On Windows, activate with `.venv\Scripts\activate`. This installs the salt and n
 
 ## Fit calibration curves
 
-The runner uses the tracked preparation and point tables; stream recordings are not required.
+The runner uses the preparation and point tables and the native exports and worksheet pinned by the recovery configs. Fitting uses calibration observations only.
 
 ```sh
 python -m salt_dilution.scripts.processing.calibration --basis both --output salt_dilution/results/new_calibration_run
 ```
 
-Choose a new output directory. `--basis` accepts `specific`, `actual` or `both` and defaults to `specific`. Outputs include coefficients, derived points, skipped series, figures and a run record. Read [calibration](calibration.md) to interpret them; they are provisional fits, not discharge estimates.
+Choose a new output directory. `--basis` accepts `specific`, `actual` or `both` and defaults to `specific`. Outputs include provisional coefficients, derived points, skipped series, figures and a run record. The recovery configuration retains source measurements and identifies the alternate worksheet preparations used in the fits. See [calibration](calibration.md).
 
 ## Read instrument files
 
@@ -45,12 +45,16 @@ The parser writes CSVs, metadata and a per-file manifest. Review its errors and 
 After parsing the field recordings and fitting calibration curves, run:
 
 ```sh
-python -m salt_dilution.scripts.processing.matching --calibrations salt_dilution/results/calibrations/2026-10-26_probe_review --overrides salt_dilution/config/pairing_overrides.json --output salt_dilution/results/matching/new_run
+python -m salt_dilution.scripts.processing.matching \
+  --calibrations salt_dilution/results/new_calibration_run \
+  --overrides salt_dilution/config/pairing_overrides.json \
+  --field-clock salt_dilution/config/field_clock.json \
+  --output salt_dilution/results/matching/new_run
 ```
 
 Use a new output directory. `--records` and `--processed` select other input directories. The matcher checks saved calibration hashes, inventories local recordings and writes `recording_candidates.csv`, `calibration_candidates.csv`, `pairing_summary.csv`, `trial_associations.csv` and `run_info.json`. Read the summary first, then follow its edge IDs to the evidence and alternatives. Structured CSV cells contain JSON.
 
-The default follows the reported field protocol: group by field date, compare written release times with Aqua TROLL acquisition sessions, and use substantial recording breaks as candidate session boundaries. Shared local clocks are an explicit matching assumption; absolute UTC and a bank name are not required for these proposals. Recording breaks are not pulse-integration windows. Distinct releases can refer to the same continuous log.
+Matching groups observations by field date, compares written release times with Aqua TROLL acquisitions and treats substantial recording breaks as candidate session boundaries. The recovery run uses the participant-confirmed fixed UTC−8 field clock year-round for Nisqually and Paradise. The matcher preserves the local timestamps, the offset encoded in the native export, and the derived UTC times for both interpretations. A recorded UTC timestamp or a reviewed trial-specific offset retains priority where supplied. Distinct releases can refer to the same continuous log and require their own pulse windows.
 
 An `inferred` edge follows this protocol; a `supported` edge has explicit reviewed evidence. `selected_recording_edge_ids` and `selected_calibration_edge_ids` identify the proposed links; the full edge lists retain alternatives. `inferred_proposal` means the selected recording links have compatible K fits under the stated assumptions. `partial` can mean the recording is identified but K is missing or incompatible. None of these statuses is scientific acceptance.
 
@@ -93,34 +97,61 @@ A recording correction shifts its existing UTC series by the stated seconds and 
 
 ## Calculate mass-slug discharge
 
-These commands need the local normalized recordings and source files pinned by the saved pairing bundle. A clone containing only tracked tables cannot run this batch. Changed or missing inputs stop the run; parsing into another directory does not repair a saved bundle's source references.
+The runner also supports the original-solution-volume route described in [research methods](research_methods.md#salt-dilution-measuring-water-discharge). For recovery, use `--all-sites` to include Nisqually and Paradise and `--include-relative` to evaluate compatible relative-concentration fits. With `--allow-reported-volume`, a matching notebook and compact-record volume can support an estimate conditional on that amount entering the stream.
+
+The recovery commands below require the local normalized recordings and other files pinned by the saved runs. Use a fresh output directory. `--records`, `--processed`, `--calibrations` and `--pairing` select inputs explicitly. Recovered pulse decisions identify their pairing run and processed sources by hash, so use the saved pairing run when replaying those decisions. For a new pairing run, review the pulse decisions against its sources before pinning them.
+
+Use the saved calibration and pairing to replay the reviewed windows.
 
 ```sh
-python -m salt_dilution.scripts.processing.calibration_reuse --output salt_dilution/results/calibration_reuse/new_reuse_test
-python -m salt_dilution.scripts.processing.mass_slug --reuse salt_dilution/results/calibration_reuse/new_reuse_test --windows salt_dilution/config/pulse_windows.json --output salt_dilution/results/discharge/new_mass_slug
+calibration_run=salt_dilution/results/calibrations/2026-11-10_recovery_v2
+pairing_run=salt_dilution/results/matching/2026-11-10_recovery_v4
+reuse_run=salt_dilution/results/calibration_reuse/2026-11-10_recovery_v2
+recovery_out=$(mktemp -d)
+
+python -m salt_dilution.scripts.processing.mass_slug \
+  --calibrations "$calibration_run" --pairing "$pairing_run" --reuse "$reuse_run" \
+  --windows salt_dilution/config/pulse_windows_recovery.json \
+  --all-sites --include-relative --allow-reported-volume --output "$recovery_out/mass"
 ```
 
-Use fresh output directories. Defaults select the reviewed calibration and pairing bundles above; `--records`, `--processed`, `--calibrations` and `--pairing` select explicit inputs. Alternate record locations must contain the same source bytes as the saved bundles. Code hashes are also pinned: rerun reuse after changing its implementation.
+To regenerate the reuse assessment, pass the same `--calibrations` and `--pairing` to `python -m salt_dilution.scripts.processing.calibration_reuse --all-sites` with a fresh `--output`. Use that path for `--reuse` when you run the discharge calculation.
 
-Without `--windows`, the mass runner proposes automatic windows. Inspect every pulse plot; a rejected automatic tail check can need manual review. Window configuration has `schema_version: 1` and a `windows` list keyed by `trial_id`, `logical_recording_id` and `channel` (`specific` or `actual`). Each usable entry supplies `pre`, `pulse` and `post` pairs of local-clock timestamps, plus `evidence`, `reviewer`, `reviewed_on` and `review_status`. `checker_proposed` requires user signoff before becoming `reviewed`; the latter requires explicit `user_signoff: true`. A `blocked` decision retains its reason and cannot produce Q. Stored pairing/source pins protect decisions against use with changed inputs.
+Without `--windows`, the runner proposes automatic windows. Inspect the pulse plots and blocked reasons. The windows file uses `schema_version: 1` and a `windows` list keyed by `trial_id`, `logical_recording_id` and `channel`. Supply local-clock timestamps for `pre`, `pulse` and `post`, and record the evidence, reviewer, date and review status. A `checker_proposed` window can support a proposed estimate. A `reviewed` window requires `user_signoff: true`. A `blocked` decision retains the recorded reason.
 
-The runner reads `salt_dilution/config/release_confirmations.json` when present, or an explicit `--confirmations` file. It applies delivered-mass confirmations only to named release IDs with matching field date/site and recorded evidence. The file and its hash are saved with the run. These confirmations supplement historical records; they do not approve windows or scientific acceptance.
+The runner reads [release confirmations](../salt_dilution/config/release_confirmations.json) by default. A confirmation applies only to its named release, field date and site. The result stores the selected estimate, comparison channels, release dispositions, recording outcomes and window choices. The selected estimate generally uses specific conductivity where a compatible fit and pulse are available. Review `estimate_support` and the quality flags for assumptions about volume, worksheet variants and capture.
 
-The bundle contains `discharge_estimates.csv`, one `release_summary.csv` row per release, per-recording outcomes, window proposals, pulse/comparison figures and hashed `run_info.json`. The used windows file is copied into the result bundle for reproduction. Specific conductivity is primary when it computes; actual conductivity is a comparison. Neither channels nor sensors are averaged. The current runner keeps every estimate `proposed` and `scientifically_accepted=false`; applicability, mixing and windows still need review. October delivered masses are confirmed by the field participant; weighing uncertainty remains unquantified.
+## Review the saved release estimates
+
+The review command verifies the discharge, pairing and calibration bundles and recomputes the selected integrals and discharge values. It writes release and channel reviews, window sensitivity, notebook/native comparisons, calibration diagnostics and within-placement pressure or depth diagnostics where available. Provide [conditional window evidence](../salt_dilution/config/conditional_pulse_windows.json) to calculate the separately reported observed-interval scenarios. These scenarios depend on the capture and background assumptions in the table.
+
+Run the review with the variables from the discharge example.
+
+```sh
+python -m salt_dilution.scripts.processing.discharge_review \
+  --mass-run "$recovery_out/mass" --pairing "$pairing_run" --calibrations "$calibration_run" \
+  --conditional-windows salt_dilution/config/conditional_pulse_windows.json \
+  --output "$recovery_out/review"
+```
 
 ## Export the analysis package
 
-After producing the saved mass, source-audit, numerical-review and reuse bundles, assemble the current handoff:
+Use the same recovery review bundle for `--audit-run` and `--review-run`. Both must refer to the selected discharge run, which must in turn refer to the selected reuse run. `--refresh-figures` redraws the published figures from the verified tables, windows and local recordings.
+
+Reproduce the published package from the saved source runs.
 
 ```sh
-python -m salt_dilution.scripts.processing.export_discharge --refresh-figures --output /tmp/discharge-rebuild
+review_run=salt_dilution/results/discharge/2026-11-10_recovery_review_v2
+export_out=$(mktemp -d)
+
+python -m salt_dilution.scripts.processing.export_discharge \
+  --mass-run salt_dilution/results/discharge/2026-11-10_recovery_v2 \
+  --audit-run "$review_run" --review-run "$review_run" \
+  --reuse-run salt_dilution/results/calibration_reuse/2026-11-10_recovery_v2 \
+  --refresh-figures --output "$export_out/discharge_analysis"
 ```
 
-The default output is the stable `salt_dilution/results/discharge_analysis/` folder. An existing folder is never overwritten: the tracked analysis can be read directly, and a rebuild must use `--output` with a separate, absent working directory before a reviewed replacement. Do not create dated publication folders or copy code into results. Tables go in `tables/`, figures in `figures/`, settings snapshots in `settings/`, and source references in `provenance/`. Implementation remains in `scripts/` or `notebooks/`.
-
-Defaults select the current reviewed bundles documented in the [results guide](../salt_dilution/results/README.md#use-the-analysis-bundle). Use `--mass-run`, `--audit-run`, `--review-run` and `--reuse-run` for explicit versions. The audit and review must reference the selected mass run. The exporter checks source hashes and preserves exact Q values, blanks, quality flags and settings. With `--refresh-figures`, it redraws the published graphs from the verified tables, windows and local conductivity recordings. The default export copies the historical source figures.
-
-Start with `tables/discharge_by_release.csv`; use `tables/discharge_primary.csv` for the five proposed primary estimates and retain its flags in analysis. `analysis_limits.json` defines closure and scientific limits. `bundle_index.json` contains the exact rebuild command. The package needs the local source bundles when rebuilding; reading its tables and figures does not require the raw recordings.
+Open [the stable analysis package](../salt_dilution/results/discharge_analysis/README.md) to read its tables and figures without the raw recordings. Start with `tables/discharge_by_release.csv` for one row per release. Use `tables/discharge_primary.csv` for the selected estimates, including their support qualifications, and `tables/conditional_discharge.csv` for capture-assumed scenarios. Blank Q means no selected estimate; separate capture-assumed scenarios are identified explicitly. `bundle_index.json` records the exact export command and `analysis_limits.json` describes the remaining evidence gaps. Rebuild into a separate, absent output directory.
 
 ## Work with seismic recordings
 

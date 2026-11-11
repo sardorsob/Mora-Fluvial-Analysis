@@ -1,24 +1,14 @@
 # Discharge analysis
 
-Start with [all release outcomes](tables/discharge_by_release.csv),
-[primary estimates](tables/discharge_primary.csv), or
-[all channel estimates](tables/discharge_estimates.csv).
+38 releases are accounted for. 11 have a selected Q estimate; 6 of those depend on additional recipe or delivery assumptions. All estimates remain proposed.
 
-- `tables/` contains results, quality checks and sensitivity tables.
-- `figures/` contains discharge, pulse, review and calibration plots.
-- `settings/` contains the window, quantity and study-design snapshots.
-- `provenance/` contains source-run references and supporting citations.
+Start with [release outcomes](tables/discharge_by_release.csv), [selected estimates](tables/discharge_primary.csv), or [channel estimates](tables/discharge_estimates.csv). Read `estimate_support`, `quality_flags` and `data_limits` alongside Q. A primary estimate is the selected channel for a release, not scientific acceptance. Blank Q is not zero.
 
-`analysis_limits.json` retains the scientific limitations. Blank Q is not zero.
-`bundle_index.json` provides navigation and a rebuild command; `run_info.json`
-records hashes. Rebuilding needs the original local source bundles.
+- `figures/` shows discharge, observed pulses, calibration and sensitivity.
+- `tables/` includes calibration diagnostics and separate capture-assumed scenarios.
+- `settings/` preserves windows, quantities and study design.
+- `provenance/` identifies source bundles and citations.
 
-Executable code belongs in `salt_dilution/scripts/` or `salt_dilution/notebooks/`,
-never in this results folder. Dates belong in records and run metadata, not in
-a dated wrapper around this published analysis. Original source-run paths can
-still contain dates because they document the historical calculation.
+`analysis_limits.json` records the interpretation limits. Window sensitivity and fit standard errors do not quantify total discharge uncertainty. Conditional NaCl reference checks are diagnostics, not coefficient corrections.
 
-The current figures use the saved estimates, sensitivity scenarios and pulse
-windows. `run_info.json` records the figure rebuild and its hashes.
-`provenance/original_run_info.json` records the original numerical analysis and
-its inputs.
+`bundle_index.json` contains a rebuild command; `run_info.json` records hashes. Rebuilding needs the original local source bundles.

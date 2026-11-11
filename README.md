@@ -2,25 +2,23 @@
 
 Tools for studying river flow and sediment movement at Mount Rainier National Park through salt-dilution measurements and fluvial seismology.
 
-The salt workflow reads conductivity recordings, fits concentration calibrations and calculates proposed mass-slug discharge from paired recordings and pulse windows. The seismic workflows explore how river flow and moving sediment appear in ground vibrations. The project combines two research repositories; [source provenance](docs/provenance.md) records their authors, revisions and licenses.
+The salt workflow pairs conductivity recordings with calibration fits and estimates discharge from delivered salt mass or original solution volume. The seismic workflows explore how river flow and moving sediment appear in ground vibrations. The project combines two research repositories; [source provenance](docs/provenance.md) records their authors, revisions and licenses.
 
 ## Start here
 
 1. [Understand the methods](docs/research_methods.md): what is measured and how the experiments connect.
-2. [Set up and run the tools](docs/getting_started.md): dependencies, parser and calibration commands.
+2. [Set up and run the tools](docs/getting_started.md): dependencies and commands for calibration, discharge and review.
 3. [Use the data](salt_dilution/data/records/README.md): salt tables, rock observations, identifiers and missing values.
 
 ## Current capabilities
 
 | Workflow | Available work |
 | --- | --- |
-| Salt dilution | Instrument-file extraction, calibration fits, recording/K pairing, coefficient-reuse tests and proposed mass-slug discharge with window and uncertainty diagnostics. |
+| Salt dilution | Instrument-file extraction, calibration fits, recording/K pairing, mass- and solution-slug calculations, and window and calibration diagnostics. |
 | Rock trials | 331 tethered-rock observations, grouped by session, round, category and individual test. |
 | Fluvial seismology | Imported Python/R scripts and notebooks for waveform preparation, spectra, turbulence and bedload models. |
 
-The [reviewed calibration results](salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) contain **49 provisional fits and 37 skipped series**. The [discharge results and graphs](salt_dilution/results/README.md#discharge-results) cover five Nisqually releases, with separate conductivity-channel estimates. They use trial-specific K and 4 kg delivered per release, confirmed by the field participant; none is scientifically accepted. The seismic workflows require field recordings and have not been validated end to end here.
-
-The current [analysis handoff](salt_dilution/results/README.md#use-the-analysis-bundle) consolidates all 38 release dispositions, five proposed Q values, quality flags and figures. It is ready for analysis with its documented limits.
+The recovery calibration run has **59 provisional fits and 27 skipped series**. The [discharge analysis](salt_dilution/results/discharge_analysis/README.md) accounts for 38 releases. It contains five proposed Nisqually estimates with confirmed 4 kg deliveries, and six conditional Paradise estimates that use a collaborator worksheet calibration and assume the nominal mass entered the river. October 4 T04 has a separate conditional scenario based on the observed interval. All estimates await scientific acceptance. The seismic workflows require field recordings and have not been validated end to end here.
 
 Use the [salt guide](salt_dilution/README.md) or [seismic guide](fluvial_seismology/README.md) for the available scripts and notebooks. Historical dilution notebooks use retired helpers.
 
@@ -45,6 +43,6 @@ mora-fluvial-analysis/
     └── results/             Local analysis runs
 ```
 
-Small curated records, historical examples and selected calibration, pairing and discharge bundles are versioned. The discharge bundle includes 26 graphs and the tables needed to inspect the results without raw recordings. Large normalized recordings, intermediate runs and seismic field inputs remain local. Links to local staging or run files require those files on the reader's machine; fitting calibration curves needs only the tracked tables.
+Small curated records, historical examples and selected calibration, pairing and discharge bundles are versioned. The discharge bundle includes figures and tables that can be read without raw recordings. Large normalized recordings, intermediate runs and seismic field inputs remain local. Links to local staging or run files require those files on the reader's machine; recovery calibration uses the tracked records and pinned calibration sources.
 
 See [validation](docs/validation.md) for what has been checked, [references](docs/references/README.md) for the scientific sources, and [naming conventions](docs/naming_conventions.md) for file organization. [LICENSE](LICENSE) retains the source notices; no new blanket license is assigned. Follow [CITATION.cff](CITATION.cff) when citing the work.

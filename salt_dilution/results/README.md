@@ -1,68 +1,41 @@
 # Analysis results
 
-The [reviewed calibration bundle](calibrations/2026-10-26_probe_review/README.md) contains 49 provisional fits, 37 skipped series and diagnostic figures. Its supported identity fills leave all numerical fit fields unchanged from the [earlier bundle](calibrations/README.md). Both bundles are retained; neither contains accepted discharge estimates.
+The recovery run fitted **59 of 86 calibration series**. The [calibration review](discharge_analysis/tables/calibration_quality.csv) records fit quality, source variants and reasons for the 27 skips. The [October 26 probe review](calibrations/2026-10-26_probe_review/README.md) is the earlier 49-fit, 37-skip baseline.
 
 ## Discharge results
 
-Processing and numerical review are complete for the current mass-slug dataset. All **38 releases** have a recorded disposition: **five proposed primary Q estimates**, with five actual-channel comparisons, and **33 releases without a mass-slug estimate**. The five estimates use trial-specific K and 4000 g delivered per release, confirmed by the field participant for October 2–5, 2026. Numerical window review is complete. Field mixing, tracer recovery and total measurement uncertainty remain unverified; no discharge is certified by this export.
+The [release table](discharge_analysis/tables/discharge_by_release.csv) covers **38 releases**. It contains five proposed Nisqually estimates with confirmed 4 kg deliveries and six conditional Paradise estimates. The Paradise values use the collaborator worksheet calibration and assume the nominal mass entered the river. Their nominal dose and the differences between the worksheet and notebook remain material uncertainties.
 
-| Release | Primary Q (m³/s) | Tested window/background change |
-| --- | ---: | ---: |
-| NISQ-20261002-T01 | 4.2442 | −4.43% to +4.75% |
-| NISQ-20261004-T02 | 2.0438 | −0.80% to +0.49% |
-| NISQ-20261004-T03 | 2.7758 | −2.83% to +2.83% |
-| NISQ-20261005-T02 | 2.3375 | −2.49% to +2.52% |
-| NISQ-20261005-T03 | 2.6638 | −2.92% to +2.66% |
+Primary Q is blank for 27 releases, including two practice releases. The historical solution-slug route was evaluated, and the release and recording tables retain its outstanding delivery, calibration, or capture requirements. October 4 T04 has a separate observed-interval scenario, yielding 3.676 m³/s from specific conductivity and 3.769 m³/s from actual conductivity. Both values assume the full tracer passage occurred within the observed interval and the initial background stayed constant. See the [conditional scenario table](discharge_analysis/tables/conditional_discharge.csv).
 
-These ranges describe tested choices within observed data, not confidence intervals or total discharge uncertainty. The October 2 T01 and October 4 T03 pulses exceed their calibrations' measured conductivity-increment spans by about 16.3% and 1.6% at the peak. Absolute EC limits and increment spans are separate checks; neither gives a numerical bound on extrapolation error. October 4 T03 also needs reconciliation: the transcribed notebook background is 45 µS/cm, while its matched recording averages 26.36 µS/cm before the pulse, despite close agreement in peak height. No K, recording link or Q was changed to remove this disagreement.
+October 4 T03 retains a source discrepancy. The notebook lists a specific-conductivity background of 45 µS/cm, while the matched recording averages 26.36 µS/cm before the pulse. The transcribed and recorded peaks agree closely. The [field-note comparison](discharge_analysis/tables/field_note_comparison.csv) preserves the measurements used for the flag.
 
-Five candidate releases lack a defensible settled tail/background; July 31, 2025 also has missing pulse sections and unresolved event alignment. No tails are extrapolated. Across all 38 releases, the remaining categories are ten relative-basis releases, five unresolved method conflicts, three identity conflicts, one missing calibration, two practice exclusions and six Paradise releases excluded from scope. Per-recording outcomes retain more than one blocker where present.
-
-The reuse test covers nine October calibration sessions over three days for sensor 790481. Specific-channel reuse fails the ±5% Q criterion; actual-channel reuse is inconclusive without calibration temperatures. Consequently, there are no reference-K comparisons. Actual-channel Q differs from specific-channel Q and is retained as a diagnostic, not averaged into the primary result.
+The observed-window ranges cover tested choices of pulse edges and background. Field mixing, tracer recovery and total measurement uncertainty remain open. Specific-channel reuse fails the ±5% Q criterion for the nine October calibration sessions across three days. Actual-channel reuse is inconclusive. See the [reuse evaluation](discharge_analysis/tables/coefficient_reuse.csv).
 
 ## Use the analysis bundle
 
-The [current analysis bundle](discharge_analysis/) is included in the repository. Open the [primary estimates](discharge_analysis/tables/discharge_primary.csv) for Q, or [all release outcomes](discharge_analysis/tables/discharge_by_release.csv) for results and missing-data reasons:
+Start with the [all-release table](discharge_analysis/tables/discharge_by_release.csv) for estimates and reasons for blank Q. Blank Q means no selected estimate; separate capture-assumed scenarios are identified explicitly. The [primary table](discharge_analysis/tables/discharge_primary.csv) gives one selected estimate per release with a computed Q. Read `estimate_support` and the quality flags before using any value.
 
-- `tables/discharge_by_release.csv`: all 38 releases, exact Q values or blanks, final processing dispositions, review status, flags and data limits. `case_disposition` is the export status; `category` preserves the earlier stage's classification.
-- `tables/discharge_primary.csv`: the five proposed primary estimates, including the flagged October 4 T03 result.
-- `tables/discharge_estimates.csv`: all ten channel estimates with exact K references, windows, units and sensitivity components. Comparison channels are not additional releases.
-- `tables/quality_review_by_channel.csv`: one row per channel. The inherited `q_primary_m3_s` column gives that row's channel estimate. Use `estimate_role` in `discharge_estimates.csv` to identify the primary channel.
-- `figures/mass/`, `figures/review/`, `figures/reuse/`: discharge/pulse, window-sensitivity and calibration-consistency figures.
-- `bundle_index.json`, `provenance/source_bundles.json`, `run_info.json` and the review tables: file meanings, reproducibility commands, source hashes and evidence.
-
-The published analysis uses one stable folder. The original numerical run record is preserved at `provenance/original_run_info.json`. The current manifest records the figure rebuild and its input and output hashes.
-
-A blank Q means not estimated, never zero flow. Six mass-route releases are closed as not estimable from the current capture; the remaining no-estimate cases retain their method, identity, calibration, practice or scope reasons. A case can be revisited if new source evidence becomes available. Processing closure does not remove scientific flags or confer field acceptance.
-
-Generate a fresh package with the [export command](../../docs/getting_started.md#export-the-analysis-package). Reading these versioned tables and graphs needs no local inputs. Rebuilding them requires the normalized recordings and intermediate run bundles, which remain local; the saved provenance identifies those inputs and their hashes. Historical runs remain intact.
+- The [channel estimates](discharge_analysis/tables/discharge_estimates.csv) record 16 results with exact K references, windows, units and sensitivity components. Five are actual-conductivity comparisons for the Nisqually releases.
+- The [channel review](discharge_analysis/tables/quality_review_by_channel.csv) gives the recomputed integral and diagnostics for each channel. Its `q_primary_m3_s` field gives that row's channel value. Use `estimate_role` to identify the selected estimate.
+- The [bundle index](discharge_analysis/bundle_index.json) and [source manifest](discharge_analysis/run_info.json) give the export command, source references and hashes. The published tables and figures can be read directly. Rebuilding requires the local recordings and saved source runs. See the [export command](../../docs/getting_started.md#export-the-analysis-package).
 
 ### Graphs
 
-![Five proposed discharge estimates, comparing specific and actual conductivity channels.](discharge_analysis/figures/mass/discharge_comparison.png)
+![Selected Nisqually and conditional Paradise discharge estimates, with conductivity-channel comparisons.](discharge_analysis/figures/mass/discharge_comparison.png)
 
-Specific conductivity gives the primary estimates. Actual conductivity gives a separate comparison for the same releases. The next figure shows how the primary estimates respond to changes in the integration window and background.
+![Change in each selected discharge under tested background and window choices.](discharge_analysis/figures/review/window_background_sensitivity.png)
 
-![Changes in the five primary discharge estimates under tested pulse-window and background choices.](discharge_analysis/figures/review/window_background_sensitivity.png)
+![Estimated Q change under shared coefficients for each calibration group.](discharge_analysis/figures/reuse/calibration_consistency.png)
 
-![Estimated changes in Q under coefficient reuse across nine calibration sessions, with a ±5% tolerance.](discharge_analysis/figures/reuse/calibration_consistency.png)
-
-The pulse plots show the recorded conductivity and the background and integration windows used for each estimate. Blocked cases show the available recording and the reason for leaving Q blank. [Individual pulse plots](discharge_analysis/figures/mass/pulses/)
+[Individual pulse plots](discharge_analysis/figures/mass/pulses/) show the recorded conductivity, the selected integration windows, or the reason a recording did not yield a full-pulse estimate.
 
 ## Reproducing a calibration run
 
-Use the [calibration runner](../../docs/calibration.md) with a fresh output directory. It writes fit/point/skip CSVs directly in that directory, with `figures/` and `run_info.json`. The run record includes input/output and code hashes, software versions and Git revision. The reviewed bundle also has an independent numerical verification; local MLflow is supplementary and is not required to reproduce the fit.
+Use the [calibration runner](../../docs/calibration.md) with a fresh output directory. It writes the fitted series, derived points, skip reasons, figures and input/output hashes. The run record identifies the software versions and source inputs. Local MLflow is supplementary.
 
 ## Other runs
 
-The [current pairing summary](matching/2026-11-01_reviewed_pairings/pairing_summary.csv) covers 38 releases: **32 complete inferred recording/K proposals**, one partial, three conflicting and two practice releases excluded for documented lack of downstream detection. The 32 proposals represent 84.2% of all records, or 88.9% of the 36 non-practice releases. Complete pairing does not confirm physical calibration applicability or make a release ready for Q.
+The [November 1 pairing baseline](matching/2026-11-01_reviewed_pairings/pairing_summary.csv) recorded 32 inferred proposals, one partial link, three conflicts and two practice exclusions. The [earlier source-linked bundle](matching/2026-11-01_source_linked_pairings/pairing_summary.csv) recorded 17 proposals. These were pairing checks under the evidence available at the time. See the [pairing guide](../../docs/getting_started.md#pair-releases-recordings-and-k-fits) for the current workflow.
 
-Compared with the [17-proposal bundle](matching/2026-11-01_source_linked_pairings/pairing_summary.csv), the current run retains known links through isolated missing cells, includes the documented July 31 recording continuation, and adds cited session/site/dose-sequence inferences. The [evidence file](../config/pairing_overrides.json) records those decisions and their qualifications. August 6 event alignment and the first PR06 notebook/electronic peak disagreement remain unresolved. No exact release clocks were invented.
-
-The remaining partial release is July 9, 2025 T01, with no supported calibration association. Native serial conflicts remain for July 9 T02, July 17 T01 and August 8 T01; unaffected logger candidates remain available. Eight older preparations have source mass-stock labels but saved relative-concentration fits. Their method discrepancies are flagged without changing K. Six releases retain missing-reading flags. Numerical fits and source observations are unchanged.
-
-The [association table](matching/2026-11-01_reviewed_pairings/trial_associations.csv) still audits all 59 current input rows, including unresolved curated placeholders; proposed links are in the candidate tables and summary. Identity, method, measurement and event-alignment review flags describe different remaining checks. Neither file contains Q estimates or accepted integration windows. See [setup](../../docs/getting_started.md#pair-releases-recordings-and-k-fits) for reproduction and status meanings.
-
-Keep the published discharge analysis at `discharge_analysis/`; use Git history rather than dated publication folders for versions. Keep dates, configuration, input references and execution details in run metadata. Historical source-run paths remain in provenance and are not renamed by this layout cleanup. Unpublished intermediate runs remain local; `_template/` is only a starting layout, not a scientific result.
-
-Selected calibration, pairing and discharge bundles are tracked. Other generated runs and local MLflow stay ignored; large normalized readings belong in the local processed-data folder. Historical notebooks use retired processing interfaces and are not the maintained runner.
+The previous discharge handoff reported five proposed Nisqually values and left 33 release rows blank. The current package occupies the stable `discharge_analysis/` path. Selected calibration, pairing and discharge bundles are versioned. Intermediate runs, normalized recordings and local MLflow remain local.

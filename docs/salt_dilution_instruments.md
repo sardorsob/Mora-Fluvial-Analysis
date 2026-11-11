@@ -33,7 +33,7 @@ The dates below describe retained evidence, not a complete deployment inventory.
 | September 18, 2026 | Page 9 right calls for calibration with the same river TROLL instead of Generals and restarts after a weak secondary dilution. This is a procedure change, not first TROLL use. The earlier instrument map on page 9 left contains corrections. [Files](../salt_dilution/data/raw/20260918/). |
 | October 2–5, 2026 | Mass-stock tables and paired EC channels accompany TROLL reports; October 2 says “same troll, same calibration” (pp.12–21). Verify each trial/role; the wording does not identify a reusable numerical coefficient. [Files](../salt_dilution/data/raw/20261002/). |
 
-The [probe review](../salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) resolves 13 preparation identities and leaves 19 unresolved. Precise adoption dates, every General role and the final General deployment remain unknown.
+The [October 26 probe review](../salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) resolved 13 preparation identities and left 19 unresolved. The [recovery calibration review](../salt_dilution/results/discharge_analysis/tables/calibration_quality.csv) reports identities supported by the additional native and worksheet evidence. Precise adoption dates, every General role and the final General deployment remain unknown.
 
 ## Four operations that must remain separate
 

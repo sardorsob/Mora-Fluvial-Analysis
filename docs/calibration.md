@@ -2,7 +2,7 @@
 
 Calibration relates the probe's conductivity reading to a known added salt concentration. The stock recipe and each added volume supply the concentration values; the probe supplies the conductivity readings. The fitted slope, K, connects them.
 
-The [calibration runner](../salt_dilution/scripts/processing/calibration.py) uses the curated preparation and point tables. It needs neither stream recordings nor discharge windows.
+The [calibration runner](../salt_dilution/scripts/processing/calibration.py) uses the curated preparation and point tables. Recovery also uses the calibration exports and worksheet listed in the pinned configuration. Stream recordings and discharge windows are used at later stages.
 
 ```sh
 python -m salt_dilution.scripts.processing.calibration --basis both --output salt_dilution/results/new_calibration_run
@@ -44,7 +44,7 @@ A missing EC reading leaves known additions in the volume total. A missing incre
 
 Ordinary least squares fits each recorded probe and conductivity channel separately:
 
-The saved probe aliases label the recorded series; many were placeholders. They do not prove which physical sensor made a reading. Pairing uses the source preparation and conductivity channel, with native serial evidence reported separately. The existing series and numerical fits are retained.
+The saved probe aliases label the recorded series; many were placeholders. They do not prove which physical sensor made a reading. Pairing uses the source preparation and conductivity channel, with native serial evidence reported separately. The run retains native source references for recovered readings and identifies worksheet variants in the derived fit table.
 
 ```text
 C_i = k × EC_i + b + residual_i
@@ -75,7 +75,7 @@ The deionized-stock ionic-background correction is not implemented. The runner f
 
 The operational reuse tolerance is ±5% in Q. Passing requires sufficient sessions/days, bounded held-out-day effects, session/day application intervals, bounded drift and verified preparation/instrument conditions. Stock lineage and compensation settings remain unverified here. Actual-conductivity reuse also needs a temperature model, which is not implemented; temperature presence alone cannot pass the test.
 
-The nine October sessions for sensor 790481 cover three days. Specific-conductivity reuse fails the tolerance test (largest held-out-day session effect about 17.4%); actual-conductivity reuse is inconclusive without calibration temperatures. This does not establish instrument drift. Trial-specific K remains primary, and no reference-K discharge comparisons are generated. Eight older method-conflict preparations remain isolated; candidate mass refits do not resolve their historical recipe.
+The nine October sessions for sensor 790481 cover three days. Specific-conductivity reuse fails the tolerance test (largest held-out-day session effect about 17.4%); actual-conductivity reuse is inconclusive without calibration temperatures. This does not establish instrument drift. Trial-specific K remains primary, and no reference-K discharge comparisons are generated. The recovery run retains unresolved recipe conflicts in the compatibility table. Candidate fits need source evidence for the actual preparation before use.
 
 ## Saved outputs and next step
 
@@ -87,4 +87,6 @@ The nine October sessions for sensor 790481 cover three days. Specific-conductiv
 | `figures/` | Fit and residual plots with distinct actual/specific channels. |
 | `run_info.json` | Input/output/code hashes, Git revision, software versions and scope. |
 
-The [reviewed bundle](../salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) contains 49 provisional fits and 37 skips. Its identity review resolved 13 preparations without changing numerical fits; 12 fitted series still lack identities. The [earlier bundle](../salt_dilution/results/calibrations/README.md) remains available. The runner writes the portable file bundle; local MLflow logging, where present, is separate.
+The [recovery review](../salt_dilution/results/discharge_analysis/tables/calibration_quality.csv) covers 59 fitted and 27 skipped series. It records the expected coefficient unit for a known method and the fitted unit, K and fit standard error when available. The dilute-NaCl comparison is conditional on its chemistry and compensation assumptions. It leaves the fitted K intact.
+
+The [October 26 bundle](../salt_dilution/results/calibrations/2026-10-26_probe_review/README.md) recorded 49 provisional fits and 37 skips. Its identity review resolved 13 preparations without changing numerical fits. The [earlier baseline](../salt_dilution/results/calibrations/README.md) remains available.

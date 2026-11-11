@@ -174,7 +174,8 @@ def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path)
         date_label = dates[0] if len(dates) == 1 else f'{dates[0]} to {dates[-1]}'
         time_evidence = json.loads(edge.get('time_evidence') or '{}')
         ax.set_xlabel(f'{_clock_label(time_evidence)} · {date_label}', fontsize=12)
-        ax.xaxis.set_major_locator(mdates.AutoDateLocator(minticks=3, maxticks=6))
+        start, end = mdates.date2num([frame.timestamp.iloc[0], frame.timestamp.iloc[-1]])
+        ax.set_xticks([start + (end-start)*i/4 for i in range(5)])
         tick_format = '%H:%M:%S' if len(dates) == 1 else '%d %b\n%H:%M'
         ax.xaxis.set_major_formatter(mdates.DateFormatter(tick_format, tz=frame.timestamp.dt.tz))
         ax.grid(axis='y', color='#d9dfe2', linewidth=.7)

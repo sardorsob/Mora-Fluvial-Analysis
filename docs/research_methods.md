@@ -4,26 +4,22 @@ The project compares physical river measurements with seismic signals to study w
 
 ## Salt dilution: measuring water discharge
 
-A slug test releases a known amount of salt and records the downstream conductivity pulse. Calibration converts the conductivity rise above river background into added salt concentration.
+A slug test releases a known quantity of tracer and records the downstream conductivity pulse. Let `I` be the signed integral of conductivity above river background over elapsed seconds, in µS·s/cm.
 
-For a mass-based test, conservation of salt gives:
+| Route | Delivered quantity | Calibration slope | Discharge in m³/s |
+| --- | --- | --- | --- |
+| Salt mass | `M` in g | `K_m` in (mg/L)/(µS/cm) | `M / (K_m × I)` |
+| Original solution | `V` in mL | `K_r` in (mL/mL)/(µS/cm) | `(V / 10⁶) / (K_r × I)` |
 
-```text
-Delta_C(t) = K × (EC(t) − EC_background(t))
-Q = M_delivered / integral(Delta_C(t) dt)
-```
+The mass slope converts excess conductivity to added salt concentration. The relative slope converts it to the volume fraction of the original injectate. `V` is the original solution that entered the stream. If source evidence supports treating reported injected volume as delivered, the result carries that assumption.
 
-`EC` is conductivity in µS/cm, `K` converts conductivity to concentration, and `Delta_C` is excess salt concentration in mg/L. `M_delivered` is the salt mass that entered the river, in mg. Integrating concentration over elapsed seconds gives mg·s/L, so `Q` is water discharge in L/s.
+For a given delivered quantity and calibration slope, greater discharge produces a smaller integral. The calculation assumes sufficiently steady flow, adequate mixing, a suitable background and capture of the full tracer passage. Native elapsed times drive trapezoidal integration. The standard background varies linearly between the means of selected pre- and post-pulse windows. An observed pre-pulse background can precede a recording pause when the evidence establishes that the pause was before injection and that the background still applies. A gap within the tracer passage prevents a full-pulse estimate.
 
-For the same salt mass, a higher discharge produces a smaller concentration–time integral. This calculation assumes sufficiently steady discharge during passage, adequate mixing, tracer recovery and a suitable river background. It requires the full pulse, including its tail; peak height alone is insufficient.
+The [calibration fits](calibration.md) are preparation- and channel-specific. Actual and specific conductivity retain their own coefficients. The recovery workflow records compatible trial-specific fits, including alternate worksheet recipes where supported, with their source qualifications. Dilute NaCl references are conditional diagnostics under stated chemistry and compensation assumptions. Calculated discharge uses the fitted coefficient. Pressure and depth comparisons describe changes within a recording placement, where that placement remained stable.
 
-The maintained code extracts recordings, [fits calibration curves](calibration.md), proposes recording/K pairs and calculates mass-slug discharge. It integrates signed conductivity excess over elapsed seconds using trapezoids, with background interpolated between pre- and post-pulse means. It never joins separated recording pieces, fills missing pulse readings or extrapolates an unobserved tail. Recording boundaries do not establish pulse boundaries.
+The [numerical review](getting_started.md#review-the-saved-release-estimates) recomputes saved estimates and compares plausible windows and background choices. Those ranges and fit standard errors cover individual uncertainty components. Full uncertainty also depends on delivered quantity, recipe, mixing and tracer recovery. Where the source supports a conditional observed-interval scenario, the review records the capture and background assumptions in a separate table. All current estimates await field acceptance. See [the results](../salt_dilution/results/discharge_analysis/README.md).
 
-Trial-specific K is primary; actual and specific conductivity remain separate. Automatic or unsigned reviewed windows, uncertain delivered mass and unresolved applicability keep results `proposed`. Software checks and reviewer recommendations do not grant scientific acceptance. Sensitivity estimates cover fit error and background/window choices, not total measurement uncertainty. See [usage](getting_started.md#calculate-mass-slug-discharge) and [current results](../salt_dilution/results/README.md#discharge-results).
-
-Historical solution-slug calibrations use relative injectate concentration and require the corresponding injectate quantity; their coefficients cannot be substituted into the mass equation above. That route is not implemented in the maintained mass runner.
-
-Moore (2004) covers constant-rate injection; Moore (2005) covers solution-slug injection. Richardson (2015) and Richardson et al. (2017) develop mass-stock calibration and uncertainty. See [references](references/README.md) and the [instrument guide](salt_dilution_instruments.md). Constant-rate injection is background methodology, not an implemented workflow here.
+Moore (2004) covers constant-rate injection as background methodology. Moore (2005) covers solution-slug injection. Richardson (2015) and Richardson et al. (2017) develop mass-stock calibration and uncertainty. See [references](references/README.md) and the [instrument guide](salt_dilution_instruments.md).
 
 ## Rock trials: observing particle movement
 
