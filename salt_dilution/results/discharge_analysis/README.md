@@ -9,6 +9,8 @@ Start with [release outcomes](tables/discharge_by_release.csv), [selected estima
 - `settings/` preserves windows, quantities and study design.
 - `provenance/` identifies source bundles and citations.
 
+For blank Q, read [remaining requirements](tables/recovery_requirements.csv). [Recovered pulse areas](tables/observed_pulse_areas.csv) preserve usable observations without assuming a delivered quantity or compatible K.
+
 `analysis_limits.json` records the interpretation limits. Window sensitivity and fit standard errors do not quantify total discharge uncertainty. Conditional NaCl reference checks are diagnostics, not coefficient corrections.
 
 `bundle_index.json` contains a rebuild command; `run_info.json` records hashes. Rebuilding needs the original local source bundles.

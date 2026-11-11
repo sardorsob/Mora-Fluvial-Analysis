@@ -768,7 +768,7 @@
       "reviewer": "R4 waveform audit",
       "reviewed_on": "2026-11-10",
       "user_signoff": false,
-      "evidence": "Single rise and decay to 33 one-second late observations with a near-zero slope and an ambient shift of 1.44 \u00b5S/cm. The nominal 500 g dose, worksheet recipe variant, and discrepant notebook peak remain flagged.",
+      "evidence": "Single rise and decay to 33 one-second late observations with a near-zero slope and an ambient shift of 1.44 µS/cm. The nominal 500 g dose, worksheet recipe variant, and discrepant notebook peak remain flagged.",
       "pairing_reference": {
         "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
         "calibration_edge_id": "PAR-20260901-T04:REC-265ef2bc96dfd1db:PAR-20260903-C04::specific",
@@ -954,7 +954,8 @@
       "calibration_id": "NISQ-20250709-C04",
       "calibration_sensor_identity": "native_match",
       "diagnostic_only": true,
-      "q_authorized_by_this_window": false
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
     },
     {
       "trial_id": "NISQ-20250709-T02",
@@ -996,7 +997,8 @@
       "calibration_id": "NISQ-20250709-C04",
       "calibration_sensor_identity": "native_match",
       "diagnostic_only": true,
-      "q_authorized_by_this_window": false
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
     },
     {
       "trial_id": "NISQ-20250724-T01",
@@ -1015,14 +1017,13 @@
         "2025-07-24 16:37:50"
       ],
       "review_status": "checker_proposed",
-      "reviewer": "R4 waveform audit",
+      "reviewer": "Source and waveform review",
       "reviewed_on": "2026-11-10",
       "user_signoff": false,
-      "evidence": "One excursion follows the 16:27:14 release. Return near 16:35:50 is observed before a slowly declining late baseline; both channels show the same features. The 12.9 L was reported and delivery is unverified. Two same-day calibration reports explicitly identify 680530 and reproduce the notebook EC dose progression. The river instrument is 840058; use these windows as observed-area evidence without assuming transfer.",
+      "evidence": "Local pre/post ambient windows bracket the release-associated excursion. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
       "pairing_reference": {
-        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
-        "calibration_edge_id": "NISQ-20250724-T01:REC-591fe7db0a0512ec:NISQ-20250724-C01:probe_01:specific",
         "recording_edge_id": "NISQ-20250724-T01:REC-591fe7db0a0512ec",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
         "processed_sources": [
           {
             "path": "salt_dilution/data/processed/20250724/20250724_162611_mixing_riverRight_840058.csv",
@@ -1034,15 +1035,9 @@
           }
         ]
       },
-      "observed_integral_us_cm_s": 1334.200006548237,
-      "q_window_and_background_sensitivity_percent": [
-        -1.3797525440556013,
-        1.278072170468647
-      ],
-      "calibration_id": "NISQ-20250724-C01",
-      "calibration_sensor_identity": "unverified",
       "diagnostic_only": true,
-      "q_authorized_by_this_window": false
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
     },
     {
       "trial_id": "NISQ-20250724-T01",
@@ -1061,14 +1056,13 @@
         "2025-07-24 16:37:50"
       ],
       "review_status": "checker_proposed",
-      "reviewer": "R4 waveform audit",
+      "reviewer": "Source and waveform review",
       "reviewed_on": "2026-11-10",
       "user_signoff": false,
-      "evidence": "One excursion follows the 16:27:14 release. Return near 16:35:50 is observed before a slowly declining late baseline; both channels show the same features. The 12.9 L was reported and delivery is unverified. Two same-day calibration reports explicitly identify 680530 and reproduce the notebook EC dose progression. The river instrument is 840058; use these windows as observed-area evidence without assuming transfer.",
+      "evidence": "Local pre/post ambient windows bracket the release-associated excursion. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
       "pairing_reference": {
-        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
-        "calibration_edge_id": "NISQ-20250724-T01:REC-591fe7db0a0512ec:NISQ-20250724-C01:probe_01:actual",
         "recording_edge_id": "NISQ-20250724-T01:REC-591fe7db0a0512ec",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
         "processed_sources": [
           {
             "path": "salt_dilution/data/processed/20250724/20250724_162611_mixing_riverRight_840058.csv",
@@ -1080,15 +1074,9 @@
           }
         ]
       },
-      "observed_integral_us_cm_s": 997.2181511921013,
-      "q_window_and_background_sensitivity_percent": [
-        -1.9401809844252216,
-        1.799167037529248
-      ],
-      "calibration_id": "NISQ-20250724-C01",
-      "calibration_sensor_identity": "unverified",
       "diagnostic_only": true,
-      "q_authorized_by_this_window": false
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
     },
     {
       "trial_id": "NISQ-20250917-T04",
@@ -1107,14 +1095,13 @@
         "2025-09-17 16:25:57.624000"
       ],
       "review_status": "checker_proposed",
-      "reviewer": "R4 waveform audit",
+      "reviewer": "Source and waveform review",
       "reviewed_on": "2026-11-10",
       "user_signoff": false,
-      "evidence": "Use the second pulse, which rises after the 16:10:58 solution release and returns to a sustained local baseline. The larger earlier pulse precedes this release. The 12.9 L was reported, delivery and calibration serial remain unverified, and the legacy left-bank calculation settings associate the calibration with the other recording. Keep as observed-area evidence unless compatibility is established.",
+      "evidence": "Local pre/post ambient windows bracket the release-associated excursion. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
       "pairing_reference": {
-        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
-        "calibration_edge_id": "NISQ-20250917-T04:REC-6bdaefb209eea149:S02:NISQ-20250917-C04::actual",
         "recording_edge_id": "NISQ-20250917-T04:REC-6bdaefb209eea149:S02",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
         "processed_sources": [
           {
             "path": "salt_dilution/data/processed/20250917/VuSitu_Log_2025-09-17_08-18-21_Longmire_stilling_well_NaCl_20250917.csv",
@@ -1122,15 +1109,9 @@
           }
         ]
       },
-      "observed_integral_us_cm_s": 795.4326439275146,
-      "q_window_and_background_sensitivity_percent": [
-        -2.156823011271758,
-        1.6710949525983843
-      ],
-      "calibration_id": "NISQ-20250917-C04",
-      "calibration_sensor_identity": "unverified",
       "diagnostic_only": true,
-      "q_authorized_by_this_window": false
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
     },
     {
       "trial_id": "NISQ-20260716-T01",
@@ -1149,14 +1130,13 @@
         "2026-07-16 16:40:25"
       ],
       "review_status": "checker_proposed",
-      "reviewer": "R4 waveform audit",
+      "reviewer": "Source and waveform review",
       "reviewed_on": "2026-11-10",
       "user_signoff": false,
-      "evidence": "Single excursion after 16:32:11 release with stable pre/post intervals in 5 s sampling. Only preparation-water volume is known and calibration serial remains unverified.",
+      "evidence": "Local pre/post ambient windows bracket the release-associated excursion. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
       "pairing_reference": {
-        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
-        "calibration_edge_id": "NISQ-20260716-T01:REC-9e308546661c8d28:NISQ-20260716-C01::actual",
         "recording_edge_id": "NISQ-20260716-T01:REC-9e308546661c8d28",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
         "processed_sources": [
           {
             "path": "salt_dilution/data/processed/20260716/NaCl_20260716_2026-08-14_18-02-02-082.csv",
@@ -1164,15 +1144,9 @@
           }
         ]
       },
-      "observed_integral_us_cm_s": 1760.4531790123458,
-      "q_window_and_background_sensitivity_percent": [
-        -0.5605009315252207,
-        0.49998310278593916
-      ],
-      "calibration_id": "NISQ-20260716-C01",
-      "calibration_sensor_identity": "unverified",
       "diagnostic_only": true,
-      "q_authorized_by_this_window": false
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
     },
     {
       "trial_id": "NISQ-20260721-T01",
@@ -1191,14 +1165,13 @@
         "2026-07-21 11:21:15"
       ],
       "review_status": "checker_proposed",
-      "reviewer": "R4 waveform audit",
+      "reviewer": "Source and waveform review",
       "reviewed_on": "2026-11-10",
       "user_signoff": false,
-      "evidence": "Time-anchored single excursion in 5 s sampling with 19 pre and 57 late baseline observations. Only preparation-water volume is known and calibration serial remains unverified.",
+      "evidence": "Local pre/post ambient windows bracket the release-associated excursion. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
       "pairing_reference": {
-        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
-        "calibration_edge_id": "NISQ-20260721-T01:REC-2d7ffd4d071e8f31:NISQ-20260721-C01::actual",
         "recording_edge_id": "NISQ-20260721-T01:REC-2d7ffd4d071e8f31",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
         "processed_sources": [
           {
             "path": "salt_dilution/data/processed/20260721/NaCl_20260721_RR_2026-08-14_18-18-31-250.csv",
@@ -1206,15 +1179,9 @@
           }
         ]
       },
-      "observed_integral_us_cm_s": 702.6592962337031,
-      "q_window_and_background_sensitivity_percent": [
-        -0.6576954298829207,
-        0.45386144979573384
-      ],
-      "calibration_id": "NISQ-20260721-C01",
-      "calibration_sensor_identity": "unverified",
       "diagnostic_only": true,
-      "q_authorized_by_this_window": false
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
     },
     {
       "trial_id": "NISQ-20260721-T01",
@@ -1233,14 +1200,13 @@
         "2026-07-21 11:20:26"
       ],
       "review_status": "checker_proposed",
-      "reviewer": "R4 waveform audit",
+      "reviewer": "Source and waveform review",
       "reviewed_on": "2026-11-10",
       "user_signoff": false,
-      "evidence": "Time-anchored single excursion in 5 s sampling with stable pre/post intervals. Remote later zero values are outside the windows. Only preparation-water volume is known and calibration serial remains unverified.",
+      "evidence": "Local pre/post ambient windows bracket the release-associated excursion. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
       "pairing_reference": {
-        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
-        "calibration_edge_id": "NISQ-20260721-T01:REC-d0a7d816b3591c63:NISQ-20260721-C01::actual",
         "recording_edge_id": "NISQ-20260721-T01:REC-d0a7d816b3591c63",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
         "processed_sources": [
           {
             "path": "salt_dilution/data/processed/20260721/NaCl_20260721_RL_2026-08-19_10-56-38-351.csv",
@@ -1248,15 +1214,9 @@
           }
         ]
       },
-      "observed_integral_us_cm_s": 1495.4648233138212,
-      "q_window_and_background_sensitivity_percent": [
-        -0.7905579263624118,
-        0.994760345094714
-      ],
-      "calibration_id": "NISQ-20260721-C01",
-      "calibration_sensor_identity": "unverified",
       "diagnostic_only": true,
-      "q_authorized_by_this_window": false
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
     },
     {
       "trial_id": "NISQ-20260806-T01",
@@ -1275,14 +1235,13 @@
         "2026-08-06 15:00:54"
       ],
       "review_status": "checker_proposed",
-      "reviewer": "R4 waveform audit",
+      "reviewer": "Source and waveform review",
       "reviewed_on": "2026-11-10",
       "user_signoff": false,
-      "evidence": "Sharp event-like excursion with measured return on the left-bank trace. Notebook release clock 14:09 and 14:56 trace peak have unresolved alignment. Only preparation-water volume is known; calibration serial remains unverified.",
+      "evidence": "Contemporaneous excursion on both river probes, but the 14:09 release note precedes both recordings; event link unresolved. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
       "pairing_reference": {
-        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
-        "calibration_edge_id": "NISQ-20260806-T01:REC-2fd4d09d08ff29c8:NISQ-20260806-C01::actual",
         "recording_edge_id": "NISQ-20260806-T01:REC-2fd4d09d08ff29c8",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
         "processed_sources": [
           {
             "path": "salt_dilution/data/processed/20260806/NaCl_202608061_RL_2026-08-14_17-55-39-876.csv",
@@ -1290,21 +1249,260 @@
           }
         ]
       },
-      "observed_integral_us_cm_s": 1584.7761904761896,
-      "q_window_and_background_sensitivity_percent": [
-        -1.5603144783879919,
-        1.224091785821102
-      ],
-      "calibration_id": "NISQ-20260806-C01",
-      "calibration_sensor_identity": "unverified",
       "diagnostic_only": true,
-      "q_authorized_by_this_window": false
+      "q_authorized_by_this_window": false,
+      "event_link_status": "unresolved"
+    },
+    {
+      "trial_id": "NISQ-20250903-T02",
+      "logical_recording_id": "REC-72e60754c3152fc5",
+      "channel": "actual",
+      "pre": [
+        "2025-09-03 16:39:15.100000",
+        "2025-09-03 16:40:23.100000"
+      ],
+      "pulse": [
+        "2025-09-03 16:40:25.100000",
+        "2025-09-03 16:52:49.100000"
+      ],
+      "post": [
+        "2025-09-03 16:52:51.100000",
+        "2025-09-03 16:54:13.100000"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "Source and waveform review",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Local pre/post ambient windows bracket the release-associated excursion. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20250903-T02:REC-72e60754c3152fc5",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20250903/VuSitu_Log_2025-09-03_15-47-13_Longmire_stilling_well_NaCl.csv",
+            "sha256": "947e48efe7c8c06232b45129b2d6484abf1bcbc52f330ccba8df6b73b4427e15"
+          }
+        ]
+      },
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
+    },
+    {
+      "trial_id": "NISQ-20250903-T02",
+      "logical_recording_id": "REC-72e60754c3152fc5",
+      "channel": "specific",
+      "pre": [
+        "2025-09-03 16:39:15.100000",
+        "2025-09-03 16:40:23.100000"
+      ],
+      "pulse": [
+        "2025-09-03 16:40:25.100000",
+        "2025-09-03 16:52:49.100000"
+      ],
+      "post": [
+        "2025-09-03 16:52:51.100000",
+        "2025-09-03 16:54:13.100000"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "Source and waveform review",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Local pre/post ambient windows bracket the release-associated excursion. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20250903-T02:REC-72e60754c3152fc5",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20250903/VuSitu_Log_2025-09-03_15-47-13_Longmire_stilling_well_NaCl.csv",
+            "sha256": "947e48efe7c8c06232b45129b2d6484abf1bcbc52f330ccba8df6b73b4427e15"
+          }
+        ]
+      },
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
+    },
+    {
+      "trial_id": "NISQ-20250917-T04",
+      "logical_recording_id": "REC-6bdaefb209eea149:S02",
+      "channel": "specific",
+      "pre": [
+        "2025-09-17 16:12:12.624000",
+        "2025-09-17 16:14:02.624000"
+      ],
+      "pulse": [
+        "2025-09-17 16:14:12.624000",
+        "2025-09-17 16:20:57.624000"
+      ],
+      "post": [
+        "2025-09-17 16:21:02.624000",
+        "2025-09-17 16:25:57.624000"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "Source and waveform review",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Local pre/post ambient windows bracket the release-associated excursion. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20250917-T04:REC-6bdaefb209eea149:S02",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20250917/VuSitu_Log_2025-09-17_08-18-21_Longmire_stilling_well_NaCl_20250917.csv",
+            "sha256": "6eed98313389f58a94ff669f493f41696c226c43390ffd0855bc1ff62602627e"
+          }
+        ]
+      },
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
+    },
+    {
+      "trial_id": "NISQ-20260716-T01",
+      "logical_recording_id": "REC-9e308546661c8d28",
+      "channel": "specific",
+      "pre": [
+        "2026-07-16 16:31:50",
+        "2026-07-16 16:32:50"
+      ],
+      "pulse": [
+        "2026-07-16 16:32:50",
+        "2026-07-16 16:38:15"
+      ],
+      "post": [
+        "2026-07-16 16:38:15",
+        "2026-07-16 16:40:25"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "Source and waveform review",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Local pre/post ambient windows bracket the release-associated excursion. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20260716-T01:REC-9e308546661c8d28",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20260716/NaCl_20260716_2026-08-14_18-02-02-082.csv",
+            "sha256": "bee434fc358a3bfedffe20f9fcea9fd826b527d39bd1b3dc4c660a8b514dca56"
+          }
+        ]
+      },
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
+    },
+    {
+      "trial_id": "NISQ-20260721-T01",
+      "logical_recording_id": "REC-2d7ffd4d071e8f31",
+      "channel": "specific",
+      "pre": [
+        "2026-07-21 11:09:05",
+        "2026-07-21 11:10:35"
+      ],
+      "pulse": [
+        "2026-07-21 11:10:35",
+        "2026-07-21 11:16:35"
+      ],
+      "post": [
+        "2026-07-21 11:16:35",
+        "2026-07-21 11:21:15"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "Source and waveform review",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Local pre/post ambient windows bracket the release-associated excursion. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20260721-T01:REC-2d7ffd4d071e8f31",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20260721/NaCl_20260721_RR_2026-08-14_18-18-31-250.csv",
+            "sha256": "4d110373c55720f83afd171e41338b0915da9890c62674dd38adca7932600a05"
+          }
+        ]
+      },
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
+    },
+    {
+      "trial_id": "NISQ-20260721-T01",
+      "logical_recording_id": "REC-d0a7d816b3591c63",
+      "channel": "specific",
+      "pre": [
+        "2026-07-21 11:09:06",
+        "2026-07-21 11:10:46"
+      ],
+      "pulse": [
+        "2026-07-21 11:10:46",
+        "2026-07-21 11:16:56"
+      ],
+      "post": [
+        "2026-07-21 11:16:56",
+        "2026-07-21 11:20:26"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "Source and waveform review",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Local pre/post ambient windows bracket the release-associated excursion. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20260721-T01:REC-d0a7d816b3591c63",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20260721/NaCl_20260721_RL_2026-08-19_10-56-38-351.csv",
+            "sha256": "5bb5249931b3cd10e5799f83cfd2a71beb93fe53490fc6184c4fe34d0400eb1c"
+          }
+        ]
+      },
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false,
+      "event_link_status": "source_linked"
+    },
+    {
+      "trial_id": "NISQ-20260806-T01",
+      "logical_recording_id": "REC-2fd4d09d08ff29c8",
+      "channel": "specific",
+      "pre": [
+        "2026-08-06 14:53:44",
+        "2026-08-06 14:54:54"
+      ],
+      "pulse": [
+        "2026-08-06 14:54:54",
+        "2026-08-06 14:58:14"
+      ],
+      "post": [
+        "2026-08-06 14:58:14",
+        "2026-08-06 15:00:54"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "Source and waveform review",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Contemporaneous excursion on both river probes, but the 14:09 release note precedes both recordings; event link unresolved. Native and processed time/conductivity arrays agree. This recovers observed area only; delivery and calibration compatibility remain separate requirements.",
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20260806-T01:REC-2fd4d09d08ff29c8",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20260806/NaCl_202608061_RL_2026-08-14_17-55-39-876.csv",
+            "sha256": "4bef07385eaae6498530d59e7b07f6f81495dff2a8a045cc0262ce2d617b0095"
+          }
+        ]
+      },
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false,
+      "event_link_status": "unresolved"
     }
   ],
   "july24_calibration_identity_evidence": {
     "stream_device_serial": "840058",
     "native_calibration_serial": "680530",
-    "basis": "All 14 paired notebook steps have an ordered nearest same-row match in two native calibration reports. Maximum paired absolute error was 0.290 \u00b5S/cm overall and 0.098 across added doses. Five pairs agree within 0.005001 \u00b5S/cm. Neither a date match alone nor a probe alias supplies this evidence.",
+    "basis": "All 14 paired notebook steps have an ordered nearest same-row match in two native calibration reports. Maximum paired absolute error was 0.290 µS/cm overall and 0.098 across added doses. Five pairs agree within 0.005001 µS/cm. Neither a date match alone nor a probe alias supplies this evidence.",
     "raw_reports": [
       {
         "path": "salt_dilution/data/raw/20250724/LiveReadings/VuSitu_LiveReadings_2025-07-24_17-20-44_Device_Location.html",
@@ -1321,5 +1519,522 @@
     "sha256": "f71bbc6a6dc1baca0b0d587116c6d72a4eb3ba443d7e97c3c64352c014b46392",
     "note": "PR05/PR06 conditional estimates agree within 1.56% with collaborator calculations using the same source runs and worksheet. The collaborator method clips negative excess, unlike signed integration here."
   },
-  "diagnostic_candidate_scope": "Observed waveform areas only; not discharge estimates or authorization to bypass delivery, recipe or sensor compatibility checks."
+  "diagnostic_candidate_scope": "Observed waveform areas only; not discharge estimates or authorization to bypass delivery, recipe or sensor compatibility checks.",
+  "release_requirements": [
+    {
+      "trial_id": "NISQ-20250703-T01",
+      "blocking_factors": [
+        "practice_no_detection"
+      ],
+      "quantity_evidence": "No delivered amount supporting Q.",
+      "calibration_evidence": "No usable calibration/event pair.",
+      "capture_evidence": "Practice release; no downstream tracer detection.",
+      "recoverable_now": "Exclude from the discharge denominator.",
+      "needed_for_selected_q": "No further calculation from these records.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250703-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250703-T02",
+      "blocking_factors": [
+        "practice_no_detection"
+      ],
+      "quantity_evidence": "No delivered amount supporting Q.",
+      "calibration_evidence": "No usable calibration/event pair.",
+      "capture_evidence": "Practice release; no downstream tracer detection.",
+      "recoverable_now": "Exclude from the discharge denominator.",
+      "needed_for_selected_q": "No further calculation from these records.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250703-T02",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250709-T01",
+      "blocking_factors": [
+        "release_calibration_link_unresolved",
+        "original_solution_volume_unknown"
+      ],
+      "quantity_evidence": "Nominal 4000 g in 12 L preparation water; final delivered solution volume unknown.",
+      "calibration_evidence": "C04 was documented for T02. Historical scratch analysis applies it to both, without establishing T01 applicability. C04 stock stage also unresolved.",
+      "capture_evidence": "A river event is recorded on 790478 and 840058.",
+      "recoverable_now": "Record/recipe comparison; no selected Q.",
+      "needed_for_selected_q": "Establish the applicable calibration and original injected solution volume.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250709-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250709-T02",
+      "blocking_factors": [
+        "original_solution_volume_unknown",
+        "stock_stage_unresolved"
+      ],
+      "quantity_evidence": "12 L in legacy settings is preparation water in the accompanying notebook, not a measured delivered volume.",
+      "calibration_evidence": "C04 matches native 790478, but primary-versus-secondary stock stage is unresolved; do not infer injectate strength from a good linear fit.",
+      "capture_evidence": "Release-aligned pulse is recorded; observed area can be retained.",
+      "recoverable_now": "Observed area without a discharge value.",
+      "needed_for_selected_q": "Original injected solution volume and the stock/dose stage used for C04.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250709-T02",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250717-T01",
+      "blocking_factors": [
+        "competing_calibrations",
+        "tail_background_unresolved"
+      ],
+      "quantity_evidence": "Current reviewed nominal mass is 4000 g; field delivery is unconfirmed.",
+      "calibration_evidence": "River 790481 matches C01 and C02 direct-stock fits. No evidence establishes that C02 replaced C01. Companion 840058 lacks matching K.",
+      "capture_evidence": "Main pulse captured at 1 Hz; only 14 terminal observations, still falling.",
+      "recoverable_now": "Two preparation-specific conditional diagnostics are possible, not a selected Q.",
+      "needed_for_selected_q": "Which preparation applies, and independent full-capture/background support.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250717-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+        "salt_dilution/data/raw/20250717/20250717_trial1_dry_injection_config.ini"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250724-T01",
+      "blocking_factors": [
+        "native_sensor_mismatch"
+      ],
+      "quantity_evidence": "Reported 12.9 L is source-backed; actual delivery remains unverified.",
+      "calibration_evidence": "Native calibration 680530 differs from river 840058. Same model is not a measured transfer calibration.",
+      "capture_evidence": "Reviewed full-looking pulse and local background are available on both conductivity channels.",
+      "recoverable_now": "Observed areas recovered; initial automatic tail failure is not the main evidence gap.",
+      "needed_for_selected_q": "Matching-sensor calibration or independently validated cross-sensor transfer.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250724-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250731-T01",
+      "blocking_factors": [
+        "native_sensor_mismatch",
+        "in_pulse_gap"
+      ],
+      "quantity_evidence": "Current reviewed nominal mass is 4000 g; field delivery is unconfirmed.",
+      "calibration_evidence": "Dry C02 calibration uses 680530; river logs use 840058 and 790481.",
+      "capture_evidence": "840058 has a 105 s gap in the dry tail. The independent 790481 waveform is sampled every 60 s.",
+      "recoverable_now": "Independent coarse waveform retained; no splicing across sensors.",
+      "needed_for_selected_q": "A compatible K and a complete adequately sampled observation of this release.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250731-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250731-T02",
+      "blocking_factors": [
+        "native_sensor_mismatch"
+      ],
+      "quantity_evidence": "Reported 12.9 L with 13 L preparation water and 100 mL reserve; delivered final volume not measured.",
+      "calibration_evidence": "Secondary C01 uses 680530; river 840058/790481 do not match.",
+      "capture_evidence": "Solution wave appears in both river records.",
+      "recoverable_now": "Observed waveform and source-reported volume retained.",
+      "needed_for_selected_q": "Matching-sensor K or validated transfer; delivery remains a qualification.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250731-T02",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250805-T01",
+      "blocking_factors": [
+        "native_sensor_mismatch",
+        "pipette_dose_uncertainty"
+      ],
+      "quantity_evidence": "Current reviewed nominal mass is 4000 g; field delivery is unconfirmed.",
+      "calibration_evidence": "All four native calibrations used 680530; river logs use 790481/840058. Legacy dry settings corroborate 2 g/1 L stock candidates.",
+      "capture_evidence": "River recordings exist. The notes document a broken pipette; dose uncertainty survives a complete waveform.",
+      "recoverable_now": "Preserve source-backed recipes/volumes and native identity evidence; no sensor transfer inferred.",
+      "needed_for_selected_q": "Matching-sensor K or validated transfer, plus usable calibration-dose evidence.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250805-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+        "salt_dilution/data/raw/20250805/20250805_trial1_dry_injection_config.ini"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250805-T02",
+      "blocking_factors": [
+        "native_sensor_mismatch",
+        "pipette_dose_uncertainty"
+      ],
+      "quantity_evidence": "Source recheck explicitly records 12.9 L for this solution release; delivery remains unverified.",
+      "calibration_evidence": "All four native calibrations used 680530; river logs use 790481/840058. Secondary 10 mL/1000 mL lineage is source-linked.",
+      "capture_evidence": "River recordings exist. The notes document a broken pipette; dose uncertainty survives a complete waveform.",
+      "recoverable_now": "Preserve source-backed recipes/volumes and native identity evidence; no sensor transfer inferred.",
+      "needed_for_selected_q": "Matching-sensor K or validated transfer, plus usable calibration-dose evidence.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250805-T02",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+        "salt_dilution/data/raw/20250805/20250805_trial1_solution_injection_config.ini"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250805-T03",
+      "blocking_factors": [
+        "native_sensor_mismatch",
+        "pipette_dose_uncertainty"
+      ],
+      "quantity_evidence": "Current reviewed nominal mass is 4000 g; field delivery is unconfirmed.",
+      "calibration_evidence": "All four native calibrations used 680530; river logs use 790481/840058. Legacy dry settings corroborate 2 g/1 L stock candidates.",
+      "capture_evidence": "River recordings exist. The notes document a broken pipette; dose uncertainty survives a complete waveform.",
+      "recoverable_now": "Preserve source-backed recipes/volumes and native identity evidence; no sensor transfer inferred.",
+      "needed_for_selected_q": "Matching-sensor K or validated transfer, plus usable calibration-dose evidence.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250805-T03",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+        "salt_dilution/data/raw/20250805/20250805_trial2_dry_injection_config.ini"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250805-T04",
+      "blocking_factors": [
+        "native_sensor_mismatch",
+        "pipette_dose_uncertainty",
+        "secondary_stock_lineage_unresolved"
+      ],
+      "quantity_evidence": "Source recheck explicitly records 12.9 L for this solution release; delivery remains unverified.",
+      "calibration_evidence": "All four native calibrations used 680530; river logs use 790481/840058. Secondary 10 mL/1000 mL lineage was inherited, not confirmed.",
+      "capture_evidence": "River recordings exist. The notes document a broken pipette; dose uncertainty survives a complete waveform.",
+      "recoverable_now": "Preserve source-backed recipes/volumes and native identity evidence; no sensor transfer inferred.",
+      "needed_for_selected_q": "Matching-sensor K or validated transfer, plus usable calibration-dose evidence.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250805-T04",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+        "salt_dilution/data/raw/20250805/20250805_trial2_solution_injection_config.ini"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250808-T01",
+      "blocking_factors": [
+        "native_sensor_mismatch"
+      ],
+      "quantity_evidence": "Current reviewed nominal mass is 4000 g; field delivery is unconfirmed.",
+      "calibration_evidence": "C01 native 680530; river 790481/840058. Legacy dry settings support a 2 g/1 L candidate.",
+      "capture_evidence": "River event is recorded; no same-serial calibration/river pair found.",
+      "recoverable_now": "Direct-stock candidate and river observations retained.",
+      "needed_for_selected_q": "Matching-sensor K or validated transfer.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250808-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+        "salt_dilution/data/raw/20250808/20250808_dry_injection_config.ini"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250903-T01",
+      "blocking_factors": [
+        "stock_stage_unresolved",
+        "calibration_identity_unverified"
+      ],
+      "quantity_evidence": "Current reviewed nominal mass is 4000 g; field delivery is unconfirmed.",
+      "calibration_evidence": "The nominal 2 g stock override is user-reviewed. Direct-versus-secondary stage remains unresolved. Unreviewed notebook assignment 790478 differs from native river 680530/790481; this is not a native calibration-serial match.",
+      "capture_evidence": "Raw dry CSV matches all six notebook actual-EC points. Waveform alone does not resolve K units/device.",
+      "recoverable_now": "Alternative method calculations remain isolated.",
+      "needed_for_selected_q": "Resolve which stock fed the calibration and which instrument measured it.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250903-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250903-T02",
+      "blocking_factors": [
+        "delivered_quantity_unknown_after_spill",
+        "calibration_identity_unverified"
+      ],
+      "quantity_evidence": "Notebook explicitly records a spill. A nominal 12.9 L input does not establish delivered volume.",
+      "calibration_evidence": "C02 serial is unverified. Observed actual EC9.5–11.4 is below the 15.21–37.86 calibration range.",
+      "capture_evidence": "Recovered post-release pulse on 790481, ending before later disturbances; background/edge sensitivity about 12–15%.",
+      "recoverable_now": "Observed pulse areas on actual and specific channels.",
+      "needed_for_selected_q": "Delivered amount after the spill and compatible calibration applicability.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250903-T02",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250917-T01",
+      "blocking_factors": [
+        "stock_stage_unresolved",
+        "calibration_identity_unverified"
+      ],
+      "quantity_evidence": "Current reviewed nominal mass is 4000 g; field delivery is unconfirmed.",
+      "calibration_evidence": "Legacy dry INI corroborates 2 g/1 L direct-stock candidate; current relative fit must not be silently used as a mass K. AM unreviewed notebook assignment 790478 differs from river 680530/790481.",
+      "capture_evidence": "River records exist; later solution releases must be kept separate. The ordered calibration series is absent from the native river logs.",
+      "recoverable_now": "Method candidates corroborated against raw settings and six-point EC sequences.",
+      "needed_for_selected_q": "Resolve the fitted stock/dose lineage and physical calibration instrument, then review this dry pulse.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250917-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+        "salt_dilution/data/raw/20250917/20250917_trial1_riverLeft_dry_injection_config.ini"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250917-T03",
+      "blocking_factors": [
+        "stock_stage_unresolved",
+        "calibration_identity_unverified"
+      ],
+      "quantity_evidence": "Current reviewed nominal mass is 4000 g; field delivery is unconfirmed.",
+      "calibration_evidence": "Legacy dry INI corroborates 2 g/1 L direct-stock candidate; current relative fit must not be silently used as a mass K. PM calibration serial is not established.",
+      "capture_evidence": "River records exist; later solution releases must be kept separate. The ordered calibration series is absent from the native river logs.",
+      "recoverable_now": "Method candidates corroborated against raw settings and six-point EC sequences.",
+      "needed_for_selected_q": "Resolve the fitted stock/dose lineage and physical calibration instrument, then review this dry pulse.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250917-T03",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+        "salt_dilution/data/raw/20250917/20250917_trial2_riverLeft_dry_injection_config.ini"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250917-T02",
+      "blocking_factors": [
+        "overlapping_previous_pulse",
+        "calibration_identity_unverified"
+      ],
+      "quantity_evidence": "Reported 12.9 L; delivery unverified.",
+      "calibration_evidence": "C02 physical serial is not established.",
+      "capture_evidence": "Solution excursion is superposed on the falling dry-release tail on both probes.",
+      "recoverable_now": "Event identified; isolated solution area is not identified.",
+      "needed_for_selected_q": "Independent ambient/previous-tail separation and a compatible calibration.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250917-T02",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20250917-T04",
+      "blocking_factors": [
+        "calibration_identity_unverified"
+      ],
+      "quantity_evidence": "Reported 12.9 L; delivery unverified.",
+      "calibration_evidence": "C04 serial is unresolved. Legacy settings point to the disturbed 680530 bank, while the cleaner pulse is 790481.",
+      "capture_evidence": "Clean local return on 790481; companion 680530 strongly depends on background choice.",
+      "recoverable_now": "Observed actual and specific pulse areas on 790481.",
+      "needed_for_selected_q": "Calibration applicability to 790481 or independent transfer evidence; retain reported-delivery qualification.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20250917-T04",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20260716-T01",
+      "blocking_factors": [
+        "original_solution_volume_unknown",
+        "calibration_identity_unverified"
+      ],
+      "quantity_evidence": "4000 g and 12 L preparation water are recorded; final injected solution volume is absent.",
+      "calibration_evidence": "C01 calibration serial is not established.",
+      "capture_evidence": "Stable local pulse on 790481.",
+      "recoverable_now": "Observed areas recovered with longer background windows appropriate to 5 s sampling.",
+      "needed_for_selected_q": "Original delivered solution volume and compatible K; for July 21 also reconcile cross-bank differences.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20260716-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20260721-T01",
+      "blocking_factors": [
+        "original_solution_volume_unknown",
+        "calibration_identity_unverified"
+      ],
+      "quantity_evidence": "4000 g and 12 L preparation water are recorded; final injected solution volume is absent.",
+      "calibration_evidence": "C01 calibration serial is not established.",
+      "capture_evidence": "Both river probes capture the event, but their actual-channel areas differ by roughly 2.1-fold; do not average without a mixing/compatibility check.",
+      "recoverable_now": "Observed areas recovered with longer background windows appropriate to 5 s sampling.",
+      "needed_for_selected_q": "Original delivered solution volume and compatible K; for July 21 also reconcile cross-bank differences.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20260721-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20260806-T01",
+      "blocking_factors": [
+        "original_solution_volume_unknown",
+        "stock_stage_unresolved",
+        "calibration_identity_unverified",
+        "release_alignment_unresolved"
+      ],
+      "quantity_evidence": "4000 g and 12 L preparation water are recorded; delivered solution volume unknown.",
+      "calibration_evidence": "Secondary-stock lineage and calibration serial unresolved; peak actual EC88.94 exceeds fit maximum 60.7.",
+      "capture_evidence": "Both probes show an excursion near 14:56. Notebook 14:09 release predates both logs by over 15min.",
+      "recoverable_now": "Excursion area recovered; cadence fix exposes the quantity gate.",
+      "needed_for_selected_q": "Resolve event association, original injected volume, secondary-stock recipe and instrument applicability.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20260806-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20260918-T01",
+      "blocking_factors": [
+        "tail_background_unresolved",
+        "calibration_identity_unverified"
+      ],
+      "quantity_evidence": "Current reviewed nominal mass is 4000 g; field delivery is unconfirmed.",
+      "calibration_evidence": "C02 has a source-session link, not independently verified calibration identity.",
+      "capture_evidence": "Tail trends downward through recorder stop; approaching the starting level does not prove tracer completion. Release time unknown.",
+      "recoverable_now": "Retain observed trace and drift diagnostics.",
+      "needed_for_selected_q": "Independent settled background/tail evidence and compatible calibration; nominal delivery remains a qualification.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20260918-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20261002-T02",
+      "blocking_factors": [
+        "tail_background_unresolved"
+      ],
+      "quantity_evidence": "Delivered 4000 g explicitly confirmed by the field participant.",
+      "calibration_evidence": "Within-trial K link available; actual/specific channels kept separate.",
+      "capture_evidence": "Tail still above background and declining, with a late disturbance.",
+      "recoverable_now": "Retain observed trace and background/tail evidence; no extrapolation.",
+      "needed_for_selected_q": "Independent tail/background evidence or a separately validated, explicitly conditional tail model.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20261002-T02",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+        "salt_dilution/config/release_confirmations.json"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20261004-T01",
+      "blocking_factors": [
+        "tail_background_unresolved"
+      ],
+      "quantity_evidence": "Delivered 4000 g explicitly confirmed by the field participant.",
+      "calibration_evidence": "Within-trial K link available; actual/specific channels kept separate.",
+      "capture_evidence": "Conductivity crosses the initial baseline but keeps falling amid fluctuations. C01 also notes incompletely mixed calibration stock.",
+      "recoverable_now": "Retain observed trace and background/tail evidence; no extrapolation.",
+      "needed_for_selected_q": "Independent tail/background evidence or a separately validated, explicitly conditional tail model.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20261004-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+        "salt_dilution/config/release_confirmations.json"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20261004-T04",
+      "blocking_factors": [
+        "tail_background_unresolved"
+      ],
+      "quantity_evidence": "Delivered 4000 g explicitly confirmed by the field participant.",
+      "calibration_evidence": "Within-trial K link available; actual/specific channels kept separate.",
+      "capture_evidence": "Only the last~17s approach prior ambient, then a terminal uptick; no independently settled tail.",
+      "recoverable_now": "Separate capture-assumed scenarios already give 3.676m³/s specific and 3.769m³/s actual.",
+      "needed_for_selected_q": "Independent tail/background evidence or a separately validated, explicitly conditional tail model.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20261004-T04",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+        "salt_dilution/config/release_confirmations.json"
+      ]
+    },
+    {
+      "trial_id": "NISQ-20261005-T01",
+      "blocking_factors": [
+        "tail_background_unresolved"
+      ],
+      "quantity_evidence": "Delivered 4000 g explicitly confirmed by the field participant.",
+      "calibration_evidence": "Within-trial K link available; actual/specific channels kept separate.",
+      "capture_evidence": "Tail still above background and declining at recording stop. Deployment reports contain settings, not an extension of the readings.",
+      "recoverable_now": "Retain observed trace and background/tail evidence; no extrapolation.",
+      "needed_for_selected_q": "Independent tail/background evidence or a separately validated, explicitly conditional tail model.",
+      "evidence_refs": [
+        "salt_dilution/data/records/provenance.json#NISQ-20261005-T01",
+        "salt_dilution/data/records/manifest.json",
+        "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+        "salt_dilution/config/release_confirmations.json"
+      ]
+    }
+  ],
+  "reviewed_source_files": [
+    {
+      "path": "salt_dilution/config/release_confirmations.json",
+      "sha256": "827e8a2d64b46b0822b438c72255db5fdadd932bb41eec2c563e22eed9224238"
+    },
+    {
+      "path": "salt_dilution/data/processed/field_notes/2026-10-12/discharge/instrument_assignments.csv",
+      "sha256": "87864bf603f67d5485dc16d0033c03b1d71ac4798f03e2fcdd13bf7699ae5356"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250717/20250717_trial1_dry_injection_config.ini",
+      "sha256": "ce261def2e40198c1d9089a23494ac95ccc065b48d136cf912051e42bf5b8275"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250805/20250805_trial1_dry_injection_config.ini",
+      "sha256": "813a3ba89280117153e69a84627fce671b26b6be714f4077d5ea21d70eb0269a"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250805/20250805_trial1_solution_injection_config.ini",
+      "sha256": "d16c22ef412139dd1c3adfd31dd988db635426de8c5f5ed15262a57a32e2b0ec"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250805/20250805_trial2_dry_injection_config.ini",
+      "sha256": "108c4991b245197abd7f24b28d534271433d577d4688ace2babdf9bae2352e59"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250805/20250805_trial2_solution_injection_config.ini",
+      "sha256": "71a68a01069eb13d11b70c867d525c84a024be4af3e033a84f5d472c39fb1d8c"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250808/20250808_dry_injection_config.ini",
+      "sha256": "19eb7be6392503f8c56b9d723021841bde084beb3da1bb419328af617a8893cb"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250917/20250917_trial1_riverLeft_dry_injection_config.ini",
+      "sha256": "238ec05c9b0c5acb7c74ef0b6b49786ea55d81c1569bd8960fcc532698d53f66"
+    },
+    {
+      "path": "salt_dilution/data/raw/20250917/20250917_trial2_riverLeft_dry_injection_config.ini",
+      "sha256": "bff787facc3135d975927354b3deba0894f98174e0588cdd40818246a631a0ab"
+    },
+    {
+      "path": "salt_dilution/data/records/manifest.json",
+      "sha256": "83216a55d31e51d78ccdd5726ac98f23f348ad499c7b29e2608686b450423eba"
+    },
+    {
+      "path": "salt_dilution/data/records/provenance.json",
+      "sha256": "1f1a70c2cc755e742c1c7fb0aeca969ffcff674395b29ea69e6912584089cd6b"
+    }
+  ],
+  "source_review_limit": "Notebook scans are unavailable; notebook statements use retained transcriptions and documented source rechecks. Native serial evidence is distinguished from unreviewed notebook assignments and placeholder aliases."
 }

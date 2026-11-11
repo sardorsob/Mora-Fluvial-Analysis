@@ -141,11 +141,11 @@ Use the same recovery review bundle for `--audit-run` and `--review-run`. Both m
 Reproduce the published package from the saved source runs.
 
 ```sh
-review_run=salt_dilution/results/discharge/2026-11-10_recovery_review_v2
+review_run=salt_dilution/results/discharge/2026-11-10_remaining_review
 export_out=$(mktemp -d)
 
 python -m salt_dilution.scripts.processing.export_discharge \
-  --mass-run salt_dilution/results/discharge/2026-11-10_recovery_v2 \
+  --mass-run salt_dilution/results/discharge/2026-11-10_remaining_recovery_v2 \
   --audit-run "$review_run" --review-run "$review_run" \
   --reuse-run salt_dilution/results/calibration_reuse/2026-11-10_recovery_v2 \
   --refresh-figures --output "$export_out/discharge_analysis"
