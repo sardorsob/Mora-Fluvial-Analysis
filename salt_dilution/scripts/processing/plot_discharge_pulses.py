@@ -4,6 +4,7 @@ from __future__ import annotations
 import csv
 import json
 import textwrap
+from datetime import date
 from pathlib import Path
 
 import matplotlib
@@ -11,7 +12,50 @@ matplotlib.use('Agg')
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 
-from . import calibration_reuse, mass_slug, matching
+from . import mass_slug, matching
+from .plot_discharge_summary import CONDITIONAL_SUPPORT, SITE_NAMES, METHOD_NAMES
+
+
+BLOCKED_LABELS = {
+    'pulse_truncated': 'Pulse end not established',
+    'tail_not_settled': 'Pulse end not established',
+    'pulse_start_missing': 'Pulse start not established',
+    'release_alignment_unresolved': 'Release and pulse timing unresolved',
+    'calibration_not_mass_compatible': 'Calibration recipe or units unresolved',
+    'coefficient_unit_method_mismatch': 'Calibration units do not match the method',
+    'no_compatible_coefficient_for_sensor': 'Calibration unavailable for this sensor',
+    'edge_calibration_identity_disagrees_with_native_audit': 'Calibration sensor identity conflicts',
+    'delivered_solution_volume_unavailable': 'Delivered solution volume unavailable',
+    'solution_volume_source_unresolved': 'Solution volume source unresolved',
+    'pulse_or_background_crosses_segment_gap': 'Sampling gap inside pulse or background',
+    'missing_cells_in_windows': 'Pulse or background readings missing',
+}
+
+
+def _clock_label(evidence):
+    if (evidence.get('effective_measurement_basis') == 'participant_confirmed_fixed_field_offset'
+            and evidence.get('effective_offset_seconds') == -28800):
+        return 'Field time (PST, UTC−08:00)'
+    return 'Recorded field clock'
+
+
+def _blocked_label(reason):
+    code = reason.strip().split(';', 1)[0]
+    return BLOCKED_LABELS.get(code, code.replace('_', ' ').capitalize() if code else 'Discharge unavailable')
+
+
+def _estimate_caption(estimate):
+    support = estimate.get('estimate_support')
+    status = 'Conditional' if support in CONDITIONAL_SUPPORT else 'Proposed'
+    notes = []
+    if support == 'conditional_calibration_variant':
+        notes.append('Uses an alternate calibration worksheet.')
+    if str(estimate.get('nominal_equals_delivered_mass_assumed', '')).lower() == 'true':
+        notes.append('Nominal salt mass assumed delivered.')
+    if support == 'conditional_reported_volume' or estimate.get('solution_volume_basis') == 'reported_delivery_assumed':
+        notes.append('Reported solution volume assumed delivered.')
+    notes.append('Field acceptance pending.')
+    return status, ' '.join(notes)
 
 
 def _rows(path):
@@ -19,8 +63,8 @@ def _rows(path):
         return list(csv.DictReader(stream))
 
 
-def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path):
-    """Render the saved recording/channel attempts into figure_dir/mass/pulses."""
+def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path) -> set[Path]:
+    """Render available recording/channel traces and return their relative paths."""
     bundle, root = Path(bundle).resolve(), Path(root).resolve()
     source = json.loads((bundle/'provenance/source_bundles.json').read_text())['mass']
     mass = Path(mass_dir).resolve()
@@ -40,63 +84,107 @@ def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path)
     candidate_path = matching._path(candidates[0]['path'], root).resolve()
     if not candidate_path.is_relative_to(root) or matching._hash(candidate_path) != candidates[0]['sha256']:
         raise ValueError('Pairing table outside root or differs from mass manifest')
-    pairing = candidate_path.parent
-    pair, _ = calibration_reuse.verify_bundle(pairing, root)
-    recordings = {r['recording_edge_id']: r for r in _rows(pairing/'recording_candidates.csv')}
+    pair_path = candidate_path.with_name('run_info.json')
+    pair_pins = [item for item in info['inputs'] if matching._path(item['path'], root).resolve() == pair_path]
+    if len(pair_pins) != 1 or matching._hash(pair_path) != pair_pins[0]['sha256']:
+        raise ValueError('Pairing manifest differs from mass manifest')
+    pair = json.loads(pair_path.read_text())
+    if {'path': candidate_path.name, 'sha256': candidates[0]['sha256']} not in pair['outputs']:
+        raise ValueError('Recording candidates do not match the saved pairing manifest')
+    recordings = {r['recording_edge_id']: r for r in _rows(candidate_path)}
     decisions = mass_slug._read_windows(mass/'pulse_windows_used.json')
-    estimates = {(r['trial_id'], r['logical_recording_id'], r['conductivity_basis']): r
-                 for r in _rows(mass/'discharge_estimates.csv') if r['coefficient_source'] == 'trial_specific'}
+    trial_estimates = [r for r in _rows(mass/'discharge_estimates.csv') if r['coefficient_source'] == 'trial_specific']
+    estimates = {(r['trial_id'], r['logical_recording_id'], r['conductivity_basis']): r for r in trial_estimates}
+    if len(estimates) != len(trial_estimates):
+        raise ValueError('Duplicate trial-specific estimate for a recording/channel')
     outcomes = _rows(mass/'recording_outcomes.csv')
-    flagged = {r['trial_id'] for r in _rows(bundle/'tables/discharge_by_release.csv')
-               if r['source_background_discrepancy'].lower() == 'true'}
+    releases = {r['trial_id']: r for r in _rows(bundle/'tables/discharge_by_release.csv')}
     background_notes = {r['trial_id']: r for r in _rows(bundle/'tables/field_note_comparison.csv')
                         if r['quantity'] == 'specific_conductivity_background'}
     dest = Path(figure_dir)/'mass/pulses'
     dest.mkdir(parents=True, exist_ok=True)
+    rendered = set()
     for row in outcomes:
         key = row['trial_id'], row['logical_recording_id'], row['channel']
         edge = recordings[row['recording_edge_id']]
-        frame, _ = mass_slug.prepare_series(mass_slug._recording_samples(
-            edge, pair, root/'salt_dilution/data/processed', root), row['channel'])
-        decision = decisions[key]
+        if (edge['trial_id'], edge['logical_recording_id']) != key[:2]:
+            raise ValueError(f'Pulse outcome does not match its recording: {key}')
+        samples = mass_slug._recording_samples(edge, pair, root/'salt_dilution/data/processed', root)
+        computed = row['outcome'] == 'computed'
+        try:
+            frame, _ = mass_slug.prepare_series(samples, row['channel'])
+        except ValueError:
+            if computed:
+                raise
+            continue
+        decision = decisions.get(key, {})
+        release = releases[key[0]]
+        site = SITE_NAMES.get(release['site_alias'], release['site_alias'])
+        day = date.fromisoformat(release['field_date'])
+        trial = key[0].rsplit('-', 1)[-1]
+        trial_label = f'Trial {int(trial[1:])}' if trial.startswith('T') and trial[1:].isdigit() else trial
+        title = f'{site}, {day.day} {day:%B %Y} · {trial_label}'
+        channel_label = f"{key[2].title()} conductivity"
         fig, ax = plt.subplots(figsize=(8.2, 5.4), layout='constrained')
         for _, part in frame.groupby('segment', sort=True):
             ax.plot(part.timestamp, part.ec, color='#176080', linewidth=1.5)
-        if row['outcome'] == 'computed':
+        if computed:
             estimate = estimates[key]
+            if estimate['recording_edge_id'] != row['recording_edge_id']:
+                raise ValueError(f'Pulse estimate does not match its recording: {key}')
+            if estimate['recording_origin_local'] != str(frame.timestamp.iloc[0]):
+                raise ValueError(f'Pulse estimate does not match its recording origin: {key}')
             windows = json.loads(estimate['windows'])
             pre, pulse, post = mass_slug._window_parts(frame, windows)
-            background = mass_slug._background(pulse.t_s.to_numpy(), pre, post, 'linear')
+            mode = estimate.get('background_mode') or 'linear'
             ax.axvspan(pre.timestamp.iloc[0], pre.timestamp.iloc[-1], color='#8b8f92', alpha=.19, label='Background windows')
             ax.axvspan(post.timestamp.iloc[0], post.timestamp.iloc[-1], color='#8b8f92', alpha=.19)
-            ax.plot(pulse.timestamp, background, color='#30383b', linestyle='--', linewidth=1.3, label='Linear background')
-            ax.fill_between(pulse.timestamp, background, pulse.ec.to_numpy(), color='#176080', alpha=.20, label='Signed pulse area')
-            status = f"Proposed Q = {float(estimate['q_m3_s']):.3f} m³/s"
+            for i, (_, part) in enumerate(pulse.groupby('segment', sort=True)):
+                background = mass_slug._background(part.t_s.to_numpy(), pre, post, mode)
+                ax.plot(part.timestamp, background, color='#30383b', linestyle='--', linewidth=1.3,
+                        label=f'{mode.title()} background' if i == 0 else None)
+                ax.fill_between(part.timestamp, background, part.ec.to_numpy(), color='#176080', alpha=.20,
+                                label='Signed pulse area' if i == 0 else None)
+            status, note = _estimate_caption(estimate)
+            title += f"\n{status} Q = {float(estimate['q_m3_s']):.3f} m³/s"
+            method = METHOD_NAMES.get(estimate.get('discharge_method') or 'mass_slug', '')
+            channel_label += f' · {method}' if method else ''
             ax.legend(loc='best', frameon=False, fontsize=12)
         else:
-            status = 'Blocked: ' + row['reason'].replace('_', ' ')
-        ax.set_title(f"{row['trial_id']} · {row['channel'].title()} conductivity\n{status}", loc='left', fontsize=15, weight='bold')
+            title += '\n' + _blocked_label(row['reason'])
+        ax.set_title(title, loc='left', fontsize=15, weight='bold')
+        ax.text(1, 1.015, channel_label, transform=ax.transAxes, ha='right', va='bottom',
+                fontsize=12, color='#424b50')
         ax.set_ylabel('Conductivity (µS/cm)', fontsize=12)
         ax.tick_params(labelsize=12)
         dates = frame.timestamp.dt.strftime('%Y-%m-%d').unique()
         date_label = dates[0] if len(dates) == 1 else f'{dates[0]} to {dates[-1]}'
-        ax.set_xlabel(f'Recorded clock · {date_label}\nTimezone alignment unresolved', fontsize=12)
-        ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
+        time_evidence = json.loads(edge.get('time_evidence') or '{}')
+        ax.set_xlabel(f'{_clock_label(time_evidence)} · {date_label}', fontsize=12)
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S', tz=frame.timestamp.dt.tz))
         ax.grid(axis='y', color='#d9dfe2', linewidth=.7)
         ax.spines[['top', 'right']].set_visible(False)
-        note = ('Proposed windows. Field sign-off pending.'
-                if row['outcome'] == 'computed' else
-                'No Q calculated. ' + (row['detail'] or decision.get('reason', 'Capture blocked.')))
-        if key[0] in flagged:
+        if computed:
+            chronology = json.loads(edge.get('chronology_evidence') or '{}')
+            if chronology.get('clock_basis') in ('reviewed_whole_file_relationship', 'source_confirmed_file_relationship'):
+                note += ' File match established. Release-to-pulse timing unverified.'
+        else:
+            note = 'No Q calculated. ' + (row.get('detail') or decision.get('reason', ''))
+        if release.get('source_background_discrepancy', '').lower() == 'true' and key[0] in background_notes:
             comparison = background_notes[key[0]]
             notebook = float(comparison['notebook_numeric_value'])
             measured = float(comparison['native_measurement_us_cm'])
-            note += f'\nSpecific background differs: notebook {notebook:g}, recording {measured:.2f} µS/cm.'
-        footer = (note + '\nSource: saved Aqua TROLL recording and pulse review.\n'
-                  + 'Recording: ' + key[1])
+            note += f'\nSpecific background (µS/cm) was {notebook:g} in the notebook and {measured:.2f} in the recording.'
+        footer = (note + '\nSource · Saved Aqua TROLL recording and pulse review\n'
+                  + 'Recording · ' + key[1])
         fig.text(.08, -.02, '\n'.join('\n'.join(textwrap.wrap(line, 63))
                                       for line in footer.split('\n')),
                  fontsize=13, va='top', color='#424b50')
         name = f"{key[0]}_{key[1].replace(':', '-')}_{key[2]}.png"
+        path = Path('mass/pulses') / name
+        if path in rendered:
+            raise ValueError(f'Duplicate pulse outcome: {key}')
         fig.savefig(dest/name, dpi=150, bbox_inches='tight')
         plt.close(fig)
+        rendered.add(path)
+    return rendered

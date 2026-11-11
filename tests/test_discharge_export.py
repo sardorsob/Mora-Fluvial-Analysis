@@ -35,7 +35,7 @@ class TableTests(unittest.TestCase):
         self.assertEqual(result[0]['q_primary_m3_s'],'2.043823838972579')
         self.assertEqual(result[1]['q_primary_m3_s'],'')
         self.assertEqual(result[2]['q_primary_m3_s'],'')
-        self.assertTrue(all(r['case_closed_for_current_data'] for r in result))
+        self.assertTrue(all(not r['case_closed_for_current_data'] for r in result))
         self.assertTrue(all(r['scientifically_accepted'] is False for r in result))
         self.assertEqual(result[1]['case_disposition'],'not_estimable_capture')
         self.assertEqual(result[2]['case_disposition'],'relative_route_out_of_scope')
@@ -65,6 +65,12 @@ class TableTests(unittest.TestCase):
         self.estimates.append(dict(self.estimates[0],estimate_role='comparison_channel',q_m3_s='2.18'))
         result=export.assemble_release_table(self.master,self.estimates,self.review)
         self.assertEqual(sum(r['case_disposition']=='estimated_proposed' for r in result),1)
+
+    def test_new_blocking_reason_remains_an_open_recovery_case(self):
+        self.master[1]['category']='blocked_solution_volume_source_unresolved'
+        row=export.assemble_release_table(self.master,self.estimates,self.review)[1]
+        self.assertEqual(row['case_disposition'],'not_estimated')
+        self.assertFalse(row['case_closed_for_current_data'])
 
     def test_unknown_comparison_release_cannot_escape_accounting(self):
         self.estimates.append(dict(self.estimates[0],trial_id='unknown',estimate_role='comparison_channel'))
@@ -107,7 +113,7 @@ class BundleTests(unittest.TestCase):
         info=self.run_export()
         self.assertEqual(info['release_count'],3);self.assertEqual(info['primary_release_count'],1)
         self.assertFalse(info['scientific_acceptance'])
-        self.assertEqual(info['completion_status'],'complete_for_current_dataset')
+        self.assertEqual(info['completion_status'],'reviewed_with_open_evidence')
         self.assertEqual((self.root/'out/figures/mass/example.png').read_bytes(),b'fixture-image-bytes')
         with (self.root/'out/tables/discharge_primary.csv').open() as stream:self.assertEqual(len(list(csv.DictReader(stream))),1)
         self.assertTrue((self.root/'out/bundle_index.json').is_file())

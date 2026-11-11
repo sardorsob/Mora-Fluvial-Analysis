@@ -62,7 +62,7 @@ def _indexed(rows, label):
 
 
 def assemble_release_table(master, estimates, reviews):
-    """Close data-processing cases while retaining proposed values and limits."""
+    """Account for every release while retaining estimate conditions and limits."""
     source = _indexed(master, 'master')
     primary = _indexed([r for r in estimates if r['estimate_role']=='primary'], 'primary estimates')
     reviewed = _indexed(reviews, 'review')
@@ -76,7 +76,7 @@ def assemble_release_table(master, estimates, reviews):
     for key, original in source.items():
         row = dict(original)
         category = row['category']
-        if category not in DISPOSITIONS:
+        if category not in DISPOSITIONS and not category.startswith('blocked_'):
             raise ValueError(f'Unknown release disposition: {category}')
         if key in primary:
             estimate = primary[key]
@@ -94,7 +94,7 @@ def assemble_release_table(master, estimates, reviews):
         limits += json.loads(review.get('remaining_evidence_gaps') or '[]')
         flags = json.loads(primary.get(key,{}).get('flags') or '[]')
         if discrepancy: flags.append('unresolved_notebook_background')
-        row.update(case_disposition=DISPOSITIONS[category], case_closed_for_current_data=True,
+        row.update(case_disposition=DISPOSITIONS.get(category,'not_estimated'), case_closed_for_current_data=category=='excluded_practice',
                    analysis_status=('proposed_with_source_discrepancy' if discrepancy else 'proposed_with_limits') if key in primary else 'not_estimated',
                    source_background_discrepancy=discrepancy,
                    window_numerical_review=review.get('window_numerical_review','disposition_review_completed'),
@@ -134,6 +134,9 @@ def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=R
     combined = assemble_release_table(master, estimates, reviews)
     primaries = [r for r in combined if r['case_disposition']=='estimated_proposed']
     copies = [(sources[key]/source,Path(destination)) for key,files in COPY_FILES.items() for source,destination in files]
+    for name in ('calibration_quality','stage_diagnostics','conditional_discharge','channel_consistency'):
+        path=sources['review']/(name+'.csv')
+        if path.is_file():copies.append((path,Path('tables')/path.name))
     for key in ('mass','review','reuse'):
         directory = sources[key]/'figures'
         copies += [(p,Path('figures')/key/p.relative_to(directory)) for p in sorted(directory.rglob('*.png')) if p.is_file()]
@@ -159,14 +162,16 @@ def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=R
         (stage/'provenance/source_bundles.json').write_text(matching._json(index)+'\n')
         if refresh_figures:
             figure_dir = stage/'figures'
-            plot_discharge_summary.render_summary(stage, figure_dir)
-            plot_discharge_pulses.render_pulses(stage, figure_dir, root=root, mass_dir=sources['mass'])
-            expected = {destination for _,destination in copies if destination.parts[0] == 'figures'}
+            summary_paths=plot_discharge_summary.render_summary(stage, figure_dir)
+            pulse_paths=plot_discharge_pulses.render_pulses(stage, figure_dir, root=root, mass_dir=sources['mass'])
+            if not isinstance(summary_paths,(set,list,tuple)) or not summary_paths or not isinstance(pulse_paths,(set,list,tuple)):
+                raise ValueError('Refreshed figure inventory was not declared by the renderers')
+            expected = {Path('figures')/p for p in [*summary_paths,*pulse_paths]}
             rendered = {p.relative_to(stage) for p in figure_dir.rglob('*.png') if p.is_file()}
             if rendered != expected:
-                raise ValueError('Refreshed figure inventory differs from the verified source runs')
+                raise ValueError('Refreshed figure inventory differs from the declared result figures')
         limits = dict(scientifically_accepted=False,window_signoff_inferred=False,
-            meaning_of_closure='All processing cases have a recorded result or no-estimate disposition for the current dataset; new source evidence can reopen a case.',
+            meaning_of_closure='Every release is accounted for. Unresolved quantities, calibration and capture evidence remain open; a pipeline run does not exhaust recoverability.',
             capture_policy='No tail extrapolation, interpolation across missing samples or substitution of another release.',
             calibration_policy='Trial-specific coefficients only; failed/inconclusive reuse tests do not authorize a shared coefficient.',
             uncertainty='Window/background ranges and fit standard errors do not quantify total Q uncertainty. Mixing, recovery, settings and recipe uncertainty remain documented limits.',
@@ -179,23 +184,45 @@ def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=R
             commands.append('--refresh-figures')
         commands += ['--output','<fresh_output_directory>']
         guide = dict(entry_point='tables/discharge_by_release.csv',primary_subset='tables/discharge_primary.csv',
-            channel_estimates='tables/discharge_estimates.csv',units=dict(q_primary_m3_s='m3/s',q_primary_l_s='L/s',mass_g='g',k='(mg/L)/(uS/cm)'),
+            channel_estimates='tables/discharge_estimates.csv',units=dict(q_primary_m3_s='m3/s',q_primary_l_s='L/s',mass_g='g',
+                injection_solution_volume_ml='mL',k='See coefficient_unit: mass or relative concentration per uS/cm.'),
             missing_values='Blank Q means not estimated; never zero discharge.',
+            conditional_estimates='Read estimate_support and quality_flags. Primary denotes one selected estimate per release, not scientific acceptance. Separate capture-assumed scenarios are in tables/conditional_discharge.csv.',
             figures='figures/mass: discharge and pulse plots; figures/review: window sensitivity; figures/reuse: calibration consistency.',
             quality='tables/quality_review_by_release.csv, tables/quality_review_by_channel.csv, tables/field_note_comparison.csv and analysis_limits.json',
             settings='settings/', provenance='provenance/source_bundles.json',
             implementation='salt_dilution/scripts/processing/export_discharge.py',
             reproduce_command=commands)
         (stage/'bundle_index.json').write_text(matching._json(guide)+'\n')
-        (stage/'README.md').write_text('# Discharge analysis\n\nStart with [all release outcomes](tables/discharge_by_release.csv),\n[primary estimates](tables/discharge_primary.csv), or\n[all channel estimates](tables/discharge_estimates.csv).\n\n- `tables/` contains results, quality checks and sensitivity tables.\n- `figures/` contains discharge, pulse, review and calibration plots.\n- `settings/` contains the window, quantity and study-design snapshots.\n- `provenance/` contains source-run references and supporting citations.\n\n`analysis_limits.json` retains the scientific limitations. Blank Q is not zero.\n`bundle_index.json` provides navigation and a rebuild command; `run_info.json`\nrecords hashes. Rebuilding needs the original local source bundles.\n\nExecutable code belongs in `salt_dilution/scripts/` or `salt_dilution/notebooks/`,\nnever in this results folder. Dates belong in records and run metadata, not in\na dated wrapper around this published analysis. Original source-run paths can\nstill contain dates because they document the historical calculation.\n', encoding='utf-8')
-        info = reuse.write_run_info(stage,pins,scope='Complete analysis handoff for the current dataset; proposed estimates and explicit no-estimate outcomes.',
-            completion_status='complete_for_current_dataset',release_count=len(combined),primary_release_count=len(primaries),
+        conditional_count=sum(str(r.get('estimate_support','')).startswith('conditional_') for r in primaries)
+        (stage/'README.md').write_text(
+            '# Discharge analysis\n\n'
+            f'{len(combined)} releases are accounted for. {len(primaries)} have a selected Q estimate; '
+            f'{conditional_count} of those depend on additional recipe or delivery assumptions. '
+            'All estimates remain proposed.\n\n'
+            'Start with [release outcomes](tables/discharge_by_release.csv), '
+            '[selected estimates](tables/discharge_primary.csv), or '
+            '[channel estimates](tables/discharge_estimates.csv). Read `estimate_support`, '
+            '`quality_flags` and `data_limits` alongside Q. A primary estimate is the selected '
+            'channel for a release, not scientific acceptance. Blank Q is not zero.\n\n'
+            '- `figures/` shows discharge, observed pulses, calibration and sensitivity.\n'
+            '- `tables/` includes calibration diagnostics and separate capture-assumed scenarios.\n'
+            '- `settings/` preserves windows, quantities and study design.\n'
+            '- `provenance/` identifies source bundles and citations.\n\n'
+            '`analysis_limits.json` records the interpretation limits. Window sensitivity and '
+            'fit standard errors do not quantify total discharge uncertainty. Conditional NaCl '
+            'reference checks are diagnostics, not coefficient corrections.\n\n'
+            '`bundle_index.json` contains a rebuild command; `run_info.json` records hashes. '
+            'Rebuilding needs the original local source bundles.\n', encoding='utf-8')
+        info = reuse.write_run_info(stage,pins,scope='Reviewed discharge estimates and unresolved evidence for the curated release cohort.',
+            completion_status='reviewed_with_open_evidence',release_count=len(combined),primary_release_count=len(primaries),
+            conditional_primary_release_count=conditional_count,
             channel_estimate_count=len(estimates),disposition_counts=dict(Counter(r['case_disposition'] for r in combined)),
-            figure_count=sum(destination.parts[0] == 'figures' for _,destination in copies),
+            figure_count=sum(1 for p in (stage/'figures').rglob('*.png')),
             figures_refreshed=refresh_figures,
             retained_source_discrepancy_ids=[r['trial_id'] for r in combined if r['source_background_discrepancy']],
             case_closure_is_scientific_acceptance=False,source_bundles=index,
-            field_acceptance='Not claimed. Remaining physical evidence limits are retained, not uncompleted software tasks.')
+            field_acceptance='Not claimed. Unresolved field, recipe, identity and capture evidence is retained per release.')
     return info
 
 

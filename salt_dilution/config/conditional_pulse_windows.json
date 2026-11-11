@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "trial_id": "NISQ-20261004-T04",
+      "logical_recording_id": "REC-33d70d175906e90a",
+      "channel": "specific",
+      "pre": [
+        0,
+        60
+      ],
+      "pulse": [
+        60,
+        289
+      ],
+      "background_mode": "pre",
+      "scenario": "capture_assumed_observed_interval",
+      "qualification": "Conditional on full tracer passage within the observed interval and a constant initial background. The disturbed endpoint is near initial conductivity, but does not independently establish complete recovery. Not a measured full-pulse discharge or uncertainty bound.",
+      "source_processed": {
+        "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_15-29-37_Device_Location.csv",
+        "sha256": "583ac5dd09ce258d88ceb49ad7c24f855a5d09629cd1992118d8331fddab2930"
+      },
+      "evidence": "Independent source review: initial 90s specific EC mean32.07462,SD0.03956; final20s mean32.09799,SD0.66099 \u00b5S/cm. Reviewed 2026-11-10; source and all observed samples retained. No extrapolated tail."
+    },
+    {
+      "trial_id": "NISQ-20261004-T04",
+      "logical_recording_id": "REC-33d70d175906e90a",
+      "channel": "actual",
+      "pre": [
+        0,
+        60
+      ],
+      "pulse": [
+        60,
+        289
+      ],
+      "background_mode": "pre",
+      "scenario": "capture_assumed_observed_interval",
+      "qualification": "Conditional on full tracer passage within the observed interval and a constant initial background. The disturbed endpoint is near initial conductivity, but does not independently establish complete recovery. Not a measured full-pulse discharge or uncertainty bound.",
+      "source_processed": {
+        "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_15-29-37_Device_Location.csv",
+        "sha256": "583ac5dd09ce258d88ceb49ad7c24f855a5d09629cd1992118d8331fddab2930"
+      },
+      "evidence": "Independent source review: initial 90s specific EC mean32.07462,SD0.03956; final20s mean32.09799,SD0.66099 \u00b5S/cm. Reviewed 2026-11-10; source and all observed samples retained. No extrapolated tail."
+    }
+  ]
+}

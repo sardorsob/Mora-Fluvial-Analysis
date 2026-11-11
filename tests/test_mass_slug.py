@@ -173,6 +173,17 @@ class WindowTests(unittest.TestCase):
         self.assertFalse(windows['issues'])
         self.assertGreater(windows['pulse'][0],350)
 
+    def test_incomplete_first_wave_is_not_replaced_by_a_later_complete_wave(self):
+        t=np.arange(801,dtype=float)
+        frame=self.frame(t);frame['ec']+=np.where((t>=450)&(t<=550),10*np.sin(np.pi*(t-450)/100)**2,0)
+        frame=frame.loc[~frame.t_s.between(150,180)&~frame.t_s.between(350,380)]
+        frame,_=slug.prepare_series(samples(frame.t_s,frame.ec),'specific')
+        first=slug.propose_windows(frame,release_offset_s=90)
+        self.assertIn('earlier_pulse_incomplete',first['issues'])
+        second=slug.propose_windows(frame,release_offset_s=430)
+        self.assertFalse(second['issues'])
+        self.assertGreater(second['pulse'][0],400)
+
 
 import csv
 import hashlib
@@ -266,6 +277,32 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(row['discharge_method'],'solution_slug')
         self.assertEqual(row['mass_g'],'')
         self.assertEqual(row['injection_solution_volume_ml'],'1000.0')
+
+    def test_low_k_reference_warning_survives_q_and_release_without_correcting_k(self):
+        from salt_dilution.scripts.processing import discharge_review
+        self.fits[0]['k']='0.4'
+        csvfile(self.cal/'calibration_fits.csv',self.fits)
+        self.calinfo['outputs']=self.outputs(self.cal)
+        (self.cal/'run_info.json').write_text(json.dumps(self.calinfo))
+        for edge in self.edges:
+            if edge['calibration_id']=='C1':edge['k']='0.4'
+            ref=json.loads(edge['fit_reference'])
+            ref['fit_table_sha256']=hashlib.sha256((self.cal/'calibration_fits.csv').read_bytes()).hexdigest()
+            ref['run_info_sha256']=hashlib.sha256((self.cal/'run_info.json').read_bytes()).hexdigest()
+            edge['fit_reference']=json.dumps(ref)
+        self.info['inputs']=self.pins([*self.records.iterdir(),*self.proc.iterdir(),self.cal/'run_info.json',self.cal/'calibration_fits.csv'])
+        self.seal();self.run_batch()
+        row=next(r for r in self.read('discharge_estimates.csv') if r['trial_id']=='T1')
+        self.assertEqual(row['k'],'0.4')
+        self.assertAlmostEqual(float(row['q_l_s']),10,delta=.1)
+        self.assertIn('below_ideal_nacl_reference',json.loads(row['flags']))
+        self.assertIn('below_ideal_nacl_reference',json.loads(row['calibration_reference_flags']))
+        self.assertIn('not a correction',row['calibration_reference_assumptions'])
+        summary=next(r for r in self.read('release_summary.csv') if r['trial_id']=='T1')
+        master,_=discharge_review._release_rows(self.trials[0],summary,{},[row],
+            [dict(estimate_role='primary',added_ec_span_exceeded=False)],[],[],'test')
+        self.assertIn('below_ideal_nacl_reference',master['flags'])
+        self.assertEqual(master['calibration_reference_assumptions'],row['calibration_reference_assumptions'])
 
     def test_supported_edge_can_survive_a_conflicting_companion(self):
         self.summaries[0]['status']='conflicting'

@@ -1,0 +1,1325 @@
+{
+  "schema_version": 1,
+  "windows": [
+    {
+      "trial_id": "NISQ-20260918-T01",
+      "logical_recording_id": "REC-ad18f24cf13fc889",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20260918-T01:REC-ad18f24cf13fc889",
+        "calibration_edge_id": "NISQ-20260918-T01:REC-ad18f24cf13fc889:NISQ-20260918-C02::specific",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20260918/VuSitu_LiveReadings_2026-09-18_15-53-31_Device_Location.csv",
+            "sha256": "1eecf56951fd9a42e8e0901aecd783d07abe338a73b39305659c749b89a3af89"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20260918-T01",
+      "logical_recording_id": "REC-ad18f24cf13fc889",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20260918-T01:REC-ad18f24cf13fc889",
+        "calibration_edge_id": "NISQ-20260918-T01:REC-ad18f24cf13fc889:NISQ-20260918-C02::actual",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20260918/VuSitu_LiveReadings_2026-09-18_15-53-31_Device_Location.csv",
+            "sha256": "1eecf56951fd9a42e8e0901aecd783d07abe338a73b39305659c749b89a3af89"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261002-T01",
+      "logical_recording_id": "REC-699be6dc50467e56",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261002-T01:REC-699be6dc50467e56",
+        "calibration_edge_id": "NISQ-20261002-T01:REC-699be6dc50467e56:NISQ-20261002-C02:probe_03:specific",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261002/VuSitu_LiveReadings_2026-10-02_17-48-22_Device_Location.csv",
+            "sha256": "b3685316ea429f6225757698e33debb6e95013ae5cac4a8934a07a43787b96e7"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-02T17:48:30",
+        "2026-10-02T17:49:25"
+      ],
+      "pulse": [
+        "2026-10-02T17:49:45",
+        "2026-10-02T17:53:45"
+      ],
+      "post": [
+        "2026-10-02T17:53:50",
+        "2026-10-02T17:54:25"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending.",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261002-T01",
+      "logical_recording_id": "REC-699be6dc50467e56",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261002-T01:REC-699be6dc50467e56",
+        "calibration_edge_id": "NISQ-20261002-T01:REC-699be6dc50467e56:NISQ-20261002-C02:probe_03:actual",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261002/VuSitu_LiveReadings_2026-10-02_17-48-22_Device_Location.csv",
+            "sha256": "b3685316ea429f6225757698e33debb6e95013ae5cac4a8934a07a43787b96e7"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-02T17:48:30",
+        "2026-10-02T17:49:25"
+      ],
+      "pulse": [
+        "2026-10-02T17:49:45",
+        "2026-10-02T17:53:45"
+      ],
+      "post": [
+        "2026-10-02T17:53:50",
+        "2026-10-02T17:54:25"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending.",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261002-T02",
+      "logical_recording_id": "REC-f53ae975ea1d2066",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261002-T02:REC-f53ae975ea1d2066",
+        "calibration_edge_id": "NISQ-20261002-T02:REC-f53ae975ea1d2066:NISQ-20261002-C01:probe_03:specific",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261002/VuSitu_LiveReadings_2026-10-02_14-42-48_Device_Location.csv",
+            "sha256": "86e1ee35ae78ded8ef4e487c64f572904449a0617ac5a54ed18bbd0eafc1e84f"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261002-T02",
+      "logical_recording_id": "REC-f53ae975ea1d2066",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261002-T02:REC-f53ae975ea1d2066",
+        "calibration_edge_id": "NISQ-20261002-T02:REC-f53ae975ea1d2066:NISQ-20261002-C01:probe_03:actual",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261002/VuSitu_LiveReadings_2026-10-02_14-42-48_Device_Location.csv",
+            "sha256": "86e1ee35ae78ded8ef4e487c64f572904449a0617ac5a54ed18bbd0eafc1e84f"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261004-T01",
+      "logical_recording_id": "REC-4a7a771ed5fc02b2",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T01:REC-4a7a771ed5fc02b2",
+        "calibration_edge_id": "NISQ-20261004-T01:REC-4a7a771ed5fc02b2:NISQ-20261004-C01:probe_03:specific",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_07-21-30_Device_Location.csv",
+            "sha256": "4ff6912e8037f5d54b378a08c718037b3febb143d2a2ccaf88967442e7539ec4"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261004-T01",
+      "logical_recording_id": "REC-4a7a771ed5fc02b2",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T01:REC-4a7a771ed5fc02b2",
+        "calibration_edge_id": "NISQ-20261004-T01:REC-4a7a771ed5fc02b2:NISQ-20261004-C01:probe_03:actual",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_07-21-30_Device_Location.csv",
+            "sha256": "4ff6912e8037f5d54b378a08c718037b3febb143d2a2ccaf88967442e7539ec4"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261004-T02",
+      "logical_recording_id": "REC-7f5709554e2c6b46",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T02:REC-7f5709554e2c6b46",
+        "calibration_edge_id": "NISQ-20261004-T02:REC-7f5709554e2c6b46:NISQ-20261004-C02:probe_03:specific",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_12-24-34_Device_Location.csv",
+            "sha256": "74d71bf3ce23e8c2d932bec0d18b5da20eaa3a35f1b6d57814568c0ed62aa03a"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-04T12:24:45",
+        "2026-10-04T12:26:30"
+      ],
+      "pulse": [
+        "2026-10-04T12:26:40",
+        "2026-10-04T12:31:45"
+      ],
+      "post": [
+        "2026-10-04T12:31:50",
+        "2026-10-04T12:32:20"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending.",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261004-T02",
+      "logical_recording_id": "REC-7f5709554e2c6b46",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T02:REC-7f5709554e2c6b46",
+        "calibration_edge_id": "NISQ-20261004-T02:REC-7f5709554e2c6b46:NISQ-20261004-C02:probe_03:actual",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_12-24-34_Device_Location.csv",
+            "sha256": "74d71bf3ce23e8c2d932bec0d18b5da20eaa3a35f1b6d57814568c0ed62aa03a"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-04T12:24:45",
+        "2026-10-04T12:26:30"
+      ],
+      "pulse": [
+        "2026-10-04T12:26:40",
+        "2026-10-04T12:31:45"
+      ],
+      "post": [
+        "2026-10-04T12:31:50",
+        "2026-10-04T12:32:20"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending.",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261004-T03",
+      "logical_recording_id": "REC-da6256536b52d8a1",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T03:REC-da6256536b52d8a1",
+        "calibration_edge_id": "NISQ-20261004-T03:REC-da6256536b52d8a1:NISQ-20261004-C04:probe_03:specific",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_17-45-54_Device_Location.csv",
+            "sha256": "5ca75364fa2217fdf9ec6c4e4c17a5cd2e74d4c44ae330b4bda0bf29149a9f40"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-04T17:46:00",
+        "2026-10-04T17:47:25"
+      ],
+      "pulse": [
+        "2026-10-04T17:47:30",
+        "2026-10-04T17:51:35"
+      ],
+      "post": [
+        "2026-10-04T17:51:40",
+        "2026-10-04T17:52:15"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending.",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261004-T03",
+      "logical_recording_id": "REC-da6256536b52d8a1",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T03:REC-da6256536b52d8a1",
+        "calibration_edge_id": "NISQ-20261004-T03:REC-da6256536b52d8a1:NISQ-20261004-C04:probe_03:actual",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_17-45-54_Device_Location.csv",
+            "sha256": "5ca75364fa2217fdf9ec6c4e4c17a5cd2e74d4c44ae330b4bda0bf29149a9f40"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-04T17:46:00",
+        "2026-10-04T17:47:25"
+      ],
+      "pulse": [
+        "2026-10-04T17:47:30",
+        "2026-10-04T17:51:35"
+      ],
+      "post": [
+        "2026-10-04T17:51:40",
+        "2026-10-04T17:52:15"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending.",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261004-T04",
+      "logical_recording_id": "REC-33d70d175906e90a",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T04:REC-33d70d175906e90a",
+        "calibration_edge_id": "NISQ-20261004-T04:REC-33d70d175906e90a:NISQ-20261004-C03:probe_03:specific",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_15-29-37_Device_Location.csv",
+            "sha256": "583ac5dd09ce258d88ceb49ad7c24f855a5d09629cd1992118d8331fddab2930"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261004-T04",
+      "logical_recording_id": "REC-33d70d175906e90a",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261004-T04:REC-33d70d175906e90a",
+        "calibration_edge_id": "NISQ-20261004-T04:REC-33d70d175906e90a:NISQ-20261004-C03:probe_03:actual",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261004/VuSitu_LiveReadings_2026-10-04_15-29-37_Device_Location.csv",
+            "sha256": "583ac5dd09ce258d88ceb49ad7c24f855a5d09629cd1992118d8331fddab2930"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261005-T01",
+      "logical_recording_id": "REC-8760791310ac7565",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261005-T01:REC-8760791310ac7565",
+        "calibration_edge_id": "NISQ-20261005-T01:REC-8760791310ac7565:NISQ-20261005-C01:probe_03:specific",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261005/VuSitu_LiveReadings_2026-10-05_11-49-30_Device_Location.csv",
+            "sha256": "7ba114b14b06424f32742fcc4c732b380a7ce1842ad4e75b65166449fd022043"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261005-T01",
+      "logical_recording_id": "REC-8760791310ac7565",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261005-T01:REC-8760791310ac7565",
+        "calibration_edge_id": "NISQ-20261005-T01:REC-8760791310ac7565:NISQ-20261005-C01:probe_03:actual",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261005/VuSitu_LiveReadings_2026-10-05_11-49-30_Device_Location.csv",
+            "sha256": "7ba114b14b06424f32742fcc4c732b380a7ce1842ad4e75b65166449fd022043"
+          }
+        ]
+      },
+      "review_status": "blocked",
+      "reason": "Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "evidence": "Inspected proposal plot, retained source/event pairing evidence and processed samples; Tail still trends downward or is disturbed through final available post interval; no independently settled post-pulse background can be identified without treating the recording end as pulse completion. Keep blocked; no extrapolation.",
+      "reason_code": "tail_not_settled",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261005-T02",
+      "logical_recording_id": "REC-c0bf309f5ddbeb7d",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261005-T02:REC-c0bf309f5ddbeb7d",
+        "calibration_edge_id": "NISQ-20261005-T02:REC-c0bf309f5ddbeb7d:NISQ-20261005-C02:probe_03:specific",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261005/VuSitu_LiveReadings_2026-10-05_14-49-50_Device_Location.csv",
+            "sha256": "af2ea7c3b1e8f1bd08f92c583a500e643b59b20d5edd4d41f2804187cf1bce08"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-05T14:50:00",
+        "2026-10-05T14:51:30"
+      ],
+      "pulse": [
+        "2026-10-05T14:51:35",
+        "2026-10-05T14:55:45"
+      ],
+      "post": [
+        "2026-10-05T14:55:50",
+        "2026-10-05T14:56:25"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending.",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261005-T02",
+      "logical_recording_id": "REC-c0bf309f5ddbeb7d",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261005-T02:REC-c0bf309f5ddbeb7d",
+        "calibration_edge_id": "NISQ-20261005-T02:REC-c0bf309f5ddbeb7d:NISQ-20261005-C02:probe_03:actual",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261005/VuSitu_LiveReadings_2026-10-05_14-49-50_Device_Location.csv",
+            "sha256": "af2ea7c3b1e8f1bd08f92c583a500e643b59b20d5edd4d41f2804187cf1bce08"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-05T14:50:00",
+        "2026-10-05T14:51:30"
+      ],
+      "pulse": [
+        "2026-10-05T14:51:35",
+        "2026-10-05T14:55:45"
+      ],
+      "post": [
+        "2026-10-05T14:55:50",
+        "2026-10-05T14:56:25"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending.",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261005-T03",
+      "logical_recording_id": "REC-7f395f6d9298eaa3",
+      "channel": "specific",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261005-T03:REC-7f395f6d9298eaa3",
+        "calibration_edge_id": "NISQ-20261005-T03:REC-7f395f6d9298eaa3:NISQ-20261005-C03:probe_03:specific",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261005/VuSitu_LiveReadings_2026-10-05_17-33-57_Device_Location.csv",
+            "sha256": "475723e9438710f1c679448b4d45673c52543f0bd74a21017799db9658c01e8f"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-05T17:34:05",
+        "2026-10-05T17:35:20"
+      ],
+      "pulse": [
+        "2026-10-05T17:35:25",
+        "2026-10-05T17:39:50"
+      ],
+      "post": [
+        "2026-10-05T17:39:55",
+        "2026-10-05T17:40:30"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending.",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "NISQ-20261005-T03",
+      "logical_recording_id": "REC-7f395f6d9298eaa3",
+      "channel": "actual",
+      "reviewer": "independent scientific/code Checker",
+      "reviewed_on": "2026-11-08",
+      "user_signoff": false,
+      "pairing_reference": {
+        "recording_edge_id": "NISQ-20261005-T03:REC-7f395f6d9298eaa3",
+        "calibration_edge_id": "NISQ-20261005-T03:REC-7f395f6d9298eaa3:NISQ-20261005-C03:probe_03:actual",
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20261005/VuSitu_LiveReadings_2026-10-05_17-33-57_Device_Location.csv",
+            "sha256": "475723e9438710f1c679448b4d45673c52543f0bd74a21017799db9658c01e8f"
+          }
+        ]
+      },
+      "pre": [
+        "2026-10-05T17:34:05",
+        "2026-10-05T17:35:20"
+      ],
+      "pulse": [
+        "2026-10-05T17:35:25",
+        "2026-10-05T17:39:50"
+      ],
+      "post": [
+        "2026-10-05T17:39:55",
+        "2026-10-05T17:40:30"
+      ],
+      "review_status": "checker_proposed",
+      "evidence": "Inspected native proposal plot and processed samples on both channels. Distinct single pulse; pre window before observed onset; late post window after major tail decay with near-flat observed level. Pulse boundaries are interior to recording. End residual and background drift remain sensitivity limitations, not proof of complete salt recovery; no tail extrapolation. Linear pre/post background and explicit edge/background sensitivity required. User signoff pending.",
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "PAR-20260901-T01",
+      "logical_recording_id": "REC-afed5aaddb2d50bd",
+      "channel": "specific",
+      "pre": [
+        "2026-09-01 15:27:52",
+        "2026-09-01 15:28:32"
+      ],
+      "pulse": [
+        "2026-09-01 15:28:32",
+        "2026-09-01 15:33:24"
+      ],
+      "post": [
+        "2026-09-01 15:33:24",
+        "2026-09-01 15:33:48"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Single rise with extended decay into a near-constant late interval. Its 25 one-second observations align with the following file starting 8 seconds later near the same level. The 600 g dose is nominal, the worksheet recipe differs from the notebook, and the peak increment is slightly beyond the fitted EC increment span.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "PAR-20260901-T01:REC-afed5aaddb2d50bd:PAR-20260903-C03::specific",
+        "recording_edge_id": "PAR-20260901-T01:REC-afed5aaddb2d50bd",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR05_01_600.csv",
+            "sha256": "1339ddb036596f78b49dbba21c6181fbe5a27c8e84a0f35f153f60182b202765"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 17017.535571474247,
+      "q_window_and_background_sensitivity_percent": [
+        -0.47288480433947955,
+        0.42708840897969225
+      ],
+      "calibration_id": "PAR-20260903-C03",
+      "calibration_sensor_identity": "source_protocol_match",
+      "native_source": {
+        "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR05_01_600.csv",
+        "sha256": "48985ad01dce75629d7189d477590fe8afa20b0456ac31c7edacb4bff5b18905",
+        "raw_encoded_utc_offset_seconds": -25200,
+        "field_effective_offset_seconds": -28800,
+        "native_timestamp_and_ec_match_processed": true
+      },
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "PAR-20260901-T02",
+      "logical_recording_id": "REC-e2db9ed1c2c151f3",
+      "channel": "specific",
+      "pre": [
+        "2026-09-01 15:34:21",
+        "2026-09-01 15:35:06"
+      ],
+      "pulse": [
+        "2026-09-01 15:35:10",
+        "2026-09-01 15:39:26"
+      ],
+      "post": [
+        "2026-09-01 15:39:26",
+        "2026-09-01 15:40:15"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "One large excursion returns near the observed pre level; 50 one-second late observations at similar noise. The 400 g dose is nominal and the worksheet recipe differs from the notebook.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "PAR-20260901-T02:REC-e2db9ed1c2c151f3:PAR-20260903-C03::specific",
+        "recording_edge_id": "PAR-20260901-T02:REC-e2db9ed1c2c151f3",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR05_02_400.csv",
+            "sha256": "260436080212ec452a99bb052893245eb0028050cd9489a309cd77109ea97404"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 11546.990956466285,
+      "q_window_and_background_sensitivity_percent": [
+        -0.2786566066929286,
+        0.3116625512638693
+      ],
+      "calibration_id": "PAR-20260903-C03",
+      "calibration_sensor_identity": "source_protocol_match",
+      "native_source": {
+        "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR05_02_400.csv",
+        "sha256": "ea6debfb65a5f6a80a02553500dce11c7791b7597315addd0b3fce727cfb0602",
+        "raw_encoded_utc_offset_seconds": -25200,
+        "field_effective_offset_seconds": -28800,
+        "native_timestamp_and_ec_match_processed": true
+      },
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "PAR-20260901-T03",
+      "logical_recording_id": "REC-51c16ac7f4ef4f39",
+      "channel": "specific",
+      "pre": [
+        "2026-09-01 15:41:09",
+        "2026-09-01 15:41:44"
+      ],
+      "pulse": [
+        "2026-09-01 15:41:45",
+        "2026-09-01 15:45:49"
+      ],
+      "post": [
+        "2026-09-01 15:45:49",
+        "2026-09-01 15:46:59"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "One excursion returns to the observed pre level with 71 one-second late observations. The 200 g dose is nominal and the worksheet recipe differs from the notebook.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "PAR-20260901-T03:REC-51c16ac7f4ef4f39:PAR-20260903-C03::specific",
+        "recording_edge_id": "PAR-20260901-T03:REC-51c16ac7f4ef4f39",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR05_03_200.csv",
+            "sha256": "529793f8233cbed130a85d803bb6682a4120257388a2df1f2493ea5f1d968c25"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 5859.942203649085,
+      "q_window_and_background_sensitivity_percent": [
+        -0.22438598299769907,
+        0.23795789201883633
+      ],
+      "calibration_id": "PAR-20260903-C03",
+      "calibration_sensor_identity": "source_protocol_match",
+      "native_source": {
+        "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR05_03_200.csv",
+        "sha256": "47b7c767ee488288db74e254a02e6802c02b471d841c4deb5960b813856db6cb",
+        "raw_encoded_utc_offset_seconds": -25200,
+        "field_effective_offset_seconds": -28800,
+        "native_timestamp_and_ec_match_processed": true
+      },
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "PAR-20260901-T04",
+      "logical_recording_id": "REC-265ef2bc96dfd1db",
+      "channel": "specific",
+      "pre": [
+        "2026-09-01 17:01:50",
+        "2026-09-01 17:02:39"
+      ],
+      "pulse": [
+        "2026-09-01 17:02:40",
+        "2026-09-01 17:08:09"
+      ],
+      "post": [
+        "2026-09-01 17:08:09",
+        "2026-09-01 17:08:41"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Single rise and decay to 33 one-second late observations with a near-zero slope and an ambient shift of 1.44 \u00b5S/cm. The nominal 500 g dose, worksheet recipe variant, and discrepant notebook peak remain flagged.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "PAR-20260901-T04:REC-265ef2bc96dfd1db:PAR-20260903-C04::specific",
+        "recording_edge_id": "PAR-20260901-T04:REC-265ef2bc96dfd1db",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR06_01_500.csv",
+            "sha256": "f4d514cbb3954ea721ca8da097cd2b711b833b0935dc7cd498b8bf7b514c1312"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 33733.368053481434,
+      "q_window_and_background_sensitivity_percent": [
+        -0.7519747770124541,
+        0.7075243399898623
+      ],
+      "calibration_id": "PAR-20260903-C04",
+      "calibration_sensor_identity": "source_protocol_match",
+      "native_source": {
+        "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR06_01_500.csv",
+        "sha256": "09d41428af937cad2f1c192fdd1e778d5fc326198ad9b3e001f37be12ef2d861",
+        "raw_encoded_utc_offset_seconds": -25200,
+        "field_effective_offset_seconds": -28800,
+        "native_timestamp_and_ec_match_processed": true
+      },
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "PAR-20260901-T05",
+      "logical_recording_id": "REC-d2c98d98de36f830",
+      "channel": "specific",
+      "pre": [
+        "2026-09-01 17:10:19",
+        "2026-09-01 17:11:09"
+      ],
+      "pulse": [
+        "2026-09-01 17:11:09",
+        "2026-09-01 17:17:04"
+      ],
+      "post": [
+        "2026-09-01 17:17:04",
+        "2026-09-01 17:18:29"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Single rise and decay to a low-variance late interval with modest ambient drift. The nominal 500 g dose, worksheet recipe variant, and notebook/electronic peak difference remain flagged.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "PAR-20260901-T05:REC-d2c98d98de36f830:PAR-20260903-C04::specific",
+        "recording_edge_id": "PAR-20260901-T05:REC-d2c98d98de36f830",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR06_02_500.csv",
+            "sha256": "5fff606d5c06dd20d771b3950da3e470c3cecd0cd571b331049b0aa04efc3400"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 33600.21289837788,
+      "q_window_and_background_sensitivity_percent": [
+        -0.5434302811287761,
+        0.644652763529141
+      ],
+      "calibration_id": "PAR-20260903-C04",
+      "calibration_sensor_identity": "source_protocol_match",
+      "native_source": {
+        "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR06_02_500.csv",
+        "sha256": "63e6bd864c3154850176dc16da293da4e8b96118df51e2b67f81394b9c62eafc",
+        "raw_encoded_utc_offset_seconds": -25200,
+        "field_effective_offset_seconds": -28800,
+        "native_timestamp_and_ec_match_processed": true
+      },
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    },
+    {
+      "trial_id": "PAR-20260901-T06",
+      "logical_recording_id": "REC-d5e2e653c0363859",
+      "channel": "specific",
+      "pre": [
+        "2026-09-01 17:21:09",
+        "2026-09-01 17:22:01"
+      ],
+      "pulse": [
+        "2026-09-01 17:22:02",
+        "2026-09-01 17:28:19"
+      ],
+      "post": [
+        "2026-09-01 17:28:19",
+        "2026-09-01 17:29:09"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Single rise and decay to 51 one-second late observations close to the preceding baseline. The nominal 400 g dose, worksheet recipe variant, and notebook/electronic peak difference remain flagged.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "PAR-20260901-T06:REC-d5e2e653c0363859:PAR-20260903-C04::specific",
+        "recording_edge_id": "PAR-20260901-T06:REC-d5e2e653c0363859",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/wrd_sample/MORA_Slugs_Sep1/PR06_03_400.csv",
+            "sha256": "96f6fbb37092b91b347ef907ce13bfc3baf38b990871b3ddc68784d69b379774"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 28769.619155004657,
+      "q_window_and_background_sensitivity_percent": [
+        -0.169949658203572,
+        0.28467118039248174
+      ],
+      "calibration_id": "PAR-20260903-C04",
+      "calibration_sensor_identity": "source_protocol_match",
+      "native_source": {
+        "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/PR06_03_400.csv",
+        "sha256": "a1e624c26a377592b5f2cc6f114c277c83ce8478cb075ca2600bbd389ea4c0bf",
+        "raw_encoded_utc_offset_seconds": -25200,
+        "field_effective_offset_seconds": -28800,
+        "native_timestamp_and_ec_match_processed": true
+      },
+      "rebound_on": "2026-11-10",
+      "rebinding_evidence": "Exact recording and processed source hashes retained; selected K edge rechecked after the fixed UTC-08 clock and source identity audit."
+    }
+  ],
+  "omitted_prior_decisions": [
+    {
+      "trial_id": "NISQ-20250731-T01",
+      "channel": "actual",
+      "reason": "calibration_edge_no_longer_selected_after_source_identity_review"
+    },
+    {
+      "trial_id": "NISQ-20250731-T01",
+      "channel": "actual",
+      "reason": "calibration_edge_no_longer_selected_after_source_identity_review"
+    },
+    {
+      "trial_id": "NISQ-20250731-T01",
+      "channel": "actual",
+      "reason": "calibration_edge_no_longer_selected_after_source_identity_review"
+    }
+  ],
+  "diagnostic_candidates": [
+    {
+      "trial_id": "NISQ-20250709-T02",
+      "logical_recording_id": "REC-3789ddb4f5256ad5",
+      "channel": "specific",
+      "pre": [
+        "2025-07-09 15:16:14",
+        "2025-07-09 15:17:29"
+      ],
+      "pulse": [
+        "2025-07-09 15:17:29",
+        "2025-07-09 15:23:54"
+      ],
+      "post": [
+        "2025-07-09 15:23:54",
+        "2025-07-09 15:24:41"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "One excursion begins after the 15:14:54 release, after stable pre conductivity. The end levels flatten near 21.67 specific and 15.53 actual. The second-release delivered solution amount remains unknown.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "NISQ-20250709-T02:REC-3789ddb4f5256ad5:NISQ-20250709-C04:probe_02:specific",
+        "recording_edge_id": "NISQ-20250709-T02:REC-3789ddb4f5256ad5",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20250709/LiveReadings/VuSitu_LiveReadings_2025-07-09_15-05-24_Device_Location.csv",
+            "sha256": "f71a7576e6e161e7d0d5435a0eaf073480b44f274b1e8c05ea66fbd227ec23bf"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 994.8031264923596,
+      "q_window_and_background_sensitivity_percent": [
+        -2.5537432236773516,
+        2.5033340319039477
+      ],
+      "calibration_id": "NISQ-20250709-C04",
+      "calibration_sensor_identity": "native_match",
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false
+    },
+    {
+      "trial_id": "NISQ-20250709-T02",
+      "logical_recording_id": "REC-3789ddb4f5256ad5",
+      "channel": "actual",
+      "pre": [
+        "2025-07-09 15:16:14",
+        "2025-07-09 15:17:29"
+      ],
+      "pulse": [
+        "2025-07-09 15:17:29",
+        "2025-07-09 15:23:54"
+      ],
+      "post": [
+        "2025-07-09 15:23:54",
+        "2025-07-09 15:24:41"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "One excursion begins after the 15:14:54 release, after stable pre conductivity. The end levels flatten near 21.67 specific and 15.53 actual. The second-release delivered solution amount remains unknown.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "NISQ-20250709-T02:REC-3789ddb4f5256ad5:NISQ-20250709-C04:probe_02:actual",
+        "recording_edge_id": "NISQ-20250709-T02:REC-3789ddb4f5256ad5",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20250709/LiveReadings/VuSitu_LiveReadings_2025-07-09_15-05-24_Device_Location.csv",
+            "sha256": "f71a7576e6e161e7d0d5435a0eaf073480b44f274b1e8c05ea66fbd227ec23bf"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 714.1177960382572,
+      "q_window_and_background_sensitivity_percent": [
+        -2.1418513644586357,
+        2.085420192802623
+      ],
+      "calibration_id": "NISQ-20250709-C04",
+      "calibration_sensor_identity": "native_match",
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false
+    },
+    {
+      "trial_id": "NISQ-20250724-T01",
+      "logical_recording_id": "REC-591fe7db0a0512ec",
+      "channel": "specific",
+      "pre": [
+        "2025-07-24 16:28:46",
+        "2025-07-24 16:29:46"
+      ],
+      "pulse": [
+        "2025-07-24 16:29:47",
+        "2025-07-24 16:35:59"
+      ],
+      "post": [
+        "2025-07-24 16:36:06",
+        "2025-07-24 16:37:50"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "One excursion follows the 16:27:14 release. Return near 16:35:50 is observed before a slowly declining late baseline; both channels show the same features. The 12.9 L was reported and delivery is unverified. Two same-day calibration reports explicitly identify 680530 and reproduce the notebook EC dose progression. The river instrument is 840058; use these windows as observed-area evidence without assuming transfer.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "NISQ-20250724-T01:REC-591fe7db0a0512ec:NISQ-20250724-C01:probe_01:specific",
+        "recording_edge_id": "NISQ-20250724-T01:REC-591fe7db0a0512ec",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20250724/20250724_162611_mixing_riverRight_840058.csv",
+            "sha256": "faec415de18b820a93c12840f18b5920622ca4a34f9fc022a1cea53448ccc46b"
+          },
+          {
+            "path": "salt_dilution/data/processed/20250724/LiveReadings/VuSitu_LiveReadings_2025-07-24_16-26-11_Device_Location.csv",
+            "sha256": "faec415de18b820a93c12840f18b5920622ca4a34f9fc022a1cea53448ccc46b"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 1334.200006548237,
+      "q_window_and_background_sensitivity_percent": [
+        -1.3797525440556013,
+        1.278072170468647
+      ],
+      "calibration_id": "NISQ-20250724-C01",
+      "calibration_sensor_identity": "unverified",
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false
+    },
+    {
+      "trial_id": "NISQ-20250724-T01",
+      "logical_recording_id": "REC-591fe7db0a0512ec",
+      "channel": "actual",
+      "pre": [
+        "2025-07-24 16:28:46",
+        "2025-07-24 16:29:46"
+      ],
+      "pulse": [
+        "2025-07-24 16:29:47",
+        "2025-07-24 16:35:59"
+      ],
+      "post": [
+        "2025-07-24 16:36:06",
+        "2025-07-24 16:37:50"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "One excursion follows the 16:27:14 release. Return near 16:35:50 is observed before a slowly declining late baseline; both channels show the same features. The 12.9 L was reported and delivery is unverified. Two same-day calibration reports explicitly identify 680530 and reproduce the notebook EC dose progression. The river instrument is 840058; use these windows as observed-area evidence without assuming transfer.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "NISQ-20250724-T01:REC-591fe7db0a0512ec:NISQ-20250724-C01:probe_01:actual",
+        "recording_edge_id": "NISQ-20250724-T01:REC-591fe7db0a0512ec",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20250724/20250724_162611_mixing_riverRight_840058.csv",
+            "sha256": "faec415de18b820a93c12840f18b5920622ca4a34f9fc022a1cea53448ccc46b"
+          },
+          {
+            "path": "salt_dilution/data/processed/20250724/LiveReadings/VuSitu_LiveReadings_2025-07-24_16-26-11_Device_Location.csv",
+            "sha256": "faec415de18b820a93c12840f18b5920622ca4a34f9fc022a1cea53448ccc46b"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 997.2181511921013,
+      "q_window_and_background_sensitivity_percent": [
+        -1.9401809844252216,
+        1.799167037529248
+      ],
+      "calibration_id": "NISQ-20250724-C01",
+      "calibration_sensor_identity": "unverified",
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false
+    },
+    {
+      "trial_id": "NISQ-20250917-T04",
+      "logical_recording_id": "REC-6bdaefb209eea149:S02",
+      "channel": "actual",
+      "pre": [
+        "2025-09-17 16:12:12.624000",
+        "2025-09-17 16:14:02.624000"
+      ],
+      "pulse": [
+        "2025-09-17 16:14:12.624000",
+        "2025-09-17 16:20:57.624000"
+      ],
+      "post": [
+        "2025-09-17 16:21:02.624000",
+        "2025-09-17 16:25:57.624000"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Use the second pulse, which rises after the 16:10:58 solution release and returns to a sustained local baseline. The larger earlier pulse precedes this release. The 12.9 L was reported, delivery and calibration serial remain unverified, and the legacy left-bank calculation settings associate the calibration with the other recording. Keep as observed-area evidence unless compatibility is established.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "NISQ-20250917-T04:REC-6bdaefb209eea149:S02:NISQ-20250917-C04::actual",
+        "recording_edge_id": "NISQ-20250917-T04:REC-6bdaefb209eea149:S02",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20250917/VuSitu_Log_2025-09-17_08-18-21_Longmire_stilling_well_NaCl_20250917.csv",
+            "sha256": "6eed98313389f58a94ff669f493f41696c226c43390ffd0855bc1ff62602627e"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 795.4326439275146,
+      "q_window_and_background_sensitivity_percent": [
+        -2.156823011271758,
+        1.6710949525983843
+      ],
+      "calibration_id": "NISQ-20250917-C04",
+      "calibration_sensor_identity": "unverified",
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false
+    },
+    {
+      "trial_id": "NISQ-20260716-T01",
+      "logical_recording_id": "REC-9e308546661c8d28",
+      "channel": "actual",
+      "pre": [
+        "2026-07-16 16:31:50",
+        "2026-07-16 16:32:50"
+      ],
+      "pulse": [
+        "2026-07-16 16:32:50",
+        "2026-07-16 16:38:15"
+      ],
+      "post": [
+        "2026-07-16 16:38:15",
+        "2026-07-16 16:40:25"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Single excursion after 16:32:11 release with stable pre/post intervals in 5 s sampling. Only preparation-water volume is known and calibration serial remains unverified.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "NISQ-20260716-T01:REC-9e308546661c8d28:NISQ-20260716-C01::actual",
+        "recording_edge_id": "NISQ-20260716-T01:REC-9e308546661c8d28",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20260716/NaCl_20260716_2026-08-14_18-02-02-082.csv",
+            "sha256": "bee434fc358a3bfedffe20f9fcea9fd826b527d39bd1b3dc4c660a8b514dca56"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 1760.4531790123458,
+      "q_window_and_background_sensitivity_percent": [
+        -0.5605009315252207,
+        0.49998310278593916
+      ],
+      "calibration_id": "NISQ-20260716-C01",
+      "calibration_sensor_identity": "unverified",
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false
+    },
+    {
+      "trial_id": "NISQ-20260721-T01",
+      "logical_recording_id": "REC-2d7ffd4d071e8f31",
+      "channel": "actual",
+      "pre": [
+        "2026-07-21 11:09:05",
+        "2026-07-21 11:10:35"
+      ],
+      "pulse": [
+        "2026-07-21 11:10:35",
+        "2026-07-21 11:16:35"
+      ],
+      "post": [
+        "2026-07-21 11:16:35",
+        "2026-07-21 11:21:15"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Time-anchored single excursion in 5 s sampling with 19 pre and 57 late baseline observations. Only preparation-water volume is known and calibration serial remains unverified.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "NISQ-20260721-T01:REC-2d7ffd4d071e8f31:NISQ-20260721-C01::actual",
+        "recording_edge_id": "NISQ-20260721-T01:REC-2d7ffd4d071e8f31",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20260721/NaCl_20260721_RR_2026-08-14_18-18-31-250.csv",
+            "sha256": "4d110373c55720f83afd171e41338b0915da9890c62674dd38adca7932600a05"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 702.6592962337031,
+      "q_window_and_background_sensitivity_percent": [
+        -0.6576954298829207,
+        0.45386144979573384
+      ],
+      "calibration_id": "NISQ-20260721-C01",
+      "calibration_sensor_identity": "unverified",
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false
+    },
+    {
+      "trial_id": "NISQ-20260721-T01",
+      "logical_recording_id": "REC-d0a7d816b3591c63",
+      "channel": "actual",
+      "pre": [
+        "2026-07-21 11:09:06",
+        "2026-07-21 11:10:46"
+      ],
+      "pulse": [
+        "2026-07-21 11:10:46",
+        "2026-07-21 11:16:56"
+      ],
+      "post": [
+        "2026-07-21 11:16:56",
+        "2026-07-21 11:20:26"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Time-anchored single excursion in 5 s sampling with stable pre/post intervals. Remote later zero values are outside the windows. Only preparation-water volume is known and calibration serial remains unverified.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "NISQ-20260721-T01:REC-d0a7d816b3591c63:NISQ-20260721-C01::actual",
+        "recording_edge_id": "NISQ-20260721-T01:REC-d0a7d816b3591c63",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20260721/NaCl_20260721_RL_2026-08-19_10-56-38-351.csv",
+            "sha256": "5bb5249931b3cd10e5799f83cfd2a71beb93fe53490fc6184c4fe34d0400eb1c"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 1495.4648233138212,
+      "q_window_and_background_sensitivity_percent": [
+        -0.7905579263624118,
+        0.994760345094714
+      ],
+      "calibration_id": "NISQ-20260721-C01",
+      "calibration_sensor_identity": "unverified",
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false
+    },
+    {
+      "trial_id": "NISQ-20260806-T01",
+      "logical_recording_id": "REC-2fd4d09d08ff29c8",
+      "channel": "actual",
+      "pre": [
+        "2026-08-06 14:53:44",
+        "2026-08-06 14:54:54"
+      ],
+      "pulse": [
+        "2026-08-06 14:54:54",
+        "2026-08-06 14:58:14"
+      ],
+      "post": [
+        "2026-08-06 14:58:14",
+        "2026-08-06 15:00:54"
+      ],
+      "review_status": "checker_proposed",
+      "reviewer": "R4 waveform audit",
+      "reviewed_on": "2026-11-10",
+      "user_signoff": false,
+      "evidence": "Sharp event-like excursion with measured return on the left-bank trace. Notebook release clock 14:09 and 14:56 trace peak have unresolved alignment. Only preparation-water volume is known; calibration serial remains unverified.",
+      "pairing_reference": {
+        "run_info_sha256": "c2a9fcf6878731b6e6ca273a1ef94449bd7ff410411c33ae5ea2f08b78607ed6",
+        "calibration_edge_id": "NISQ-20260806-T01:REC-2fd4d09d08ff29c8:NISQ-20260806-C01::actual",
+        "recording_edge_id": "NISQ-20260806-T01:REC-2fd4d09d08ff29c8",
+        "processed_sources": [
+          {
+            "path": "salt_dilution/data/processed/20260806/NaCl_202608061_RL_2026-08-14_17-55-39-876.csv",
+            "sha256": "4bef07385eaae6498530d59e7b07f6f81495dff2a8a045cc0262ce2d617b0095"
+          }
+        ]
+      },
+      "observed_integral_us_cm_s": 1584.7761904761896,
+      "q_window_and_background_sensitivity_percent": [
+        -1.5603144783879919,
+        1.224091785821102
+      ],
+      "calibration_id": "NISQ-20260806-C01",
+      "calibration_sensor_identity": "unverified",
+      "diagnostic_only": true,
+      "q_authorized_by_this_window": false
+    }
+  ],
+  "july24_calibration_identity_evidence": {
+    "stream_device_serial": "840058",
+    "native_calibration_serial": "680530",
+    "basis": "All 14 paired notebook steps have an ordered nearest same-row match in two native calibration reports. Maximum paired absolute error was 0.290 \u00b5S/cm overall and 0.098 across added doses. Five pairs agree within 0.005001 \u00b5S/cm. Neither a date match alone nor a probe alias supplies this evidence.",
+    "raw_reports": [
+      {
+        "path": "salt_dilution/data/raw/20250724/LiveReadings/VuSitu_LiveReadings_2025-07-24_17-20-44_Device_Location.html",
+        "sha256": "753d01670fee281b45b348fc157ff6f7079dd2477b78a3fe4468ea582b487fe1"
+      },
+      {
+        "path": "salt_dilution/data/raw/20250724/LiveReadings/VuSitu_LiveReadings_2025-07-24_17-37-22_Device_Location.html",
+        "sha256": "75df6ab90e5968428df8128b0748673b203a866b472bd322024774b13d488625"
+      }
+    ]
+  },
+  "collaborator_comparison": {
+    "path": "salt_dilution/data/raw/wrd_sample/MORA_Slugs_Sep1/slug_summary_results.csv",
+    "sha256": "f71bbc6a6dc1baca0b0d587116c6d72a4eb3ba443d7e97c3c64352c014b46392",
+    "note": "PR05/PR06 conditional estimates agree within 1.56% with collaborator calculations using the same source runs and worksheet. The collaborator method clips negative excess, unlike signed integration here."
+  },
+  "diagnostic_candidate_scope": "Observed waveform areas only; not discharge estimates or authorization to bypass delivery, recipe or sensor compatibility checks."
+}

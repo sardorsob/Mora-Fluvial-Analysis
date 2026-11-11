@@ -7,7 +7,7 @@ import math
 from pathlib import Path
 import numpy as np
 import pandas as pd
-from . import calibration, calibration_reuse as reuse, matching
+from . import calibration, calibration_quality, calibration_reuse as reuse, matching
 
 ROOT=matching.ROOT
 
@@ -39,7 +39,7 @@ def prepare_series(samples, channel, *, gap_seconds=5., gap_factor=3.):
 
 def propose_windows(frame, *, release_offset_s=None, min_background_s=30., min_background_n=10,
                     max_background_s=120., threshold_floor=.5, k_sigma=3., settle_s=30.):
-    candidates=[];problems=[]
+    candidates=[];problems=[];incomplete_peaks=[]
     for _,part in frame.groupby('segment',sort=True):
         part=part.reset_index(drop=True);t=part.t_s.to_numpy();ec=part.ec.to_numpy()
         pre=part.loc[part.t_s<=t[0]+min_background_s]
@@ -72,18 +72,21 @@ def propose_windows(frame, *, release_offset_s=None, min_background_s=30., min_b
             start=max(int(np.searchsorted(t,t[g[0]]-10))-1,len(pre))
             end=int(np.searchsorted(t,t[g[-1]]+30))
             if end>=len(part) or t[-1]-t[end]<settle_s:
-                problems.append('tail_incomplete');continue
+                problems.append('tail_incomplete');incomplete_peaks.append(float(t[peak]));continue
             post=part.loc[part.t_s.between(t[end],t[end]+settle_s)]
             tail=residual[end:end+len(post)]
             if len(post)<min_background_n or not np.isfinite(tail).all() or np.any(np.abs(tail)>threshold):
-                problems.append('tail_incomplete');continue
+                problems.append('tail_incomplete');incomplete_peaks.append(float(t[peak]));continue
             if t[start]<=finite.t_s.iloc[-1]:
                 problems.append('no_pre_pulse_background');continue
             candidates.append(dict(pre=[float(t[0]),float(finite.t_s.iloc[-1])],pulse=[float(t[start]),float(t[end])],
                 post=[float(post.t_s.iloc[0]),float(post.t_s.iloc[-1])],peak_t_s=float(t[peak]),threshold_us_cm=threshold,
                 segment=int(part.segment.iloc[0]),issues=[]))
     if release_offset_s is not None and candidates:
-        return min(candidates,key=lambda c:c['peak_t_s'])
+        chosen=min(candidates,key=lambda c:c['peak_t_s'])
+        if any(peak<chosen['peak_t_s'] for peak in incomplete_peaks):
+            return dict(issues=['earlier_pulse_incomplete'])
+        return chosen
     if len(candidates)==1:return candidates[0]
     if len(candidates)>1:return dict(issues=['multiple_pulses_ambiguous'])
     return dict(issues=sorted(set(problems or ['no_detectable_pulse'])))
@@ -198,6 +201,14 @@ def _table(path, rows, empty_fields):
 
 def _decoded(row, key, default):
     return json.loads(row[key]) if row.get(key) else default
+
+
+def calibration_reference_fields(fit):
+    """Attach a conditional reference to this coefficient without changing its value."""
+    diagnostic = calibration_quality.reference_diagnostic(fit)
+    return dict(calibration_reference_flags=diagnostic['flags'],
+                calibration_reference_status=diagnostic['diagnostic_status'],
+                calibration_reference_assumptions=diagnostic['reference_assumptions'])
 
 
 def _selected_fit(edge, fits, calibration_dir):
@@ -338,7 +349,8 @@ def read_release_confirmations(path, trials):
     return confirmations
 
 
-def plot_pulse(path, frame, windows, *, trial_id, channel, device, status, mass_confirmed=False):
+def plot_pulse(path, frame, windows, *, trial_id, channel, device, status, mass_confirmed=False,
+               clock_label='Recorded field time',q_m3_s=None):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
@@ -356,8 +368,9 @@ def plot_pulse(path, frame, windows, *, trial_id, channel, device, status, mass_
             for part in (pre, post):
                 ax.axvspan(part.timestamp.iloc[0], part.timestamp.iloc[-1], color='#999999', alpha=.2)
             ax.axvline(pulse.timestamp.iloc[int(np.argmax(pulse.ec.to_numpy()-background))], color='#777777', ls=':', label='Pulse peak')
-        ax.set(title=f'{trial_id} · {channel} conductivity · sensor {device or "unverified"}\n{status}',
-               ylabel='Conductivity (µS/cm)', xlabel='Recorded local clock (timezone alignment unresolved)')
+        value=f'Q = {q_m3_s:.3f} m³/s · ' if q_m3_s is not None else 'Q unavailable · '
+        ax.set(title=f'{trial_id} · {channel} conductivity\n{value}{status}',
+               ylabel='Conductivity (µS/cm)', xlabel=clock_label)
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
         ax.grid(axis='y', alpha=.2); ax.legend(fontsize=10, frameon=False)
         mass_note = 'Delivery confirmed by field participant.' if mass_confirmed else 'Delivered mass unverified.'
@@ -458,7 +471,7 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
                 if pins.get(str(path)) != item['sha256']:
                     raise ValueError('Window source hash is not pinned by the pairing run')
     estimates, outcomes, proposals, attempts = [], [], [], []
-    with reuse.staged_run(output_dir, pins, [__file__, reuse.__file__, calibration.__file__, matching.__file__]) as (stage, pins):
+    with reuse.staged_run(output_dir, pins, [__file__, reuse.__file__, calibration.__file__, calibration_quality.__file__, matching.__file__]) as (stage, pins):
         pulse_dir = stage/'figures/pulses'; pulse_dir.mkdir(parents=True)
         for summary in summaries:
             tid = summary['trial_id']; trial = trials[tid]; reasons = []; start_count = len(estimates)
@@ -530,9 +543,13 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
                             if edge.get('identity_status') not in ('native_match', 'source_protocol_match'): flags.append('identity_unverified')
                             if summary.get('event_alignment_review_required', '').lower() == 'true': flags.append('event_alignment_unverified')
                             if basis == 'actual': flags.append('temperature_comparability_unverified')
+                            variant_conflict=str(fit.get('incompatible_notebook_version','')).lower()=='true'
+                            if variant_conflict:flags.append('calibration_source_variant_unreconciled')
                             pulse_ec = frame.loc[frame.t_s.between(*windows['pulse']), 'ec']
                             if float(pulse_ec.min()) < float(fit['ec_min']) or float(pulse_ec.max()) > float(fit['ec_max']):
                                 flags.append('conductivity_extrapolates_calibration_range')
+                            reference_fields=calibration_reference_fields(fit)
+                            flags += reference_fields['calibration_reference_flags']
                             row = dict(trial_id=tid, field_date=matching._date(trial['field_date']), logical_recording_id=logical_id,
                                 recording_edge_id=rid, member_refs=_decoded(edge_recording, 'member_refs', []), sensor_serial=serial,
                                 identity_status=edge.get('identity_status', ''), conductivity_basis=basis,
@@ -546,7 +563,8 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
                                 integral_mg_s_l='' if relative else float(fit['k'])*area['integral_us_cm_s'],
                                 integral_relative_s=float(fit['k'])*area['integral_us_cm_s'] if relative else '', **q,
                                 **uncertainty(frame, windows, quantity, fit['k'], compatible['k_se'],method=method), flags=sorted(set(flags)),
-                                estimate_support='conditional_reported_volume' if volume_basis=='reported_delivery_assumed' else 'proposed_observed_pulse',
+                                calibration_source_variant=fit.get('source_variant','curated_notebook'), **reference_fields,
+                                estimate_support='conditional_calibration_variant' if variant_conflict else ('conditional_reported_volume' if volume_basis=='reported_delivery_assumed' else 'proposed_observed_pulse'),
                                 q_status='proposed', estimate_role='primary' if basis == 'specific' or not any(c['conductivity_basis']=='specific' for c in candidates) else 'comparison_channel',
                                 scientifically_accepted=False)
                             estimates.append(row); attempt['outcome'] = 'computed'
@@ -561,6 +579,9 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
                                     and fit['calibration_id'] in json.loads(domain['session_ids'])):
                                     other = dict(row, coefficient_source='reference_comparison', k=domain['k_reference'], k_se='',
                                         estimate_role='comparison_reference', **discharge(mass, domain['k_reference'], area['integral_us_cm_s']))
+                                    other.update(calibration_reference_fields(dict(fit,k=domain['k_reference'])))
+                                    other['flags']=sorted((set(row['flags'])-set(row['calibration_reference_flags']))
+                                                          |set(other['calibration_reference_flags']))
                                     other['integral_mg_s_l'] = float(domain['k_reference'])*area['integral_us_cm_s']
                                     other['u_k_fit_relative'] = ''; other['indicative_sensitivity_relative'] = ''
                                     other['indicative_q_lower_l_s'] = ''; other['indicative_q_upper_l_s'] = ''
@@ -582,7 +603,9 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
                                        trial_id=tid, channel=basis, device=edge_recording.get('device_serial', ''),
                                        status='Proposed windows · delivery confirmed' if attempt['outcome']=='computed' and tid in confirmations else
                                               ('Proposed windows · nominal mass' if attempt['outcome']=='computed' else 'Blocked: '+attempt.get('reason', '')),
-                                       mass_confirmed=tid in confirmations)
+                                       mass_confirmed=tid in confirmations,
+                                       clock_label='Field time (PST, UTC−08:00)' if _decoded(edge_recording,'time_evidence',{}).get('effective_offset_seconds')==-28800 else 'Recorded field time',
+                                       q_m3_s=q['q_m3_s'] if attempt['outcome']=='computed' else None)
                         proposals.append(proposal)
                 category = 'computed' if len(estimates)>start_count else 'blocked_'+(reasons[0].split(';')[0] if reasons else 'no_compatible_coefficient_for_sensor')
             outcomes.append(dict(trial_id=tid, pairing_status=summary['status'], category=category,
