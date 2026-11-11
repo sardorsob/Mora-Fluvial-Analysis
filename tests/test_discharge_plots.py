@@ -62,3 +62,20 @@ class DischargePlotTests(unittest.TestCase):
 
     def test_blocked_capture_headline_uses_plain_language(self):
         self.assertEqual(pulses._blocked_label('pulse_truncated'), 'Pulse end not established')
+
+    def test_capture_scenario_requires_exact_release_recording_and_channel(self):
+        row = dict(trial_id='T04', logical_recording_id='R1', conductivity_basis='specific', q_m3_s='3.67')
+        index = pulses._capture_scenarios([row])
+        self.assertEqual(index[('T04', 'R1', 'specific')], row)
+        self.assertNotIn(('T04', 'R1', 'actual'), index)
+        self.assertNotIn(('T04', 'R2', 'specific'), index)
+        with self.assertRaisesRegex(ValueError, 'Duplicate'):
+            pulses._capture_scenarios([row, row])
+
+    def test_coverage_distinguishes_selected_q_from_capture_scenarios(self):
+        rows = [dict(trial_id='T04', field_date='2026-10-04', site_alias='NISQ',
+                     q_primary_m3_s='', case_disposition='not_estimable_capture')]
+        fig = summary._recovery(rows, [dict(trial_id='T04')])
+        self.addCleanup(plt.close, fig)
+        self.assertIn('No selected Q', fig.axes[0].get_legend_handles_labels()[1])
+        self.assertTrue(any('capture-assumed' in text.get_text() for text in fig.texts))

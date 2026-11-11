@@ -17,6 +17,7 @@ from .plot_discharge_summary import CONDITIONAL_SUPPORT, SITE_NAMES, METHOD_NAME
 
 
 BLOCKED_LABELS = {
+    'no_pre_pulse_background': 'Pre-pulse background window not established',
     'pulse_truncated': 'Pulse end not established',
     'tail_not_settled': 'Pulse end not established',
     'pulse_start_missing': 'Pulse start not established',
@@ -63,6 +64,16 @@ def _rows(path):
         return list(csv.DictReader(stream))
 
 
+def _capture_scenarios(rows):
+    result = {}
+    for row in rows:
+        key = row['trial_id'], row['logical_recording_id'], row['conductivity_basis']
+        if key in result:
+            raise ValueError(f'Duplicate capture scenario: {key}')
+        result[key] = row
+    return result
+
+
 def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path) -> set[Path]:
     """Render available recording/channel traces and return their relative paths."""
     bundle, root = Path(bundle).resolve(), Path(root).resolve()
@@ -99,6 +110,8 @@ def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path)
         raise ValueError('Duplicate trial-specific estimate for a recording/channel')
     outcomes = _rows(mass/'recording_outcomes.csv')
     releases = {r['trial_id']: r for r in _rows(bundle/'tables/discharge_by_release.csv')}
+    scenario_path = bundle/'tables/conditional_discharge.csv'
+    scenarios = _capture_scenarios(_rows(scenario_path) if scenario_path.is_file() else [])
     background_notes = {r['trial_id']: r for r in _rows(bundle/'tables/field_note_comparison.csv')
                         if r['quantity'] == 'specific_conductivity_background'}
     dest = Path(figure_dir)/'mass/pulses'
@@ -161,7 +174,9 @@ def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path)
         date_label = dates[0] if len(dates) == 1 else f'{dates[0]} to {dates[-1]}'
         time_evidence = json.loads(edge.get('time_evidence') or '{}')
         ax.set_xlabel(f'{_clock_label(time_evidence)} · {date_label}', fontsize=12)
-        ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S', tz=frame.timestamp.dt.tz))
+        ax.xaxis.set_major_locator(mdates.AutoDateLocator(minticks=3, maxticks=6))
+        tick_format = '%H:%M:%S' if len(dates) == 1 else '%d %b\n%H:%M'
+        ax.xaxis.set_major_formatter(mdates.DateFormatter(tick_format, tz=frame.timestamp.dt.tz))
         ax.grid(axis='y', color='#d9dfe2', linewidth=.7)
         ax.spines[['top', 'right']].set_visible(False)
         if computed:
@@ -169,7 +184,11 @@ def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path)
             if chronology.get('clock_basis') in ('reviewed_whole_file_relationship', 'source_confirmed_file_relationship'):
                 note += ' File match established. Release-to-pulse timing unverified.'
         else:
-            note = 'No Q calculated. ' + (row.get('detail') or decision.get('reason', ''))
+            if key in scenarios:
+                note = (f"No selected Q. Capture-assumed scenario Q = {float(scenarios[key]['q_m3_s']):.3f} m³/s; "
+                        'full pulse capture is unverified. See the conditional-discharge figure.')
+            else:
+                note = 'No selected Q. ' + (row.get('detail') or decision.get('reason', ''))
         if release.get('source_background_discrepancy', '').lower() == 'true' and key[0] in background_notes:
             comparison = background_notes[key[0]]
             notebook = float(comparison['notebook_numeric_value'])

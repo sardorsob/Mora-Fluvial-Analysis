@@ -254,7 +254,8 @@ def _reuse(rows):
         outcome = {"pass": "Passed", "fail": "Failed", "insufficient_evidence": "Inconclusive"}.get(
             row["outcome"], row["outcome"].replace("_", " ").capitalize())
         channel = row["conductivity_basis"].title()
-        labels.append(f"{channel} · {row['sensor_serial']}\n{outcome} · {row['day_count']} days")
+        day_unit = 'day' if int(row['day_count']) == 1 else 'days'
+        labels.append(f"{channel} · {row['sensor_serial']}\n{outcome} · {row['day_count']} {day_unit}")
     ax.set_yticks(range(len(labels)), labels)
     ax.set_ylim(len(labels)-.47, -.53)
     bound = max(bounds)*1.2 or 1
@@ -265,16 +266,16 @@ def _reuse(rows):
     return fig
 
 
-def _recovery(rows):
+def _recovery(rows, scenarios=()):
     counts = _recovery_counts(rows)
     keys = sorted(counts)
     totals = np.array([counts[key] for key in keys])
-    fig, ax = _base(f"Discharge estimates for {totals[:, :2].sum()} of {len(rows)} recorded releases",
+    fig, ax = _base(f"Selected discharge for {totals[:, :2].sum()} of {len(rows)} releases",
                     "Release counts by field date and site", row_count=len(keys), left=.27)
     y = np.arange(len(keys))
     left = np.zeros(len(keys), dtype=int)
     styles = (("Proposed Q", BLUE, BLUE, ""), ("Conditional Q", "white", BLUE, "..."),
-              ("No Q estimate", "#C6CFD4", "#C6CFD4", ""), ("Practice", "white", GRAY, "///"))
+              ("No selected Q", "#C6CFD4", "#C6CFD4", ""), ("Practice", "white", GRAY, "///"))
     for amounts, (label, color, edge, hatch) in zip(totals.T, styles):
         visible = amounts > 0
         if visible.any():
@@ -287,7 +288,11 @@ def _recovery(rows):
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.set_xlabel("Recorded releases", fontsize=12)
     _legend(fig, ax)
-    _footer(fig, "Each release is counted once.",
+    note = 'Each release is counted once.'
+    if scenarios:
+        count = len({r['trial_id'] for r in scenarios})
+        note += f"\n{count} additional release{'s have' if count != 1 else ' has'} capture-assumed scenarios shown separately."
+    _footer(fig, note,
             "Source · Mount Rainier Fluvial Analysis, discharge by release")
     return fig
 
@@ -359,13 +364,14 @@ def render_summary(bundle: Path, figure_dir: Path) -> set[Path]:
     bundle, figure_dir = Path(bundle), Path(figure_dir)
     primary = sorted(_rows(bundle, "discharge_primary.csv"), key=lambda r: (r["field_date"], r["trial_id"]))
     releases = _rows(bundle, "discharge_by_release.csv")
+    scenarios = _rows(bundle, "conditional_discharge.csv", optional=True)
     figures = {
         "mass/discharge_comparison.png": _comparison(primary) if primary else None,
         "review/window_background_sensitivity.png": _sensitivity(primary),
         "reuse/calibration_consistency.png": _reuse(_rows(bundle, "coefficient_reuse.csv")),
-        "review/recovery_by_date.png": _recovery(releases) if releases else None,
+        "review/recovery_by_date.png": _recovery(releases, scenarios) if releases else None,
         "review/calibration_reference.png": _calibration_reference(_rows(bundle, "calibration_quality.csv", optional=True)),
-        "review/conditional_discharge.png": _conditional_capture(_rows(bundle, "conditional_discharge.csv", optional=True)),
+        "review/conditional_discharge.png": _conditional_capture(scenarios),
     }
     rendered = set()
     for name, figure in figures.items():
