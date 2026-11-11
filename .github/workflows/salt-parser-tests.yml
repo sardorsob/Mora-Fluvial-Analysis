@@ -5,12 +5,14 @@ on:
       - 'salt_dilution/**'
       - 'tests/**'
       - 'project_paths.py'
+      - '.gitattributes'
       - '.github/workflows/salt-parser-tests.yml'
   pull_request:
     paths:
       - 'salt_dilution/**'
       - 'tests/**'
       - 'project_paths.py'
+      - '.gitattributes'
       - '.github/workflows/salt-parser-tests.yml'
   workflow_dispatch:
 permissions:

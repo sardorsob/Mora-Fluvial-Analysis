@@ -262,7 +262,7 @@ class RunnerTests(AssociationFixtures, unittest.TestCase):
         (self.records/'provenance.json').write_text(json.dumps(self.provenance))
         config=self.root/'salt_dilution/config/procedure_versions.json';config.parent.mkdir(parents=True);config.write_text('{}')
         write_csv(self.bundle/'calibration_fits.csv',self.fits)
-        inputs=[dict(path=str(p.relative_to(self.root)),sha256=hashlib.sha256(p.read_bytes()).hexdigest())
+        inputs=[dict(path=p.relative_to(self.root).as_posix(),sha256=hashlib.sha256(p.read_bytes()).hexdigest())
                 for p in [self.records/'calibrations.csv',self.records/'calibration_points.csv',self.records/'provenance.json',config]]
         self.runinfo=dict(inputs=inputs,outputs=[dict(path='calibration_fits.csv',sha256=hashlib.sha256((self.bundle/'calibration_fits.csv').read_bytes()).hexdigest())])
         (self.bundle/'run_info.json').write_text(json.dumps(self.runinfo))
@@ -310,7 +310,7 @@ class RunnerTests(AssociationFixtures, unittest.TestCase):
                 basis='confirmed_trial_association_and_user_confirmed_within_trial_probe_continuity',
                 trial_id='T01', dataset_id=rec['content_ref'], files=list(rec['files'].values()))
             provenance.write_text(json.dumps(self.provenance))
-        inputs.extend(dict(path=str(p.relative_to(self.root)), sha256=hashlib.sha256(p.read_bytes()).hexdigest())
+        inputs.extend(dict(path=p.relative_to(self.root).as_posix(), sha256=hashlib.sha256(p.read_bytes()).hexdigest())
                       for p in (points, provenance, overlay))
         if include_native_pin:
             inputs.append(raw_pin)
@@ -354,7 +354,7 @@ class RunnerTests(AssociationFixtures, unittest.TestCase):
         overlay.write_text(json.dumps(dict(schema_version=1, worksheet=worksheet_pin, direct_stock_preparations=[],
             worksheet_preparations=[dict(calibration_id='C01', site_code='PR04', sensor_serial='111',
                 source_lines=[2,4], point_source='worksheet', incompatible_notebook_version=False, qualification='Synthetic') ])))
-        self.runinfo['inputs'].append(dict(path=str(overlay.relative_to(self.root)),
+        self.runinfo['inputs'].append(dict(path=overlay.relative_to(self.root).as_posix(),
                                            sha256=hashlib.sha256(overlay.read_bytes()).hexdigest()))
         if include_worksheet_pin:
             self.runinfo['inputs'].append(worksheet_pin)

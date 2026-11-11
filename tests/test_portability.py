@@ -5,10 +5,13 @@ Run from the repository root: python -m unittest discover -s tests -v
 
 import ast
 import contextlib
+import hashlib
 import importlib
 import io
+import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -22,6 +25,27 @@ sys.path.insert(0, str(ROOT))
 
 
 class PortabilityTests(unittest.TestCase):
+    def test_windows_checkout_preserves_calibration_source_checksum(self):
+        config = json.loads((ROOT / 'salt_dilution/config/calibration_recovered_recipes.json').read_text())
+        source = config['worksheet']
+        with tempfile.TemporaryDirectory() as temp:
+            checkout = Path(temp)
+            worksheet = checkout / source['path']
+            worksheet.parent.mkdir(parents=True)
+            shutil.copyfile(ROOT / '.gitattributes', checkout / '.gitattributes')
+            shutil.copyfile(ROOT / source['path'], worksheet)
+            for args in (
+                ['init', '--quiet'],
+                ['-c', 'core.autocrlf=false', 'add', '.gitattributes', source['path']],
+            ):
+                subprocess.run(['git', *args], cwd=checkout, check=True, capture_output=True)
+            worksheet.unlink()
+            subprocess.run(
+                ['git', '-c', 'core.autocrlf=true', '-c', 'core.eol=crlf', 'checkout-index', '--all'],
+                cwd=checkout, check=True, capture_output=True,
+            )
+            self.assertEqual(hashlib.sha256(worksheet.read_bytes()).hexdigest(), source['sha256'])
+
     def test_public_acquisition_setup_needs_no_embedded_credentials(self):
         # Exercise the real function with a network-boundary stand-in because
         # ObsPy and live acquisition are not needed for this empty interval.

@@ -292,7 +292,7 @@ class RunnerTests(unittest.TestCase):
                        logical_recordings=[dict(logical_recording_id='R1',members=['F1']),dict(logical_recording_id='R3',members=['F3'])],recording_segments=[])
         self.seal()
 
-    def pins(self,paths):return [dict(path=str(p.relative_to(self.root)),sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in paths if p.is_file()]
+    def pins(self,paths):return [dict(path=p.relative_to(self.root).as_posix(),sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in paths if p.is_file()]
     def outputs(self,folder):return [dict(path=p.name,sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in folder.iterdir() if p.is_file() and p.name!='run_info.json']
     def seal(self):
         for name,data in [('recording_candidates',self.recordings),('calibration_candidates',self.edges),('pairing_summary',self.summaries)]:csvfile(self.pair/(name+'.csv'),data)

@@ -1,7 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-# Preserve archived instrument exports and historical source notes exactly.
+# Preserve source bytes so recorded checksums survive every checkout platform.
+salt_dilution/data/raw/** -text -whitespace
 salt_dilution/data/examples/*.csv -text -whitespace
 docs/source_notes/*.txt -text -whitespace
 
