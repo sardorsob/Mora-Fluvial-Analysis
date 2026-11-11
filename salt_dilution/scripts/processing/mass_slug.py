@@ -37,37 +37,46 @@ def prepare_series(samples, channel, *, gap_seconds=5., gap_factor=3.):
     return frame,issues
 
 
-def propose_windows(frame, *, release_offset_s=None, min_background_s=30., min_background_n=10,
+def propose_windows(frame, *, release_offset_s=None, min_background_s=30., min_background_n=2,
                     max_background_s=120., threshold_floor=.5, k_sigma=3., settle_s=30.):
+    """Propose observed windows using elapsed-time heuristics and a two-sample floor."""
+    if not isinstance(min_background_n, (int, np.integer)) or min_background_n < 2:
+        raise ValueError('min_background_n must be an integer of at least two')
     candidates=[];problems=[];incomplete_peaks=[]
     for _,part in frame.groupby('segment',sort=True):
         part=part.reset_index(drop=True);t=part.t_s.to_numpy();ec=part.ec.to_numpy()
         if len(part)<min_background_n:
             problems.append('no_pre_pulse_background');continue
-        # Slow loggers need a longer observed window to supply the same evidence.
+        # The requested elapsed duration and sample count are independent.
         pre_end=max(int(np.searchsorted(t,t[0]+min_background_s)),min_background_n-1)
         if pre_end>=len(part) or t[pre_end]-t[0]>max_background_s:
             problems.append('no_pre_pulse_background');continue
         pre=part.iloc[:pre_end+1]
-        finite=pre[np.isfinite(pre.ec)]
-        if len(finite)<min_background_n or finite.t_s.iloc[-1]-finite.t_s.iloc[0]<min_background_s:
+        if not np.isfinite(pre.ec).all():
             problems.append('no_pre_pulse_background');continue
-        coef=np.polyfit(finite.t_s,finite.ec,1)
+        coef=np.polyfit(pre.t_s,pre.ec,1)
         residual=ec-np.polyval(coef,t)
-        noise=finite.ec-np.polyval(coef,finite.t_s)
-        threshold=max(threshold_floor,k_sigma*float(np.std(noise,ddof=1)))
-        if np.median(finite.ec.iloc[:5])-np.median(finite.ec.iloc[-5:])>threshold:
+        noise_std = None
+        if len(pre) > 2:
+            noise_std = float(np.sqrt(np.sum(residual[:len(pre)] ** 2) / (len(pre) - 2)))
+        threshold = threshold_floor if noise_std is None else max(threshold_floor, k_sigma * noise_std)
+        half = min(5, len(pre) // 2)
+        if np.median(pre.ec.iloc[:half])-np.median(pre.ec.iloc[-half:])>threshold:
             problems.append('no_pre_pulse_background');continue
         if not np.isfinite(residual).any():continue
         peak=int(np.nanargmax(residual))
         if peak<len(pre) or ec[0]-np.nanmin(ec)>max(threshold,.2*(np.nanmax(ec)-np.nanmin(ec))):
             problems.append('no_pre_pulse_background');continue
-        above=np.flatnonzero(np.isfinite(residual)&(residual>threshold)&(t>=pre.t_s.iloc[-1]))
+        above=np.flatnonzero(np.isfinite(residual)&(residual>threshold)&(t>t[pre_end]))
         if not len(above):problems.append('no_detectable_pulse');continue
         groups=[]
         for i in above:
-            if groups and t[i]-t[groups[-1][-1]]<=settle_s:groups[-1].append(int(i))
-            else:groups.append([int(i)])
+            # At coarse cadence, successive elevated readings can be farther apart than settle_s.
+            previous = groups[-1][-1] if groups else None
+            if previous is not None and (i == previous + 1 or t[i] - t[previous] <= settle_s):
+                groups[-1].append(int(i))
+            else:
+                groups.append([int(i)])
         maximum=max(float(np.max(residual[g])) for g in groups)
         groups=[g for g in groups if np.max(residual[g])>=.5*maximum]
         for g in groups:
@@ -75,7 +84,7 @@ def propose_windows(frame, *, release_offset_s=None, min_background_s=30., min_b
             if release_offset_s is not None and t[peak]<release_offset_s:continue
             # Threshold crossings detect the event but omit low-amplitude tails.
             # Pad the integration proposal, then require a separate settled tail.
-            start=max(int(np.searchsorted(t,t[g[0]]-10))-1,len(pre))
+            start=max(int(np.searchsorted(t,t[g[0]]-10))-1,pre_end)
             end=int(np.searchsorted(t,t[g[-1]]+30))
             if end+min_background_n>len(part) or t[-1]-t[end]<settle_s:
                 problems.append('tail_incomplete');incomplete_peaks.append(float(t[peak]));continue
@@ -86,11 +95,17 @@ def propose_windows(frame, *, release_offset_s=None, min_background_s=30., min_b
             tail=residual[end:end+len(post)]
             if len(post)<min_background_n or not np.isfinite(tail).all() or np.any(np.abs(tail)>threshold):
                 problems.append('tail_incomplete');incomplete_peaks.append(float(t[peak]));continue
-            if t[start]<=finite.t_s.iloc[-1]:
-                problems.append('no_pre_pulse_background');continue
-            candidates.append(dict(pre=[float(t[0]),float(finite.t_s.iloc[-1])],pulse=[float(t[start]),float(t[end])],
+            flags = []
+            if min(len(pre), len(post)) == 2:
+                flags.append('low_background_support')
+            if noise_std is None:
+                flags.append('insufficient_noise_df')
+            support = dict(pre_samples=len(pre), post_samples=len(post),
+                           pre_duration_s=float(t[pre_end]-t[0]), post_duration_s=float(t[post_end]-t[end]),
+                           pre_slope_us_cm_per_s=float(coef[0]), pre_noise_std_us_cm=noise_std, flags=flags)
+            candidates.append(dict(pre=[float(t[0]),float(t[pre_end])],pulse=[float(t[start]),float(t[end])],
                 post=[float(post.t_s.iloc[0]),float(post.t_s.iloc[-1])],peak_t_s=float(t[peak]),threshold_us_cm=threshold,
-                segment=int(part.segment.iloc[0]),issues=[]))
+                segment=int(part.segment.iloc[0]),background_support=support,issues=[]))
     if release_offset_s is not None and candidates:
         chosen=min(candidates,key=lambda c:c['peak_t_s'])
         if any(peak<chosen['peak_t_s'] for peak in incomplete_peaks):
@@ -287,7 +302,7 @@ def _read_windows(path):
     return result
 
 
-def _choose_windows(frame, edge, channel, decisions):
+def _choose_windows(frame, edge, channel, decisions, *, automatic_window_policy=None):
     key = (edge['trial_id'], edge['logical_recording_id'], channel)
     decision = decisions.get(key)
     origin = frame.timestamp.iloc[0]
@@ -317,7 +332,7 @@ def _choose_windows(frame, edge, channel, decisions):
     # falls in this recording's local acquisition range; it is not a UTC fix.
     if offset is not None and not 0 <= offset <= frame.t_s.iloc[-1]:
         offset = None
-    return propose_windows(frame, release_offset_s=offset), 'automatic'
+    return propose_windows(frame, release_offset_s=offset, **(automatic_window_policy or {})), 'automatic'
 
 
 def assign_roles(estimates):
@@ -536,6 +551,7 @@ def run_mass_slug(records_dir, processed_dir, pairing_dir, calibration_dir, outp
                             frame, flags = prepare_series(samples, basis)
                             windows, window_status = _choose_windows(frame, edge_recording, basis, decisions)
                             if windows.get('issues'): raise ValueError(';'.join(windows['issues']))
+                            flags.extend(windows.get('background_support', {}).get('flags', []))
                             area = integrate_excess(frame, windows)
                             confirmation = confirmations.get(tid, {})
                             mass = '' if relative else float(confirmation.get('delivered_salt_mass_g', trial.get('salt_mass_g') or 'nan'))

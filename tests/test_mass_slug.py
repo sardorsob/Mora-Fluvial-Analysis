@@ -138,20 +138,49 @@ class NumericalTests(unittest.TestCase):
 class WindowTests(unittest.TestCase):
     frame = NumericalTests.frame
 
-    def test_coarse_sampling_extends_background_without_lowering_sample_count(self):
+    def test_coarse_sampling_uses_elapsed_background_duration(self):
         for cadence in (5., 10.):
             with self.subTest(cadence=cadence):
                 frame = self.frame(t=np.arange(0., 601., cadence))
                 windows = slug.propose_windows(frame)
                 self.assertFalse(windows['issues'], windows)
                 pre, _, post = slug._window_parts(frame, windows)
-                self.assertGreaterEqual(len(pre), 10)
-                self.assertGreaterEqual(len(post), 10)
+                self.assertEqual(len(pre), int(30 / cadence) + 1)
+                self.assertEqual(len(post), int(30 / cadence) + 1)
                 self.assertAlmostEqual(slug.integrate_excess(frame, windows)['integral_us_cm_s'], 1000, places=6)
 
-    def test_background_extension_still_respects_maximum_duration(self):
+    def test_two_background_samples_use_detection_floor_with_support_flags(self):
+        frame, _ = slug.prepare_series(samples(np.arange(0., 361., 60.),
+                                               [30, 30, 35, 40, 34, 30, 30]), 'specific')
+        windows = slug.propose_windows(frame)
+        self.assertFalse(windows['issues'], windows)
+        support = windows['background_support']
+        self.assertEqual((support['pre_samples'], support['post_samples']), (2, 2))
+        self.assertEqual((support['pre_duration_s'], support['post_duration_s']), (60., 60.))
+        self.assertIsNone(support['pre_noise_std_us_cm'])
+        self.assertEqual(windows['threshold_us_cm'], .5)
+        self.assertEqual(set(support['flags']), {'low_background_support', 'insufficient_noise_df'})
+        self.assertEqual(windows['pulse'], [60., 300.])
+        self.assertAlmostEqual(slug.integrate_excess(frame, windows)['integral_us_cm_s'], 1140.)
+
+    def test_explicit_sample_count_still_respects_maximum_duration(self):
         frame = self.frame(t=np.arange(0., 601., 20.))
-        self.assertIn('no_pre_pulse_background', slug.propose_windows(frame)['issues'])
+        self.assertIn('no_pre_pulse_background', slug.propose_windows(frame, min_background_n=10)['issues'])
+
+    def test_two_point_decline_is_not_hidden_by_overlapping_pre_window_slices(self):
+        frame, _ = slug.prepare_series(samples(np.arange(0., 421., 60.),
+                                               [31, 30, 29, 50, 65, 40, 25, 24]), 'specific')
+        self.assertIn('no_pre_pulse_background', slug.propose_windows(frame, min_background_n=2)['issues'])
+
+    def test_explicit_shorter_settling_window_remains_observed(self):
+        frame = self.frame().iloc[:331]
+        edge = dict(trial_id='T', logical_recording_id='R')
+        windows, _ = slug._choose_windows(frame, edge, 'specific', {})
+        self.assertIn('tail_incomplete', windows['issues'])
+        windows, _ = slug._choose_windows(frame, edge, 'specific', {},
+                                          automatic_window_policy={'settle_s': 15.})
+        self.assertFalse(windows['issues'], windows)
+        self.assertEqual(windows['background_support']['post_duration_s'], 15.)
 
     def test_noninteger_cadence_spans_the_requested_background_duration(self):
         frame = self.frame(t=np.arange(0., 601., 2.3))
