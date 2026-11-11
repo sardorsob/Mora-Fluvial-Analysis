@@ -42,7 +42,13 @@ def propose_windows(frame, *, release_offset_s=None, min_background_s=30., min_b
     candidates=[];problems=[];incomplete_peaks=[]
     for _,part in frame.groupby('segment',sort=True):
         part=part.reset_index(drop=True);t=part.t_s.to_numpy();ec=part.ec.to_numpy()
-        pre=part.loc[part.t_s<=t[0]+min_background_s]
+        if len(part)<min_background_n:
+            problems.append('no_pre_pulse_background');continue
+        # Slow loggers need a longer observed window to supply the same evidence.
+        pre_end=max(int(np.searchsorted(t,t[0]+min_background_s)),min_background_n-1)
+        if pre_end>=len(part) or t[pre_end]-t[0]>max_background_s:
+            problems.append('no_pre_pulse_background');continue
+        pre=part.iloc[:pre_end+1]
         finite=pre[np.isfinite(pre.ec)]
         if len(finite)<min_background_n or finite.t_s.iloc[-1]-finite.t_s.iloc[0]<min_background_s:
             problems.append('no_pre_pulse_background');continue
@@ -71,9 +77,12 @@ def propose_windows(frame, *, release_offset_s=None, min_background_s=30., min_b
             # Pad the integration proposal, then require a separate settled tail.
             start=max(int(np.searchsorted(t,t[g[0]]-10))-1,len(pre))
             end=int(np.searchsorted(t,t[g[-1]]+30))
-            if end>=len(part) or t[-1]-t[end]<settle_s:
+            if end+min_background_n>len(part) or t[-1]-t[end]<settle_s:
                 problems.append('tail_incomplete');incomplete_peaks.append(float(t[peak]));continue
-            post=part.loc[part.t_s.between(t[end],t[end]+settle_s)]
+            post_end=max(int(np.searchsorted(t,t[end]+settle_s)),end+min_background_n-1)
+            if post_end>=len(part) or t[post_end]-t[end]>max_background_s:
+                problems.append('tail_incomplete');incomplete_peaks.append(float(t[peak]));continue
+            post=part.iloc[end:post_end+1]
             tail=residual[end:end+len(post)]
             if len(post)<min_background_n or not np.isfinite(tail).all() or np.any(np.abs(tail)>threshold):
                 problems.append('tail_incomplete');incomplete_peaks.append(float(t[peak]));continue

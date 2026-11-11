@@ -134,7 +134,8 @@ def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=R
     combined = assemble_release_table(master, estimates, reviews)
     primaries = [r for r in combined if r['case_disposition']=='estimated_proposed']
     copies = [(sources[key]/source,Path(destination)) for key,files in COPY_FILES.items() for source,destination in files]
-    for name in ('calibration_quality','stage_diagnostics','conditional_discharge','channel_consistency'):
+    for name in ('calibration_quality','stage_diagnostics','conditional_discharge','channel_consistency',
+                 'recovery_requirements','observed_pulse_areas'):
         path=sources['review']/(name+'.csv')
         if path.is_file():copies.append((path,Path('tables')/path.name))
     for key in ('mass','review','reuse'):
@@ -193,6 +194,13 @@ def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=R
             settings='settings/', provenance='provenance/source_bundles.json',
             implementation='salt_dilution/scripts/processing/export_discharge.py',
             reproduce_command=commands)
+        recovery_links = ''
+        if (stage/'tables/recovery_requirements.csv').is_file() and (stage/'tables/observed_pulse_areas.csv').is_file():
+            guide.update(recovery_requirements='tables/recovery_requirements.csv',
+                         observed_pulse_areas='tables/observed_pulse_areas.csv')
+            recovery_links = ('For blank Q, read [remaining requirements](tables/recovery_requirements.csv). '
+                              '[Recovered pulse areas](tables/observed_pulse_areas.csv) preserve usable observations '
+                              'without assuming a delivered quantity or compatible K.\n\n')
         (stage/'bundle_index.json').write_text(matching._json(guide)+'\n')
         conditional_count=sum(str(r.get('estimate_support','')).startswith('conditional_') for r in primaries)
         (stage/'README.md').write_text(
@@ -209,6 +217,7 @@ def run_export(mass_dir, audit_dir, review_dir, reuse_dir, output_dir, *, root=R
             '- `tables/` includes calibration diagnostics and separate capture-assumed scenarios.\n'
             '- `settings/` preserves windows, quantities and study design.\n'
             '- `provenance/` identifies source bundles and citations.\n\n'
+            + recovery_links +
             '`analysis_limits.json` records the interpretation limits. Window sensitivity and '
             'fit standard errors do not quantify total discharge uncertainty. Conditional NaCl '
             'reference checks are diagnostics, not coefficient corrections.\n\n'

@@ -137,6 +137,31 @@ class NumericalTests(unittest.TestCase):
 
 class WindowTests(unittest.TestCase):
     frame = NumericalTests.frame
+
+    def test_coarse_sampling_extends_background_without_lowering_sample_count(self):
+        for cadence in (5., 10.):
+            with self.subTest(cadence=cadence):
+                frame = self.frame(t=np.arange(0., 601., cadence))
+                windows = slug.propose_windows(frame)
+                self.assertFalse(windows['issues'], windows)
+                pre, _, post = slug._window_parts(frame, windows)
+                self.assertGreaterEqual(len(pre), 10)
+                self.assertGreaterEqual(len(post), 10)
+                self.assertAlmostEqual(slug.integrate_excess(frame, windows)['integral_us_cm_s'], 1000, places=6)
+
+    def test_background_extension_still_respects_maximum_duration(self):
+        frame = self.frame(t=np.arange(0., 601., 20.))
+        self.assertIn('no_pre_pulse_background', slug.propose_windows(frame)['issues'])
+
+    def test_noninteger_cadence_spans_the_requested_background_duration(self):
+        frame = self.frame(t=np.arange(0., 601., 2.3))
+        windows = slug.propose_windows(frame)
+        self.assertFalse(windows['issues'], windows)
+        pre, _, post = slug._window_parts(frame, windows)
+        self.assertGreaterEqual(pre.t_s.iloc[-1]-pre.t_s.iloc[0], 30.)
+        self.assertGreaterEqual(post.t_s.iloc[-1]-post.t_s.iloc[0], 30.)
+        self.assertLess(abs(slug.integrate_excess(frame, windows)['integral_us_cm_s']/1000-1), .001)
+
     def test_full_pulse_proposed(self):
         windows=slug.propose_windows(self.frame())
         self.assertFalse(windows['issues'],windows)

@@ -19,6 +19,32 @@ def pulse_frame():
 
 
 class NumericalReviewTests(unittest.TestCase):
+    def test_observed_area_is_saved_without_inventing_quantity_or_q(self):
+        windows = dict(pre=[0, 1], pulse=[2, 4], post=[5, 6])
+        result = review.diagnostic_pulse_area(pulse_frame(), windows)
+        self.assertEqual(result['integral_us_cm_s'], 6.)
+        self.assertEqual(result['background_pre_integral_us_cm_s'], 6.)
+        self.assertNotIn('q_m3_s', result)
+        self.assertFalse(result['scientifically_accepted'])
+        frame = pulse_frame(); frame.loc[3:, 'segment'] = 1
+        with self.assertRaisesRegex(ValueError, 'gap'):
+            review.diagnostic_pulse_area(frame, windows)
+
+    def test_release_requirements_cover_every_blank_without_overwriting_first_stop(self):
+        master = [dict(trial_id='T1', category='computed', q_primary_m3_s='4'),
+                  dict(trial_id='T2', category='blocked_no_pre_pulse_background', q_primary_m3_s='')]
+        source = dict(trial_id='T2', blocking_factors=['delivered_quantity_unknown'],
+                      quantity_evidence='Spill recorded', calibration_evidence='Unverified serial',
+                      capture_evidence='Local pulse recovered', needed_for_selected_q='Delivered amount',
+                      recoverable_now='Observed area only', evidence_refs=['records.csv#T2'])
+        row, = review.release_requirements([source], master)
+        self.assertEqual(row['pipeline_first_stop'], 'blocked_no_pre_pulse_background')
+        self.assertEqual(row['blocking_factors'], ['delivered_quantity_unknown'])
+        with self.assertRaisesRegex(ValueError, 'missing'):
+            review.release_requirements([], master)
+        with self.assertRaisesRegex(ValueError, 'Duplicate'):
+            review.release_requirements([source, source], master)
+
     def test_capture_assumed_scenario_retains_exact_fit_reference_warning(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory).resolve()
@@ -98,6 +124,16 @@ class NumericalReviewTests(unittest.TestCase):
 
 
 class BundlePinTests(unittest.TestCase):
+    def test_review_evidence_must_match_its_source_hash(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); source = root/'source.csv'; source.write_text('amount\n12\n')
+            item = dict(path='source.csv', sha256=matching._hash(source))
+            pins = {}; review.pin_review_sources([item], pins, root)
+            self.assertEqual(pins[str(source.resolve())], item['sha256'])
+            source.write_text('amount\n13\n')
+            with self.assertRaisesRegex(ValueError, 'source hash'):
+                review.pin_review_sources([item], pins, root)
+
     def test_mass_run_must_reference_selected_pairing_and_calibration(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

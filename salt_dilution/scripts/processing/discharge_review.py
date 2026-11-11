@@ -33,6 +33,47 @@ def _scalar_integral(times, excess):
     return math.fsum((b - a) * (y + x) / 2 for (a, x), (b, y) in pairwise(zip(times, excess)))
 
 
+def pin_review_sources(sources, pins, root):
+    root = Path(root).resolve()
+    for source in sources:
+        path = matching._path(source['path'], root).resolve()
+        digest = source['sha256']
+        if (not path.is_relative_to(root) or not path.is_file() or matching._hash(path) != digest
+                or pins.get(str(path), digest) != digest):
+            raise ValueError(f'Review source hash mismatch: {source["path"]}')
+        pins[str(path)] = digest
+
+
+def release_requirements(reviews, master):
+    """Retain every evidence gap, separately from the pipeline's first stopping reason."""
+    by_id = _index(reviews, 'trial_id')
+    known = {r['trial_id'] for r in master}
+    missing = {r['trial_id'] for r in master if not r['q_primary_m3_s']} - {k[0] for k in by_id}
+    if missing or {k[0] for k in by_id} - known:
+        raise ValueError(f'Release requirement review has missing or unknown IDs: {sorted(missing)}')
+    result = []
+    for row in master:
+        if row['q_primary_m3_s']:
+            continue
+        review = by_id[(row['trial_id'],)]
+        if not all(review.get(k) for k in ('blocking_factors', 'quantity_evidence', 'calibration_evidence',
+                                          'capture_evidence', 'needed_for_selected_q', 'recoverable_now', 'evidence_refs')):
+            raise ValueError(f'Incomplete requirement evidence: {row["trial_id"]}')
+        result.append(dict(review, pipeline_first_stop=row['category'], scientifically_accepted=False))
+    return result
+
+
+def diagnostic_pulse_area(frame, windows):
+    """Recover observed area even when quantity or K cannot support discharge."""
+    pre, pulse, post = slug._window_parts(frame, windows)
+    areas = {mode: _scalar_integral(pulse.t_s, _excess(pre, pulse, post, mode))
+             for mode in ('linear', 'pre', 'post')}
+    return dict(integral_us_cm_s=areas['linear'], background_pre_integral_us_cm_s=areas['pre'],
+                background_post_integral_us_cm_s=areas['post'], pre_mean=float(pre.ec.mean()),
+                post_mean=float(post.ec.mean()), pre_samples=len(pre), pulse_samples=len(pulse),
+                post_samples=len(post), area_unit='uS/cm * s', scientifically_accepted=False)
+
+
 def _excess(pre, pulse, post, mode):
     a, b = mean(pre.ec), mean(post.ec)
     x, y = mean(pre.t_s), mean(post.t_s)
@@ -409,6 +450,14 @@ def run_review(mass_dir, pairing_dir, calibration_dir, output_dir, *,
     if trials.keys() != summaries.keys():
         raise ValueError('Slug outcomes must account for every release exactly once')
     provenance = json.loads((records/'provenance.json').read_text())['trials']
+    window_path = mass/'pulse_windows_used.json'
+    window_review = json.loads(window_path.read_text()) if window_path.exists() else {}
+    pin_review_sources(window_review.get('reviewed_source_files', []), pins, root)
+    for review in window_review.get('release_requirements', []):
+        for reference in review['evidence_refs']:
+            path = matching._path(reference.split('#', 1)[0], root).resolve()
+            if not path.is_relative_to(root) or str(path) not in pins:
+                raise ValueError(f'Release requirement source is not pinned: {reference}')
     observations = defaultdict(list)
     for note in read_pinned(notes_path, 'trial_id', 'quantity'):
         observations[note['trial_id']].append(note)
@@ -524,7 +573,37 @@ def run_review(mass_dir, pairing_dir, calibration_dir, output_dir, *,
         consistency = list(channel_consistency(fits, temperatures))
         conditional_rows = list(_conditional_cases(conditional, attempts, frames, summaries, trials, edges,
                                                    fits, recordings, inventory, cal, pins, root)) if conditional else []
+        requirements = release_requirements(window_review['release_requirements'], master) if 'release_requirements' in window_review else []
+        diagnostic_areas = []
+        diagnostic_keys = ('trial_id', 'logical_recording_id', 'channel')
+        for key, decision in _index(window_review.get('diagnostic_candidates', []), *diagnostic_keys).items():
+            tid, logical, channel = key
+            reference = decision['pairing_reference']
+            edge = recordings[(reference['recording_edge_id'],)]
+            if (tid not in {r['trial_id'] for r in master} or channel not in matching.CHANNELS
+                    or (edge['trial_id'], edge['logical_recording_id']) != (tid, logical)
+                    or reference['run_info_sha256'] != matching._hash(pair/'run_info.json')):
+                raise ValueError(f'Diagnostic window has a different recording or pairing: {key}')
+            member_paths = {inventory[m]['files']['processed']['path'] for m in slug._decoded(edge, 'member_refs', [])}
+            supplied_paths = [source['path'] for source in reference['processed_sources']]
+            if not member_paths or set(supplied_paths) != member_paths or len(supplied_paths) != len(member_paths):
+                raise ValueError(f'Diagnostic window must identify every processed member exactly once: {key}')
+            for source in reference['processed_sources']:
+                path = matching._path(source['path'], root).resolve()
+                if source['path'] not in member_paths or pins.get(str(path)) != source['sha256']:
+                    raise ValueError(f'Diagnostic window source is not pinned to its recording: {key}')
+            samples = slug._recording_samples(edge, pair_info, root/PROCESSED, root)
+            frame, _ = slug.prepare_series(samples, channel)
+            windows, _ = slug._choose_windows(frame, edge, channel, {key: decision})
+            diagnostic_areas.append(dict(trial_id=tid, logical_recording_id=logical, conductivity_basis=channel,
+                                         sensor_serial=edge['device_serial'], **diagnostic_pulse_area(frame, windows),
+                                         event_link_status=decision.get('event_link_status', 'not_reviewed'),
+                                         clock_face_windows={k: decision[k] for k in ('pre', 'pulse', 'post')},
+                                         evidence=decision['evidence'], source_processed=reference['processed_sources'],
+                                         interpretation='Observed area only. Delivery, calibration compatibility and event identity require separate evidence; no Q inferred.'))
         for name, rows, empty in [
+            ('recovery_requirements', requirements, ['trial_id', 'blocking_factors']),
+            ('observed_pulse_areas', diagnostic_areas, ['trial_id', 'logical_recording_id', 'conductivity_basis', 'integral_us_cm_s']),
             ('discharge_by_release', master, ['trial_id', 'category']),
             ('native_export_comparison', native, ['raw_path', 'comparison']),
             ('capture_coverage', capture, ['trial_id', 'channel', 'reason_code']),
@@ -551,6 +630,7 @@ def run_review(mass_dir, pairing_dir, calibration_dir, output_dir, *,
                                     reviewed_channel_count=len(channel_review), sensitivity_scenarios=len(scenarios),
                                     reviewed_primary_release_count=sum(bool(r['q_primary_m3_s']) for r in master),
                                     calibration_series_count=len(quality), conditional_scenario_count=len(conditional_rows),
+                                    requirement_review_count=len(requirements), diagnostic_pulse_area_count=len(diagnostic_areas),
                                     native_comparison_counts=dict(Counter(r['comparison'] for r in native)),
                                     stage_diagnostic_count=len(stage_rows))
 
