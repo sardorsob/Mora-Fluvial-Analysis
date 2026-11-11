@@ -38,13 +38,21 @@ Start with the [all-release table](discharge_analysis/tables/discharge_by_releas
 
 ### Graphs
 
-![Selected Nisqually and conditional Paradise discharge estimates, with conductivity-channel comparisons.](discharge_analysis/figures/mass/discharge_comparison.png)
+The comparisons include all **79 saved channel/calibration Q values**: 16 from the selected results and 63 from the 22 working releases. They use separate linear scales by site and year. No values are averaged, and the two per-litre spill responses are excluded from discharge comparisons. The [plotted data](discharge_scenarios/figures/plot_estimates.csv) identify each point's instrument, recording, channel, calibration and source table; the [figure index](discharge_scenarios/figures/figure_index.csv) links the pulse plots to their exact inputs.
 
-![Change in each selected discharge under tested background and window choices.](discharge_analysis/figures/review/window_background_sensitivity.png)
+![Nisqually release counts: five selected proposed estimates, 22 working conditional estimates and three without a chosen Q; two practice releases excluded.](discharge_scenarios/figures/nisqually_coverage.png)
 
-![Estimated Q change under shared coefficients for each calibration group.](discharge_analysis/figures/reuse/calibration_consistency.png)
+![Discharge by Nisqually trial in 2025: 14 of 17 releases have working estimates, with substantial instrument differences in September.](discharge_scenarios/figures/nisq_2025_discharge.png)
 
-[Individual pulse plots](discharge_analysis/figures/mass/pulses/) show the recorded conductivity, the selected integration windows, or the reason a recording did not yield a full-pulse estimate.
+The [July–August detail view](discharge_scenarios/figures/nisq_2025_early_detail.png) shows the earlier values on a narrower scale without removing the full-year view.
+
+![Discharge by Nisqually trial in 2026: all 13 experimental releases have selected or working estimates; channel and instrument differences remain separate.](discharge_scenarios/figures/nisq_2026_discharge.png)
+
+![Six Paradise releases with selected conditional discharge estimates based on the collaborator worksheet and nominal delivered mass.](discharge_scenarios/figures/par_2026_discharge.png)
+
+The [61 working pulse plots](discharge_scenarios/figures/pulses/) show conductivity, background windows, integrated areas and each conditional Q. The July 31 gap is visibly modelled, and the spill plots state their per-litre units. [Original pulse plots](discharge_analysis/figures/mass/pulses/), [selected-estimate window sensitivity](discharge_analysis/figures/review/window_background_sensitivity.png) and [coefficient-reuse diagnostics](discharge_analysis/figures/reuse/calibration_consistency.png) remain available for their original scope.
+
+The [figure run record](discharge_scenarios/figures/run_info.json) pins the source data and outputs. See the [reproduction command](../../docs/getting_started.md#regenerate-the-current-discharge-graphs).
 
 ## Reproducing a calibration run
 

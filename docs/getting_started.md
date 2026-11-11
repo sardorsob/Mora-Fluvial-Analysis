@@ -170,6 +170,19 @@ Start with `working_by_release.csv`, then `working_estimates.csv` for each retai
 
 Use `scenario_by_release.csv`, `scenario_estimates.csv`, `scenario_calibrations.csv` and `scenario_rejections.csv` to compare all tested alternatives. `scenario_settings.json` records the tested settings and `run_info.json` records inputs and outputs. The [scenario results](../salt_dilution/results/README.md#scenarios-for-missing-information) explain their interpretation.
 
+## Regenerate the current discharge graphs
+
+The graph runner combines the saved selected estimates and conditional working estimates. It checks source hashes, recomputes Q from the saved quantity, K and integral, and checks each working pulse integral against the recording. It does not refit K, choose a different recipe or change a Q value.
+
+```sh
+python -m salt_dilution.scripts.processing.plot_discharge_working \
+  --scenarios salt_dilution/results/discharge_scenarios \
+  --baseline salt_dilution/results/discharge_analysis \
+  --output salt_dilution/results/discharge/new_working_figures
+```
+
+Use a fresh output directory. Rebuilding requires the pinned local recordings and source runs; the [published graphs](../salt_dilution/results/README.md#graphs) can be read without them. The output contains site/year comparisons, an early-season detail view, release coverage and individual working pulse plots. `plot_estimates.csv` preserves every plotted Q and its identifiers; `release_coverage.csv` distinguishes selected, working, missing and practice cases. `figure_index.csv` maps pulse figures to recording, window and calibration IDs, and `run_info.json` records source and output hashes. The per-litre spill response stays separate from release Q.
+
 ## Work with seismic recordings
 
 Supply the inputs described in the [seismic data guide](../fluvial_seismology/data/README.md), then start Jupyter:
