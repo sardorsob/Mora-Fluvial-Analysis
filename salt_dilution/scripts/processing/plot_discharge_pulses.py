@@ -74,7 +74,8 @@ def _capture_scenarios(rows):
     return result
 
 
-def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path) -> set[Path]:
+def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path,
+                  selected_only=False, subdirectory=Path('mass/pulses')) -> set[Path]:
     """Render available recording/channel traces and return their relative paths."""
     bundle, root = Path(bundle).resolve(), Path(root).resolve()
     source = json.loads((bundle/'provenance/source_bundles.json').read_text())['mass']
@@ -114,10 +115,12 @@ def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path)
     scenarios = _capture_scenarios(_rows(scenario_path) if scenario_path.is_file() else [])
     background_notes = {r['trial_id']: r for r in _rows(bundle/'tables/field_note_comparison.csv')
                         if r['quantity'] == 'specific_conductivity_background'}
-    dest = Path(figure_dir)/'mass/pulses'
+    dest = Path(figure_dir)/subdirectory
     dest.mkdir(parents=True, exist_ok=True)
     rendered = set()
     for row in outcomes:
+        if selected_only and row['outcome'] != 'computed':
+            continue
         key = row['trial_id'], row['logical_recording_id'], row['channel']
         edge = recordings[row['recording_edge_id']]
         if (edge['trial_id'], edge['logical_recording_id']) != key[:2]:
@@ -201,7 +204,7 @@ def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path)
                                       for line in footer.split('\n')),
                  fontsize=13, va='top', color='#424b50')
         name = f"{key[0]}_{key[1].replace(':', '-')}_{key[2]}.png"
-        path = Path('mass/pulses') / name
+        path = Path(subdirectory) / name
         if path in rendered:
             raise ValueError(f'Duplicate pulse outcome: {key}')
         fig.savefig(dest/name, dpi=150, bbox_inches='tight')

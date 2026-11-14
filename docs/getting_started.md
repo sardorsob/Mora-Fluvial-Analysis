@@ -181,7 +181,7 @@ python -m salt_dilution.scripts.processing.plot_discharge_working \
   --output salt_dilution/results/discharge/new_working_figures
 ```
 
-Use a fresh output directory. Rebuilding requires the pinned local recordings and source runs; the [published graphs](../salt_dilution/results/README.md#graphs) can be read without them. The output contains site/year comparisons, an early-season detail view, release coverage and individual working pulse plots. `plot_estimates.csv` preserves every plotted Q and its identifiers; `release_coverage.csv` distinguishes selected, working, missing and practice cases. `figure_index.csv` maps pulse figures to recording, window and calibration IDs, and `run_info.json` records source and output hashes. The per-litre spill response stays separate from release Q.
+Use a fresh output directory. Rebuilding requires the pinned local recordings and source runs; the [published graphs](../salt_dilution/results/README.md#graphs) can be read without them. The output contains site/year comparisons, an early-season detail view, release coverage and both selected and working pulse plots in `pulses/`. `plot_estimates.csv` preserves every plotted Q and its identifiers; `release_coverage.csv` distinguishes selected, working, missing and practice cases. `figure_index.csv` maps pulse figures to recording, window and calibration IDs, and `run_info.json` records source and output hashes. The per-litre spill response stays separate from release Q.
 
 ## Work with seismic recordings
 

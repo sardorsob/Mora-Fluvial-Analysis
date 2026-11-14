@@ -19,6 +19,7 @@ import pandas as pd
 
 from . import calibration_reuse as reuse, discharge_scenarios as scenarios
 from . import mass_slug as slug, matching, plot_discharge_summary as style
+from . import plot_discharge_pulses
 
 
 def read_rows(path):
@@ -218,6 +219,24 @@ def pulse_figure(frame, window, rows):
     return fig
 
 
+def selected_pulse_index(selected, paths):
+    """Require one rendered pulse for every selected recording/channel estimate."""
+    index = []
+    expected = set()
+    for row in selected:
+        name = f"pulses/{row['trial_id']}_{row['logical_recording_id'].replace(':', '-')}_{row['conductivity_basis']}.png"
+        if Path(name) in expected:
+            raise ValueError('Duplicate selected pulse estimate')
+        expected.add(Path(name))
+        index.append(dict(figure=name, kind='pulse', trial_id=row['trial_id'],
+                          recording_edge_id=row['recording_edge_id'],
+                          conductivity_basis=row['conductivity_basis'], calibration_id=row['calibration_id'],
+                          source_table='tables/discharge_estimates.csv'))
+    if expected != set(paths):
+        raise ValueError('Selected pulse inventory differs from saved estimates')
+    return index
+
+
 def run_figures(scenario_dir, baseline_dir, output, *, root=matching.ROOT):
     root=Path(root).resolve();scenario_dir=Path(scenario_dir).resolve();baseline_dir=Path(baseline_dir).resolve()
     if any(Path(output).resolve().is_relative_to(p) or p.is_relative_to(Path(output).resolve()) for p in (scenario_dir,baseline_dir)):
@@ -236,10 +255,14 @@ def run_figures(scenario_dir, baseline_dir, output, *, root=matching.ROOT):
     working=read_rows(scenario_dir/'working_estimates.csv')
     selected=read_rows(baseline_dir/'tables/discharge_estimates.csv')
     points=combine_estimates(selected,working,releases)
+    mass_source=json.loads((baseline_dir/'provenance/source_bundles.json').read_text())['mass']
+    mass_dir=matching._path(mass_source['path'],root).resolve()
+    if pins.get(str(mass_dir/'run_info.json')) != mass_source['run_info_sha256']:
+        raise ValueError('Selected mass run is not pinned by baseline')
     windows={w['id']:w for w in json.loads((scenario_dir/'scenario_settings.json').read_text())['windows']}
     groups=defaultdict(list)
     for row in working:groups[row['trial_id'],row['recording_edge_id'],row['window_id'],row['conductivity_basis']].append(row)
-    code=[__file__,scenarios.__file__,style.__file__,slug.__file__,reuse.__file__,matching.__file__]
+    code=[__file__,scenarios.__file__,style.__file__,plot_discharge_pulses.__file__,slug.__file__,reuse.__file__,matching.__file__]
     with reuse.staged_run(Path(output),pins,code) as (stage,pins):
         index=[]
         slug._table(stage/'plot_estimates.csv',points,['trial_id','q_m3_s'])
@@ -262,6 +285,9 @@ def run_figures(scenario_dir, baseline_dir, output, *, root=matching.ROOT):
                               date_start='2025-07-01',date_end_exclusive='2025-09-01',source_table='plot_estimates.csv'))
         style._save(coverage(points,releases),stage/'nisqually_coverage.png')
         index.append(dict(figure='nisqually_coverage.png',kind='coverage',site='NISQ',source_table='release_coverage.csv;plot_estimates.csv'))
+        selected_paths=plot_discharge_pulses.render_pulses(baseline_dir,stage,root=root,mass_dir=mass_dir,
+                                                         selected_only=True,subdirectory=Path('pulses'))
+        index.extend(selected_pulse_index(selected,selected_paths))
         frames={}
         for (tid,eid,wid,channel),rows in groups.items():
             window=windows[wid]
