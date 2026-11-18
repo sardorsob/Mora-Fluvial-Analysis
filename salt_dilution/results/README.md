@@ -28,6 +28,20 @@ The [77 current pulse plots](discharge_scenarios/figures/by_trial/) include 16 s
 
 The [figure run record](discharge_scenarios/figures/run_info.json) pins the source data and outputs. See the [reproduction command](../../docs/getting_started.md#regenerate-the-current-discharge-graphs).
 
+## Downstream monitoring
+
+The [recording audit](discharge_scenarios/figures/downstream/recording_audit.csv) covers 17 candidate source files, including the two native formats of one Aqua TROLL record. Workbook sessions use the dates and times inside the measurements. The table flags repeated samples from earlier sessions and one unsupported file. The role column records filename evidence. Blank reach and release fields identify associations still awaiting field evidence.
+
+The [September 3 alignment diagnostic](discharge_scenarios/figures/downstream/nisq_2025-09-03_recording_alignment.png) shows two candidate Aqua TROLL records and two General records around the written Trial 2 release time. Read each panel on its own vertical scale. General uses the logged `uS` label because the meter's measurement basis and compensation have not been established. The clock offset, position along the river, and release association for the General recordings remain unresolved. These observations support an audit of the recorded signals. They cannot establish a change in peak, travel time, salt loss, discharge or ecological impact between reaches.
+
+The [diagnostic trace table](discharge_scenarios/figures/downstream/pilot_traces.csv) provides the plotted values. The [downstream run record](discharge_scenarios/figures/downstream/run_info.json) pins the source files and outputs. To reproduce from the pinned local matching run and processed Aqua TROLL files, use:
+
+```sh
+python -m salt_dilution.scripts.processing.audit_downstream_pulses \
+  --matching salt_dilution/results/matching/2026-11-10_recovery_v4 \
+  --output <fresh-output-directory>
+```
+
 ## Discharge results
 
 This section describes the preserved selected-run baseline. Read it alongside the working estimates below.
