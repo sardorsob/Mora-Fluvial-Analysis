@@ -12,8 +12,8 @@ class WorkingDischargePlotTests(unittest.TestCase):
         rows = [dict(trial_id='NISQ-20261004-T02', logical_recording_id='REC-a',
                      recording_edge_id='NISQ-20261004-T02:REC-a', conductivity_basis=channel,
                      calibration_id='C02') for channel in ('actual', 'specific')]
-        paths = {Path('pulses/NISQ-20261004-T02_REC-a_actual.png'),
-                 Path('pulses/NISQ-20261004-T02_REC-a_specific.png')}
+        paths = {Path('by_trial/NISQ-20261004-T02_REC-a_actual.png'),
+                 Path('by_trial/NISQ-20261004-T02_REC-a_specific.png')}
         index = plots.selected_pulse_index(rows, paths)
         self.assertEqual({r['conductivity_basis'] for r in index}, {'actual', 'specific'})
         self.assertTrue(all(r['recording_edge_id'] == 'NISQ-20261004-T02:REC-a' for r in index))
@@ -21,13 +21,13 @@ class WorkingDischargePlotTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'inventory'):
             plots.selected_pulse_index(rows, {next(iter(paths))})
         with self.assertRaisesRegex(ValueError, 'inventory'):
-            plots.selected_pulse_index(rows, paths | {Path('pulses/another_recording.png')})
+            plots.selected_pulse_index(rows, paths | {Path('by_trial/another_recording.png')})
 
     def test_selected_pulse_duplicate_cannot_hide_a_missing_estimate(self):
         row = dict(trial_id='T01', logical_recording_id='REC-a', recording_edge_id='T01:REC-a',
                    conductivity_basis='actual', calibration_id='C01')
         with self.assertRaisesRegex(ValueError, 'Duplicate'):
-            plots.selected_pulse_index([row, row], {Path('pulses/T01_REC-a_actual.png')})
+            plots.selected_pulse_index([row, row], {Path('by_trial/T01_REC-a_actual.png')})
 
     def fixture(self):
         release=dict(trial_id='NISQ-20250805-T01',field_date='2025-08-05',site_alias='NISQ',category='not_estimable')

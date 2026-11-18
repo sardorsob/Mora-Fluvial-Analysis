@@ -6,7 +6,7 @@ Use the [combined Q table](discharge_scenarios/figures/plot_estimates.csv) and t
 
 The [CSV guide](discharge_scenarios/README.md) explains each table, its identifiers and units, and how to trace a plotted Q back to its calculation and assumptions.
 
-The `discharge_analysis/` folder preserves the selected-run baseline. Its tables and pulse plots do **not** include the 22 later working estimates: “No selected Q” there can coexist with a conditional Q in `discharge_scenarios/`. The [current pulse plots](discharge_scenarios/figures/pulses/) contain both selected and working estimates in one place; their [recording/channel index](discharge_scenarios/figures/figure_index.csv) identifies the source of each value.
+The `discharge_analysis/` folder preserves the selected-run baseline. Its tables and pulse plots do **not** include the 22 later working estimates: “No selected Q” there can coexist with a conditional Q in `discharge_scenarios/`. The [current pulse plots](discharge_scenarios/figures/by_trial/) contain both selected and working estimates in one place; their [recording/channel index](discharge_scenarios/figures/figure_index.csv) identifies the source of each value.
 
 ## Graphs
 
@@ -22,7 +22,7 @@ The [July–August detail view](discharge_scenarios/figures/nisq_2025_early_deta
 
 ![Six Paradise releases with selected conditional discharge estimates based on the collaborator worksheet and nominal delivered mass.](discharge_scenarios/figures/par_2026_discharge.png)
 
-The [77 current pulse plots](discharge_scenarios/figures/pulses/) include 16 selected-result plots and 61 working plots. They show conductivity, background windows, integrated areas and the available Q values. The July 31 gap is visibly modelled, and the two spill plots state their per-litre units instead of Q. Multiple calibration values may share one pulse plot. [Baseline pulse diagnostics](discharge_analysis/figures/mass/pulses/), [selected-estimate window sensitivity](discharge_analysis/figures/review/window_background_sensitivity.png) and [coefficient-reuse diagnostics](discharge_analysis/figures/reuse/calibration_consistency.png) remain available for their original scope.
+The [77 current pulse plots](discharge_scenarios/figures/by_trial/) include 16 selected-result plots and 61 working plots. They show conductivity, background windows, integrated areas and the available Q values. The July 31 gap is visibly modelled, and the two spill plots state their per-litre units instead of Q. Multiple calibration values may share one pulse plot. [Baseline pulse diagnostics](discharge_analysis/figures/mass/pulses/), [selected-estimate window sensitivity](discharge_analysis/figures/review/window_background_sensitivity.png) and [coefficient-reuse diagnostics](discharge_analysis/figures/reuse/calibration_consistency.png) remain available for their original scope.
 
 The [figure run record](discharge_scenarios/figures/run_info.json) pins the source data and outputs. See the [reproduction command](../../docs/getting_started.md#regenerate-the-current-discharge-graphs).
 

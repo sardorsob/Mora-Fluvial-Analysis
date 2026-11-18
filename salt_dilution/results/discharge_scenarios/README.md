@@ -95,7 +95,7 @@ To trace any working result:
 1. Find its detailed row using `trial_id`, `recording_edge_id`, `conductivity_basis`, `calibration_id`, `calibration_series_alias`, `window_id` and `recipe_id`.
 2. Read the corresponding parameter decisions and their `used_by_working_recipes` lists in `working_parameters.csv`.
 3. Find the recipe under `cases[].recipes[]` and the window under `windows[]` in [scenario_settings.json](scenario_settings.json). Windows define the pre-background, pulse and optional post-background intervals. Field clock times use the confirmed fixed **PST, UTC−08:00** interpretation.
-4. Use the same IDs in `figures/figure_index.csv` to open the pulse graph. The example above is [window 021, specific conductivity](figures/pulses/NISQ-20261004-T01_window_021_specific.png).
+4. Use the same IDs in `figures/figure_index.csv` to open the pulse graph. The example above is [window 021, specific conductivity](figures/by_trial/NISQ-20261004-T01_window_021_specific.png).
 
 For joins, keep the full estimate identity: `trial_id` alone will multiply rows across sensors, channels and assumptions. When matching a working row to `scenario_estimates.csv`, also include `background_mode` and `gap_mode`. To join `working_estimates.csv` or `scenario_estimates.csv` to `scenario_calibrations.csv`, use `trial_id`, `recipe_id`, `calibration_id`, conductivity basis and the calibration-series label; that label is named `calibration_series_alias` in the estimate tables and `probe_alias` in the calibration table.
 

@@ -224,7 +224,7 @@ def selected_pulse_index(selected, paths):
     index = []
     expected = set()
     for row in selected:
-        name = f"pulses/{row['trial_id']}_{row['logical_recording_id'].replace(':', '-')}_{row['conductivity_basis']}.png"
+        name = f"by_trial/{row['trial_id']}_{row['logical_recording_id'].replace(':', '-')}_{row['conductivity_basis']}.png"
         if Path(name) in expected:
             raise ValueError('Duplicate selected pulse estimate')
         expected.add(Path(name))
@@ -286,7 +286,7 @@ def run_figures(scenario_dir, baseline_dir, output, *, root=matching.ROOT):
         style._save(coverage(points,releases),stage/'nisqually_coverage.png')
         index.append(dict(figure='nisqually_coverage.png',kind='coverage',site='NISQ',source_table='release_coverage.csv;plot_estimates.csv'))
         selected_paths=plot_discharge_pulses.render_pulses(baseline_dir,stage,root=root,mass_dir=mass_dir,
-                                                         selected_only=True,subdirectory=Path('pulses'))
+                                                         selected_only=True,subdirectory=Path('by_trial'))
         index.extend(selected_pulse_index(selected,selected_paths))
         frames={}
         for (tid,eid,wid,channel),rows in groups.items():
@@ -298,7 +298,7 @@ def run_figures(scenario_dir, baseline_dir, output, *, root=matching.ROOT):
             if key not in frames:
                 samples=pd.concat([slug._recording_samples(recordings[e],pair_info,root/'salt_dilution/data/processed',root) for e in edges],ignore_index=True)
                 frames[key]=slug.prepare_series(samples,channel)[0]
-            name=f'pulses/{tid}_{wid}_{channel}.png'
+            name=f'by_trial/{tid}_{wid}_{channel}.png'
             style._save(pulse_figure(frames[key],window,rows),stage/name)
             for row in rows:index.append(dict(figure=name,kind='pulse',trial_id=tid,window_id=wid,recording_edge_id=eid,conductivity_basis=channel,calibration_id=row['calibration_id'],recipe_id=row['recipe_id'],source_table='working_estimates.csv'))
         slug._table(stage/'figure_index.csv',index,['figure','kind'])
