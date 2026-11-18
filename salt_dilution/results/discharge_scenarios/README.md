@@ -26,7 +26,7 @@ A **recipe** specifies calibration preparation and dose assumptions. A **window*
 | --- | --- | --- |
 | [figures/plot_estimates.csv](figures/plot_estimates.csv) | One plotted Q estimate; **79 rows** | Q in `q_m3_s`, date, site, instrument, calibration, status and source table. Combines 16 selected-result rows with 63 working-result rows. It excludes per-litre spill responses and releases without a chosen Q. |
 | [figures/release_coverage.csv](figures/release_coverage.csv) | One release; **38 rows** | `plot_status` and `plotted_q_count`. Includes missing and practice cases, making this the appropriate table for coverage counts. It does not contain Q magnitudes. |
-| [figures/figure_index.csv](figures/figure_index.csv) | A figure entry or an estimate-to-pulse link; **86 rows for 82 images** | The image path in `figure`, its `kind`, and the relevant recording, channel, calibration and window IDs. Several calibration estimates can share a pulse image, so repeated image paths are expected. |
+| [figures/figure_index.csv](figures/figure_index.csv) | A figure entry, day-to-trial link, or estimate-to-pulse link | Image path, figure kind, and the trial, recording, channel, calibration and window IDs where applicable. Repeated paths link an image to multiple trials or calculations. |
 
 In `plot_estimates.csv`, `status` distinguishes `selected_proposed`, `selected_conditional` and `working_conditional`. In `release_coverage.csv`, `no_chosen_q` identifies the three unresolved releases; `excluded_practice` identifies the two practice releases.
 
@@ -105,7 +105,9 @@ Cells containing lists or objects, such as `source_refs`, `donor_ids`, `recipe_a
 
 ## Graphs, settings and reproduction
 
-[figures/](figures/) contains **82 images**: five overview/detail graphs and 77 pulse plots. Of those pulse plots, 75 show Q and two show per-litre spill responses. The graph index has more rows than images because some pulse plots display multiple calibration estimates. Diagnostic figures retained under `discharge_analysis` describe the earlier selected run and may still say “No selected Q.”
+[figures/](figures/) contains five overview and coverage graphs, [77 individual pulse plots](figures/by_trial/), and [nine comparisons for days with multiple experimental releases](figures/by_day/). Individual pulse plots show 75 panels with Q and two with per-litre spill responses. Diagnostic figures retained under `discharge_analysis` describe the earlier selected run and may still say “No selected Q.”
+
+The day figures compare measured conductivity above each recording's saved background. Each horizontal axis starts at that recording's pulse-window boundary. Use these figures for shape and magnitude comparisons, and use the original timestamps for travel-time questions. Actual and specific conductivity have separate panels. Blank panels identify a trial without a saved pulse for that channel. “Proposed” and “conditional” follow the saved estimate statuses, with their support and assumptions in the source tables. A Q range shows the lowest and highest retained alternatives. The individual plots and tables provide each recording's dose basis, gap treatment and limitations. The six Paradise releases span two reaches and different recorded doses, so peak height alone cannot explain their discharge differences.
 
 The remaining experimental releases without a chosen Q are **July 9, 2025, T01 and T02** (unresolved stock-stage interpretations) and **September 3, 2025, T02** (unknown delivered volume after a spill).
 

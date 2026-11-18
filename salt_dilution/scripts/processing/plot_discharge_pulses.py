@@ -75,7 +75,7 @@ def _capture_scenarios(rows):
 
 
 def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path,
-                  selected_only=False, subdirectory=Path('mass/pulses')) -> set[Path]:
+                  selected_only=False, subdirectory=Path('mass/pulses'), trace_sink=None) -> set[Path]:
     """Render available recording/channel traces and return their relative paths."""
     bundle, root = Path(bundle).resolve(), Path(root).resolve()
     source = json.loads((bundle/'provenance/source_bundles.json').read_text())['mass']
@@ -153,6 +153,9 @@ def render_pulses(bundle: Path, figure_dir: Path, *, root: Path, mass_dir: Path,
             windows = json.loads(estimate['windows'])
             pre, pulse, post = mass_slug._window_parts(frame, windows)
             mode = estimate.get('background_mode') or 'linear'
+            if trace_sink is not None:
+                trace_sink(estimate, pulse, mass_slug._background(pulse.t_s.to_numpy(), pre, post, mode),
+                           windows['pulse'][0])
             ax.axvspan(pre.timestamp.iloc[0], pre.timestamp.iloc[-1], color='#8b8f92', alpha=.19, label='Background windows')
             ax.axvspan(post.timestamp.iloc[0], post.timestamp.iloc[-1], color='#8b8f92', alpha=.19)
             for i, (_, part) in enumerate(pulse.groupby('segment', sort=True)):

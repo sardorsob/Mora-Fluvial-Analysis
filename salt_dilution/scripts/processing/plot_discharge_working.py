@@ -19,7 +19,7 @@ import pandas as pd
 
 from . import calibration_reuse as reuse, discharge_scenarios as scenarios
 from . import mass_slug as slug, matching, plot_discharge_summary as style
-from . import plot_discharge_pulses
+from . import plot_discharge_days, plot_discharge_pulses
 
 
 def read_rows(path):
@@ -153,7 +153,7 @@ def coverage(points, releases):
     return fig
 
 
-def pulse_figure(frame, window, rows):
+def pulse_figure(frame, window, rows, *, trace_sink=None):
     row = rows[0]
     area = scenarios.scenario_area(frame, window, row['background_mode'], row['gap_mode'])
     for item in rows:
@@ -183,6 +183,9 @@ def pulse_figure(frame, window, rows):
     pulse=parts['pulse'];t=pulse.t_s.to_numpy()
     bg = np.interp(t,[parts['pre'].t_s.mean(),parts['post'].t_s.mean()],
                    [area['background_pre_us_cm'],area['background_post_us_cm']]) if row['background_mode']=='linear' else np.full(len(t),area['background_post_us_cm'] if row['background_mode']=='post' else area['background_pre_us_cm'])
+    if trace_sink is not None:
+        start = (origin - frame.timestamp.iloc[0]).total_seconds()
+        trace_sink(row, pulse, bg, start)
     x=minutes(pulse.timestamp).to_numpy();ec=pulse.ec.to_numpy();segments=pulse.segment.to_numpy()
     ax.plot(x,bg,color=style.INK,ls='--',lw=1.3)
     for segment in np.unique(segments):
@@ -262,7 +265,7 @@ def run_figures(scenario_dir, baseline_dir, output, *, root=matching.ROOT):
     windows={w['id']:w for w in json.loads((scenario_dir/'scenario_settings.json').read_text())['windows']}
     groups=defaultdict(list)
     for row in working:groups[row['trial_id'],row['recording_edge_id'],row['window_id'],row['conductivity_basis']].append(row)
-    code=[__file__,scenarios.__file__,style.__file__,plot_discharge_pulses.__file__,slug.__file__,reuse.__file__,matching.__file__]
+    code=[__file__,scenarios.__file__,style.__file__,plot_discharge_pulses.__file__,plot_discharge_days.__file__,slug.__file__,reuse.__file__,matching.__file__]
     with reuse.staged_run(Path(output),pins,code) as (stage,pins):
         index=[]
         slug._table(stage/'plot_estimates.csv',points,['trial_id','q_m3_s'])
@@ -285,8 +288,11 @@ def run_figures(scenario_dir, baseline_dir, output, *, root=matching.ROOT):
                               date_start='2025-07-01',date_end_exclusive='2025-09-01',source_table='plot_estimates.csv'))
         style._save(coverage(points,releases),stage/'nisqually_coverage.png')
         index.append(dict(figure='nisqually_coverage.png',kind='coverage',site='NISQ',source_table='release_coverage.csv;plot_estimates.csv'))
+        traces = defaultdict(dict)
+        def trace_sink(row, pulse, background, start):
+            plot_discharge_days.record_trace(traces, row, pulse, background, start)
         selected_paths=plot_discharge_pulses.render_pulses(baseline_dir,stage,root=root,mass_dir=mass_dir,
-                                                         selected_only=True,subdirectory=Path('by_trial'))
+                                                         selected_only=True,subdirectory=Path('by_trial'),trace_sink=trace_sink)
         index.extend(selected_pulse_index(selected,selected_paths))
         frames={}
         for (tid,eid,wid,channel),rows in groups.items():
@@ -299,8 +305,9 @@ def run_figures(scenario_dir, baseline_dir, output, *, root=matching.ROOT):
                 samples=pd.concat([slug._recording_samples(recordings[e],pair_info,root/'salt_dilution/data/processed',root) for e in edges],ignore_index=True)
                 frames[key]=slug.prepare_series(samples,channel)[0]
             name=f'by_trial/{tid}_{wid}_{channel}.png'
-            style._save(pulse_figure(frames[key],window,rows),stage/name)
+            style._save(pulse_figure(frames[key],window,rows,trace_sink=trace_sink),stage/name)
             for row in rows:index.append(dict(figure=name,kind='pulse',trial_id=tid,window_id=wid,recording_edge_id=eid,conductivity_basis=channel,calibration_id=row['calibration_id'],recipe_id=row['recipe_id'],source_table='working_estimates.csv'))
+        index.extend(plot_discharge_days.render_days(releases, traces, points, stage))
         slug._table(stage/'figure_index.csv',index,['figure','kind'])
         (stage/'historical_code.json').write_text(matching._json(historical)+'\n')
         return reuse.write_run_info(stage,pins,scope='Selected and protocol-conditional discharge figures',

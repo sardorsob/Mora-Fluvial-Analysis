@@ -1,13 +1,36 @@
 import unittest
+from collections import defaultdict
 from pathlib import Path
+from unittest.mock import patch
 
 import matplotlib.pyplot as plt
 import pandas as pd
 
 from salt_dilution.scripts.processing import plot_discharge_working as plots
+from salt_dilution.scripts.processing import plot_discharge_days as days
 
 
 class WorkingDischargePlotTests(unittest.TestCase):
+    def test_daily_panel_preserves_signed_excess_and_gap(self):
+        release, row = self.fixture()
+        second = dict(release, trial_id='NISQ-20250805-T02')
+        points = plots.combine_estimates([], [row], [release, second])
+        traces = defaultdict(dict)
+        pulse = pd.DataFrame(dict(t_s=[12., 42., 102., 132.], ec=[15., 20., 18., 14.],
+                                  segment=[0, 0, 1, 1]))
+        days.record_trace(traces, row, pulse, 16., 12.)
+        with patch.object(days.style, '_save') as save:
+            index = list(days.render_days([release, second], traces, points, Path('.')))
+        fig = save.call_args.args[0]
+        self.addCleanup(plt.close, fig)
+        self.assertEqual([x['trial_id'] for x in index], [release['trial_id'], second['trial_id']])
+        self.assertEqual([line.get_ydata().tolist() for line in fig.axes[0].lines[:2]],
+                         [[-1., 4.], [2., -2.]])
+        self.assertEqual([line.get_xdata().tolist() for line in fig.axes[0].lines[:2]],
+                         [[0., .5], [1.5, 2.]])
+        self.assertIn('Recording gap', fig.axes[0].get_title(loc='left'))
+        self.assertIn('No release Q', fig.axes[1].get_title(loc='left'))
+
     def test_selected_pulses_keep_recording_and_channel_links(self):
         rows = [dict(trial_id='NISQ-20261004-T02', logical_recording_id='REC-a',
                      recording_edge_id='NISQ-20261004-T02:REC-a', conductivity_basis=channel,
