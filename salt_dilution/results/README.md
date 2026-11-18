@@ -6,6 +6,8 @@ Use the [combined Q table](discharge_scenarios/figures/plot_estimates.csv) and t
 
 The [CSV guide](discharge_scenarios/README.md) explains each table, its identifiers and units, and how to trace a plotted Q back to its calculation and assumptions.
 
+Start with the [compact reader tables](reader_tables/README.md) for release results, calibration fits, Q calculations, and sensitivity comparisons. Their guide links to the full calculation and provenance tables.
+
 The `discharge_analysis/` folder preserves the selected-run baseline. Its tables and pulse plots do **not** include the 22 later working estimates: “No selected Q” there can coexist with a conditional Q in `discharge_scenarios/`. The [current pulse plots](discharge_scenarios/figures/by_trial/) contain both selected and working estimates in one place; their [recording/channel index](discharge_scenarios/figures/figure_index.csv) identifies the source of each value.
 
 ## Graphs

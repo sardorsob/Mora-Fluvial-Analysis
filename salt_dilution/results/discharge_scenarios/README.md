@@ -14,6 +14,8 @@ This folder holds the additional conditional calculations and the current combin
 
 There is no single table containing every calculation detail from both result groups. The combined Q table identifies the source of each row.
 
+For fewer columns, see the [compact reader tables](../reader_tables/README.md). They keep calculation values, units, and source row identifiers, including per-litre spill responses.
+
 ## CSV guide
 
 Counts below describe the saved package. A **release** is one physical injection. An **estimate** is a calculation for a particular recording, conductivity channel, calibration and set of assumptions. Several estimates can belong to one release.
