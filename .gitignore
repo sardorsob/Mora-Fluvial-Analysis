@@ -57,3 +57,12 @@ __pycache__/
 # Selected assumption experiments; intermediate runs remain local.
 !/salt_dilution/results/discharge_scenarios/
 !/salt_dilution/results/discharge_scenarios/**
+
+# Reader projections of the saved discharge tables.
+!/salt_dilution/results/reader_tables/
+/salt_dilution/results/reader_tables/*
+!/salt_dilution/results/reader_tables/README.md
+!/salt_dilution/results/reader_tables/baseline/
+!/salt_dilution/results/reader_tables/scenarios/
+/salt_dilution/results/reader_tables/*/*
+!/salt_dilution/results/reader_tables/*/*_compact.csv
