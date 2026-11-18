@@ -7,9 +7,15 @@ Imported on 2026-09-28 from two archived snapshots:
 | Fluvial seismology | [taylor-kenyon/FluvialSeismology_Analysis](https://github.com/taylor-kenyon/FluvialSeismology_Analysis) | `main` | `2764f9454916b0162f98b7221883d75ca742c646` |
 | Salt dilution | [rjost1/FluvialSeismology_Analysis](https://github.com/rjost1/FluvialSeismology_Analysis/tree/dilution/Dilution) | `dilution` | `fce22815c02abd61bebdff692fd49c128feb5f3a` |
 
-The [source manifest](source_manifest.csv) records all 53 imported source files, original paths, destinations, commits, and original SHA-256 hashes. Original repositories and histories were left unchanged. Source `.gitignore` files and macOS `.DS_Store` files were not imported.
+The [source manifest](source_manifest.csv) records original paths, destinations, commits, and original SHA-256 hashes across both imports.
 
-## Changes
+## Zoë Zawol’s seismic workflows
+
+The later import adds seven notebooks and three scripts from [Taylor’s `main` at `b496224`](https://github.com/taylor-kenyon/FluvialSeismology_Analysis/tree/b4962248fdcfed970c0f5c64091472ab1933f2fc). Files use this repository’s naming and layout. Notebook outputs were cleared, and the observed/model spectrum notebook’s local import was updated. Subsequent repairs made spectrum inputs and units explicit, corrected hammer delay handling, and preserved unfinished notebook cells as reference text. The manifest hashes identify the upstream originals. The [fluvial guide](../fluvial_seismology/README.md) describes the current workflows and their limitations.
+
+The [upstream setup note](https://github.com/taylor-kenyon/FluvialSeismology_Analysis/blob/b4962248fdcfed970c0f5c64091472ab1933f2fc/README.md) points to `obspy.yaml`, retained here as [the Python 3.10.19 environment export](../fluvial_seismology/config/source_environments/obspy_python_3_10_19.yml). R-based notebooks also need a working R and rpy2 setup.
+
+## Initial import changes
 
 The initial import made the following changes. Later parser and calibration development is described in the [salt guide](../salt_dilution/README.md); the manifest is the original migration map, not a list of current supported interfaces.
 
