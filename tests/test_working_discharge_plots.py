@@ -11,6 +11,26 @@ from salt_dilution.scripts.processing import plot_discharge_days as days
 
 
 class WorkingDischargePlotTests(unittest.TestCase):
+    def test_diagnostic_area_keeps_one_trace_across_recipes(self):
+        release, estimate = self.fixture()
+        tid = release['trial_id']
+        ts = pd.date_range('2025-08-05 12:00', periods=6, freq='s')
+        frame = pd.DataFrame(dict(timestamp=ts,t_s=list(range(6)),ec=[2,2,2,6,4,2],segment=0))
+        window = dict(trial_id=tid,recording_edge_id='E1',channel='specific',
+                      pre=[str(ts[0]),str(ts[1])],pulse=[str(ts[2]),str(ts[5])],post=None)
+        row = dict(estimate, event_link_status='source_linked',gap_mode='reject',
+                   background_mode='pre',observed_interval_integral_us_cm_s='6',
+                   capture_status='capture_assumed_unsettled_tail')
+        traces = []
+        def sink(*args, **kwargs):
+            traces.append((args, kwargs))
+        rows = plots.diagnostic_day_traces([row, dict(row, recipe_id='r2', q_m3_s='80')],
+                                          {'w1':window},lambda *_:frame,sink,{tid})
+        self.assertEqual(len(traces), 1)
+        self.assertEqual(traces[0][1], {'diagnostic': True})
+        self.assertEqual(rows[0]['observed_area_us_cm_s'], 6)
+        self.assertNotIn('q_m3_s', rows[0])
+
     def test_daily_panel_preserves_signed_excess_and_gap(self):
         release, row = self.fixture()
         second = dict(release, trial_id='NISQ-20250805-T02')

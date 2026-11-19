@@ -1,0 +1,9 @@
+trial_id,recording_edge_id,window_id,sensor_serial,conductivity_basis,background_mode,observed_area_us_cm_s,capture_status
+NISQ-20250709-T01,NISQ-20250709-T01:REC-4f525cb2c71295a4,window_029,840058,specific,linear,705.7723696240607,observed_window_coarse_cadence
+NISQ-20250709-T01,NISQ-20250709-T01:REC-4f525cb2c71295a4,window_030,840058,actual,linear,505.9740727443602,observed_window_coarse_cadence
+NISQ-20250709-T01,NISQ-20250709-T01:REC-c8e8606dd6e15cf5,window_031,790478,specific,pre,1044.0236829518067,capture_assumed_unsettled_tail
+NISQ-20250709-T01,NISQ-20250709-T01:REC-c8e8606dd6e15cf5,window_032,790478,actual,pre,750.7552105783138,capture_assumed_unsettled_tail
+NISQ-20250709-T02,NISQ-20250709-T02:REC-3789ddb4f5256ad5,window_001,790478,specific,linear,994.8031264923594,reviewed_observed_window
+NISQ-20250709-T02,NISQ-20250709-T02:REC-3789ddb4f5256ad5,window_002,790478,actual,linear,714.1177960382571,reviewed_observed_window
+NISQ-20250709-T02,NISQ-20250709-T02:REC-4f525cb2c71295a4,window_extra_078,840058,specific,linear,681.2576445714293,observed_window_coarse_cadence
+NISQ-20250709-T02,NISQ-20250709-T02:REC-4f525cb2c71295a4,window_extra_079,840058,actual,linear,489.2977731428573,observed_window_coarse_cadence

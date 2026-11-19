@@ -85,8 +85,8 @@ by_trial/NISQ-20261004-T04_window_023_specific.png,pulse,,,working_estimates.csv
 by_trial/NISQ-20261004-T04_window_024_actual.png,pulse,,,working_estimates.csv,,,NISQ-20261004-T04,NISQ-20261004-T04:REC-33d70d175906e90a,actual,NISQ-20261004-C03,window_024,NISQ-20261004-T04:NISQ-20261004-C03:scenario_01
 by_trial/NISQ-20261005-T01_window_025_specific.png,pulse,,,working_estimates.csv,,,NISQ-20261005-T01,NISQ-20261005-T01:REC-8760791310ac7565,specific,NISQ-20261005-C01,window_025,NISQ-20261005-T01:NISQ-20261005-C01:scenario_01
 by_trial/NISQ-20261005-T01_window_026_actual.png,pulse,,,working_estimates.csv,,,NISQ-20261005-T01,NISQ-20261005-T01:REC-8760791310ac7565,actual,NISQ-20261005-C01,window_026,NISQ-20261005-T01:NISQ-20261005-C01:scenario_01
-by_day/nisq_2025-07-09_trials.png,day_comparison,NISQ,2025,plot_estimates.csv;release_coverage.csv,2025-07-09,,NISQ-20250709-T01,,,,,
-by_day/nisq_2025-07-09_trials.png,day_comparison,NISQ,2025,plot_estimates.csv;release_coverage.csv,2025-07-09,,NISQ-20250709-T02,,,,,
+by_day/nisq_2025-07-09_trials.png,day_comparison,NISQ,2025,plot_estimates.csv;release_coverage.csv;day_diagnostic_traces.csv,2025-07-09,,NISQ-20250709-T01,,,,,
+by_day/nisq_2025-07-09_trials.png,day_comparison,NISQ,2025,plot_estimates.csv;release_coverage.csv;day_diagnostic_traces.csv,2025-07-09,,NISQ-20250709-T02,,,,,
 by_day/nisq_2025-07-31_trials.png,day_comparison,NISQ,2025,plot_estimates.csv;release_coverage.csv,2025-07-31,,NISQ-20250731-T01,,,,,
 by_day/nisq_2025-07-31_trials.png,day_comparison,NISQ,2025,plot_estimates.csv;release_coverage.csv,2025-07-31,,NISQ-20250731-T02,,,,,
 by_day/nisq_2025-08-05_trials.png,day_comparison,NISQ,2025,plot_estimates.csv;release_coverage.csv,2025-08-05,,NISQ-20250805-T01,,,,,

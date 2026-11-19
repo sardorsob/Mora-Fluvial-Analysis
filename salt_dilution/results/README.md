@@ -14,6 +14,8 @@ The `discharge_analysis/` folder preserves the selected-run baseline. Its tables
 
 [Compare trials on the same field day](discharge_scenarios/figures/by_day/). Start with [Nisqually, October 4](discharge_scenarios/figures/by_day/nisq_2026-10-04_trials.png) or [Paradise, September 1](discharge_scenarios/figures/by_day/par_2026-09-01_trials.png). The panels use shared scales within each conductivity channel.
 
+The [July 9 comparison](discharge_scenarios/figures/by_day/nisq_2025-07-09_trials.png) shows observed conductivity for both trials. The [diagnostic areas](discharge_scenarios/figures/day_diagnostic_traces.csv) can be calculated from the recordings while the calibration stock and delivered volume remain unresolved.
+
 The comparisons include all **79 saved channel/calibration Q values**: 16 from the selected results and 63 from the 22 working releases. They use separate linear scales by site and year. No values are averaged, and the two per-litre spill responses are excluded from discharge comparisons. The [plotted data](discharge_scenarios/figures/plot_estimates.csv) identify each point's instrument, recording, channel, calibration and source table; the [figure index](discharge_scenarios/figures/figure_index.csv) links the pulse plots to their exact inputs.
 
 ![Nisqually release counts: five selected proposed estimates, 22 working conditional estimates and three without a chosen Q; two practice releases excluded.](discharge_scenarios/figures/nisqually_coverage.png)

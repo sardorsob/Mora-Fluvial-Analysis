@@ -240,6 +240,42 @@ def selected_pulse_index(selected, paths):
     return index
 
 
+def diagnostic_day_traces(scenarios_rows, windows, frame_for, trace_sink, missing):
+    """Replay an observed-only window once despite alternative calibration recipes."""
+    grouped = defaultdict(list)
+    for row in scenarios_rows:
+        if (row['trial_id'] in missing and row['event_link_status'] == 'source_linked'
+                and row['gap_mode'] == 'reject' and row['background_mode'] in ('pre', 'linear')):
+            grouped[(row['trial_id'], row['recording_edge_id'], row['window_id'],
+                     row['conductivity_basis'])].append(row)
+    result = []
+    for (tid, eid, wid, channel), alternatives in sorted(grouped.items()):
+        mode = 'linear' if any(r['background_mode'] == 'linear' for r in alternatives) else 'pre'
+        chosen = [r for r in alternatives if r['background_mode'] == mode]
+        row = chosen[0]
+        window = windows[wid]
+        if (window['trial_id'], window['recording_edge_id'], window['channel']) != (tid, eid, channel):
+            raise ValueError('Diagnostic window does not match its saved recording')
+        frame = frame_for(eid, window, channel)
+        area = scenarios.scenario_area(frame, window, mode, 'reject')
+        observed = area['observed_interval_integral_us_cm_s']
+        if not all(math.isclose(observed, float(r['observed_interval_integral_us_cm_s']), rel_tol=1e-10)
+                   for r in chosen):
+            raise ValueError('Diagnostic area differs from the saved scenario observations')
+        def part(name):
+            bounds = window.get(name)
+            return frame.loc[frame.timestamp.between(*pd.to_datetime(bounds))] if bounds else frame.iloc[:0]
+        pre, pulse, post = (part(name) for name in ('pre', 'pulse', 'post'))
+        background = slug._background(pulse.t_s.to_numpy(), pre, post, mode)
+        start = (pd.Timestamp(window['pulse'][0]) - frame.timestamp.iloc[0]).total_seconds()
+        trace_sink(dict(row, day_observed_area_us_cm_s=observed), pulse, background, start, diagnostic=True)
+        result.append(dict(trial_id=tid, recording_edge_id=eid, window_id=wid,
+                           sensor_serial=row['sensor_serial'], conductivity_basis=channel,
+                           background_mode=mode, observed_area_us_cm_s=observed,
+                           capture_status=row['capture_status']))
+    return result
+
+
 def run_figures(scenario_dir, baseline_dir, output, *, root=matching.ROOT):
     root=Path(root).resolve();scenario_dir=Path(scenario_dir).resolve();baseline_dir=Path(baseline_dir).resolve()
     if any(Path(output).resolve().is_relative_to(p) or p.is_relative_to(Path(output).resolve()) for p in (scenario_dir,baseline_dir)):
@@ -289,29 +325,40 @@ def run_figures(scenario_dir, baseline_dir, output, *, root=matching.ROOT):
         style._save(coverage(points,releases),stage/'nisqually_coverage.png')
         index.append(dict(figure='nisqually_coverage.png',kind='coverage',site='NISQ',source_table='release_coverage.csv;plot_estimates.csv'))
         traces = defaultdict(dict)
-        def trace_sink(row, pulse, background, start):
-            plot_discharge_days.record_trace(traces, row, pulse, background, start)
+        def trace_sink(row, pulse, background, start, *, diagnostic=False):
+            plot_discharge_days.record_trace(traces, row, pulse, background, start, diagnostic=diagnostic)
         selected_paths=plot_discharge_pulses.render_pulses(baseline_dir,stage,root=root,mass_dir=mass_dir,
                                                          selected_only=True,subdirectory=Path('by_trial'),trace_sink=trace_sink)
         index.extend(selected_pulse_index(selected,selected_paths))
         frames={}
-        for (tid,eid,wid,channel),rows in groups.items():
-            window=windows[wid]
-            if (window['trial_id'],window['recording_edge_id'],window['channel'])!=(tid,eid,channel):
-                raise ValueError('Working pulse does not match its window')
+        def frame_for(eid, window, channel):
             edges=[eid]+window.get('additional_recording_edge_ids',[])
             key=tuple(edges),channel
             if key not in frames:
                 samples=pd.concat([slug._recording_samples(recordings[e],pair_info,root/'salt_dilution/data/processed',root) for e in edges],ignore_index=True)
                 frames[key]=slug.prepare_series(samples,channel)[0]
+            return frames[key]
+        for (tid,eid,wid,channel),rows in groups.items():
+            window=windows[wid]
+            if (window['trial_id'],window['recording_edge_id'],window['channel'])!=(tid,eid,channel):
+                raise ValueError('Working pulse does not match its window')
             name=f'by_trial/{tid}_{wid}_{channel}.png'
-            style._save(pulse_figure(frames[key],window,rows,trace_sink=trace_sink),stage/name)
+            style._save(pulse_figure(frame_for(eid,window,channel),window,rows,trace_sink=trace_sink),stage/name)
             for row in rows:index.append(dict(figure=name,kind='pulse',trial_id=tid,window_id=wid,recording_edge_id=eid,conductivity_basis=channel,calibration_id=row['calibration_id'],recipe_id=row['recipe_id'],source_table='working_estimates.csv'))
-        index.extend(plot_discharge_days.render_days(releases, traces, points, stage))
+        missing = {r['trial_id'] for r in releases if r['category'] != 'excluded_practice' and not traces[r['trial_id']]}
+        diagnostic = diagnostic_day_traces(read_rows(scenario_dir/'scenario_estimates.csv'),
+                                           windows, frame_for, trace_sink, missing)
+        slug._table(stage/'day_diagnostic_traces.csv',diagnostic,['trial_id','window_id'])
+        diagnostic_ids = {r['trial_id'] for r in diagnostic}
+        for row in plot_discharge_days.render_days(releases, traces, points, stage):
+            if row['trial_id'] in diagnostic_ids:
+                row['source_table'] += ';day_diagnostic_traces.csv'
+            index.append(row)
         slug._table(stage/'figure_index.csv',index,['figure','kind'])
         (stage/'historical_code.json').write_text(matching._json(historical)+'\n')
         return reuse.write_run_info(stage,pins,scope='Selected and protocol-conditional discharge figures',
             figure_count=len({r['figure'] for r in index}),plotted_q_rows=len(points),
+            day_diagnostic_traces=len(diagnostic),
             working_q_releases=len({r['trial_id'] for r in working if r['q_m3_s']}),
             selected_releases=len({r['trial_id'] for r in selected}),unit_response_rows=sum(r['result_class']=='unit_response' for r in working),
             interpretation='All saved estimates retained; no averaging or field acceptance. Unit responses are separate from release Q.')
