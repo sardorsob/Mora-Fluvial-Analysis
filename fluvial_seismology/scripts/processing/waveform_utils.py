@@ -53,8 +53,7 @@ def plotRelativeAlign(s0, masterIndex=0, normalize=True, figsize=(8, 10), shifts
     if picks:
         plotPicks = True
         if len(picks) != len(s0):
-            print ('Not enough picks for the number of traces.')
-            return f, shifts
+            raise ValueError("Provide one entry in picks for each trace.")
     s1 = s0.copy()
     if not handle:
         f = plt.figure(figsize=figsize)
@@ -68,8 +67,7 @@ def plotRelativeAlign(s0, masterIndex=0, normalize=True, figsize=(8, 10), shifts
         s1.normalize()
     if shifts:
         if len(shifts) != len(s0):
-            print ('Not enough shifts for number of traces within stream.')
-            return f, shifts
+            raise ValueError("Provide one entry in shifts for each trace.")
         else:
             if plotPicks:
                 for st, shift, pick in zip(s1, shifts, picks):
@@ -270,21 +268,28 @@ def seisfft(traceData):
     f = fft.rfftfreq(npts, delta)
     return f, g
 
+class _NoCompleteFFTWindow(ValueError):
+    """The stream is too short for one complete FFT window."""
+
+
 def stackSpectraContinuous(S, window_length=60, step=30):
-    """Average FFT magnitudes across sliding windows."""
-    from fluvial_seismology.scripts.processing import waveform_utils as waveformUtils
-    initial = True
+    """Average FFT magnitudes across sliding windows on one frequency grid."""
+    frequency_hz = None
+    magnitudes = []
     for tr in S:
         for w_st in tr.slide(window_length=window_length, step=step):
-            frequency_hz, fft_values = waveformUtils.seisfft(w_st)
-            if initial:
-                ffts = np.array(abs(fft_values))
-                initial = False
-            else:
-                ffts = np.vstack((ffts, abs(fft_values)))
+            # ObsPy can include a partial final window within its 0.1% tolerance.
+            if w_st.stats.npts != round(window_length * w_st.stats.sampling_rate) + 1:
+                continue
+            window_frequencies, fft_values = seisfft(w_st)
+            if frequency_hz is not None and not np.array_equal(window_frequencies, frequency_hz):
+                raise ValueError("FFT windows must share a frequency grid.")
+            frequency_hz = window_frequencies
+            magnitudes.append(np.abs(fft_values))
 
-    mean_fft_amplitude = np.sum(ffts, axis=0) / len(ffts)
-    return frequency_hz, mean_fft_amplitude
+    if not magnitudes:
+        raise _NoCompleteFFTWindow("No complete FFT windows. Shorten the FFT window or use a longer waveform.")
+    return frequency_hz, np.mean(magnitudes, axis=0)
 
 def plotSpectraTime(S1, minfreq=1, maxfreq=10, winlength=600, step=600,
                     spacing=2, ampScalar=3, normalize=True, specWin=60,
@@ -311,10 +316,16 @@ def plotSpectraTime(S1, minfreq=1, maxfreq=10, winlength=600, step=600,
     sttimes = []
     # Calculate spectra in sliding windows
     for wst in S1.slide(window_length=winlength, step=step, include_partial_windows=True):
-        F, G = stackSpectraContinuous(wst.detrend(type='demean'), window_length=specWin, step=specStep)
+        try:
+            F, G = stackSpectraContinuous(wst.detrend(type='demean'), window_length=specWin, step=specStep)
+        except _NoCompleteFFTWindow:
+            continue
         spectraF.append(F[F >= minfreq])
         spectraG.append(np.abs(G[F >= minfreq]))
         sttimes.append(wst[0].stats.starttime)
+
+    if not spectraG:
+        raise _NoCompleteFFTWindow("No complete FFT windows. Shorten the FFT window or use a longer waveform.")
 
     f = plt.figure(figsize=(15, 20))
     ax = plt.subplot2grid((1, 6), (0, 0), rowspan=1, colspan=4)
@@ -342,7 +353,7 @@ def plotSpectraTime(S1, minfreq=1, maxfreq=10, winlength=600, step=600,
     for nt in yt:
         nowt = S1[0].stats.starttime + (-1 * (nt / spacing) * step)
         ylabels.append(nowt.strftime('%Y%m%d_%H:%M:%S'))
-    ax.set_yticklabels(ylabels)
+    ax.set_yticks(yt, ylabels)
     ax.set_xlabel('Frequency, HZ')
     ax.set_ylabel('Normalized Spectra Start Time, UTC')
     ax.set_xlim(minfreq, maxfreq)
@@ -351,7 +362,7 @@ def plotSpectraTime(S1, minfreq=1, maxfreq=10, winlength=600, step=600,
     # Get RSAM
     S2 = S1.copy().detrend(type='demean').taper(max_percentage=None, max_length=5).filter(type='bandpass', freqmin=minfreq,
                                                                                           freqmax=maxfreq)
-    tvec, rsam = RSAM(S2[0], 1, timePos='start')
+    tvec, rsam = RSAM(S2[0], rsamWin, timePos='begin')
     plotvec = [nowt.matplotlib_date for nowt in tvec]
     ax2.plot(rsam, plotvec, '-k')
     ax2.set_ylim(min(plotvec), max(plotvec))
@@ -367,7 +378,7 @@ def plotSpectraTime(S1, minfreq=1, maxfreq=10, winlength=600, step=600,
                                                 S2[0].stats.endtime.strftime('%Y%m%d%H%M%S'))
         f.savefig(result_path("fluvial_seismology", "figures/" + filename))
 
-    return f, spectraF, spectraG, sttimes, tvec, RSAM
+    return f, spectraF, spectraG, sttimes, tvec, rsam
 
 def RSAM(trace, window, timePos='middle', plot=False):
     """
@@ -441,13 +452,10 @@ def plotParticleMotion(zWave, nWave, eWave):
 
     import matplotlib.pyplot as plt
     import numpy as np
-    # Start plotting particle motions
-    Z = zWave
-    N = nWave
-    E = eWave
-
-    # Normalize
+    # Preserve the relative amplitudes across all three components.
+    wave = Stream(traces=[zWave[0].copy(), nWave[0].copy(), eWave[0].copy()])
     wave.normalize(global_max=True)
+    Z, N, E = wave
 
     # Create Plot
     plt.figure()
@@ -458,26 +466,24 @@ def plotParticleMotion(zWave, nWave, eWave):
     # col = [cm(float(i)/(npts)) for i in xrange(npts)]
 
     ax = plt.subplot(2, 2, 1)
-    t = np.linspace(Z[0].stats.starttime.timestamp,
-                    Z[0].stats.endtime.timestamp,
-                    Z[0].stats.npts)
-    plt.plot(t, Z[0].data)
+    t = np.linspace(Z.stats.starttime.timestamp, Z.stats.endtime.timestamp, Z.stats.npts)
+    plt.plot(t, Z.data)
     plt.title('Vertical Seismogram')
     ax = plt.subplot(2, 2, 2)
-    plt.plot(E[0].data, N[0].data)
+    plt.plot(E.data, N.data)
     # plt.scatter(E[0].data, N[0].data,s=10, c=col, marker='o')
     plt.xlim((-1, 1))
     plt.ylim((-1, 1))
     # plt.axis('equal')
     plt.title('Map View')
     ax = plt.subplot(2, 2, 3)
-    plt.plot(N[0].data, Z[0].data)
+    plt.plot(N.data, Z.data)
     plt.xlim((-1, 1))
     plt.ylim((-1, 1))
     # plt.axis('equal')
     plt.title('N-S X-Section')
     ax = plt.subplot(2, 2, 4)
-    plt.plot(E[0].data, Z[0].data)
+    plt.plot(E.data, Z.data)
     plt.xlim((-1, 1))
     plt.ylim((-1, 1))
     # plt.axis('equal')
@@ -848,13 +854,6 @@ def plotSpectrogram(S, figsize=[8,15], minfreq=0, maxfreq=25, tIndent=0.05, bInd
 
     ax2.get_xaxis().set_visible(True)
 
-    ticks = ax2.get_xticks()
-    oldLabels = ax2.get_xticklabels()
-    newLabels = []
-    for nowtick in ticks:
-        newLabels.append((S[0].stats.starttime + nowtick).strftime('%H:%M'))
-    ax2.set_xticklabels(newLabels)
-
     ax2.xaxis_date()
     ax2.tick_params(axis='x', labelbottom='on')
     locator = mdates.AutoDateLocator(minticks=5, maxticks=10)
@@ -862,7 +861,7 @@ def plotSpectrogram(S, figsize=[8,15], minfreq=0, maxfreq=25, tIndent=0.05, bInd
     ax2.xaxis.set_major_locator(locator)
     ax2.xaxis.set_major_formatter(formatter)
 
-    return fig, ax1, ax2fig, ax1, ax2plot
+    return fig, ax1, ax2
 
 def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFreq=25, cmap='magma', dateLimits=None,
                         vmin=0.2, vmax=0.7, plotAverage=True):
@@ -888,14 +887,19 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
         if cntr%24 == 0:
             wst[0].stats.starttime
             #print(f"Processing window: {wst[0].stats.starttime}")
-        F, G = stackSpectraContinuous(wst.detrend(type='demean'), window_length=fftLength, step=fftLength/2) # reduce fftlength for more freq resolution
-                                                                                                             # (more bins, smaller height)
+        try:
+            F, G = stackSpectraContinuous(wst.detrend(type='demean'), window_length=fftLength, step=fftLength/2)
+        except _NoCompleteFFTWindow:
+            continue
         spectraF.append(F)
         spectraG.append(np.abs(G))
         stTimes.append(wst[0].stats.starttime)
         cntr += 1
     #print(f"Window {cntr}: Start Time = {wst[0].stats.starttime}, End Time = {wst[0].stats.endtime}")
     #print(f"Full: Start Time = {stTimes[0]}, End Time = {stTimes[-1]}")
+
+    if not spectraG:
+        raise _NoCompleteFFTWindow("No complete FFT windows. Shorten the FFT window or use a longer waveform.")
 
     # Arrange the averaged magnitudes by frequency and time for plotting.
     alldates = [nowtime.matplotlib_date for nowtime in stTimes] # x dimension width for pixels
@@ -904,12 +908,21 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
 
     # Apply the existing logarithmic display transform to the stacked magnitudes.
     if dbscale:
-        specgram = 10 * np.log10(specgram[:, :])
+        with np.errstate(divide='ignore'):
+            specgram = 10 * np.log10(specgram)
     else:
         specgram = np.sqrt(specgram[:, :])
-    _range = float(specgram.max() - specgram.min())
-    ##vmin = specgram.min() + vmin * _range
-    ##vmax = specgram.min() + vmax * _range
+
+    mesh_times = alldates
+    mesh_frequencies = freq[::-1]
+    shading = 'gouraud'
+    if len(alldates) == 1:
+        # A single time center has no width with Gouraud shading.
+        window_end = min(S[0].stats.endtime, stTimes[0] + averageLength)
+        mesh_times = [alldates[0], window_end.matplotlib_date]
+        frequency_step = freq[1] - freq[0]
+        mesh_frequencies = ((np.arange(len(freq) + 1) - 0.5) * frequency_step)[::-1]
+        shading = 'flat'
 
     # Use a fixed color range across recordings.
     vmin=10
@@ -951,7 +964,7 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
         else:
             ax = f.add_subplot(111)
 
-    mesh = ax.pcolormesh(alldates, np.flipud(freq), specgram, norm=norm, cmap=cmap, shading='gouraud') # sets pixel dimensions
+    mesh = ax.pcolormesh(mesh_times, mesh_frequencies, specgram, norm=norm, cmap=cmap, shading=shading)
 
     # Place the colorbar outside the spectrogram.
     cax = inset_axes(ax, width="2%", height="100%", loc='lower left',
@@ -960,7 +973,7 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
                     borderpad=0)
 
     cbar = plt.colorbar(mesh, cax=cax)
-    cbar.set_label("Power (dB)")
+    cbar.set_label("10 log₁₀(mean FFT magnitude)")
 
     # cbar = plt.colorbar(mesh, ax=ax)
     # cbar.set_label("Power (dB)")
@@ -972,9 +985,7 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
     ax.xaxis.set_major_formatter(formatter)
 
     # Use the first and last spectral windows for the display limits.
-    start_time = alldates[0] # first timestamp in data
-    end_time = alldates[-1]  # last timestamp in data
-    end_time_minus = end_time - (6*60)
+    start_time, end_time = mesh_times[0], mesh_times[-1]
     ax.set_xlim(start_time, end_time)
 
     if twoPlots:
@@ -986,13 +997,13 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
         else:
             ax2 = f.add_subplot(212, sharex=ax)
 
-        mesh2 = ax2.pcolormesh(alldates, np.flipud(freq), specgram, norm=norm, cmap=cmap, shading='gouraud')
+        mesh2 = ax2.pcolormesh(mesh_times, mesh_frequencies, specgram, norm=norm, cmap=cmap, shading=shading)
         cax = inset_axes(ax, width="2%", height="100%", loc='lower left',
                     bbox_to_anchor=(1.02, 0., 1, 1),
                     bbox_transform=ax.transAxes,
                     borderpad=0)
         cbar = plt.colorbar(mesh2, cax=cax)
-        cbar.set_label("Power (dB)")
+        cbar.set_label("10 log₁₀(mean FFT magnitude)")
 
         locator = mdates.AutoDateLocator(minticks=5, maxticks=15)
         formatter = mdates.ConciseDateFormatter(locator)
@@ -1001,8 +1012,6 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
 
         # spectrogram x-limits
         ax2.set_xlim(start_time, end_time)
-        # End the amplitude panel before the added spectrogram interval.
-        ax0.set_xlim(start_time, end_time_minus) # ax0 for the RSAM plot
 
         ax2.set_yscale('log')
         ax2.set_ylim([minFreq,1])
@@ -1054,7 +1063,7 @@ def applyClipMask(S):
             mask = np.zeros(len(tr.data))
             mask[min(peaks):max(peaks)+1] = 1
             boolmask = mask >= 1
-            datamask = ma.MaskedArray(data=tr.data, mask=boolmask)
+            datamask = np.ma.MaskedArray(data=tr.data, mask=boolmask)
             if test:
                 import matplotlib.pyplot as plt
                 plt.subplot(2,1,1)

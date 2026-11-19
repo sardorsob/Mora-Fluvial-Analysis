@@ -218,7 +218,7 @@ def plot_og_node(sta, og_root, output_root, test_start, test_end):
     return tr, og_sta#, test_start
 
 
-def impact_window(tr, test_start, t1, t2, fs, out_dir, tag):
+def impact_window(tr, test_start, t1, t2, fs, out_dir, tag, *, station=None):
     """Plot an impact interval given in seconds from the calibration start."""
 
     sub = tr.slice(test_start + t1, test_start + t2)
@@ -234,7 +234,8 @@ def impact_window(tr, test_start, t1, t2, fs, out_dir, tag):
 
     window_folder = (f"{window_start.strftime('%Y%m%d')}_{window_start.strftime('%H%M%S')}_{window_end.strftime('%H%M%S')}")
 
-    impact_dir = os.path.join(out_dir, "impact_windows", station, window_folder) # second to last: , station.replace("C", "")
+    station = station if station is not None else tr.stats.station.removeprefix("C")
+    impact_dir = os.path.join(out_dir, "impact_windows", station, window_folder)
 
     os.makedirs(impact_dir, exist_ok=True)
 
@@ -392,9 +393,9 @@ if __name__ == "__main__":
                 print("Windows selected (UTC):", f"{utc_w_start.strftime('%Y%m%d')}_{utc_w_start.strftime('%H%M%S')}_{utc_w_end.strftime('%H%M%S')}")
 
                 # calibration impact window
-                impact_window(tr=trC, test_start=t0, t1=w_start, t2=w_end, fs=trC.stats.sampling_rate, out_dir=OUTPUT_ROOT, tag=calib_sta)
+                impact_window(tr=trC, test_start=t0, t1=w_start, t2=w_end, fs=trC.stats.sampling_rate, out_dir=OUTPUT_ROOT, tag=calib_sta, station=station)
                 # original impact window
-                impact_window(tr=trO, test_start=t0, t1=w_start, t2=w_end, fs=trO.stats.sampling_rate, out_dir=OUTPUT_ROOT, tag=og_sta)
+                impact_window(tr=trO, test_start=t0, t1=w_start, t2=w_end, fs=trO.stats.sampling_rate, out_dir=OUTPUT_ROOT, tag=og_sta, station=station)
 
         except Exception as e:
             print("Error:", e)

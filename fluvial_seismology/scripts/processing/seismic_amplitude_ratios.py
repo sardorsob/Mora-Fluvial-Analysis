@@ -120,34 +120,19 @@ def plotCumMedian(S, ax=None, normalize=True):
     return ax
 
 def checkDataRatio(tr1, tr2):
-
-    window_changed = False
-    # Trim both traces to their shared interval if either boundary differs.
-    shared_start = None
-    if tr1.stats.starttime != tr2.stats.starttime:
-        window_changed = True
-        shared_start = max([tr1.stats.starttime, tr2.stats.starttime])
-    else:
-        shared_start = tr1.stats.starttime
-
-    shared_end = None
-    if tr1.stats.endtime != tr2.stats.endtime:
-        window_changed = True
-        shared_end = min([tr1.stats.endtime, tr2.stats.endtime])
-    else:
-        shared_end = tr1.stats.endtime
-
-    if window_changed:
-        tr1 = tr1.trim(starttime=shared_start, endtime=shared_end)
-        tr2 = tr2.trim(starttime=shared_start, endtime=shared_end)
-        window_changed = False
-
-    # Check length
-    if len(tr1.data) != len(tr2.data):
-        window_changed = True
-        print('Traces have different sample counts after trimming to the shared interval.')
-        raise
-
+    """Return the shared interval if both traces have matching sample times."""
+    shared_start = max(tr1.stats.starttime, tr2.stats.starttime)
+    shared_end = min(tr1.stats.endtime, tr2.stats.endtime)
+    if shared_start > shared_end:
+        raise ValueError("Traces have no overlapping samples.")
+    tr1 = tr1.slice(shared_start, shared_end)
+    tr2 = tr2.slice(shared_start, shared_end)
+    if (
+        tr1.stats.sampling_rate != tr2.stats.sampling_rate
+        or tr1.stats.starttime != tr2.stats.starttime
+        or tr1.stats.npts != tr2.stats.npts
+    ):
+        raise ValueError("Traces must share a sample grid in the overlapping interval.")
     return tr1, tr2
 
 def calcRatio(S, sta1, sta2, maskedStream=None):

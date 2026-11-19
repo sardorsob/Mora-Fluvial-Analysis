@@ -39,6 +39,21 @@ These are research workflows with historical station/date settings. They have no
 
 Several research notebooks retain local file paths. Set them to your waveform and marker files before running selected cells. Unfinished upstream snippets in the arrival and Fourier notebooks are retained as text. See [source provenance](../docs/provenance.md) for the upstream revision.
 
+### Run the regression checks
+
+From the repository root, use the Python environment from the setup guide. The
+script tests need ObsPy. The R checks exercise the local spectrogram and
+clipping functions with base R.
+
+```sh
+python -m unittest discover -s tests -p 'test_fluvial_*.py' -v
+Rscript tests/test_fluvial_r.R
+```
+
+The checks use synthetic inputs. For field analysis, match the miniSEED trace
+ID and time coverage to the station metadata and field log before estimating
+response-corrected spectra or pairing arrivals.
+
 ### Export and compare spectra
 
 From the repository root, give the PPSD exporter a miniSEED file or quoted glob, the matching StationXML response, and a UTC interval with complete one-hour segments:
@@ -53,6 +68,10 @@ The NPZ in the run's `tables/` directory stores `period_s`, ascending `frequency
 
 The Welch helper accepts one merged trace, its instrument response, and a frequency band inside the response filter passband. With density scaling, it returns velocity PSD in dB relative to `1 (m/s)²/Hz`. To express acceleration PSD in those units, subtract `20 × log10(2πf)` at each positive frequency `f` in Hz. Compare the same channel and overlapping passband. PPSD averages the distribution of segment values in dB, while Welch averages segment power before taking the logarithm. The experimental Python spectrum estimator returns linear power. Its numerical equivalence to the R implementation has yet to be established.
 
+The local R spectrogram uses the estimator's frequency bins in Hz. It retains
+the legacy `stats::spectrum` power scaling and leaves windows with missing
+samples blank.
+
 ### Review hammer arrival pairs
 
 For the manual notebooks, confirm the two marker lists and the distance list refer to the same strikes in the same order before enabling `shot_order_reviewed`. Equal file lengths alone cannot detect a shifted pairing. In the R experiment, use `max_first_arrival_delay_s` only when geometry, clock alignment, and the expected travel times support a bound. The notebook proposes mutually unique pairs within that bound and leaves missing or ambiguous picks blank. Review the proposals against the field log before interpreting a velocity.
@@ -61,7 +80,7 @@ Positive R delay means arrival at node B follows node A. The envelope calculatio
 
 ## Setup notes for older notebooks
 
-- The modelling notebook has alternative experiments, repeated velocity scaling, an inherited `fml_inv` spelling, and cells that depend on earlier manual selections. R-only cells use `%%R`.
+- The modelling notebook has alternative experiments, repeated velocity scaling, and cells that depend on earlier manual selections. R-only cells use `%%R`.
 - Model water depth (`h_w`) and sediment flux (`q_s`) are different quantities from salt-dilution water discharge. Document the intended comparison and units for each analysis.
 - Some optional waveform helpers import `amp`, `ampCorrect`, and `intensityLocate`, which are absent from the source snapshot.
 - The formatting notebook includes move and rollback operations. Its input paths point to working copies under `data/processed/staging/`; copy source data there before choosing the relevant cells. Do not run all formatting alternatives sequentially.

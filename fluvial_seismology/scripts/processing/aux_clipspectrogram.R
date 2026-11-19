@@ -7,8 +7,9 @@
 #' achieve fluvial model inversion workflows. The latter is useful to create
 #' seismic power time series for a given frequency band.
 #'
-#' @param data \code{List} object, spectrogram to be processed. Must be the
-#' output of \code{signal_spectrogram} or of an equivalent structure.
+#' @param data Spectrogram from \code{signal_spectrogram}, an equivalent object,
+#' or a numeric matrix. Frequency labels in matrix row names are used when
+#' available.
 #'
 #' @param f \code{Numeric} vector of length two, frequency range to which
 #' the PSD will be clipped. Alternatively, an empirical frequency vector can
@@ -18,14 +19,15 @@
 #' of the frequency interpolation. If set to \code{1},
 #' the input frequency range (\code{f}) will be averaged and a
 #' \code{data frame} with the elements \code{time} and \code{power} will
-#' be returned.
+#' be returned. The mean uses the supplied values, including dB for a
+#' spectrogram from \code{signal_spectrogram}.
 #'
 #' @param n \code{Numeric} value, number of values to use in a running average
 #' filter to smoothen the interpolated output. If omitted, the spectrogram
 #' will not be changed apart from the interpolation option.
 #'
-#' @param dt \code{Numeric} value, sampling interval. Only required if
-#' \code{data} is no eseis object.
+#' @param dt \code{Numeric} value, sampling interval. Required only for an
+#' unlabeled matrix, where the rows are assumed to span zero to Nyquist.
 #'
 #' @return A clipped and interpolated spectrogram, or a data frame with
 #' a time series of an averaged frequency band.
@@ -80,22 +82,21 @@ aux_clipspectrogram <- function(
 
 ) {
 
-  ## check for eseis object structure
-  if(inherits(x = data, what = "eseis") == FALSE) {
-
-    if(missing(f) | missing(res) | missing(dt)) {
-
-      stop("The data is no eseis object and f, res and dt are missing!")
-    } else {
-
-      p <- data
-      f_emp <- NA
-    }
+  is_eseis <- inherits(data, "eseis")
+  is_spectrogram <- is.list(data) && !is.data.frame(data)
+  if(is_eseis || is_spectrogram) {
+    spectrogram <- if(is_eseis) data$PSD else data
+    p <- spectrogram$S
+    f_emp <- spectrogram$f
+    time <- spectrogram$t
   } else {
-
-    ## assign spectrogram object and frequency vector
-    p <- data$PSD$S
-    f_emp <- data$PSD$f
+    p <- data
+    f_emp <- suppressWarnings(as.numeric(rownames(p)))
+    if(length(f_emp) != nrow(p) || any(!is.finite(f_emp))) {
+      if(missing(dt)) stop("Provide dt for a matrix without frequency labels.")
+      f_emp <- seq(from = 0, to = 1 / dt / 2, length.out = nrow(p))
+    }
+    time <- seq_len(ncol(p))
   }
 
   ## check/set interpolation frequency vector
@@ -115,30 +116,13 @@ aux_clipspectrogram <- function(
     f_int <- f
   }
 
-  # Reconstruct frequencies from zero to Nyquist when no axis is supplied.
-  if(any(is.na(f_emp))) {
-
-    f_emp <- seq(from = 0, to = 1 / dt / 2, length.out = nrow(p))
-  }
-
   ## average or interpolate data set
   if(res == 1) {
 
     # Average the power of bins in the selected band at each time.
-    p_avg <- colMeans(p[f_emp >= f[1] & f_emp <= f[2],])
+    p_avg <- colMeans(p[f_emp >= f[1] & f_emp <= f[2], , drop = FALSE])
 
-    ## get output time vector
-    if(inherits(x = data, what = "eseis") == TRUE) {
-
-      t_out <- data$PSD$t
-    } else {
-
-      t_out <- 1:length(p_avg)
-    }
-
-    ## create output data set
-    data <- data.frame(time = t_out,
-                       power = p_avg)
+    data <- data.frame(time = time, power = p_avg)
 
     ## optionally smoothen data set
     if(missing(n) == FALSE) {
@@ -148,28 +132,29 @@ aux_clipspectrogram <- function(
 
   } else {
 
-    ## clip and interpolate PSD to frequency space of interest
-    p_clip <- apply(X = p, MARGIN = 2, FUN = function(x, f_emp, f_int) {
+    # Preserve missing windows in the clipped spectrogram.
+    p_clip <- vapply(seq_len(ncol(p)), function(column) {
+      power <- p[, column]
+      if(sum(is.finite(power)) < 2) return(rep(NA_real_, length(f_int)))
+      spline(x = f_emp, y = power, xout = f_int)$y
+    }, numeric(length(f_int)))
 
-      spline(x = f_emp, y = x, xout = f_int)$y
-    }, f_emp, f_int)
+    dim(p_clip) <- c(length(f_int), ncol(p))
 
-    ## optionally, smoothen data set
-    if(missing(n) == FALSE) {
-
-      p_clip <- apply(X = p, MARGIN = 2, FUN = function(x, n) {
-
-        caTools::runmean(x = x, k = n)
-      }, n)
+    if(!missing(n)) {
+      p_clip <- vapply(seq_len(ncol(p_clip)), function(column) {
+        caTools::runmean(x = p_clip[, column], k = n)
+      }, numeric(length(f_int)))
+      dim(p_clip) <- c(length(f_int), ncol(p))
     }
 
-    ## prepare output
-    if(inherits(x = data, what = "eseis") == TRUE) {
-
+    if(is_eseis) {
       data$PSD$S <- p_clip
       data$PSD$f <- f_int
+    } else if(is_spectrogram) {
+      data$S <- p_clip
+      data$f <- f_int
     } else {
-
       data <- p_clip
     }
   }

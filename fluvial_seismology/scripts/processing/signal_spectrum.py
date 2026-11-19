@@ -108,6 +108,11 @@ def _ar_psd_yule_walker(x: np.ndarray, fs: float, order: Optional[int] = None) -
     # Estimate AR params via Yule-Walker
     # Fit AR via Yule-Walker (statsmodels has yule_walker helper)
     ar_params, sigma = sm.tsa.stattools.yule_walker(x, order=order)
+    if not np.isfinite(sigma):
+        # Adjusted autocovariances can give a negative residual variance.
+        ar_params, sigma = sm.tsa.stattools.yule_walker(x, order=order, method="mle")
+    if not np.isfinite(sigma):
+        raise ValueError("Yule-Walker could not estimate a finite residual variance.")
     # Build PSD on Hz grid
     nfft = 4096
     f = np.linspace(0.0, fs / 2.0, num=nfft//2 + 1)

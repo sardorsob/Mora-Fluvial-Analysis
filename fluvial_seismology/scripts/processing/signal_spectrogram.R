@@ -3,8 +3,10 @@
 #' This function creates spectrograms from seismic signals. It supports the
 #' standard spectrogram approach and the Welch method.
 #'
-#' The function replaces missing samples with zeros before spectral estimation
-#' and then attempts to mask windows that overlap those gaps.
+#' Only complete windows with finite samples are estimated. Windows overlapping
+#' missing samples retain their time positions and have missing spectra.
+#' The frequency axis is in Hz. The ordinates use the legacy stats::spectrum
+#' scaling for a numeric vector before conversion to dB.
 #'
 #' @param data \code{Numeric} vector or list of vectors, seismic signal to
 #' be processed.
@@ -14,7 +16,7 @@
 #' if \code{data} is no \code{eseis} object.
 #'
 #' @param dt \code{Numeric} value, sampling period. If omitted, either
-#' estimated from \code{time} or set to 0.01 s (i.e., f = 100 Hz). Only needed
+#' estimated from \code{time} or set to 0.005 s (200 Hz). Only needed
 #' if \code{data} is no \code{eseis} object.
 #'
 #' @param Welch \code{Logical} value, option to use the Welch method for
@@ -192,11 +194,6 @@ signal_spectrogram <- function(
       window_sub <- NULL
     }
 
-    ## identify NA values
-    i_na <- is.na(data)
-
-    data[i_na] <- 0
-
     ## get start time
     eseis_t_0 <- Sys.time()
 
@@ -248,39 +245,34 @@ signal_spectrogram <- function(
     length_window <- round(x = window * (1 / dt),
                            digits = 0)
 
-    ## get number of windows
-    n_window <- floor(length(data) / length_window)
-
-    ## truncate time series to fit window sizes
-    data_trunc <- data[1:(length_window * n_window)]
-    time_trunc <- time[1:(length_window * n_window)]
-
     ## get overlap length
     length_overlap <- round(x = length_window * overlap,
                             digits = 0)
 
     ## calculate indices for slicing the time series
     l_step <- length_window - length_overlap
-    slice_start <- seq(from = 1, to = length(data) - length_window,
+    if(length_window < 2 || length_window > length(data) || l_step < 1) {
+      stop("Set a window of at least two samples that fits the signal, with a positive step.")
+    }
+    slice_start <- seq(from = 1, to = length(data) - length_window + 1,
                        by = l_step)
 
-    ## convert time series to matrix with slices
-    data_list <- vector(mode = "list",
-                        length = length(slice_start))
-
-    for (i in 1:length(data_list)) {
-
-      data_list[[i]] <- data[slice_start[i]:(slice_start[i] +
-                                               length_window - 1)]
+    # Count invalid samples between each window's first and last sample.
+    missing_count <- c(0, cumsum(!is.finite(data)))
+    valid <- missing_count[slice_start + length_window] == missing_count[slice_start]
+    data_list <- lapply(slice_start[valid], function(start) {
+      data[start:(start + length_window - 1)]
+    })
+    if(!any(valid)) {
+      # A deterministic signal supplies the estimator's frequency grid when all windows are missing.
+      data_list <- list(cos(seq_len(length_window)))
     }
 
     ## define generic function to get spectra
     spec_generic <- function(x, method) {
 
-      try(spectrum(x = x,
-                   method = method,
-                   plot = FALSE)$spec,
-          silent = TRUE)
+      estimate <- stats::spectrum(x = x, method = method, plot = FALSE)
+      list(power = estimate$spec, frequency = estimate$freq)
 
     }
 
@@ -291,20 +283,17 @@ signal_spectrogram <- function(
       length_window_sub <- round(x = window_sub * (1 / dt),
                                  digits = 0)
 
-      ## get number of sub-windows
-      n_window_sub <- floor(length(x) / length_window_sub)
-
-      ## truncate time series to fit window sizes
-      data_trunc <- data[1:(length_window_sub * n_window_sub)]
-
       ## get overlap length
       length_overlap_sub <- round(x = length_window_sub * overlap_sub,
                                   digits = 0)
 
       ## calculate indices for slicing the time series
       l_step <- length_window_sub - length_overlap_sub
+      if(length_window_sub < 2 || length_window_sub > length(x) || l_step < 1) {
+        stop("Set a Welch sub-window of at least two samples that fits the window, with a positive step.")
+      }
       slice_start <- seq(from = 1,
-                         to = length(x) - length_window_sub,
+                         to = length(x) - length_window_sub + 1,
                          by = l_step)
 
       ## convert time series to matrix with slices
@@ -322,14 +311,9 @@ signal_spectrogram <- function(
                         FUN = spec_generic,
                         method = method)
 
-      ## convert list to matrix
-      S_welch <- do.call(cbind, S_welch)
-
-      ## calculate mean
-      s_mean <- rowMeans(S_welch, na.rm = TRUE)
-
-      ## return output
-      return(s_mean)
+      power <- do.call(cbind, lapply(S_welch, function(estimate) estimate$power))
+      list(power = rowMeans(power, na.rm = TRUE),
+           frequency = S_welch[[1]]$frequency)
 
     }
 
@@ -399,38 +383,18 @@ signal_spectrogram <- function(
       parallel::stopCluster(cl = cl)
     }
 
-    ## convert spectra list to matrix
-    S <- do.call(cbind, S)
+    # The estimator returns frequencies in cycles per sample.
+    f_spectrum <- S[[1]]$frequency / dt
+    power <- matrix(NA_real_, nrow = length(f_spectrum), ncol = length(slice_start))
+    if(any(valid)) {
+      power[, valid] <- do.call(cbind, lapply(S, function(estimate) estimate$power))
+    }
 
     # Convert spectral power to decibels.
-    S <- 10 * log10(S)
-
-    ## create frequency and time vector of spectrogram
-    f_spectrum <- seq(from = 0,
-                      to = 0.5 / dt,
-                      length.out = nrow(S))
-
+    S <- 10 * log10(power)
     t_spectrum <- time[slice_start]
-
-    ## assign row- and col-names
     rownames(S) <- f_spectrum
     colnames(S) <- t_spectrum
-
-    # Attempt to mask spectral windows that overlap missing data.
-    if(sum(i_na) > 0) {
-
-      i_na_diff <- diff(i_na)
-      t_na_start <- time[i_na_diff == 1] - window
-      t_na_stop <- time[i_na_diff == -1]
-
-      t_na <- data.frame(t_na_start = t_na_start,
-                         t_na_stop = t_na_stop)
-
-      for(i in 1:length(t_na)) {
-
-        S[,t_spectrum >= t_na[i,1] & t_spectrum <= t_na[i,2]] <- NA
-      }
-    }
 
     ## assign output
     S <- list(S = S,

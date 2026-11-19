@@ -2,6 +2,7 @@ from project_paths import method_path, result_path
 import obspy
 from obspy import read, UTCDateTime
 from obspy.clients import fdsn
+from obspy.io.mseed import ObsPyMSEEDError
 import os
 
 
@@ -14,77 +15,69 @@ def get_iris_data(t1, t2, stas, path):
     else:
         print(f"Path '{path}' already exists.")
 
-    # The first station ID selects the archive service and waveform codes.
-    station_id = stas[0]
-    network, station, location, channel = station_id.split('.')
-    print(f"Station: {station_id}")
-    file_pattern = f'{path}/{network}.{station}.{location}.{channel}*.mseed'
-
-    if network == "ZE":  # PH5 archive for the three-component nodes.
-        dataselect_url = 'http://service.iris.edu/ph5ws/dataselect/1'
-        client = fdsn.client.Client(
-            service_mappings={
-                'dataselect': dataselect_url,
-            },
-        )
-    elif network == "ZD":  # miniSEED archive for GEM and RT130 instruments.
-        dataselect_url = 'http://service.iris.edu/fdsnws/dataselect/1'
-        client = fdsn.client.Client(
-            service_mappings={
-                'dataselect': dataselect_url,
-            },
-        )
-    else:
-        raise ValueError(f"Unknown network code: {network}")
+    archives = {
+        "ZE": ("http://service.iris.edu/ph5ws/dataselect/1", 350),
+        "ZD": ("http://service.iris.edu/fdsnws/dataselect/1", 100),
+    }
+    station_codes = [station_id.split('.') for station_id in stas]
 
     # IRIS credentials
     username = os.environ.get("MORA_IRIS_USERNAME")
     password = os.environ.get("MORA_IRIS_PASSWORD")
     if bool(username) != bool(password):
         raise ValueError("Set both MORA_IRIS_USERNAME and MORA_IRIS_PASSWORD, or neither.")
-    if username:
-        client.set_credentials(username, password)
+    clients = {}
+    for network, _, _, _ in station_codes:
+        if network not in archives:
+            raise ValueError(f"Unknown network code: {network}")
+        if network not in clients:
+            url, _ = archives[network]
+            client = fdsn.client.Client(service_mappings={'dataselect': url})
+            if username:
+                client.set_credentials(username, password)
+            clients[network] = client
+
     window_start = t1
     extract_delta = 1800  # Download in 30-minute windows.
 
     while window_start < t2:
-        for station_id in stas:
-            print(f"Checking data for station {station_id} from {window_start} to {window_start + extract_delta}")
-
-            existing_files = [f for f in os.listdir(path) if f.endswith('.mseed')]
-
-            filename_pattern = f'{network}.{station}.{location}.{channel}_{window_start.strftime("%Y%m%d%H%M%S")}.mseed'
-
-            file_exists = False
-            for filename in existing_files:
-                if filename_pattern in filename:
-                    file_exists = True
-                    break
-
-            if file_exists:
-                print(f"Data for {station_id} from {window_start} to {window_start + extract_delta} already stored locally. Skipping download.")
-            else:
-                print(f"Retrieving data for {station_id} from {window_start} to {window_start + extract_delta}")
+        window_end = min(window_start + extract_delta, t2)
+        for network, station, location, channel in station_codes:
+            station_id = '.'.join((network, station, location, channel))
+            print(f"Checking data for station {station_id} from {window_start} to {window_end}")
+            cached_path = os.path.join(path, f'{station_id}_{window_start.strftime("%Y%m%d%H%M%S")}.mseed')
+            cached = ()
+            if os.path.isfile(cached_path):
                 try:
-                    stream = client.get_waveforms(network, station, location, channel, window_start, window_start + extract_delta)
-                    print(f"Data for {station_id} retrieved successfully.")
+                    cached = read(cached_path, format="MSEED", headonly=True)
+                except (OSError, ObsPyMSEEDError) as error:
+                    print(f"Could not read cached waveform {cached_path}: {error}")
+            if any(
+                tr.id == station_id
+                and tr.stats.starttime <= window_start + tr.stats.delta
+                and tr.stats.endtime >= window_end - tr.stats.delta
+                for tr in cached
+            ):
+                print(f"Data for {station_id} from {window_start} to {window_end} already stored locally. Skipping download.")
+                continue
+            print(f"Retrieving data for {station_id} from {window_start} to {window_end}")
+            try:
+                stream = clients[network].get_waveforms(network, station, location, channel, window_start, window_end)
+                print(f"Data for {station_id} retrieved successfully.")
 
-                    if network == "ZE":
-                        print('Resampling to 350')
-                        stream.resample(350)  # Three-component node rate in Hz.
-                    if network == "ZD":
-                        print('Resampling to 100')
-                        stream.resample(100)  # GEM rate in Hz.
+                _, target_rate = archives[network]
+                print(f'Resampling to {target_rate}')
+                stream.resample(target_rate)
 
-                    print('Saving data to .mseed files...')
-                    for tr in stream:
-                        filename = os.path.join(path, f'{tr.id}_{tr.stats.starttime.strftime("%Y%m%d%H%M%S")}.mseed')
-                        tr.write(filename)
-                        print(f"Saved {filename}")
-                except Exception as e:
-                    print(f"Error retrieving data for {station_id} from {window_start} to {window_start + extract_delta}: {e}")
+                print('Saving data to .mseed files...')
+                for tr in stream:
+                    filename = os.path.join(path, f'{tr.id}_{tr.stats.starttime.strftime("%Y%m%d%H%M%S")}.mseed')
+                    tr.write(filename)
+                    print(f"Saved {filename}")
+            except Exception as e:
+                print(f"Error retrieving data for {station_id} from {window_start} to {window_end}: {e}")
 
-        window_start += extract_delta
+        window_start = window_end
 
     print('Data retrieval and saving completed.')
 
