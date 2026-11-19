@@ -50,6 +50,45 @@ class WorkingDischargePlotTests(unittest.TestCase):
                          [[0., .5], [1.5, 2.]])
         self.assertIn('Recording gap', fig.axes[0].get_title(loc='left'))
         self.assertIn('No release Q', fig.axes[1].get_title(loc='left'))
+        self.assertEqual(fig.subfigs[0].legends[0].texts[0].get_text(), 'Probe 123 · 30 s')
+
+    def test_sampling_interval_excludes_gaps_and_requires_a_pair(self):
+        pulse = pd.DataFrame(dict(t_s=[0., 1., 2., 120., 121.], segment=[0, 0, 0, 1, 1]))
+        self.assertEqual(days.sample_interval_label(pulse), '1 s')
+        self.assertEqual(days.sample_interval_label(pulse.iloc[[0, 3]]), '')
+
+    def test_coarse_companion_requires_unique_source_link_for_same_basis(self):
+        release, row = self.fixture()
+        trial = release['trial_id']
+        coarse = (trial, 'E1', 'w1', 'specific')
+        fine = (trial, 'E2', 'w2', 'specific')
+        actual = (trial, 'E2', 'w3', 'actual')
+        other = (trial, 'E3', 'w4', 'specific')
+        coarse_row = dict(row, event_link_status='source_linked', pulse_samples='9',
+                          capture_status='observed_window_coarse_cadence')
+        fine_row = dict(coarse_row, sensor_serial='456', pulse_samples='200',
+                        capture_status='observed_event_local_window')
+        groups = {coarse: [coarse_row], actual: [fine_row]}
+        self.assertEqual(plots.coarse_companions(groups), {})
+        groups[fine] = [dict(fine_row, event_link_status='inferred')]
+        self.assertEqual(plots.coarse_companions(groups), {})
+        groups[fine] = [fine_row]
+        self.assertEqual(plots.coarse_companions(groups), {coarse: fine})
+        groups[other] = [dict(fine_row, sensor_serial='789')]
+        self.assertEqual(plots.coarse_companions(groups), {})
+
+    def test_companion_uses_own_background_and_leaves_gap_open(self):
+        times = pd.date_range('2025-08-05 12:00', periods=5, freq='s')
+        pulse = pd.DataFrame(dict(timestamp=times[[0, 1, 3, 4]], t_s=[0, 1, 3, 4],
+                                  ec=[8, 11, 10, 8], segment=[0, 0, 1, 1]))
+        fig, ax = plt.subplots()
+        self.addCleanup(plt.close, fig)
+        plots.draw_companion(ax, {'pulse': [str(times[0]), str(times[-1])]},
+                             {'sensor_serial': '456', 'capture_status': 'observed_event_local_window'},
+                             pulse, 8, {'in_pulse_gap_count': 1, 'modelled_gap_seconds': 2})
+        self.assertEqual([list(line.get_ydata()) for line in ax.lines[:2]], [[0, 3], [2, 0]])
+        self.assertEqual([list(line.get_xdata()) for line in ax.lines[:2]], [[0, 1/60], [3/60, 4/60]])
+        self.assertIn('456 · 1 s spacing · 2 s gap', ax.get_title(loc='left'))
 
     def test_selected_pulses_keep_recording_and_channel_links(self):
         rows = [dict(trial_id='NISQ-20261004-T02', logical_recording_id='REC-a',

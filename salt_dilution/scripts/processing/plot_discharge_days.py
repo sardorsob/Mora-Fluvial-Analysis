@@ -20,11 +20,24 @@ class PulseTrace(NamedTuple):
     diagnostic: bool
     unsettled_tail: bool
     unit_response: str
+    sample_interval: str
 
 
 PROBE_STYLES = ((style.BLUE, '-'), (style.ORANGE, '--'), ('#5F487C', '-.'))
 Q_LABELS = {'selected_proposed': 'Proposed', 'selected_conditional': 'Selected conditional',
             'working_conditional': 'Working conditional'}
+
+
+def sample_interval_seconds(pulse):
+    """Return the median interval between observed samples within segments."""
+    intervals = pulse.groupby('segment', sort=False).t_s.diff()
+    intervals = intervals[intervals > 0]
+    return float(intervals.median()) if len(intervals) else None
+
+
+def sample_interval_label(pulse) -> str:
+    interval = sample_interval_seconds(pulse)
+    return f'{interval:.3g} s' if interval is not None else ''
 
 
 def record_trace(traces, row, pulse, background, start, *, diagnostic: bool = False) -> None:
@@ -34,7 +47,7 @@ def record_trace(traces, row, pulse, background, start, *, diagnostic: bool = Fa
         row['sensor_serial'] or '', (pulse.t_s.to_numpy() - start) / 60,
         pulse.ec.to_numpy() - background, pulse.segment.to_numpy(),
         diagnostic, 'unsettled_tail' in (row.get('capture_status') or ''),
-        row.get('q_m3_s_per_delivered_litre') or '',
+        row.get('q_m3_s_per_delivered_litre') or '', sample_interval_label(pulse),
     )
 
 
@@ -108,9 +121,19 @@ def day_figure(site, day, releases, traces, points):
         probe_styles = {serial: PROBE_STYLES[i % len(PROBE_STYLES)] for i, serial in enumerate(serials)}
         subfig.suptitle(f'{channel.title()} conductivity excess (µS/cm)', x=.043, ha='left',
                          fontsize=15, fontweight='bold', color=style.INK)
-        handles = [Line2D([], [], color=color, linestyle=linestyle,
-                          label=f'Probe {serial}' if serial else 'Unknown probe')
-                   for serial, (color, linestyle) in probe_styles.items()]
+        intervals = defaultdict(set)
+        for series in by_trial.values():
+            for trace in series:
+                if trace.sample_interval:
+                    intervals[trace.serial].add(trace.sample_interval)
+        handles = []
+        for serial, (color, linestyle) in probe_styles.items():
+            label = f'Probe {serial}' if serial else 'Unknown probe'
+            if len(intervals[serial]) == 1:
+                label += f' · {next(iter(intervals[serial]))}'
+            elif intervals[serial]:
+                label += ' · interval varies'
+            handles.append(Line2D([], [], color=color, linestyle=linestyle, label=label))
         subfig.legend(handles=handles, loc='upper right', bbox_to_anchor=(.99, 1),
                       ncols=len(serials), fontsize=10.5, frameon=False, columnspacing=1.1)
         axes = subfig.subplots(rows, cols, squeeze=False, sharex=True, sharey=True).ravel()
@@ -148,7 +171,8 @@ def day_figure(site, day, releases, traces, points):
             ax.set_axis_off()
         subfig.supxlabel('Minutes from the start of each pulse window', fontsize=12, color=style.INK)
     diagnostic = any(v.diagnostic for r in releases for v in traces[r['trial_id']].values())
-    note = 'Shading shows signed observed area. Dashed zero marks the background.'
+    note = ('Legend intervals are typical sample spacing. Sparse observations have markers.\n'
+            'Shading shows signed observed area. Dashed zero marks the background.')
     if diagnostic:
         note += '\nPale shading marks diagnostic windows without a chosen discharge estimate.'
     else:

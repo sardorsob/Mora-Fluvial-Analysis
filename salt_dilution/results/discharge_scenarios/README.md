@@ -114,6 +114,10 @@ The day figures use shaded areas to show signed conductivity relative to each re
 
 The [July 9 day figure](figures/by_day/nisq_2025-07-09_trials.png) shows the measured pulses from both trials. The pale fill marks diagnostic windows with no chosen Q. The [diagnostic area table](figures/day_diagnostic_traces.csv) records the observed intervals using the saved linear background where available and the saved pre-pulse background otherwise. The first trial's diagnostic trace on probe 790478 ends before its tail settles.
 
+Match day and trial plots by probe serial and conductivity basis. Day colors separate recordings, and the legend shows typical sample spacing. Working trial plots draw observed conductivity in blue and mark modeled gaps in orange. Samples recorded once a minute can look angular when connected. Finer sampling resolves more of the pulse, while calibration and pulse capture still determine how to interpret Q. One July 31 export contains `840058` in its filename and `790481` in its device header. The figures use the header serial.
+
+For eight releases with both one-minute and one-second recordings, the sparse trial figures show the recorded points and a separate, finer panel for the same conductivity basis. The lower panel shows observed conductivity relative to its own background, with gaps left open. The Q in the heading belongs to the upper recording. Find the finer recording's full plot and its own estimate in the `companion_figure` column of the [figure index](figures/figure_index.csv).
+
 The remaining experimental releases without a chosen Q are **July 9, 2025, T01 and T02** (unresolved stock-stage interpretations) and **September 3, 2025, T02** (unknown delivered volume after a spill).
 
 | File | Purpose |

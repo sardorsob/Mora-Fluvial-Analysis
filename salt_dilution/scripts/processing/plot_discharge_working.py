@@ -153,7 +153,7 @@ def coverage(points, releases):
     return fig
 
 
-def pulse_figure(frame, window, rows, *, trace_sink=None):
+def pulse_data(frame, window, rows):
     row = rows[0]
     area = scenarios.scenario_area(frame, window, row['background_mode'], row['gap_mode'])
     for item in rows:
@@ -161,6 +161,78 @@ def pulse_figure(frame, window, rows, *, trace_sink=None):
             raise ValueError('Rendered pulse integral differs from saved working estimate')
     parts = {name: frame.loc[frame.timestamp.between(*pd.to_datetime(window[name]))]
              if window.get(name) else frame.iloc[:0] for name in ('pre','pulse','post')}
+    t = parts['pulse'].t_s.to_numpy()
+    if row['background_mode'] == 'linear':
+        background = np.interp(t, [parts['pre'].t_s.mean(), parts['post'].t_s.mean()],
+                               [area['background_pre_us_cm'], area['background_post_us_cm']])
+    else:
+        mean_key = 'background_post_us_cm' if row['background_mode'] == 'post' else 'background_pre_us_cm'
+        background = np.full(len(t), area[mean_key])
+    return parts, background, area
+
+
+def coarse_companions(groups):
+    """Link a coarse recording to a unique finer candidate for the same trial and basis."""
+    candidates = defaultdict(list)
+    for key, rows in groups.items():
+        row = rows[0]
+        if row['event_link_status'] == 'source_linked' and row['sensor_serial']:
+            candidates[key[0], key[3]].append(key)
+    links = {}
+    for keys in candidates.values():
+        for key in keys:
+            row = groups[key][0]
+            if 'coarse_cadence' not in row['capture_status']:
+                continue
+            finer = [other for other in keys
+                     if other[1] != key[1]
+                     and groups[other][0]['sensor_serial'] != row['sensor_serial']
+                     and 'coarse_cadence' not in groups[other][0]['capture_status']
+                     and int(groups[other][0]['pulse_samples']) > int(row['pulse_samples'])]
+            if len(finer) == 1:
+                links[key] = finer[0]
+    return links
+
+
+def draw_companion(ax, window, row, pulse, background, area):
+    """Draw observed excess at the companion's own pulse-window origin."""
+    origin = pd.Timestamp(window['pulse'][0])
+    x = (pulse.timestamp - origin).dt.total_seconds().to_numpy() / 60
+    y = pulse.ec.to_numpy() - background
+    segments = pulse.segment.to_numpy()
+    for segment in np.unique(segments):
+        mask = segments == segment
+        ax.plot(x[mask], y[mask], color=style.BLUE, linewidth=1.6)
+        ax.fill_between(x[mask], y[mask], 0, color=style.BLUE, alpha=.16)
+    ax.axhline(0, linestyle='--', linewidth=1, color=style.GRAY)
+    label = f"Finer companion · probe {row['sensor_serial']} · {plot_discharge_days.sample_interval_label(pulse)} spacing"
+    if area['in_pulse_gap_count']:
+        label += f" · {area['modelled_gap_seconds']:g} s gap"
+    elif 'unsettled_tail' in row['capture_status']:
+        label += ' · tail unsettled'
+    elif 'drifting' in row['capture_status']:
+        label += ' · drifting background'
+    ax.set_title(label, loc='left', fontsize=10.5, color=style.INK)
+    ax.set_xlabel("Minutes from companion's pulse-window start", fontsize=11)
+    ax.set_ylabel('Conductivity excess\n(µS/cm)', fontsize=11)
+    ax.xaxis.set_major_locator(MaxNLocator(6))
+    ax.yaxis.set_major_locator(MaxNLocator(4))
+    ax.grid(axis='y', color='#DDE3E6', lw=.7)
+    ax.spines[['top','right']].set_visible(False)
+
+
+def pulse_figure(frame, window, rows, *, trace_sink=None, companion=None):
+    row = rows[0]
+    parts, bg, area = pulse_data(frame, window, rows)
+    pulse = parts['pulse']
+    coarse = 'coarse_cadence' in row['capture_status']
+    if companion is not None:
+        other_frame, other_window, other_rows = companion
+        other_parts, other_bg, other_area = pulse_data(other_frame, other_window, other_rows)
+        cadence = plot_discharge_days.sample_interval_seconds(pulse)
+        finer_cadence = plot_discharge_days.sample_interval_seconds(other_parts['pulse'])
+        if cadence is None or finer_cadence is None or finer_cadence >= cadence:
+            raise ValueError('Companion samples must be more closely spaced than the coarse recording')
     origin = pd.Timestamp(window['pulse'][0])
     minutes = lambda timestamps: (timestamps-origin).dt.total_seconds()/60
     left = pd.Timestamp(window['pre'][0]);right = pd.Timestamp((window.get('post') or window['pulse'])[1])
@@ -170,19 +242,29 @@ def pulse_figure(frame, window, rows, *, trace_sink=None):
     unit_response = row['result_class']=='unit_response'
     readings = ' · '.join(f"{r['calibration_id'].rsplit('-',1)[-1]}: {float(r['q_m3_s_per_delivered_litre'] if unit_response else r['q_m3_s']):.3f}" for r in rows)
     subtitle = ('Response per delivered litre' if unit_response else 'Conditional Q') + f' · {readings}' + (' m³/s per L' if unit_response else ' m³/s')
-    fig, ax = plt.subplots(figsize=(8.2,6.4), dpi=180)
-    fig.subplots_adjust(left=.13, right=.96, top=.74, bottom=.30)
-    fig.text(.05,.96,title,fontsize=16,weight='bold',color=style.INK,va='top')
-    fig.text(.05,.905,subtitle,fontsize=13,color=style.INK,va='top')
-    fig.text(.05,.855,f"{row['conductivity_basis'].title()} conductivity · instrument {row['sensor_serial']}",fontsize=12,color=style.INK,va='top')
+    if companion is None:
+        fig, ax = plt.subplots(figsize=(8.2,6.4), dpi=180)
+        fig.subplots_adjust(left=.13, right=.96, top=.74, bottom=.30)
+        title_y, subtitle_y, instrument_y, legend_y, note_y = .96, .905, .855, .815, .205
+    else:
+        fig = plt.figure(figsize=(8.2,9.2), dpi=180)
+        ax = fig.add_axes([.13,.52,.83,.27])
+        other_ax = fig.add_axes([.13,.235,.83,.20])
+        draw_companion(other_ax, other_window, other_rows[0], other_parts['pulse'], other_bg, other_area)
+        title_y, subtitle_y, instrument_y, legend_y, note_y = .97, .93, .893, .867, .155
+    fig.text(.05,title_y,title,fontsize=16,weight='bold',color=style.INK,va='top')
+    fig.text(.05,subtitle_y,subtitle,fontsize=13,color=style.INK,va='top')
+    instrument = f"{row['conductivity_basis'].title()} conductivity · probe {row['sensor_serial']}"
+    interval = plot_discharge_days.sample_interval_label(parts['pulse'])
+    if interval:
+        instrument += f' · {interval} typical spacing'
+    fig.text(.05,instrument_y,instrument,fontsize=12,color=style.INK,va='top')
     for _, part in shown.groupby('segment', sort=True):
-        ax.plot(minutes(part.timestamp),part.ec,color=style.BLUE,linewidth=1.5)
+        ax.plot(minutes(part.timestamp),part.ec,color=style.BLUE,linewidth=1.2 if coarse else 1.5,
+                marker='o' if coarse else None, markersize=4)
     for name in ('pre','post'):
         part=parts[name]
         if len(part):ax.axvspan(minutes(part.timestamp).iloc[0],minutes(part.timestamp).iloc[-1],color='#E1E5E8',zorder=0)
-    pulse=parts['pulse'];t=pulse.t_s.to_numpy()
-    bg = np.interp(t,[parts['pre'].t_s.mean(),parts['post'].t_s.mean()],
-                   [area['background_pre_us_cm'],area['background_post_us_cm']]) if row['background_mode']=='linear' else np.full(len(t),area['background_post_us_cm'] if row['background_mode']=='post' else area['background_pre_us_cm'])
     if trace_sink is not None:
         start = (origin - frame.timestamp.iloc[0]).total_seconds()
         trace_sink(row, pulse, bg, start)
@@ -201,9 +283,10 @@ def pulse_figure(frame, window, rows, *, trace_sink=None):
     ax.yaxis.set_major_locator(MaxNLocator(5))
     ax.grid(axis='y',color='#DDE3E6',lw=.7)
     ax.spines[['top','right']].set_visible(False)
-    handles=[Line2D([],[],color=style.BLUE,label='Observed'),Line2D([],[],color=style.INK,ls='--',label='Baseline'),Patch(facecolor='#E1E5E8',label='Background windows')]
+    handles=[Line2D([],[],color=style.BLUE,marker='o' if coarse else None,
+                    label='Recorded samples' if coarse else 'Observed'),Line2D([],[],color=style.INK,ls='--',label='Baseline'),Patch(facecolor='#E1E5E8',label='Background windows')]
     if area['in_pulse_gap_count']:handles.append(Line2D([],[],color=style.ORANGE,ls=':',label='Gap model'))
-    fig.legend(handles=handles,loc='upper left',bbox_to_anchor=(.04,.815),ncols=len(handles),frameon=False,fontsize=12)
+    fig.legend(handles=handles,loc='upper left',bbox_to_anchor=(.04,legend_y),ncols=len(handles),frameon=False,fontsize=12)
     notes=['Recipe and full capture are conditional; total uncertainty is unquantified.']
     if unit_response:notes=['Spilled dose unknown: this is not release Q. Multiply only by a known delivered volume.']
     if row['sensor_applicability']!='trial_specific_native_match':notes.append('Sensor response transfer assumed.')
@@ -216,8 +299,11 @@ def pulse_figure(frame, window, rows, *, trace_sink=None):
     if 'overlapping' in row['capture_status']:notes.append('Overlapping pulses; background assumed.')
     if 'drifting' in row['capture_status']:notes.append('Drifting background assumed.')
     note='\n'.join(textwrap.wrap(' '.join(notes),85))
-    fig.text(.05,.205,note,fontsize=12,color=style.INK,va='top')
-    fig.text(.05,.067,f"Pulse window · {origin:%H:%M:%S}–{pd.Timestamp(window['pulse'][1]):%H:%M:%S} PST (UTC−08:00)",fontsize=12,color=style.INK)
+    if companion is not None:
+        note = 'Q above is for the upper recording.\n' + note
+    fig.text(.05,note_y,note,fontsize=12,color=style.INK,va='top')
+    window_label = 'Upper pulse window' if companion is not None else 'Pulse window'
+    fig.text(.05,.067,f"{window_label} · {origin:%H:%M:%S}–{pd.Timestamp(window['pulse'][1]):%H:%M:%S} PST (UTC−08:00)",fontsize=12,color=style.INK)
     fig.text(.05,.025,'Source · MORA Aqua TROLL recordings and working estimate tables',fontsize=12,color=style.INK)
     return fig
 
@@ -301,6 +387,7 @@ def run_figures(scenario_dir, baseline_dir, output, *, root=matching.ROOT):
     windows={w['id']:w for w in json.loads((scenario_dir/'scenario_settings.json').read_text())['windows']}
     groups=defaultdict(list)
     for row in working:groups[row['trial_id'],row['recording_edge_id'],row['window_id'],row['conductivity_basis']].append(row)
+    companions = coarse_companions(groups)
     code=[__file__,scenarios.__file__,style.__file__,plot_discharge_pulses.__file__,plot_discharge_days.__file__,slug.__file__,reuse.__file__,matching.__file__]
     with reuse.staged_run(Path(output),pins,code) as (stage,pins):
         index=[]
@@ -343,8 +430,19 @@ def run_figures(scenario_dir, baseline_dir, output, *, root=matching.ROOT):
             if (window['trial_id'],window['recording_edge_id'],window['channel'])!=(tid,eid,channel):
                 raise ValueError('Working pulse does not match its window')
             name=f'by_trial/{tid}_{wid}_{channel}.png'
-            style._save(pulse_figure(frame_for(eid,window,channel),window,rows,trace_sink=trace_sink),stage/name)
-            for row in rows:index.append(dict(figure=name,kind='pulse',trial_id=tid,window_id=wid,recording_edge_id=eid,conductivity_basis=channel,calibration_id=row['calibration_id'],recipe_id=row['recipe_id'],source_table='working_estimates.csv'))
+            companion = None
+            entry = dict(figure=name,kind='pulse',trial_id=tid,window_id=wid,recording_edge_id=eid,
+                         conductivity_basis=channel,source_table='working_estimates.csv')
+            other_key = companions.get((tid,eid,wid,channel))
+            if other_key is not None:
+                _, other_edge, other_id, _ = other_key
+                other_window = windows[other_id]
+                companion = frame_for(other_edge,other_window,channel), other_window, groups[other_key]
+                entry['companion_figure'] = f'by_trial/{tid}_{other_id}_{channel}.png'
+            style._save(pulse_figure(frame_for(eid,window,channel),window,rows,
+                                   trace_sink=trace_sink,companion=companion),stage/name)
+            for row in rows:
+                index.append(dict(entry,calibration_id=row['calibration_id'],recipe_id=row['recipe_id']))
         missing = {r['trial_id'] for r in releases if r['category'] != 'excluded_practice' and not traces[r['trial_id']]}
         diagnostic = diagnostic_day_traces(read_rows(scenario_dir/'scenario_estimates.csv'),
                                            windows, frame_for, trace_sink, missing)
