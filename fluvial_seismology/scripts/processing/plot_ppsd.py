@@ -11,15 +11,13 @@ from obspy.clients.fdsn import Client
 from obspy.clients import fdsn
 from fractions import Fraction
 
-# function to plot PPSD and temporal plots
-def plot_ppsd(S, t1, t2, stas, user_values):
-    """Function to calculate and plot PPSD and Temporal Plot"""
-    S.merge(method=1)  # merge traces to avoid duplicates
-    # define path where .mseed files are stored
 
-    # set station info
-    nowsta = stas[0]
-    network, station, location, channel = nowsta.split('.')
+def plot_ppsd(S, t1, t2, stas, user_values):
+    """Plot probabilistic PSD and optional time series at periods in seconds."""
+    S.merge(method=1)  # merge traces to avoid duplicates
+
+    station_id = stas[0]
+    network, station, location, channel = station_id.split('.')
     if network == "ZE":
         S.resample(300) # resample from 350 to 300
         client = Client("IRISPH5", timeout=600) # 3C data
@@ -29,14 +27,13 @@ def plot_ppsd(S, t1, t2, stas, user_values):
     else:
         raise ValueError(f"Unknown network code: {network}")
 
-    # metadata
-    inv = client.get_stations(network=network, station=station, location=location, channel=channel, level='response')
+    # PPSD needs the channel response to correct the recorded amplitudes.
+    inventory = client.get_stations(network=network, station=station, location=location, channel=channel, level='response')
 
-    # initialize PPSD object
     ppsd = None
     for tr in S:
         if ppsd is None:
-            ppsd = PPSD(tr.stats, metadata=inv, db_bins=(-200,15,1.0),period_limits=(1/150, 10.0)) # if xaxis_frequency=False, set period_lim=(1/150,10)
+            ppsd = PPSD(tr.stats, metadata=inventory, db_bins=(-200,15,1.0),period_limits=(1/150, 10.0)) # if xaxis_frequency=False, set period_lim=(1/150,10)
         ppsd.add(tr)
         print('Trace added to PPSD')
 
@@ -48,7 +45,7 @@ def plot_ppsd(S, t1, t2, stas, user_values):
 
         if user_values:
             print("Plotting temporal plot now...")
-            ppsd.plot_temporal(user_values) # plot temporal plot with user values
+            ppsd.plot_temporal(user_values)
             plt.show()
             plt.close()
 
@@ -61,16 +58,10 @@ def plot_ppsd(S, t1, t2, stas, user_values):
     return ppsd
 
 
-# ---------------------------
-# if running this script independently
-# ---------------------------
-
 if __name__ == '__main__':
     print("Running PPSD plotting script independently...")
 
-    # setting up parameters for independent use
-
-    # define time range
+    # Example interval and station for standalone use.
     start_date = UTCDateTime(2023, 7, 23)
     end_date = UTCDateTime(2023, 7, 24)
     delta = 86400
@@ -80,7 +71,6 @@ if __name__ == '__main__':
     stas = ['ZE.2304..GP1'] # 3C station IDs
     #stas = ['ZD.G2411.01.HDF'] # GEM station IDs
 
-    # set station info
     nowsta = stas[0]
     network, station, location, channel = nowsta.split('.')
 
@@ -128,8 +118,7 @@ if __name__ == '__main__':
 
 # call function independently - uncomment below for user input freqs
 
-## OPTION 1: promopt for user input for temporal plot values
-# likely wouldn't run this way without spectra since need to know freq bins for temporal plot
+# Option 1. Enter temporal-plot frequencies after reviewing the PPSD bins.
 
 # user input frequency values
 # user_inputs = input("Enter frequency values between 0.1 and 150 Hz (comma-separated, takes in fractions and decimals): ").split(',')
@@ -162,11 +151,12 @@ if __name__ == '__main__':
 # print(f"Inputted frequencies: {user_freqs} --> periods: {round_periods}") # for checking
 
 
-## OPTION 2: input temporal plot values within code
+# Option 2. Set temporal-plot frequencies directly.
 #user_freqs = [120, 70, 20] # default frequencies in Hz
 #user_periods = [1 / freq for freq in user_freqs] # convert to default periods for temporal plot
 
-# call function
-
+# To try these periods, use the following call in the main block after loading data.
 #S = obspy.read(file_pattern, starttime=start_date, endtime=end_date)
 #plot_ppsd(S, inv, t1=start_date, t2=end_date, user_values=user_periods)
+# "The current function retrieves the response itself and takes station IDs."
+# plot_ppsd(S, start_date, end_date, stas, user_values=user_periods)

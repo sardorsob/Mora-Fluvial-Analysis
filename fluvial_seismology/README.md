@@ -1,26 +1,26 @@
 # Fluvial seismology
 
-Waveform preparation, calibration, spectral analysis, and river-flow/sediment modelling from the archived seismic repository. No seismic recordings are bundled.
+Use these workflows to prepare seismic waveforms, compare instrument and hammer recordings, and explore how river flow and sediment transport contribute to seismic spectra. Bring your own waveform files and station metadata.
 
 ## Notebook guide
 
 | Folder and notebook | Purpose |
 | --- | --- |
-| `preparation/download_waveforms.ipynb` | Acquire the selected historical waveform interval; requires network access. |
-| `preparation/format_mseed_files.ipynb` | Rename/move/copy miniSEED working files, with rollback alternatives. |
+| [Download waveforms](notebooks/preparation/download_waveforms.ipynb) | Download the selected historical waveform interval over the network. |
+| [Organize miniSEED files](notebooks/preparation/format_mseed_files.ipynb) | Rename, move, or copy working files. Includes rollback options. |
 | [Clip miniSEED recordings](notebooks/preparation/clip_miniseed.ipynb) | Extract shorter waveform windows from local recordings. |
-| `instrument_calibration/instrument_calibration.ipynb` | Preliminary waveform and spectrogram comparisons for calibration recordings. |
+| [Compare calibration recordings](notebooks/instrument_calibration/instrument_calibration.ipynb) | Compare waveforms and spectrograms from calibration recordings. |
 | [Pick hammer arrivals in R](notebooks/instrument_calibration/pick_hammer_arrivals_r.ipynb) | Explore automatic first-arrival picking with STA/LTA and kurtosis. Requires R and rpy2. |
 | [Test arrival pickers](notebooks/instrument_calibration/test_arrival_pickers.ipynb) | Compare candidate arrival picking methods on example shot recordings. |
 | [Estimate Green’s function velocities](notebooks/instrument_calibration/estimate_greens_velocities.ipynb) | Compare manually marked arrivals and estimate velocities from travel times and distances. |
 | [Estimate N11 hammer P-wave velocity](notebooks/instrument_calibration/estimate_n11_hammer_p_wave_velocity.ipynb) | Estimate velocity from paired hammer arrivals and flag inconsistent picks for review. |
-| `spectral_analysis/download_and_plot_waveforms.ipynb` | Acquisition followed by signal and spectrum inspection. |
-| `spectral_analysis/plot_waveform_spectra.ipynb` | Plot already available recordings. |
-| `spectral_analysis/screen_waveforms.ipynb` | Screening workflow that calls the reusable Python modules. |
-| `spectral_analysis/plot_ppsd.ipynb` | PPSD and related spectral/temporal experiments. |
+| [Download and inspect waveforms](notebooks/spectral_analysis/download_and_plot_waveforms.ipynb) | Download recordings and inspect their waveforms and spectra. |
+| [Plot waveform spectra](notebooks/spectral_analysis/plot_waveform_spectra.ipynb) | Plot signals and spectra from local recordings. |
+| [Screen waveforms](notebooks/spectral_analysis/screen_waveforms.ipynb) | Screen recordings with the shared Python scripts. |
+| [Plot probabilistic power spectral densities](notebooks/spectral_analysis/plot_ppsd.ipynb) | Explore the distribution of spectral power and its variation over time. |
 | [Compare observed and model spectra](notebooks/spectral_analysis/compare_observed_and_model_spectra.ipynb) | Compare observed waveform spectra with experimental Python flow and bedload model curves. |
-| `modelling/fluvial_models_rpy2.ipynb` | Historical R/eseis turbulence, bedload, and inversion experiments through rpy2. |
-| `exploratory/screen_waveforms_inline.ipynb` | Alternative screening notebook with functions defined inline. |
+| [Explore river process models in R](notebooks/modelling/fluvial_models_rpy2.ipynb) | Explore turbulence, bedload, and inversion with eseis through rpy2. |
+| [Explore waveform screening](notebooks/exploratory/screen_waveforms_inline.ipynb) | Screen waveforms with functions defined in the notebook. |
 | [Explore Fourier analysis](notebooks/exploratory/explore_fourier_analysis.ipynb) | Practice Fourier transforms and filtering with example signals. |
 
 ## Scripts
@@ -29,7 +29,7 @@ Waveform preparation, calibration, spectral analysis, and river-flow/sediment mo
 
 The newer spectral tools include a [PPSD export to NPZ](scripts/processing/export_ppsd_npz.py), an [experimental Python port of the eseis spectrum estimator](scripts/processing/signal_spectrum.py), and a [Welch PSD helper](scripts/processing/welch_psd.py). The observed/model spectrum notebook imports the Python spectrum estimator.
 
-`scripts/models/` contains `model_turbulence.R`, `model_bedload.R`, and `fmi_inversion.R`. The R function bodies are preserved apart from whitespace. The modelling notebook loads installed `eseis`; it does not automatically load these checked-in functions.
+[`scripts/models/`](scripts/models/) contains R functions for turbulence, bedload, and spectral inversion. The modelling notebook calls the installed `eseis` package. Source these local R files explicitly to use them.
 
 See [getting started](../docs/getting_started.md), [source environments](config/source_environments/README.md), and the [data guide](data/README.md) before running a workflow.
 

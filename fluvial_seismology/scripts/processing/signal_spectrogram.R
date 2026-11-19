@@ -3,8 +3,8 @@
 #' This function creates spectrograms from seismic signals. It supports the
 #' standard spectrogram approach and the Welch method.
 #'
-#' Data containing \code{NA} values is replaced by zeros and set to NA in the
-#' output data set.
+#' The function replaces missing samples with zeros before spectral estimation
+#' and then attempts to mask windows that overlap those gaps.
 #'
 #' @param data \code{Numeric} vector or list of vectors, seismic signal to
 #' be processed.
@@ -242,7 +242,7 @@ signal_spectrogram <- function(
       method <- "ar"
     }
 
-    ## CALCULATION PART -------------------------------------------------------
+    # Window the signal and estimate spectra
 
     ## get window length
     length_window <- round(x = window * (1 / dt),
@@ -402,7 +402,7 @@ signal_spectrogram <- function(
     ## convert spectra list to matrix
     S <- do.call(cbind, S)
 
-    ## convert data to db
+    # Convert spectral power to decibels.
     S <- 10 * log10(S)
 
     ## create frequency and time vector of spectrogram
@@ -416,7 +416,7 @@ signal_spectrogram <- function(
     rownames(S) <- f_spectrum
     colnames(S) <- t_spectrum
 
-    ## reset NA-affected parts to NA
+    # Attempt to mask spectral windows that overlap missing data.
     if(sum(i_na) > 0) {
 
       i_na_diff <- diff(i_na)

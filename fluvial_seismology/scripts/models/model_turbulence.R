@@ -11,7 +11,7 @@
 #'   \item \code{c = 0.5}, instantaneous fluid-grain friction coefficient
 #'   (dimensionless)
 #'   \item \code{g = 9.81}, gravitational acceleration (m/s^2)
-#'   \item \code{k = 0.5}, Kolmogrov constant (dimensionless)
+#'   \item \code{k = 0.5}, Kolmogorov constant (dimensionless)
 #'   \item \code{k_s = 3 * d_s}, roughness length (m)
 #'   \item \code{h = k_s / 2}, reference height of the measurement (m)
 #'   \item \code{e_0 = 0}, exponent of Q increase with frequency
@@ -114,7 +114,7 @@ model_turbulence <- function(
   ...
 ) {
 
-  ## CHECK AND SET DEFAULT ARGUMENTS ------------------------------------------
+  # Model constants and defaults
 
   ## extract additional arguments
   extraArgs <- list(...)
@@ -149,12 +149,12 @@ model_turbulence <- function(
               yes = extraArgs$r_w,
               no = 1000)
 
-  ## assign friction coefficiant
+  # Set the fluid-grain friction coefficient.
   c_w <- ifelse(test = "c_w" %in% names(extraArgs),
               yes = extraArgs$c_w,
               no = 0.5)
 
-  ## ORGANISE ESEIS DATA ------------------------------------------------------
+  # Record the run time and inputs for eseis history.
 
   ## get start time
   eseis_t_0 <- Sys.time()
@@ -182,7 +182,7 @@ model_turbulence <- function(
                           r_w = r_w,
                           c_w = c_w)
 
-  ## CALCULATION PART ---------------------------------------------------------
+  # Calculate turbulence PSD
 
   ## define frequency vector
   if(length(f) == 2) {

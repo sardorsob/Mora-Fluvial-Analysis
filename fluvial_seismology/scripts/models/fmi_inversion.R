@@ -1,12 +1,11 @@
-#' Invert fluvial data set based on reference spectra catalogue
+#' Invert fluvial observations by matching reference spectra
 #'
 #' The fluvial model inversion (FMI) routine uses a predefined look-up table
 #' with reference spectra to identify those spectra that fit the empirical
 #' data set best, and returns the corresponding target variables and fit
 #' errors.
 #'
-#' Note that the frequencies of the empiric and modelled data sets must
-#' match.
+#' Observed and modelled spectra must use the same frequencies.
 #'
 #' @param reference \code{List} containing lists with precalculated model
 #' spectra.
@@ -125,7 +124,7 @@ fmi_inversion <- function (
   n_cores = 1
 ) {
 
-  ## convert empiric data set to list
+  # Store one observed spectrum per time window.
   if(class(data)[1] == "eseis") {
     if(data$meta$type == "spectrogram") {
 
@@ -177,15 +176,15 @@ fmi_inversion <- function (
         ## get minimum RMSE among reference spectra
         rmse_min <- min(rmse)
 
-        ## find best model
+        # Select the first reference spectrum tied for minimum RMSE.
         mod_best <- which(rmse == rmse_min)[1]
 
-        ## get frequency-resolved RMSE for best model
+        # Record the absolute residual at each frequency for the best model.
         rmse_f <- sqrt((reference_spectra[mod_best,] - psd)^2)
 
       } else {
 
-        ## account for inevaluable data sets
+        # Leave the inversion missing when the observed spectrum contains NA.
         mod_best <- NA
         rmse_f <- rep(NA, length(psd))
         rmse <- NA
@@ -218,15 +217,15 @@ fmi_inversion <- function (
         ## get minimum RMSE among reference spectra
         rmse_min <- min(rmse)
 
-        ## find best model
+        # Select the first reference spectrum tied for minimum RMSE.
         mod_best <- which(rmse == rmse_min)[1]
 
-        ## get frequency-resolved RMSE for best model
+        # Record the absolute residual at each frequency for the best model.
         rmse_f <- sqrt((reference_spectra[mod_best,] - psd)^2)
 
       } else {
 
-        ## account for inevaluable data sets
+        # Leave the inversion missing when the observed spectrum contains NA.
         mod_best <- NA
         rmse_f <- rep(NA, length(psd))
         rmse <- NA

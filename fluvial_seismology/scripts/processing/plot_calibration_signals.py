@@ -8,15 +8,9 @@ from matplotlib.ticker import MultipleLocator
 from matplotlib.ticker import MaxNLocator, AutoMinorLocator
 from glob import glob
 
-# =========================================================
-# CALIBRATION NODE
-# =========================================================
 
 def plot_calib_node(sta, calib_root, output_root):
-    """
-    Loads calibration node, plots waveform + spectrogram,
-    and returns the experiment time window.
-    """
+    """Plot the calibration recording and return its bounds as the experiment window."""
 
     network, station, location, channel = sta.split('.')
 
@@ -32,42 +26,35 @@ def plot_calib_node(sta, calib_root, output_root):
     print("\nCalibration search pattern:")
     print(calib_pattern)
 
-    st = read(calib_pattern)
-    st.merge(method=1)
+    stream = read(calib_pattern)
+    stream.merge(method=1)
 
-    tr = st[0]
+    tr = stream[0]
 
     print("\nCalibration trace:")
     print(tr)
 
-    # experiment window
     test_start = tr.stats.starttime
     test_end = tr.stats.endtime
 
-    # relative time axis
-    time = tr.times(reftime=test_start)
+    elapsed_s = tr.times(reftime=test_start)
 
-    # output paths
     calib_dir = os.path.join(output_root, "calibration", f"C{station}")
     os.makedirs(calib_dir, exist_ok=True)
 
     base_tag = f"{calib_sta}_{test_start.strftime('%Y%m%d%H%M%S')}"
 
-    # =====================================================
-    # WAVEFORM
-    # =====================================================
-
-    # plot waveform
+    # Waveform
     fig, ax = plt.subplots(figsize=(12, 4), dpi=600)
 
-    ax.plot(time, tr.data, color='black', lw=0.5)
+    ax.plot(elapsed_s, tr.data, color='black', lw=0.5)
 
     ax.set_title(f"{calib_sta} Waveform")
     ax.set_xlabel("Time (s)")
     ax.set_ylabel("Amplitude")
     ax.xaxis.set_major_locator(MultipleLocator(120))
     ax.xaxis.set_minor_locator(MultipleLocator(30))
-    ax.set_xlim(np.min(time), np.max(time))
+    ax.set_xlim(np.min(elapsed_s), np.max(elapsed_s))
     #ax.set_ylim(np.min(tr.data)-10, np.max(tr.data)+10)
     fig.tight_layout()
 
@@ -77,17 +64,13 @@ def plot_calib_node(sta, calib_root, output_root):
     fig.savefig(wave_path, dpi=600, bbox_inches='tight')
     plt.close(fig)
 
-    # =====================================================
-    # SPECTROGRAM
-    # =====================================================
-
+    # Spectrogram
     fs = tr.stats.sampling_rate
-    nperseg = int(fs) # 1s FFT window
+    nperseg = int(fs)  # One-second FFT window.
     #noverlap = int(fs * 0.5) # 50% overlap
     noverlap = int(0.80 * nperseg) # 80% overlap
 
-    # plot spectrogram
-    f, t, Sxx = spectrogram(
+    frequency_hz, segment_time_s, power = spectrogram(
         tr.data,
         fs=fs,
         nperseg=nperseg,
@@ -97,9 +80,9 @@ def plot_calib_node(sta, calib_root, output_root):
     fig, ax = plt.subplots(figsize=(12, 6), dpi=600)
 
     pcm = ax.pcolormesh(
-        t,
-        f,
-        10 * np.log10(Sxx + 1e-12),
+        segment_time_s,
+        frequency_hz,
+        10 * np.log10(power + 1e-12),
         cmap='viridis',
         shading='auto'
     )
@@ -110,8 +93,8 @@ def plot_calib_node(sta, calib_root, output_root):
     ax.set_ylim(0, 150)
     fig.colorbar(pcm, ax=ax, label="Power (dB)")
 
-    ax.xaxis.set_major_locator(MultipleLocator(120)) # tick label every 10s
-    ax.xaxis.set_minor_locator(MultipleLocator(30)) # tick unlabeled every 2s
+    ax.xaxis.set_major_locator(MultipleLocator(120))
+    ax.xaxis.set_minor_locator(MultipleLocator(30))
     ax.tick_params(axis='x', which='minor', length=3.5)
     ax.tick_params(axis='x', which='major', length=6, width=1.1)
     ax.yaxis.set_major_locator(MultipleLocator(20)) # tick label every 20 Hz
@@ -128,15 +111,8 @@ def plot_calib_node(sta, calib_root, output_root):
     return tr, calib_sta, test_start, test_end
 
 
-# =========================================================
-# ORIGINAL NODE
-# =========================================================
-
 def plot_og_node(sta, og_root, output_root, test_start, test_end):
-    """
-    Loads original node, trims to calibration window,
-    plots waveform + spectrogram.
-    """
+    """Plot the original node over the calibration recording interval."""
 
     network, station, location, channel = sta.split('.')
 
@@ -144,51 +120,45 @@ def plot_og_node(sta, og_root, output_root, test_start, test_end):
 
     orig_dir = os.path.join(og_root, f"NO{station}", channel)
 
-    # grab all candidate files, but not read
     files = glob(os.path.join(orig_dir, f"{og_sta}_*mseed"))
     print("\n")
     print("Total original node files found:", len(files))
     print("\n")
 
-    st = Stream()
+    stream = Stream()
 
-    for f in files:
-        st += read(f, starttime=test_start, endtime=test_end)
+    for waveform_file in files:
+        stream += read(waveform_file, starttime=test_start, endtime=test_end)
 
-    if len(st) == 0:
-        print("WARNING: No og node data found in calibration window")
+    if len(stream) == 0:
+        print("No original-node data found in the calibration window.")
         return
 
-    st.merge(method=1)
-    tr = st[0]
+    stream.merge(method=1)
+    tr = stream[0]
 
-    print("\nOG station trace:")
+    print("\nOriginal-node trace:")
     print(tr)
 
     # trim to experiment window
     #tr.trim(starttime=test_start, endtime=test_end)
-    time = tr.times(reftime=test_start)
+    elapsed_s = tr.times(reftime=test_start)
 
-    # output paths
     og_dir = os.path.join(output_root, "original", station)
     os.makedirs(og_dir, exist_ok=True)
 
     base_tag = f"{og_sta}_{test_start.strftime('%Y%m%dT%H%M%S')}"
 
-    # =====================================================
-    # WAVEFORM
-    # =====================================================
-
-    # plot waveform
+    # Waveform
     fig, ax = plt.subplots(figsize=(12, 4), dpi=600)
 
-    ax.plot(time, tr.data, color='black', lw=0.5)
+    ax.plot(elapsed_s, tr.data, color='black', lw=0.5)
     ax.set_title(f"{og_sta} Waveform")
     ax.set_xlabel("Time (s)")
     ax.set_ylabel("Amplitude")
     ax.xaxis.set_major_locator(MultipleLocator(120))
     ax.xaxis.set_minor_locator(MultipleLocator(30))
-    ax.set_xlim(np.min(time), np.max(time))
+    ax.set_xlim(np.min(elapsed_s), np.max(elapsed_s))
     #ax.set_ylim(np.min(tr.data)-10, np.max(tr.data)+10)
     ax.margins(y=0.05)
 
@@ -200,17 +170,13 @@ def plot_og_node(sta, og_root, output_root, test_start, test_end):
     fig.savefig(wave_path, dpi=600, bbox_inches='tight')
     plt.close(fig)
 
-    # =====================================================
-    # SPECTROGRAM
-    # =====================================================
-
+    # Spectrogram
     fs = tr.stats.sampling_rate
-    nperseg = int(fs)
+    nperseg = int(fs)  # One-second FFT window.
     #noverlap = int(fs * 0.5) # 50% overlap
     noverlap = int(0.80 * nperseg) # 80% overlap
 
-    # plot spectrogram
-    f, t, Sxx = spectrogram(
+    frequency_hz, segment_time_s, power = spectrogram(
         tr.data,
         fs=fs,
         nperseg=nperseg,
@@ -220,16 +186,16 @@ def plot_og_node(sta, og_root, output_root, test_start, test_end):
     fig, ax = plt.subplots(figsize=(12, 6), dpi=600)
 
     pcm = ax.pcolormesh(
-        t,
-        f,
-        10 * np.log10(Sxx + 1e-12),
+        segment_time_s,
+        frequency_hz,
+        10 * np.log10(power + 1e-12),
         cmap='viridis',
         shading='auto'
     )
 
     # ticks
-    ax.xaxis.set_major_locator(MultipleLocator(120)) # tick label every 10s
-    ax.xaxis.set_minor_locator(MultipleLocator(30)) # tick unlabeled every 2s
+    ax.xaxis.set_major_locator(MultipleLocator(120))
+    ax.xaxis.set_minor_locator(MultipleLocator(30))
     ax.tick_params(axis='x', which='minor', length=3.5)
     ax.tick_params(axis='x', which='major', length=6, width=1.1)
     ax.yaxis.set_major_locator(MultipleLocator(20)) # tick label every 20 Hz
@@ -252,18 +218,11 @@ def plot_og_node(sta, og_root, output_root, test_start, test_end):
     return tr, og_sta#, test_start
 
 
-# =====================================================
-# IMPACT WINDOWS
-# =====================================================
-
 def impact_window(tr, test_start, t1, t2, fs, out_dir, tag):
-    """Function to plot waveform and spectrogram over a selected time window,
-       - relative to global/calibration testing window."""
+    """Plot an impact interval given in seconds from the calibration start."""
 
-    # slice data
     sub = tr.slice(test_start + t1, test_start + t2)
-    # global relative time axis
-    time = sub.times(reftime=test_start)
+    elapsed_s = sub.times(reftime=test_start)
 
     # impact_dir = os.path.join(out_dir, "impact_windows", station)
     # os.makedirs(impact_dir, exist_ok=True)
@@ -281,13 +240,9 @@ def impact_window(tr, test_start, t1, t2, fs, out_dir, tag):
 
     base_tag = (f"{tag}_{window_start.strftime('%Y%m%d')}_{window_start.strftime('%H%M%S')}_{window_end.strftime('%H%M%S')}")
 
-    # =====================================================
-    # WAVEFORM
-    # =====================================================
-
-    # plot waveform
+    # Waveform
     fig, ax = plt.subplots(figsize=(12, 4), dpi=600)
-    ax.plot(time, sub.data, color='black', lw=0.5)
+    ax.plot(elapsed_s, sub.data, color='black', lw=0.5)
     ax.set_xlim(t1, t2)
     #ax.set_ylim(np.min(sub.data)-30, np.max(sub.data)+30) # a bit too drastic/little when amps are very different
     ax.margins(y=0.05)
@@ -318,36 +273,30 @@ def impact_window(tr, test_start, t1, t2, fs, out_dir, tag):
 
     plt.close(fig)
 
-    # =====================================================
-    # SPECTROGRAM
-    # =====================================================
-
+    # Spectrogram
     fs = tr.stats.sampling_rate
-    # change back to shading = 'auto' ??
-    nperseg = int(0.25 * fs) # 0.25*1000 = 250 samples = 0.25s FFT windows
-    #noverlap = int(0.20 * fs) # 0.20*1000 = 200 samples of overlap (new FFT begins 50 samples later) = 0.05 ms
-    noverlap = int(0.80 * nperseg) # this is same as commented out above but implies 80% overlap more clearly
-    # i.e. 0.25(1 - 0.8) = 0.05s = 0
+    nperseg = int(0.25 * fs)  # Quarter-second FFT window.
+    # noverlap = int(0.20 * fs)  # At 1000 Hz, 200 samples overlap and the step is 0.05 s.
+    noverlap = int(0.80 * nperseg)  # 80% overlap gives a nominal 0.05 s step.
 
-    f, spec_t, Sxx = spectrogram(
+    frequency_hz, segment_time_s, power = spectrogram(
         sub.data,
         fs=fs,
         nperseg=nperseg,#int(fs),
         noverlap=noverlap#int(fs * 0.5)
     )
 
-    # shift spectrogram time to global relative axis
-    spec_t = spec_t + t1 # shift to global time
+    # Put the segment centers on the same time axis as the waveform.
+    segment_time_s = segment_time_s + t1
 
-    # plot spectrogram
     fig, ax = plt.subplots(figsize=(12, 6), dpi=600)
 
     pcm = ax.pcolormesh(
-        spec_t,
-        f,
-        10*np.log10(Sxx + 1e-12),
+        segment_time_s,
+        frequency_hz,
+        10*np.log10(power + 1e-12),
         cmap='viridis',
-        shading="gouraud"  # or "nearest"
+        shading="gouraud"  # Alternatives are "auto" and "nearest".
         )
 
     ax.set_xlim(t1, t2)
@@ -374,10 +323,6 @@ def impact_window(tr, test_start, t1, t2, fs, out_dir, tag):
     plt.close(fig)
     #plt.show()
 
-# =========================================================
-# MAIN
-# =========================================================
-
 if __name__ == "__main__":
 
     """TO USE This Script:
@@ -394,7 +339,6 @@ if __name__ == "__main__":
         -- impact set window: 0.25s FFT window, 80% overlap
         -- adjust as desired """
 
-    # -----------------------------------------------------
 
     # station ID -- use original node, calib node will get paired
     STA = "ZE.2510..GPZ"
@@ -407,21 +351,15 @@ if __name__ == "__main__":
     # parent path to save pngs
     OUTPUT_ROOT = result_path('fluvial_seismology', 'figures/instrument_calibration')
 
-    # -----------------------------------------------------
-    # CALIBRATION NODE PLOTS (defines experiment window)
-    # -----------------------------------------------------
+    # Use the calibration trace to set the experiment window.
 
     trC, calib_sta, t0, t1 = plot_calib_node(STA, CALIB_ROOT, OUTPUT_ROOT)
 
-    # -----------------------------------------------------
-    # ORIGINAL NODE PLOTS (trimmed to same window)
-    # -----------------------------------------------------
+    # Read the original node over the same experiment window.
 
     trO, og_sta = plot_og_node(STA, OG_ROOT, OUTPUT_ROOT, t0, t1) #, t0O
 
-    # -----------------------------------------------------
-    # SELECT IMPACT WINDOW(S) AND PLOT
-    # -----------------------------------------------------
+    # Review selected impact windows at both nodes.
 
     while True:
         print("Enter time windows in seconds to visualize data more closely.")
@@ -463,4 +401,4 @@ if __name__ == "__main__":
             print("Invalid format, use format (t0, t1), (t2, t3)")
 
 
-    print("\nDONE.")
+    print("\nCalibration plotting complete.")

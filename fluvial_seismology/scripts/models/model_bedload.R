@@ -216,7 +216,7 @@ model_bedload <- function(
   ...
 ) {
 
-  ## CHECK AND SET DEFAULT ARGUMENTS ------------------------------------------
+  # Model constants and defaults
 
   ## use user-defined gsd
   if(missing(gsd) == TRUE) {
@@ -372,7 +372,7 @@ model_bedload <- function(
     n_c <- NA
   }
 
-  ## ORGANISE ESEIS DATA ------------------------------------------------------
+  # Record the run time and inputs for eseis history.
 
   ## get start time
   eseis_t_0 <- Sys.time()

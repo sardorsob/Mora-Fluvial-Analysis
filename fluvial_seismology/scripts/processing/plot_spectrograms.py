@@ -5,21 +5,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 from fluvial_seismology.scripts.processing import waveform_utils as waveformUtils
-# function to plot spectrogram
+
+
 def plot_spectrogram(S, t1, t2, stas):
-    """Function to plot Waveforms, RSAM, and Spectrogram"""
+    """Plot a spectrogram and bandpassed median envelope for a merged stream."""
 
     S.merge(method=1)  # merge traces to avoid duplicates
 
-    # set station info
-    nowsta = stas[0]
-    network, station, location, channel = nowsta.split('.')
+    station_id = stas[0]
+    network, station, location, channel = station_id.split('.')
 
-    # set max frequency range to plot
+    # Display limits in Hz for the two instrument networks.
     if network == "ZE":
-        maxFreq = 150    # 0.5*resample rate
+        max_frequency_hz = 150
     elif network == "ZD":
-        maxFreq = 50 # edit value if resample changes?
+        max_frequency_hz = 50
     else:
         raise ValueError(f"Unknown network code: {network}")
 
@@ -29,9 +29,9 @@ def plot_spectrogram(S, t1, t2, stas):
 
     # plt.figure()
     # f.show()
-    # remember to also return f when wanting this plot
+    # To display the alternate plot, also return f.
 
-    f1 = waveformUtils.multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.5, maxFreq=maxFreq, cmap='turbo',
+    f1 = waveformUtils.multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.5, maxFreq=max_frequency_hz, cmap='turbo',
                                            dateLimits=None, vmin=0.4, vmax=0.9, plotAverage=True)
 
     plt.figure()
@@ -42,16 +42,10 @@ def plot_spectrogram(S, t1, t2, stas):
     return f1  #, f
 
 
-# ---------------------------
-# if running this script independently
-# ---------------------------
-
 if __name__ == "__main__":
     print("Running spectra plotting script independently...")
 
-    # setting up parameters for independent use
-
-    # define start and end time for the data range
+    # Example interval and station for standalone use.
     start_date = UTCDateTime(2024, 7, 9)  # Start time
     end_date = UTCDateTime(2024, 7, 10)    # End time
     delta = 86400  # 1 day in seconds
@@ -62,11 +56,9 @@ if __name__ == "__main__":
     stas = ['ZE.2410..GPZ'] # 3C station IDs
     #stas = ['ZD.G2411.01.HDF'] # GEM station IDs
 
-    # set station info
     nowsta = stas[0]
     network, station, location, channel = nowsta.split('.')
 
-    # define path where .mseed files are stored - can probably move this into function
     print(f"Station: {nowsta}")
     if network == "ZE":
         path = method_path('fluvial_seismology', f'data/raw/seismic_data/NO{station}/{channel}')
@@ -84,7 +76,7 @@ if __name__ == "__main__":
 
     file_pattern = f'{path}/{network}.{station}.{location}.{channel}*.mseed'
 
-    # read and run plot
+    # Read six minutes beyond the requested interval for spectral windows.
     end = end_date + (6*60)
     S = obspy.read(file_pattern, starttime=start_date, endtime=end)
     plot_spectrogram(S, t1=start_date, t2=end, stas=stas)

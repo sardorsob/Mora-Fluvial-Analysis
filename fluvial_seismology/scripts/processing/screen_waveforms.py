@@ -16,21 +16,20 @@ from fluvial_seismology.scripts.processing import plot_ppsd as PPSD
 from fluvial_seismology.scripts.processing import plot_spectrograms as spectraPlay
 from fluvial_seismology.scripts.processing import set_workdir as set_workdir
 import importlib
-# in case .py files have been updated
+# Reload helpers so screening uses edits made during an interactive session.
 importlib.reload(waveformUtils)
 importlib.reload(getData)
 importlib.reload(PPSD)
 importlib.reload(spectraPlay)
 importlib.reload(set_workdir)
 
-## main function to process data
-def process_data(start_date, end_date, delta, stas):
-    """Main function to run through each day of data in timeframe and perform analyses"""
 
-    # set station info
-    nowsta = stas[0]
-    network, station, location, channel = nowsta.split('.')
-    print(f"Station: {nowsta}")
+def process_data(start_date, end_date, delta, stas):
+    """Download missing waveforms and inspect spectra for each interval."""
+
+    station_id = stas[0]
+    network, station, location, channel = station_id.split('.')
+    print(f"Station: {station_id}")
 
     # define path where .mseed files are stored
     if network == "ZE":
@@ -49,7 +48,6 @@ def process_data(start_date, end_date, delta, stas):
 
     file_pattern = f'{path}/{network}.{station}.{location}.{channel}*.mseed'
 
-    # loop to make RSAM, spectra, PPSD, and temporal plots for each day in time frame
     current_date = start_date
 
     while current_date < end_date:
@@ -59,75 +57,67 @@ def process_data(start_date, end_date, delta, stas):
 
         try:
 
-            # set working directory to where download_waveforms.py is located - ensures checks for pre-downloaded data
+            # Use the downloader's working directory for its local file check.
             set_workdir.set_workdir('download_waveforms.py')
 
-            # uses get_iris_data to ensure data for this time range is downloaded
             print(f"Checking if any missing data for {t1} to {t2}, downloading if necessary.")
-            getData.get_iris_data(t1, t2, stas, path)  # downloads any missing data if necessary
+            getData.get_iris_data(t1, t2, stas, path)
 
-            # reading local data for current date range
-            S = obspy.read(file_pattern, starttime=t1, endtime=t2) # obspy read
+            daily_stream = obspy.read(file_pattern, starttime=t1, endtime=t2)
 
-            S1 = S.copy() # create a copy of the original stream for spectra
+            spectrogram_stream = daily_stream.copy()  # Keep the PPSD stream limited to the requested interval.
 
-            # read an extra 6 mins of data to extend the stream
-            spec_end = t2 + (6*60) # 6 minutes beyond original end time
+            # Read six extra minutes for spectral windows near the end.
+            spectrogram_end = t2 + (6*60)
             try:
                 set_workdir.set_workdir('download_waveforms.py')
 
-                print(f"Checking if any missing data for {t2} to {spec_end}, downloading if necessary.")
-                getData.get_iris_data(t2, spec_end, stas, path) # downloads any missing data if necessary
+                print(f"Checking if any missing data for {t2} to {spectrogram_end}, downloading if necessary.")
+                getData.get_iris_data(t2, spectrogram_end, stas, path)
 
-                # after calling get_iris_data, re-read local data (after ensuring it's downloaded)
-                S_ext = obspy.read(file_pattern, starttime=t2, endtime=spec_end) # read only the extra data
-                if network == "ZE" and S_ext[0].stats.sampling_rate != 350: # extra check
-                    S_ext.resample(350)
-                elif network == "ZD" and S_ext[0].stats.sampling_rate != 100: # extra check
-                    S_ext.resample(100)
+                extension_stream = obspy.read(file_pattern, starttime=t2, endtime=spectrogram_end)
+                if network == "ZE" and extension_stream[0].stats.sampling_rate != 350:
+                    extension_stream.resample(350)
+                elif network == "ZD" and extension_stream[0].stats.sampling_rate != 100:
+                    extension_stream.resample(100)
                 else:
                     pass
 
-                # add extra 6 mins of data to copied stream
-                S1.extend(S_ext) # now S1 contains the original data + 6 minutes, and S is untouched
-                S1.merge(method=1) # avoid duplicates
+                spectrogram_stream.extend(extension_stream)
+                spectrogram_stream.merge(method=1) # avoid duplicates
 
             except Exception as e:
-                print(f"An error occurred while processing data from {t2} to {spec_end}: {e}")
+                print(f"An error occurred while processing data from {t2} to {spectrogram_end}: {e}")
 
             print("Making spectrogram")
 
-            # plot scectrogram and RSAM
             set_workdir.set_workdir('plot_spectrograms.py')
-            f1 = spectraPlay.plot_spectrogram(S1, t1, spec_end, stas)  # pass S1 to plot_spectrogram function
+            f1 = spectraPlay.plot_spectrogram(spectrogram_stream, t1, spectrogram_end, stas)
 
-            # ask user for frequency values after spectrogram
+            # Choose temporal-plot frequencies after inspecting the spectrogram.
             print("Enter frequency values for temporal plot (comma-separated, takes in fractions and decimals):")
             user_inputs = input("Example (0.5, 50, 1/100) : ").split(',')
 
-            # process user input - converts fractions and regular floats
             user_freqs = []
             #user_periods = []
             for freq in user_inputs:
                 try:
-                    freq = freq.strip() # clean up extra spaces
+                    freq = freq.strip()
                     if '/' in freq:
-                        user_freqs.append(float(Fraction(freq))) # handle fraction
+                        user_freqs.append(float(Fraction(freq)))
                     else:
-                        user_freqs.append(float(freq)) # handle float
+                        user_freqs.append(float(freq))
                 except ValueError:
                     print(f"Invalid input: {freq} Using default values.")
 
-            # if user didn't provide any valid values, set defaults
             if not user_freqs:
                 print("No valid input detected. Using default frequency values.")
                 user_freqs = [120, 70, 20] # default frequencies in Hz
             user_periods = [1 / freq for freq in user_freqs] # converts to periods for temporal plot
 
-            # plot PPSD
             print("Making PPSD and Temporal Plots")
             set_workdir.set_workdir('plot_ppsd.py')
-            PPSD.plot_ppsd(S, t1, t2, stas, user_periods)
+            PPSD.plot_ppsd(daily_stream, t1, t2, stas, user_periods)
 
             round_periods = ['%.4f' % per for per in user_periods]
             print(f"Inputted frequencies: {user_freqs} --> periods: {round_periods}") # for checking
@@ -138,12 +128,8 @@ def process_data(start_date, end_date, delta, stas):
 
         current_date += delta # move to next day
 
-# to run independently via .py file
-
 if __name__ == "__main__":
-# setting up parameters
-
-    # define start and end time for the data range
+    # Example interval and station for standalone use.
     start_date = UTCDateTime(2023, 8, 17) # Start time
     end_date = UTCDateTime(2023, 8, 18) # End time
     delta = 86400  # 1 day in seconds

@@ -9,20 +9,20 @@ from obspy import UTCDateTime
 
 
 def medianFilter(trace, windowLength):
-    datamin = np.array([])
-    for windata in trace.slide(window_length=windowLength, step=windowLength):
-        datamin = np.append(datamin, np.median(windata.data))
-    trace.data = datamin
+    """Replace trace samples with medians from nonoverlapping windows."""
+    window_medians = np.array([])
+    for trace_window in trace.slide(window_length=windowLength, step=windowLength):
+        window_medians = np.append(window_medians, np.median(trace_window.data))
+    trace.data = window_medians
     trace.stats.sampling_rate = 1.0 / windowLength
     trace.stats.delta = float(windowLength)
-    trace.stats.npts = len(datamin)
+    trace.stats.npts = len(window_medians)
     trace.verify()
 
 
 def saraCalc(trace, windowLength, decimate=False, decFactor=4, envelope=True):
     '''
-    Function to calculate the median amplitude of a trace similar to Taisne (2011). Data is changed in place, so the
-    original data is gone.
+    Compute a median amplitude series in place using a method similar to Taisne (2011).
 
     :param trace: obspy Trace
     :param windowLength: length of median window in seconds
@@ -53,25 +53,25 @@ def saraCalc(trace, windowLength, decimate=False, decFactor=4, envelope=True):
 
 def calcNoise(S, startTime, endTime, snRatio):
     '''
-    Generate masked Stream given a noise window and signal to noise ratio
+    Mask values at or below the median noise times the signal-to-noise threshold.
     :param S: Stream of data of interest
     :param startTime: noise start time (UTCDateTime)
     :param endTime: noise end time (UTCDateTime)
     :param snRatio: signal to noise ratio
-    :return: masked Stream, dictionary of snRatios with keys of tr.id
+    :return: masked stream and per-trace amplitude thresholds keyed by trace ID
     '''
-    Snoise = S.copy().slice(starttime=startTime, endtime=endTime)
-    sn = dict()
-    for tr in Snoise:
-        sn[tr.id] = (median(tr.data) * snRatio)
-    SS = S.copy()
-    for tr in SS:
+    noise_stream = S.copy().slice(starttime=startTime, endtime=endTime)
+    noise_thresholds = dict()
+    for tr in noise_stream:
+        noise_thresholds[tr.id] = (median(tr.data) * snRatio)
+    masked_stream = S.copy()
+    for tr in masked_stream:
         try:
-            tr.data = ma.masked_less_equal(tr, sn[tr.id])
+            tr.data = ma.masked_less_equal(tr, noise_thresholds[tr.id])
         except:
             print('{} has no data in the given noise window!'.format(tr.id))
 
-    return SS, sn
+    return masked_stream, noise_thresholds
 
 def plotMedian(S, ax=None, normalize=True):
 
@@ -121,58 +121,58 @@ def plotCumMedian(S, ax=None, normalize=True):
 
 def checkDataRatio(tr1, tr2):
 
-    diff = False
-    # Check starttime
-    newStart = None
+    window_changed = False
+    # Trim both traces to their shared interval if either boundary differs.
+    shared_start = None
     if tr1.stats.starttime != tr2.stats.starttime:
-        diff = True
-        newStart = max([tr1.stats.starttime, tr2.stats.starttime])
+        window_changed = True
+        shared_start = max([tr1.stats.starttime, tr2.stats.starttime])
     else:
-        newStart = tr1.stats.starttime
+        shared_start = tr1.stats.starttime
 
-    newEnd = None
+    shared_end = None
     if tr1.stats.endtime != tr2.stats.endtime:
-        diff = True
-        newEnd = min([tr1.stats.endtime, tr2.stats.endtime])
+        window_changed = True
+        shared_end = min([tr1.stats.endtime, tr2.stats.endtime])
     else:
-        newEnd = tr1.stats.endtime
+        shared_end = tr1.stats.endtime
 
-    if diff:
-        tr1 = tr1.trim(starttime=newStart, endtime=newEnd)
-        tr2 = tr2.trim(starttime=newStart, endtime=newEnd)
-        diff = False
+    if window_changed:
+        tr1 = tr1.trim(starttime=shared_start, endtime=shared_end)
+        tr2 = tr2.trim(starttime=shared_start, endtime=shared_end)
+        window_changed = False
 
     # Check length
     if len(tr1.data) != len(tr2.data):
-        diff = True
-        print('Still have different length of data. Need some more work bro.')
+        window_changed = True
+        print('Traces have different sample counts after trimming to the shared interval.')
         raise
 
     return tr1, tr2
 
 def calcRatio(S, sta1, sta2, maskedStream=None):
 
-    tt2 = []
-    ratNoise = []
-    # Get data from specific station
+    masked_times = []
+    masked_ratio = []
+    # Divide the first station's amplitude by the second station's amplitude.
     tr1 = S.select(station=sta1)[0]
     tr2 = S.select(station=sta2)[0]
     tr1, tr2 = checkDataRatio(tr1, tr2)
     data1 = tr1.data
     data2 = tr2.data
-    tt1 = tr1.times(type="matplotlib")
-    rat = np.divide(data1, data2)
+    raw_times = tr1.times(type="matplotlib")
+    raw_ratio = np.divide(data1, data2)
     if maskedStream:
         ntr1 = maskedStream.select(station=sta1)[0]
         ntr2 = maskedStream.select(station=sta2)[0]
         ntr1, ntr2 = checkDataRatio(ntr1, ntr2)
         noise1 = ntr1.data
         noise2 = ntr2.data
-        tt2 = ntr1.times(type="matplotlib")
+        masked_times = ntr1.times(type="matplotlib")
         if noise1.size > 0 and noise2.size > 0:
-            ratNoise = np.divide(noise1, noise2)
+            masked_ratio = np.divide(noise1, noise2)
 
-    return tt1, rat, tt2, ratNoise
+    return raw_times, raw_ratio, masked_times, masked_ratio
 
 
 def plotRatio(S, sta1, sta2, ax=None, maskedStream=None, symbol='-', returnRatio=False):
@@ -181,18 +181,17 @@ def plotRatio(S, sta1, sta2, ax=None, maskedStream=None, symbol='-', returnRatio
     if not ax:
         f = plt.figure(figsize=[15,8])
         ax = f.add_subplot()
-    tt1, rat, tt2, ratNoise = calcRatio(S, sta1, sta2, maskedStream=maskedStream)
-    ax.semilogy(tt1, rat, symbol, color='gray', label='%s/%s Raw Ratio' % (sta1, sta2))
-    # Now plot
+    raw_times, raw_ratio, masked_times, masked_ratio = calcRatio(S, sta1, sta2, maskedStream=maskedStream)
+    ax.semilogy(raw_times, raw_ratio, symbol, color='gray', label='%s/%s Raw Ratio' % (sta1, sta2))
     if maskedStream:
         try:
-            ax.semilogy(tt2, ratNoise, symbol, color='black', label='%s/%s Good SNR Ratio' % (sta1, sta2))
-            ax.set_ylim([ma.MaskedArray.min(ratNoise), ma.MaskedArray.max(ratNoise)])
+            ax.semilogy(masked_times, masked_ratio, symbol, color='black', label='%s/%s Good SNR Ratio' % (sta1, sta2))
+            ax.set_ylim([ma.MaskedArray.min(masked_ratio), ma.MaskedArray.max(masked_ratio)])
         except:
-            print('No noise data...nice try.')
-            ax.set_ylim([min(rat), max(rat)])
+            print('No masked ratio values to plot. Using the raw ratio limits.')
+            ax.set_ylim([min(raw_ratio), max(raw_ratio)])
     else:
-        ax.set_ylim([min(rat), max(rat)])
+        ax.set_ylim([min(raw_ratio), max(raw_ratio)])
 
     ax.xaxis_date()
     ax.tick_params(axis='x', labelbottom='on')
@@ -204,7 +203,7 @@ def plotRatio(S, sta1, sta2, ax=None, maskedStream=None, symbol='-', returnRatio
     ax.legend()
     ax.grid(which='both')
     if returnRatio:
-        return ax, tt1, rat, tt2, ratNoise
+        return ax, raw_times, raw_ratio, masked_times, masked_ratio
     else:
         return ax
 

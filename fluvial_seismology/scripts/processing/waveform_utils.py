@@ -241,8 +241,8 @@ def interferogramPlot(stream, normalize=True, figsize=(8, 10), shift=False, mast
 
 def seisfft(traceData):
     """
-    Takes an obspy trace object and calculates a spectra.  Make sure that the
-    trace is demeaned and tapered.
+    Return the frequency bins and complex real-input FFT of an ObsPy trace.
+    Demean and taper the trace beforehand as needed.
 
     Parameters
     ---------------
@@ -271,26 +271,26 @@ def seisfft(traceData):
     return f, g
 
 def stackSpectraContinuous(S, window_length=60, step=30):
-
+    """Average FFT magnitudes across sliding windows."""
     from fluvial_seismology.scripts.processing import waveform_utils as waveformUtils
     initial = True
     for tr in S:
         for w_st in tr.slide(window_length=window_length, step=step):
-            F1, G1 = waveformUtils.seisfft(w_st)
+            frequency_hz, fft_values = waveformUtils.seisfft(w_st)
             if initial:
-                ffts = np.array(abs(G1))
+                ffts = np.array(abs(fft_values))
                 initial = False
             else:
-                ffts = np.vstack((ffts, abs(G1)))
+                ffts = np.vstack((ffts, abs(fft_values)))
 
-    fftStack = np.sum(ffts, axis=0) / len(ffts)
-    return F1, fftStack
+    mean_fft_amplitude = np.sum(ffts, axis=0) / len(ffts)
+    return frequency_hz, mean_fft_amplitude
 
 def plotSpectraTime(S1, minfreq=1, maxfreq=10, winlength=600, step=600,
                     spacing=2, ampScalar=3, normalize=True, specWin=60,
                     specStep=30, rsamWin=1, saveFig=False):
     '''
-    # Plot stacked spectra with respect to time
+    Plot stacked FFT amplitudes in time order.
     :param S1: Stream (single channel (use st.select()))
     :param minfreq: minimum frequency to plot (default=1)
     :param maxfreq: maximum frequency to plot (default=10)
@@ -371,8 +371,7 @@ def plotSpectraTime(S1, minfreq=1, maxfreq=10, winlength=600, step=600,
 
 def RSAM(trace, window, timePos='middle', plot=False):
     """
-    Function to calcualte RSAM of trace within a window, in minutes.
-    If plot = 1, then a plot will be launched.
+    Compute RMS amplitude over successive trace windows measured in minutes.
 
     Parameters
     ----------
@@ -397,31 +396,31 @@ def RSAM(trace, window, timePos='middle', plot=False):
     """
     from matplotlib.dates import date2num
     import numpy as np
-    t = trace.stats.starttime
-    tvec = []
+    window_start = trace.stats.starttime
+    window_times = []
     rsam = []
-    plotvec = []
-    while t < trace.stats.endtime:
-        trace_tmp = trace.slice(t, t + window * 60)
-        value = np.sqrt(np.mean(np.square(trace_tmp.data)))
+    plot_times = []
+    while window_start < trace.stats.endtime:
+        trace_window = trace.slice(window_start, window_start + window * 60)
+        value = np.sqrt(np.mean(np.square(trace_window.data)))
         if timePos == 'begin':
-            stampTime = t
+            timestamp = window_start
         elif timePos == 'middle':
-            stampTime = t + (window / 2) * 60
+            timestamp = window_start + (window / 2) * 60
         else:
-            stampTime = t + window * 60
-        plotvec.append(date2num(stampTime.datetime))
-        tvec.append(stampTime)
+            timestamp = window_start + window * 60
+        plot_times.append(date2num(timestamp.datetime))
+        window_times.append(timestamp)
         rsam.append(value)
-        t += window * 60
+        window_start += window * 60
     if plot == 1:
         import matplotlib.pyplot as plt
         plt.figure(figsize=[12, 3])
         plt.clf()
-        plt.plot_date(plotvec, rsam, fmt='-')
+        plt.plot_date(plot_times, rsam, fmt='-')
         tstr = '%d min RSAM, station %s' % (window, trace.stats.station)
         plt.title(tstr)
-    return tvec, rsam
+    return window_times, rsam
 
 
 def plotParticleMotion(zWave, nWave, eWave):
@@ -546,7 +545,7 @@ def streamCrossCorrelate(streamData, normalize=True, plot=True):
 
 def s2n(wave, t, window, method="mean", t2=None):
     """
-    Calculates signal to noise ratio prior to a given time and given time window.
+    Divide mean or median absolute signal amplitude by the corresponding noise amplitude.
 
     Parameters
     ----------
@@ -636,13 +635,13 @@ def trimToShortestWindow(S):
 
 def medianFilter(trace, windowLength):
     import numpy as np
-    datamin = np.array([])
-    for windata in trace.slide(window_length=windowLength, step=windowLength):
-        datamin = np.append(datamin, np.median(windata.data))
-    trace.data = datamin
+    window_medians = np.array([])
+    for trace_window in trace.slide(window_length=windowLength, step=windowLength):
+        window_medians = np.append(window_medians, np.median(trace_window.data))
+    trace.data = window_medians
     trace.stats.sampling_rate = 1.0 / windowLength
     trace.stats.delta = float(windowLength)
-    trace.stats.npts = len(datamin)
+    trace.stats.npts = len(window_medians)
     trace.verify()
 
 
@@ -783,7 +782,7 @@ def plotSpectrogram(S, figsize=[8,15], minfreq=0, maxfreq=25, tIndent=0.05, bInd
         #ax2 = fig.add_axes([lIndent, specCursor, width, specWidth], sharex=allAxes[0])
         ax2 = ax.inset_axes([lIndent, specCursor, width, specWidth], sharex=allAxes[0])
         allAxes.append(ax2)
-        # Spectrogram generation ------------------------------------------------------------
+        # Choose the FFT length and overlap for this trace.
         samp_rate = float(tr.stats.sampling_rate)
         npts = len(tr.data)
         nfft = int(_nearest_pow_2(wlen * samp_rate))
@@ -796,7 +795,7 @@ def plotSpectrogram(S, figsize=[8,15], minfreq=0, maxfreq=25, tIndent=0.05, bInd
         end = npts / samp_rate
         specgram, freq, time = mlab.specgram(tr.data, Fs=samp_rate, NFFT=nfft,
                                              pad_to=mult, noverlap=nlap)
-        # db scale and remove zero/offset for amplitude
+        # Drop the DC bin. Display power in dB or convert power to amplitude.
         if dbscale:
             specgram = 10 * np.log10(specgram[1:, :])
         else:
@@ -818,7 +817,7 @@ def plotSpectrogram(S, figsize=[8,15], minfreq=0, maxfreq=25, tIndent=0.05, bInd
             cmap = copy(plt.cm.jet)
         cmap.set_bad(alpha=0.0)
         specgram = np.flipud(specgram)
-        # center bin
+        # Extend the image to the outer edges of the first and last bins.
         minDateNum = (tr.stats.starttime + (time[0] - halfbin_time)).matplotlib_date
         maxDateNum = (tr.stats.starttime + (time[-1] + halfbin_time)).matplotlib_date
         #extent = (time[0] - halfbin_time, time[-1] + halfbin_time,
@@ -841,7 +840,6 @@ def plotSpectrogram(S, figsize=[8,15], minfreq=0, maxfreq=25, tIndent=0.05, bInd
         else:
             ax2.set_xlim(ax1.get_xlim())
         ax2.grid(False)
-        # -------------------------------------------------------------------------------------
 
         ax2.set_ylim([minfreq, maxfreq])
         ax2.get_xaxis().set_visible(False)
@@ -880,7 +878,7 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
         twoPlots = False
 
 
-    # Do the fft work
+    # Interpolate waveform gaps before averaging FFT magnitudes.
     S.merge(fill_value='interpolate')
     if dateLimits:
         S.trim(starttime=dateLimits[0], endtime=dateLimits[1])
@@ -899,12 +897,12 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
     #print(f"Window {cntr}: Start Time = {wst[0].stats.starttime}, End Time = {wst[0].stats.endtime}")
     #print(f"Full: Start Time = {stTimes[0]}, End Time = {stTimes[-1]}")
 
-    # Pre-process for spectrogram
+    # Arrange the averaged magnitudes by frequency and time for plotting.
     alldates = [nowtime.matplotlib_date for nowtime in stTimes] # x dimension width for pixels
     freq = spectraF[0]                                          # argument for y dimension height for pixels
     specgram = np.flipud(np.array(spectraG).T)                  # data that fills the pixels
 
-    # db scale and remove zero/offset for amplitude
+    # Apply the existing logarithmic display transform to the stacked magnitudes.
     if dbscale:
         specgram = 10 * np.log10(specgram[:, :])
     else:
@@ -913,10 +911,9 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
     ##vmin = specgram.min() + vmin * _range
     ##vmax = specgram.min() + vmax * _range
 
-    # standardized color scaling to our preference instead of auto data range (commented out above) #
+    # Use a fixed color range across recordings.
     vmin=10
     vmax=35
-    ##-------------------------------------------
 
     norm = Normalize(vmin, vmax, clip=True)
     cmap = copy(plt.get_cmap(cmap))
@@ -956,9 +953,7 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
 
     mesh = ax.pcolormesh(alldates, np.flipud(freq), specgram, norm=norm, cmap=cmap, shading='gouraud') # sets pixel dimensions
 
-    ## ----------colorbar-----------------------------------------
-    # assigns line above to variable 'mesh' for colorbar
-    # creates a small inset axis (colorbar scale) outside the main plot
+    # Place the colorbar outside the spectrogram.
     cax = inset_axes(ax, width="2%", height="100%", loc='lower left',
                     bbox_to_anchor=(1.02, 0., 1, 1),
                     bbox_transform=ax.transAxes,
@@ -970,14 +965,13 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
     # cbar = plt.colorbar(mesh, ax=ax)
     # cbar.set_label("Power (dB)")
 
-    ##------------------------------------------------------------
 
     locator = mdates.AutoDateLocator(minticks=5, maxticks=15)
     formatter = mdates.ConciseDateFormatter(locator)
     ax.xaxis.set_major_locator(locator)
     ax.xaxis.set_major_formatter(formatter)
 
-    # setting up x-axis limits based on the range of alldates
+    # Use the first and last spectral windows for the display limits.
     start_time = alldates[0] # first timestamp in data
     end_time = alldates[-1]  # last timestamp in data
     end_time_minus = end_time - (6*60)
@@ -1007,7 +1001,7 @@ def multiDaySpectrogram(S, averageLength=3600, fftLength=60, minFreq=0.05, maxFr
 
         # spectrogram x-limits
         ax2.set_xlim(start_time, end_time)
-        # adjust RSAM plot x-limits, stops before added time
+        # End the amplitude panel before the added spectrogram interval.
         ax0.set_xlim(start_time, end_time_minus) # ax0 for the RSAM plot
 
         ax2.set_yscale('log')
@@ -1136,7 +1130,6 @@ def preAmpProcessing(staList, t1, t2, staFile, saraint=30, snr=None, dataFile=No
     dataStart = t1 - 60
     dataEnd = t2 + 60
 
-    # ---------------------------------------------------------------
     # Get station information
     chanList, chans = amp.readStaInfo(staFile)
     if dataFile:
@@ -1175,22 +1168,16 @@ def preAmpProcessing(staList, t1, t2, staFile, saraint=30, snr=None, dataFile=No
         else:
             st2.trim(starttime=t1, endtime=t2, pad=True, fill_value=0)
         S = st2.copy()
-    # ---------------------------------------------------------------
-    # ---------------------------------------------------------------
     # Get channels in appropriate order
     S1 = Stream()
     for nowChan in chanList:
         net, sta, loc, chan = nowChan.split('.')
         S1 = S1 + S.select(network=net, station=sta, location=loc, channel=chan)
     waveRaw = S1.copy()
-    # ---------------------------------------------------------------
-    # ---------------------------------------------------------------
     # Create envelope
     for tr in S1:
         saraCalc(tr, saraint)
     envRaw = S1.copy()
-    # ---------------------------------------------------------------
-    # ---------------------------------------------------------------
     # Signal to Noise cutoff
     if snr:
         if realTime:
@@ -1213,15 +1200,12 @@ def preAmpProcessing(staList, t1, t2, staFile, saraint=30, snr=None, dataFile=No
         SNtrace = S1.copy()
         for tr in SNtrace:
             tr.data = tr.data*0
-    # ---------------------------------------------------------------
-    # ---------------------------------------------------------------
     # Apply amplitude correction
     if correctionFile:
         S2, corrs = ampCorrect.applyCorrectionFile(S2, correctionFile)
     else:
         print('No correction file given, no corrections applied.')
 
-    # ---------------------------------------------------------------
     # Get times to use
     tAll = S1[0].times("utcdatetime")  # Use the stream before it is masked
     t = []

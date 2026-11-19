@@ -1,4 +1,4 @@
-#' Clip, interpolate (and optionally smoothen) a spectrogram
+#' Clip and interpolate a spectrogram, with optional smoothing
 #'
 #' The function interpolates the power values in the frequency range defined
 #' by the user, applying a spline interpolator. This function can be used to
@@ -115,7 +115,7 @@ aux_clipspectrogram <- function(
     f_int <- f
   }
 
-  ## optionally assign synthetic frequency vector
+  # Reconstruct frequencies from zero to Nyquist when no axis is supplied.
   if(any(is.na(f_emp))) {
 
     f_emp <- seq(from = 0, to = 1 / dt / 2, length.out = nrow(p))
@@ -124,7 +124,7 @@ aux_clipspectrogram <- function(
   ## average or interpolate data set
   if(res == 1) {
 
-    ## calculate average power and frequency
+    # Average the power of bins in the selected band at each time.
     p_avg <- colMeans(p[f_emp >= f[1] & f_emp <= f[2],])
 
     ## get output time vector
