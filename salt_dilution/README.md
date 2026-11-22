@@ -12,6 +12,7 @@ This workflow calculates proposed slug-injection discharge from conductivity rec
 | `scripts/processing/calibration_reuse.py` | Calibration compatibility audit and conditional coefficient-reuse test. |
 | `scripts/processing/mass_slug.py` | Mass-based pulse integration, proposed discharge, sensitivity diagnostics and figures. |
 | `scripts/processing/export_discharge.py` | Verified analysis handoff with all release dispositions, proposed estimates, quality flags and figures. |
+| [Salt-slug discharge walkthrough](notebooks/salt_slug_discharge_walkthrough.ipynb) | Worked examples for mass- and solution-volume discharge, with saved outputs. |
 | `notebooks/salt_dilution_discharge.ipynb` | Historical July 24, 2025 example using a retired helper API. |
 | `notebooks/exploratory/` | Historical interactive calculations with older assumptions and incomplete inputs. |
 | `scripts/experimental/` | Unfinished class-based dilution implementation and launcher. |

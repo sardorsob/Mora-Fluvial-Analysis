@@ -6,15 +6,57 @@ This folder holds the additional conditional calculations and the current combin
 
 ## Which file should I open?
 
-- **Compare the current Q values:** `figures/plot_estimates.csv`.
-- **Check whether a release has Q:** `figures/release_coverage.csv`.
-- **Inspect K, dose, pulse area and assumptions:** `working_estimates.csv` for working results, or the [original channel-estimate table](../discharge_analysis/tables/discharge_estimates.csv) for selected results.
-- **Find where a quantity came from:** `working_parameters.csv`.
-- **Compare alternative assumptions:** `scenario_estimates.csv`.
+- **Compare Q or count releases with Q** in the [combined estimates](figures/plot_estimates.csv) and [coverage table](figures/release_coverage.csv).
+- **Check K, dose and pulse area** in the [working estimates](working_estimates.csv) or [selected estimates](../discharge_analysis/tables/discharge_estimates.csv). The combined table's `source_table` field tells you which one to use.
+- **Check a dose assumption or compare alternatives** in the [working parameters](working_parameters.csv) and [scenario estimates](scenario_estimates.csv).
+- **Read fewer columns** in the [compact tables](../reader_tables/README.md).
 
-There is no single table containing every calculation detail from both result groups. The combined Q table identifies the source of each row.
+## How the CSVs fit together
 
-For fewer columns, see the [compact reader tables](../reader_tables/README.md). They keep calculation values, units, and source row identifiers, including per-litre spill responses.
+### From field data to working discharge
+
+```mermaid
+flowchart TD
+    field["Field records<br/>calibrations.csv + calibration_points.csv"] --> points["Derived calibration_points.csv"]
+    points --> fit["Recipe-specific K → scenario_calibrations.csv"]
+    pairing["pairing_summary.csv + recording_candidates.csv"] --> pulse["Pulse area from processed logger CSVs"]
+    settings["scenario_settings.json<br/>Recipes, dose, windows and selection rules"] --> fit
+    settings --> pulse
+    fit --> scenarios["scenario_estimates.csv"]
+    pulse --> scenarios
+    settings -->|dose| scenarios
+    scenarios -->|retain configured recipes and pulse treatments| working["working_estimates.csv"]
+    settings -->|protocol rules| working
+    settings -->|parameter evidence| parameters["working_parameters.csv"]
+    working -->|summarize by release| summary["working_by_release.csv"]
+```
+
+The scenario runner fits K for each recipe and conductivity channel. It subtracts background from the recording and integrates the signed conductivity excess over the pulse window. Multiplying that area by the K for the same channel gives the time integral of added salt concentration or original solution fraction. Divide the delivered salt mass or solution volume by its corresponding integral and convert to m³/s.
+
+The diagram shows how values flow within the scenario run. The runner writes the scenario fits and estimates together, then applies the saved protocol rules to retain working rows. It writes `working_parameters.csv` from those rules as a record of where each input came from. The [baseline release table](../discharge_analysis/tables/discharge_by_release.csv) defines which experimental releases need scenarios, and [recovery requirements](../discharge_analysis/tables/recovery_requirements.csv) carry the outstanding limitations. `scenario_by_release.csv` summarizes all tested alternatives. `scenario_rejections.csv` records exclusions and failed calculations.
+
+### From saved discharge to figures
+
+```mermaid
+flowchart TD
+    selected["Baseline discharge_estimates.csv"] --> combined["plot_estimates.csv"]
+    working["working_estimates.csv"] -->|Q rows only| combined
+    releases["Baseline discharge_by_release.csv"] -->|site and date by trial_id| combined
+    combined -->|count estimates by trial_id| coverage["release_coverage.csv"]
+    releases -->|all releases, including practice and missing Q| coverage
+    combined --> overview["Overview and coverage figures"]
+    coverage --> overview
+    scenario["scenario_estimates.csv"] --> diagnostics["day_diagnostic_traces.csv"]
+    traces["Logger samples + saved windows"] --> diagnostics
+    traces --> figures["By-day and by-trial figures"]
+    diagnostics -->|diagnostic pulse windows| figures
+    selected --> figures
+    working --> figures
+    figures --> index["figure_index.csv"]
+    overview --> index
+```
+
+The plot runner keeps each saved estimate separate and omits the two per-litre spill responses from `plot_estimates.csv`. The summary comparisons use the combined Q rows. Day and trial pulse figures also need the conductivity samples and saved windows to draw the curves. Diagnostic windows can show a pulse even when no Q was chosen.
 
 ## CSV guide
 

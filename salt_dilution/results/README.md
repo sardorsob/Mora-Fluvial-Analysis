@@ -4,7 +4,7 @@
 
 Use the [combined Q table](discharge_scenarios/figures/plot_estimates.csv) and the graphs below for current coverage. The [release coverage table](discharge_scenarios/figures/release_coverage.csv) includes every release, including those without a chosen Q.
 
-The [CSV guide](discharge_scenarios/README.md) explains each table, its identifiers and units, and how to trace a plotted Q back to its calculation and assumptions.
+The [CSV lineage diagrams](discharge_scenarios/README.md#how-the-csvs-fit-together) show how calibration, recordings and dose feed the working estimates, and how those estimates combine with the selected results. The [Python walkthrough](../notebooks/salt_slug_discharge_walkthrough.ipynb) reproduces a Nisqually estimate from its calibration and recorded salt pulse.
 
 Start with the [compact reader tables](reader_tables/README.md) for release results, calibration fits, Q calculations, and sensitivity comparisons. Their guide links to the full calculation and provenance tables.
 

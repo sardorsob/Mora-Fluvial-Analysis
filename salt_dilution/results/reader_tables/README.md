@@ -37,9 +37,9 @@ and window sensitivity.
 | [Scenario calibrations](scenarios/scenario_calibrations_compact.csv) | [scenario_calibrations.csv](../discharge_scenarios/scenario_calibrations.csv) |
 
 Use the saved [working estimates summary](../discharge_scenarios/working_estimates_summary.csv)
-for its 21-column selection. The release summaries, parameter decisions,
-rejections and three figure tables use their existing focused schemas. See the
-[scenario guide](../discharge_scenarios/README.md) for their links and contents.
+for a 21-column view of `working_estimates.csv`. The compact copies and the
+summary are reading views. The plot runner reads the full working and
+selected estimate tables. See the [CSV lineage diagrams](../discharge_scenarios/README.md#how-the-csvs-fit-together).
 
 ## Reading and joining the tables
 
