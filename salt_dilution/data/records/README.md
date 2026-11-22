@@ -20,7 +20,7 @@ The association table has 48 file-linked rows across 31 files for 28 releases, p
 Unknown and inapplicable values stay empty. A blank is never a substituted zero.
 
 - **Quantity:** prepared/nominal salt is not necessarily delivered salt. Check spills, retained samples and mixing. No measured final stock volume is established; the working mass-stock convention uses recorded starting water when final volume is absent and records that basis. Grams of water are not silently converted to mL.
-- **Preparation:** `procedure_id` selects the calculation stages. A populated secondary-water field does not add a dilution to a direct-stock recipe. Unclear units, missing EC and uncertain additions remain review items.
+- **Preparation:** `procedure_id` determines whether stock was added directly or diluted first. The direct-stock calculation ignores the secondary-water field. Verify unclear units, missing conductivity and uncertain additions.
 - **Time:** source clocks and zone labels are in provenance. Export times and recording bounds are not event/integration windows; July 21's explicit daylight-time label still needs event alignment.
 - **Association:** a populated path identifies a file, not calibration applicability. `processed_path` is relative to the repository root. All release/recording/calibration links need their own supporting evidence.
 

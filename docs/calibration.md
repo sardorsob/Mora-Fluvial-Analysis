@@ -1,6 +1,6 @@
 # Calibration curves
 
-Calibration relates the probe's conductivity reading to a known added salt concentration. The stock recipe and each added volume supply the concentration values; the probe supplies the conductivity readings. The fitted slope, K, connects them.
+Calibration relates the probe's conductivity reading to a known added salt concentration. Stock concentration and the volume added at each step determine the calibration concentrations. The fitted slope, K, connects them.
 
 The [calibration runner](../salt_dilution/scripts/processing/calibration.py) uses the curated preparation and point tables. Recovery also uses the calibration exports and worksheet listed in the pinned configuration. Stream recordings and discharge windows are used at later stages.
 
@@ -71,11 +71,11 @@ The deionized-stock ionic-background correction is not implemented. The runner f
 
 ## Can one K replace repeated calibrations?
 
-`calibration_reuse.py` separates compatible mass fits from relative fits, unknown instrument identities and unresolved recipe interpretations. It compares log K within a sensor, channel, site, procedure and observed date range. Calibration sessions are grouped by day; calibration points are not independent repetitions. A narrow interval for mean K does not establish that K works for a new session.
+`calibration_reuse.py` separates compatible mass fits from relative fits, unknown instrument identities and uncertain stock preparations. It compares log K within a sensor, channel, site, procedure and observed date range. Calibration sessions are grouped by day; calibration points are not independent repetitions. A narrow interval for mean K does not establish that K works for a new session.
 
 The operational reuse tolerance is ±5% in Q. Passing requires sufficient sessions/days, bounded held-out-day effects, session/day application intervals, bounded drift and verified preparation/instrument conditions. Stock lineage and compensation settings remain unverified here. Actual-conductivity reuse also needs a temperature model, which is not implemented; temperature presence alone cannot pass the test.
 
-The nine October sessions for sensor 790481 cover three days. Specific-conductivity reuse fails the tolerance test (largest held-out-day session effect about 17.4%); actual-conductivity reuse is inconclusive without calibration temperatures. This does not establish instrument drift. Trial-specific K remains primary, and no reference-K discharge comparisons are generated. The recovery run retains unresolved recipe conflicts in the compatibility table. Candidate fits need source evidence for the actual preparation before use.
+The nine October sessions for sensor 790481 cover three days. Specific-conductivity reuse fails the tolerance test (largest held-out-day session effect about 17.4%); actual-conductivity reuse is inconclusive without calibration temperatures. This does not establish instrument drift. Trial-specific K remains primary, and no reference-K discharge comparisons are generated. The recovery run records conflicts over how stock was prepared in the compatibility table. Candidate fits need source evidence for the actual preparation before use.
 
 ## Saved outputs and next step
 

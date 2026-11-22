@@ -155,7 +155,7 @@ Open [the stable analysis package](../salt_dilution/results/discharge_analysis/R
 
 ## Explore discharge assumptions
 
-The scenario runner compares explicit quantity, calibration-stock, background and capture assumptions for releases without a selected Q. Its working tables apply recipes supported by trial records or preceding protocol patterns. They retain the assumptions and do not replace the 11 selected estimates or establish field acceptance. The saved inputs and local recordings must be available; choose a fresh, absent output directory under the ignored results area.
+The scenario runner compares explicit quantity, calibration-stock, background and capture assumptions for releases without a selected Q. Its working tables use preparation and dose assumptions supported by trial records or earlier trials under the same protocol. The 11 selected estimates remain in the original results. All estimates await field acceptance. The saved inputs and local recordings must be available; choose a fresh, absent output directory under the ignored results area.
 
 ```sh
 python -m salt_dilution.scripts.processing.discharge_scenarios \
@@ -166,13 +166,13 @@ python -m salt_dilution.scripts.processing.discharge_scenarios \
   --output salt_dilution/results/discharge/new_scenario_run
 ```
 
-Start with `working_by_release.csv`, then `working_estimates.csv` for each retained recording/channel calculation. `working_parameters.csv` gives each quantity's value, units, source status, source references, preceding donor IDs and donor ages. The working choice uses the configured recipe and background/gap model; it does not rank results by Q. Separate calibration attempts and instruments remain separate.
+Start with `working_by_release.csv`, then `working_estimates.csv` for each retained recording/channel calculation. `working_parameters.csv` gives each quantity's value, units, evidence, and any earlier trial that supports it. The saved settings determine the preparation, dose, background and gap treatment. Separate calibration attempts and instruments remain separate.
 
 Use `scenario_by_release.csv`, `scenario_estimates.csv`, `scenario_calibrations.csv` and `scenario_rejections.csv` to compare all tested alternatives. `scenario_settings.json` records the tested settings and `run_info.json` records inputs and outputs. The [scenario results](../salt_dilution/results/README.md#scenarios-for-missing-information) explain their interpretation.
 
 ## Regenerate the current discharge graphs
 
-The graph runner combines the saved selected estimates and conditional working estimates. It checks source hashes, recomputes Q from the saved quantity, K and integral, and checks each working pulse integral against the recording. It does not refit K, choose a different recipe or change a Q value.
+The graph runner combines the saved selected estimates and conditional working estimates. It checks source hashes, recomputes Q from the saved quantity, K and integral, and checks each working pulse integral against the recording. The plots use the saved K, calculation settings and Q.
 
 ```sh
 python -m salt_dilution.scripts.processing.plot_discharge_working \
